@@ -1,3 +1,46 @@
+## 2026-08-14 · [T2] Independent QA (Codex) ENABLED and proven running — 2 P1 findings
+
+User: "switch it on". Done, and the gate is live rather than merely flag-flipped.
+
+**Enabled** — `independent_qa.enabled: true`, `external_export.approved: true` (approved_by
+abdulaziz, 2026-08-14T00:45Z, scope committed_snapshot_only). `auto_review.enabled` stays
+**false**: its `request` field is empty and post-commit firing would error. Provider: codex.
+
+**Where it points, and why it is not the root.** The engine is git-native (`rev-parse`,
+`git show`, `merge-base` ancestry proof, a `git-common-dir` control plane) and reviews a
+`git worktree` export of the target commit. The Massar root had never been a repo; it is one
+now (`c95b9d1`), but `massar-engine` is its own repo with no remote, so its code can never
+enter a root snapshot without destroying that history. **The gate therefore runs with
+`--repo massar-engine`**, where the code and its real history live. `massar-engine/.orbit/`
+holds the committed result schema (the snapshot must carry it) and a symlinked
+`loop.config.json → ../../.orbit/loop.config.json`, so there is exactly ONE config.
+
+Invocation:
+`scripts/orbit-independent-qa review --repo <root>/massar-engine --request independent-qa/<manifest>.json --commit HEAD`
+
+**Two upstream schema bugs fixed** in the project copy: bare `const`/`enum` with no `type`
+(Codex 400 `invalid_json_schema`), and an unbounded `score` that came back as a percentage
+and got the whole review rejected. Both are also wrong in the shipped Orbit asset.
+
+**Round 1 verdict: CHANGES_REQUIRED, score 2.5** @4d316fe — AC3 PASS, AC1/AC2/AC4 FAIL.
+Two P1s, both of which I reproduced myself rather than taking on the reviewer's word:
+- `src/index.ts:32` + `config.ts:20` — `webhookToken` defaults to `""`, so the guard
+  `cfg.webhookToken && token !== cfg.webhookToken` is skipped entirely when WEBHOOK_TOKEN is
+  unset: unauthenticated webhook POSTs are accepted and processed. **Fails open.**
+- `src/index.ts:540-554` — `/admin/send-test` and `/admin/send-template` call
+  `gupshup.sendText`/`sendTemplate` directly with no `optedOut`, window or turn-cap check.
+  An opted-out contact can still be messaged. `safeSend` (agent.ts:1045) is not a guard —
+  it is a try/catch — and most call sites bypass it anyway. **Opt-out is bypassable**, which
+  is CLAUDE.md §3's "opt-out sacred" and adjacent to §8's forbidden list.
+- F3 (manifest SHA mismatch) is a FALSE POSITIVE: the runner hashes `canonical_hash(request)`
+  over the parsed object; Codex ran `shasum` over the file bytes. Different inputs. The
+  review prompt should say so.
+
+NOT fixed here — two P1 security changes belong in their own reviewed increment, and this
+increment's goal was the gate. Both are the top of the queue.
+
+Also: broke a stale writer lock (session edca6286, 5h35m past its 1800s TTL) to do any of this.
+
 ## 2026-08-13 · ROUND 28 — CPO ACCEPT @9916ed3 (deployed, health green)
 
 Founder's goal met: two genuinely distinct campaign templates (different premise, CTA and audience,

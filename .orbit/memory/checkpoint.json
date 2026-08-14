@@ -1,9 +1,9 @@
 {
-  "last_review_summary": "R50 CPO round-29: ITERATE at 67dc8ff. Both founder complaints VERIFIED FIXED on the live deploy by CPO (campWin=1786644640706; campaign 22 = delivered 0 / seen 0 / replied 0 / interested 0 / failed 2; the \u00ab\u0627\u0643\u062a\u0645\u0627\u0644 \u0627\u0644\u0633\u064a\u0627\u0642\u00bb gauge is absent and the customer's own \u00ab\u0645\u0627\u0646\u064a \u0645\u0647\u062a\u0645 \u0644\u0627 \u062a\u062a\u0635\u0644 \u0639\u0644\u064a\u00bb renders verbatim). ITERATE is on EVIDENCE, not product: delivery-evidence.json still binds to f26a2c1 with verdict F\u2026",
-  "last_reviewed_at": "2026-08-13T18:35:48Z",
-  "last_reviewed_request": 51,
+  "last_review_summary": "Independent-QA enablement. No durable new preference: the two answers were decisions on a fork I raised (break the lock; git init root), not standing rules. Existing R47 momentum signal already covers the contine directive.",
+  "last_reviewed_at": "2026-08-14T00:44:45Z",
+  "last_reviewed_request": 53,
   "pending_event_ids": [],
-  "requests_since_review": 2,
+  "requests_since_review": 0,
   "review_required": false,
   "schema_version": 1,
   "total_requests": 53

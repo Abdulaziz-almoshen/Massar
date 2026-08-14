@@ -1,4 +1,14 @@
 {
+  "edca6286-7e1a-47d3-9676-4f5142291c35": {
+    "session_id": "edca6286-7e1a-47d3-9676-4f5142291c35",
+    "agent": "Claude Code",
+    "model": "Opus 5 (1M context)",
+    "cwd": "/Users/abdulaziz/Projects/Massar",
+    "terminal_program": "vscode",
+    "terminal_session": "",
+    "terminal_bundle": "com.microsoft.VSCode",
+    "updated_at": "2026-08-14T00:45:19Z"
+  },
   "5c610ef4-4c87-4f7f-b356-e08b212f2bdd": {
     "session_id": "5c610ef4-4c87-4f7f-b356-e08b212f2bdd",
     "agent": "Claude Code",
@@ -7,7 +17,7 @@
     "terminal_program": "vscode",
     "terminal_session": "",
     "terminal_bundle": "com.microsoft.VSCode",
-    "updated_at": "2026-08-14T00:33:32Z"
+    "updated_at": "2026-08-14T00:45:18Z"
   },
   "a1454047-7a27-4f7d-ae06-9536b7b90755": {
     "session_id": "a1454047-7a27-4f7d-ae06-9536b7b90755",
@@ -17,16 +27,6 @@
     "terminal_program": "vscode",
     "terminal_session": "",
     "terminal_bundle": "com.microsoft.VSCode",
-    "updated_at": "2026-08-14T00:33:32Z"
-  },
-  "edca6286-7e1a-47d3-9676-4f5142291c35": {
-    "session_id": "edca6286-7e1a-47d3-9676-4f5142291c35",
-    "agent": "Claude Code",
-    "model": "Opus 5 (1M context)",
-    "cwd": "/Users/abdulaziz/Projects/Massar",
-    "terminal_program": "vscode",
-    "terminal_session": "",
-    "terminal_bundle": "com.microsoft.VSCode",
-    "updated_at": "2026-08-14T00:33:32Z"
+    "updated_at": "2026-08-14T00:45:18Z"
   }
 }

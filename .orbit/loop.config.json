@@ -229,7 +229,8 @@
   },
   "_independent_qa_help": "Optional second-provider release gate. The Planner arms an acceptance manifest before implementation; after the internal gates pass, Orbit reviews only an exact committed snapshot. Both enabled and external_export.approved must be true before any private code is sent. Project-specific rubrics stay in the project and are listed by each request.",
   "independent_qa": {
-    "enabled": false,
+    "enabled": true,
+    "_repo_note": "Run with --repo massar-engine: the root repo cannot contain engine code (massar-engine is its own git repo and is untracked here), and this gate reviews committed snapshots. massar-engine/.orbit symlinks to this directory so both repos read THIS config — one source of truth.",
     "stage": "after_internal_gates_before_done",
     "auto_review": {
       "enabled": false,
@@ -240,9 +241,9 @@
     "max_rounds": 3,
     "timeout_seconds": 900,
     "external_export": {
-      "approved": false,
-      "approved_by": "",
-      "approved_at": "",
+      "approved": true,
+      "approved_by": "abdulaziz",
+      "approved_at": "2026-08-14T00:45:00Z",
       "scope": "committed_snapshot_only"
     },
     "provider": {
