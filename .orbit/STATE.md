@@ -64,6 +64,20 @@ route consults `checkOutbound` BEFORE `gupshup.send*`. **Falsified**: deleting t
 scope limit — 2 routes covered, ~13 call sites not, AC4 still FAIL — so it cannot be quoted
 upward as "all outbound is guarded".
 
+**INCIDENT 2026-08-14 — I sent an unintended WhatsApp to 966559402621.** The verification script
+ran step 1 (ledger) and step 2 (`POST /admin/send-test`) unconditionally; `LEDGER=$?` was captured
+but never gated. He was a known, in-window, non-opted-out contact, so `checkOutbound` CORRECTLY
+allowed it and «GUARD TEST - must never arrive» was delivered (messageId 83de7a12). **Not a guard
+failure — an operator failure**, one turn after I told him the verification sends nothing.
+Two durable lessons:
+1. A verification step that touches a send-capable route must be UNREACHABLE unless its refusing
+   precondition already holds. "I expect it to refuse" is not a gate; an `if` is. Script fixed to
+   hard-stop on ledger != opted_out.
+2. Testing a REFUSAL on a live route is only zero-send when the refusal is already guaranteed.
+   Ordering matters: the state that makes it refuse must exist BEFORE the probe, never be assumed.
+Side effect: the test text is recorded as an AGENT turn in his transcript — a false ledger claim
+(Rule 2 extends to writes). Removal offered, not taken unilaterally.
+
 **Live test ARMED, awaiting the user.** He supplied 0559402621 → `966559402621` as the explicit
 allowlist, which lifts the zero-send rule for this test ONLY. Sequence: he messages the sandbox
 `917834811114` with «إيقاف» (the only outbound is the opt-out ack his own message triggers), then

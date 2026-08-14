@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "Independent-QA enablement. No durable new preference: the two answers were decisions on a fork I raised (break the lock; git init root), not standing rules. Existing R47 momentum signal already covers the contine directive.",
-  "last_reviewed_at": "2026-08-14T00:44:45Z",
-  "last_reviewed_request": 53,
+  "last_review_summary": "DURABLE, safety-scoped: he named 0559402621 (966559402621) as the test number, which is the explicit allowlist Rule 5 said would lift the zero-send rule. Scope is that number and this opt-out test only; the blanket rule stands for every other number. Not a new preference - the exercise of one he already stated.",
+  "last_reviewed_at": "2026-08-14T01:43:10Z",
+  "last_reviewed_request": 55,
   "pending_event_ids": [],
-  "requests_since_review": 2,
+  "requests_since_review": 1,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 55
+  "total_requests": 56
 }
