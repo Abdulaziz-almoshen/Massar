@@ -55,9 +55,25 @@ STILL OPEN, honestly stated:
 - **P2 no committed regression test** for these invariants. The falsification harness ran from
   scratch space and was not committed; it should move into the repo.
 
-**Capability chain skipped by user decision** ("close it as-is"): T2 config change with no UI
-surface, so product-discovery/business-analyst/market-researcher/planner/designer were not
-dispatched. Recording it rather than letting the gate log imply they ran.
+**Regression gate landed** @45ab2cc — `scripts/check-optout.mjs`, wired into `npm run check`, so
+it blocks deploy. Closes the round-2 P2 ("no committed regression tests cover the hard safety
+invariants"). Two halves deliberately, because a behavioural test alone buys one round (Rule 6):
+the guard's own logic including a negative control, AND a structural assertion that each admin
+route consults `checkOutbound` BEFORE `gupshup.send*`. **Falsified**: deleting the guard call from
+`/admin/send-test` turns it red (2 FAILURES); green again on restore. The gate prints its own
+scope limit — 2 routes covered, ~13 call sites not, AC4 still FAIL — so it cannot be quoted
+upward as "all outbound is guarded".
+
+**Live test ARMED, awaiting the user.** He supplied 0559402621 → `966559402621` as the explicit
+allowlist, which lifts the zero-send rule for this test ONLY. Sequence: he messages the sandbox
+`917834811114` with «إيقاف» (the only outbound is the opt-out ack his own message triggers), then
+two zero-send verifications — ledger shows `optedOut: true`, and `POST /admin/send-test` returns
+409 `opted_out`. Nothing has been sent to him yet. Note: this leaves his number opted-out until
+the flag is cleared as a separate step.
+
+**Capability chain skipped by user decision** ("close it as-is", reaffirmed): T2 config change +
+one P1 fix + its gate, no UI surface, so product-discovery/business-analyst/market-researcher/
+planner/designer were not dispatched. Recording it rather than letting the gate log imply they ran.
 
 Also: broke a stale writer lock (session edca6286, 5h35m past its 1800s TTL) to do any of this.
 
