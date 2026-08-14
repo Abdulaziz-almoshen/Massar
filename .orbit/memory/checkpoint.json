@@ -1,12 +1,10 @@
 {
-  "last_review_summary": "R59, his own framing of the working contract: 'I give you a goal, and you'll give me a deliverable.' Two hard rules follow. (1) INCIDENTAL WORK RUNS SILENTLY: technical debt, prerequisites and self-inflicted fixes must not consume his attention or his turns - do them without narrating each step, or defer them. He should be interrupted only for a decision only he can make. (2) HIS TIME IS THE SCARC\u2026",
-  "last_reviewed_at": "2026-08-14T01:52:18Z",
-  "last_reviewed_request": 59,
-  "pending_event_ids": [
-    "U60"
-  ],
-  "requests_since_review": 2,
-  "review_required": true,
+  "last_review_summary": "No new durable preference. Two observations: (1) 'ok' approved the sections 1-9 rewrite - a decision on a fork I named in one line, which is the loop the scope rule asks for and it worked; (2) he asked for the prompt and replied 'ful' when I showed an excerpt - when he asks for an artifact he wants the WHOLE thing, not a summary or the first screen. That is one instance and consistent with existin\u2026",
+  "last_reviewed_at": "2026-08-14T03:06:51Z",
+  "last_reviewed_request": 67,
+  "pending_event_ids": [],
+  "requests_since_review": 0,
+  "review_required": false,
   "schema_version": 1,
-  "total_requests": 61
+  "total_requests": 67
 }

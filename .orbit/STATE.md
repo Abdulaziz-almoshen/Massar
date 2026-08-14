@@ -1,3 +1,26 @@
+## 2026-08-14 · [T2] Agent prompt: ONE sales motion (v201, deployed)
+
+Follow-up to the increment below, on his "ok". Sections ١–٩ predated his AE spec and still ran an
+inbound-lead qualifier — «رحلة البيع — اشرح ← أهّل ← اكتشف» plus COLD/INTERESTED/QUALIFIED stages
+— while his 13 strategies sat in §١٢ب *alongside* it. Two competing motions in one prompt, and the
+likely cause of the live drift into feature-listing before the commercial dead-end.
+
+Replaced with the spec's own machinery: five-step internal decision engine (intent · opportunity
+state · **single most important unknown** · strategy · next commitment), the 10 opportunity states
+with transition rules, discovery gated on whether the answer changes scope/fit/price/implementation/
+negotiation/next-step, message design as 1 idea + 1 next step with no bullet lists unless asked,
+the success metric applied pre-send, and his buyer-intent examples replacing the old inbound ones.
+
+**The absence is a tested property** — 17 new assertions across both prompt states require the old
+ladder and stage names to stay gone. If they return, `npm run check` fails and deploy is blocked.
+All six gates green, smoke 7/7, health green.
+
+Prompt published for review (both variants, generated from the live build):
+https://claude.ai/code/artifact/13632085-bc6c-4802-8402-ded12a696cec
+
+Still true: `ACCOUNTS_JSON` is empty, so every live conversation takes the cold path. The expansion
+motion is unexercised until he supplies the customer list.
+
 ## 2026-08-14 · [T2] Agent sales motion → usage-led account expansion (deployed)
 
 User supplied a full AE prompt and asked "is this fixed?" — it was not in the code at all (0
