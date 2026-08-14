@@ -1,0 +1,36 @@
+CPO round-19 independent numeral audit @825a557
+Method: visible-text-node walk of the live DOM (display/visibility/opacity + getClientRects on node
+and every ancestor), NO exclusion list — every ASCII-digit run is listed so each is judged on merit.
+Also swept three channels a text walk misses: CSS ::before/::after content, SVG <text>, and
+title/aria-label/alt/placeholder/value attributes — 0 digits found in all three on all six routes.
+
+route@width                    arabic  latin  every Latin run (unfiltered)
+#home@1440                        158     12  966559402621
+#kmon@1440                         25      0  —
+#kmon/5@1440                       66     48  966500000790, 966500000791, 966500000792, 966500000793
+#customer/966500000850@1440        85     12  966500000850
+#aimkt@1440                        40    180  966501112233, 966502444737, 966512340099, 966512345001, 966512345002, 966512345003, 966512345004, 966512345005, 966512345678, 966535106365, 966543464327, 966556911173, 966559402621, 966592681957, 966598765432
+#kb@1440                           13      3  2.1.3-
+
+#home@768                         158     12  966559402621
+#kmon@768                          25      0  —
+#kmon/5@768                        44     48  966500000790, 966500000791, 966500000792, 966500000793
+#customer/966500000850@768         85     12  966500000850
+#aimkt@768                         40    180  966501112233, 966502444737, 966512340099, 966512345001, 966512345002, 966512345003, 966512345004, 966512345005, 966512345678, 966535106365, 966543464327, 966556911173, 966559402621, 966592681957, 966598765432
+#kb@768                            13      3  2.1.3-
+
+#home@375                         158     12  966559402621
+#kmon@375                          25      0  —
+#kmon/5@375                        44     48  966500000790, 966500000791, 966500000792, 966500000793
+#customer/966500000850@375         85     12  966500000850
+#aimkt@375                         40    180  966501112233, 966502444737, 966512340099, 966512345001, 966512345002, 966512345003, 966512345004, 966512345005, 966512345678, 966535106365, 966543464327, 966556911173, 966559402621, 966592681957, 966598765432
+#kb@375                            13      3  2.1.3-
+
+VERDICT: every Latin run on all six screens at all three widths is either a +9665… phone number
+or '2.1.3' inside the filename «lean-proposal-deck-v2.1.3-upload.zip». No other Latin digit renders.
+Latin run-sets are IDENTICAL at 1440, 768 and 375 on every route.
+
+NOT COVERED BY THIS METHOD (see round-19 M4): conditional branches that do not render now.
+src/dashboard.ts:1460 renders «N ساعة بلا متابعة» raw-Latin once a hot contact passes 24h idle
+— live data crosses that threshold at 2026-08-13T11:48Z. Also :1504 (loss-cause count, gated on
+lost>0) and :919 (LIST_CAP, gated on audience>60).

@@ -1,0 +1,168 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_OBSERVER_AGENTS": "1"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-guard\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-guard\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-guard \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-guard; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.orbit/checks/design-gate.py\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-lock-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-lock-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-lock-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-lock-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-lock-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-lock-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-lock-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-lock-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.orbit/checks/route.py\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.orbit/checks/orbit-stop-check.py\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "TaskCreated": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "PostToolBatch": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'for p in \"${CLAUDE_PLUGIN_ROOT:-}/bin/orbit-hook\" \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/orbit/bin/orbit-hook\" \"$HOME\"/.claude/plugins/cache/*/orbit/*/bin/orbit-hook \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}\"/plugins/cache/*/orbit/*/bin/orbit-hook; do [ -f \"$p\" ] && exec python3 \"$p\"; done; exit 0'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 \"$CLAUDE_PROJECT_DIR/scripts/orbit-statusline\"",
+    "refreshInterval": 2
+  }
+}

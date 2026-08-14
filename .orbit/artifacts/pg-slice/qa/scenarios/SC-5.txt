@@ -1,0 +1,3 @@
+SC-5 authorization: /admin/state without and with wrong token -> 401
+no token: http 401
+wrong token: http 401

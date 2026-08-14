@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "round": 20,
+  "commit": "aed03a3",
+  "goal": "R48 «fix all issues and best UI must be delivered» — hours before he demos Massar to his own team, every screen the room could land on must read as one deliberate, production-grade, Arabic-first marketing tool. Round 19 sharpened this: not «the screens someone photographed», but every SCREEN and every STATE.",
+  "verdict": "ITERATE",
+  "reviewed_at": "2026-08-13T05:40:00Z",
+
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "aed03a3",
+    "sha256": "bae091518fb5e21a8916f66e4b21bff458d16b9cc2547f2fc1c65a30a2a35ba9",
+    "gate": ".orbit/checks/delivery-quality-gate.py --root . --commit aed03a3 → exit 0, passed:true, ui_required:true, errors:[]",
+    "scenarios": "57 cases, tokens PASS, accessibility PASS, console_errors []",
+    "audited_not_summarised": "I recomputed all 15 pixel ratios myself with Pillow from the PNGs on disk, hashed every baseline/actual pair, and compared every baseline_established against its actual_captured. I also re-ran the numeral audit, the column measurement and every latent state with my own instruments rather than reading any verdict field.",
+    "the_gates_are_green_and_that_is_the_finding": "tsc --noEmit exit 0 · npm run check exit 0 printing «numerals consistent: every number in src/dashboard.ts routes through fmtN()» · smoke 7/7, 0 runtime errors · 57 QA scenarios · delivery gate passed · console_errors []. All six green, at a commit that ships a TypeError into production and renders 38 Latin digits on a live screen. Every one of those checks is honest about what it measures; none of them measures the property being claimed."
+  },
+
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 36,
+    "status": ".orbit/checks/user_memory.py status --root . --require-latest → exit 0; pending_event_ids []; requests_since_review 0; latest_request_reviewed true",
+    "disposition": "checkpoint — no new user utterance since request 36, so no new durable preference from HIM. The durable learning this round is about the LOOP's evidence discipline, which belongs in user-model.md as a CPO-owned rule (see user_model_updates), not invented as a user preference."
+  },
+
+  "basis": {
+    "skills": [
+      "user-model R1 (professional marketing-tool fit is the standing bar) — the lens for #kb/<product>: «٩٢٪» in the readiness ring beside «7 0 0 1» in 26px Latin, 100px apart, is exactly «works but reads like an admin script».",
+      "user-model R2 (numbers must be real, sourced, honestly bounded) — applied to the LOOP's own artifacts for the third round running, and this time to the GUARD's own success message.",
+      "user-model R6 (stopping the leak is not wiping the spill; enumerate every surface AND every state) — seventh consecutive occurrence. Round 19's corollary about STATES was genuinely honoured this round; the SCREEN half regressed to the same six routes.",
+      "user-model R5 + CLAUDE.md §5 — zero WhatsApp sends. Every state in this review was produced by client-side injection or a stubbed fetch. No message left the browser; no server row was written.",
+      "product-acceptance.md — verdict schema, the six grill lenses, promotion discipline (3+ consistent signals before a rule).",
+      "decisions/0001-dashboard-no-range-edits.md — the precedent this round extends: dashboard.ts is a template string, so static tooling cannot see the client script."
+    ],
+    "research": [
+      "Re-ran the round-19 clock-aging proof at aed03a3 (contacts aged +12h in the client cache, re-render, read the action queue).",
+      "Enumerated latent states by injection: >LIST_CAP audience (80 synthetic rows), selN>50 launch modal, loss_causes with counts, contacts aged −40h on #kmon/<id>, the import-result chips (fetch stubbed), the «تحديث قراءة المساعد» control, and countUp mid-flight.",
+      "Own visible-text-node digit audit, nothing filtered, plus CSS ::before/::after content, SVG <text> and title/aria/alt/placeholder — 7 routes × 3 viewports.",
+      "Structural column measurement on #kmon (the header carries no class — the round-19 trap) and geometric chip/name rect-overlap on #kmon/5.",
+      "Pillow recomputation of all 15 mismatch ratios + SHA-256 of every baseline/actual pair + timestamp ordering.",
+      "Adversarial falsification of scripts/check-numerals.mjs: 3 control reverts + 10 hand-written defects in a sandbox copy.",
+      "Source-level scan for ASCII digits inside Arabic-bearing string literals, and git archaeology on countUp/kpi() to date each regression."
+    ],
+    "weights": { "skills": 0.4, "research": 0.6 }
+  },
+
+  "per_must_verification": [
+    {
+      "must": "M4 — the round-19 blocker: #home's action queue reverts to Latin numerals at 14:48 Riyadh today",
+      "verdict": "PASS — closed, and closed properly",
+      "evidence": "I re-ran my own proof rather than reading the claim. Live lastEventAt for all 20 contacts, aged −12h in the in-memory client cache (no network write, no API call, no send), then render(false). The action-queue pill reads «٤ إجراء» and the rows read «تواصل الآن مع الفرصة المؤهلة — Ibrahim · ٢٦ ساعة بلا متابعة». Latin digit runs inside the whole action-queue card: ZERO — I extracted them with a regex over the card's innerText, not by eye. Whole-page audit of #home in the aged state: 158 Arabic-Indic, 12 Latin, and the 12 are the single product-manager alert phone number +966559402621. Source confirms it: dashboard.ts:1460 now reads fmtN(Math.round((now - (c.lastEventAt || 0)) / 3600e3)). The dated failure I blocked on cannot happen. Screenshot: .orbit/artifacts/regression/cpo20-home-aged-24h.png",
+      "the_other_two_i_named": "Both verified in their own conditional states, not by reading the diff. :919 LIST_CAP — I pushed 80 synthetic rows into the client `entities` array and re-rendered #aimkt: «٩٥ جهة مطابقة … معاينة لأول ٦٠» and «+ ٣٥ آخرون مطابقون», zero Latin. :1504 loss-cause count — I injected two loss_causes with counts 7 and 12: they render «٧» and «١٢». The readiness ring reads «٩٢٪». The «الخدمةات» typo at :885 is fixed. Every specific order I wrote in round 19 as a must was executed and holds under its own trigger condition."
+    },
+    {
+      "must": "M1 — responsive column alignment on #kmon (re-verify: the sweep touched the same lines again)",
+      "verdict": "PASS",
+      "evidence": "Re-measured at this commit with the same structural method, because the campaigns header carries className '' and any '.thead' selector finds nothing on #kmon — the trap that let this defect survive several rounds. I located the header as the previous grid sibling of .trow.km with equal child count (headerClass reported back as '(none)', confirming I hit the classless element). computed grid-template-columns are IDENTICAL for header and row at all three widths — 1440: '255.234 146.766 121.234 89.328 89.328 89.344 146.766 44px'; 768 and 375 both '198.094 113.906 94.094 69.328 69.328 69.344 113.906 44px' — and all 8 header/row cell pairs measure dl=0 dw=0 exactly, not 'within 2px', at 1440/768/375. document.documentElement horizontal overflow is false at all three. M1 stays closed."
+    },
+    {
+      "must": "M2 — one numeral system, six screens, three viewports",
+      "verdict": "SPLIT — PASS on the six audited routes, FAIL as the property the commit claims",
+      "evidence": "PASS half, measured my own way (visible text nodes + pseudo-element content + SVG text + title/aria/alt/placeholder; no exclusion list): #home 158/12 · #kmon 25/0 · #customers 2/185 · #aimkt 38/180 · #kb 13/3 · #customer/966500000850 85/12 · #kmon/11 66/12 — identical at 1440, 768 and 375. Every Latin run enumerated: Saudi phone numbers, the filename «lean-proposal-deck-v2.1.3-upload.zip», and the phone-format hint «أرقام 05 تتحول لـ966» on #customers. Those are identifiers, and I re-derived that judgement rather than inheriting it. FAIL half, and it is not subtle: #kb/<product> — ONE CLICK from #kb, which is in the smoke set and in the nav as «معرفة الخدمة» — measures 2 Arabic-Indic to 38 Latin at 1440, 768 AND 375, live, with today's data, no aging required. The performance scoreboard renders «7 · 0 · 0 · 1» in 26px Latin, the largest type on the screen, roughly 100px below a readiness ring reading «٩٢٪». The heading below it reads «جاهزية الأقسام — 92%» — a Latin 92 and a Latin % glyph. The sections table adds «3 عناصر», «2 من 8», «0 ملفات», and the embedded knowledge card adds «↓70%», «18,000 ر.س · 95,000 ر.س», «(5 أيام)، (14 يومًا)». Screenshot: .orbit/artifacts/regression/cpo20-kb-product-1440.png. This is round-18's «100% in 30px Latin on #home» finding, verbatim, relocated one click deeper — at the commit whose message says the fix ships with its enforcement.",
+      "why_this_is_the_seventh_round": "Round 17 fixed #kmon, left #kmon/<id>. Round 18 fixed #kmon/<id>, left #home. Round 19 fixed #home's rendered state, left #home's conditional state. Round 20 fixed every conditional state I named — genuinely, all three, verified under their triggers — and left the screen one click below the last audited route. The enumeration axis rotates every round; the audited SET never grows."
+    },
+    {
+      "must": "M3 — evidence honesty at this commit",
+      "verdict": "PASS with one correction — and it is the strongest bundle on the re-baselining axis the loop has produced",
+      "evidence": "I recomputed ALL 15 ratios pixel-by-pixel with Pillow from the PNGs on disk. Thirteen reproduce to five decimals exactly; two (kmonlist@1440 0.00093→0.00094, kmondetail@375 0.00254→0.00255) differ only in the fifth decimal, which is my per-channel comparison versus theirs, not a discrepancy. Nothing in that file is decorative. Re-baselining: ZERO. Every one of the 15 baselines was written BEFORE its actual — I checked all 15 timestamp pairs, not a sample. That is a real improvement: round 19 carried two acknowledged re-baselines, round 20 carries none. THE CORRECTION to your framing: «15 comparisons, all with genuine non-zero ratios this round» is not accurate. Fourteen are non-zero; salespath@375x812 records 0.00000 and its baseline and actual are byte-identical by SHA-256. It is an HONEST zero — its baseline was written 2026-08-12T15:50, thirteen hours before the actual at 2026-08-13T04:56, so it cannot be a copy — and that viewport's captured region genuinely did not change. The file is right. The sentence describing it is wrong, in the same off-by-one place, for the second round running."
+    },
+    {
+      "must": "M5 — NEW, and the most important thing I found: this commit ships a TypeError to production, and six green checks agreed it was fine",
+      "verdict": "FAIL — must-fix, not demo-blocking (I proved the reachability rather than assuming it)",
+      "evidence": "src/dashboard.ts:1722 reads `el.textContent = Math.roundfmtN(target * eased) + rest;`. `Math.roundfmtN` does not exist. `git log -S roundfmtN` returns exactly one commit: aed03a3. The previous line was `Math.round(target * eased).toLocaleString(\"ar-SA\")`; a string replacement of the `.toLocaleString(…)` tail with `fmtN(…)` consumed the `Math.round(` opening and left a mangled identifier. It is live: curl https://massar-engine.fly.dev/dashboard | grep roundfmtN returns a hit. I replayed the shipped line verbatim in the real page against a reachable value and it throws — `TypeError: Math.roundfmtN is not a function` — leaving the element reading «0 جهة», a Latin zero, permanently, because countUp assigns \"0\"+rest BEFORE the rAF that dies. WHY IT IS NOT DEMO-BLOCKING, proven not assumed: the only producers of the two selectors countUp reads (.kpi .v at :707, .statc .v at :638) both format through fmtN, so every value is Arabic-Indic; countUp's own guard does parseInt(m[0].replace(/[^\\d]/g,\"\")) where \\d is ASCII-only, so «١٥» becomes \"\" becomes NaN and it returns. I enumerated all five elements in the browser: 0 would reach the broken call. It is a landmine with the pin still in, and the pin is an accident of today's data. WHY IT MATTERS ANYWAY: tsc --noEmit passed it, node --check would pass it, the new numeral guard passed it, smoke's pageerror listener passed it, and 57 QA scenarios recorded console_errors []. The line lives inside the client <script> template string, which no static tool in this repo can see. This is the second time that hazard has bitten — decision 0001 was written after a range edit deleted five helpers and shipped a blank page.",
+      "second_finding_in_the_same_place": "countUp() is dead code and has been since 825a557 — the commit I reviewed last round. Before it, the KPI values were Latin and the animation used `ar-SA-u-nu-latn`, so it worked. Round 19's sweep made every KPI Arabic-Indic, which routes every element into the NaN branch. The count-up animation on #home has not run since. I did not catch that last round; I am recording it as my own miss, not the builder's."
+    },
+    {
+      "must": "M6 — NEW: the launch-confirm modal's batch cap is a hardcoded Latin literal",
+      "verdict": "FAIL — must-fix, not demo-blocking with today's data",
+      "evidence": "src/dashboard.ts:967 renders «حد الدفعة الواحدة حاليًا <b>50</b> — قلّص الاختيار أو أطلق على دفعات» whenever selN > 50. I selected 70 contacts client-side and opened the modal: the body above it reads «سيرسل المساعد رسالة الافتتاح إلى ٧٠ مستهدف» in Arabic-Indic and the warning directly below reads a Latin 50. Two numeral systems in one modal, four lines apart, on the launch-confirm dialog — the single most consequential screen in the product. Screenshot: .orbit/artifacts/regression/cpo20-launch-modal-over50.png. NOT demo-blocking today because the live book holds 15 entities, so selN cannot exceed 50 with real data; I verified that rather than assuming it. It becomes reachable the moment he imports a real customer list, which is the onboarding story he asked for by name."
+    }
+  ],
+
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "clean, earned",
+      "evidence": "Arabic-Indic digits with «٪» following the number is correct MSA/Saudi convention, and the carve-outs are right: Saudi mobile numbers stay Latin with direction:ltr (a reader dials them), the upload filename stays Latin (it is a filename), and «أرقام 05 تتحول لـ966» on #customers is a phone-format rule where the Latin form IS the subject. I re-derived each carve-out instead of inheriting it. Arabic dates «١٢‏/٨» and the ١٤-day chart labels are consistent. The typo fix at :885 («الخدمةات» → «الخدمات») is live and correct."
+    },
+    {
+      "lens": "policy",
+      "verdict": "clean, earned",
+      "evidence": "Zero WhatsApp messages sent — user-model R5 and CLAUDE.md §5 held absolutely. Every latent state was produced client-side: array mutation of `entities`, arithmetic on `cache.contacts[].lastEventAt`, assignment to `winloss`, and for the one write path I needed (import chips) I stubbed window.fetch so the POST never left the browser and restored it immediately. No server row was created, updated or deleted. I did not attempt to prove launch classification, because proving it requires an outbound send; it stays declared-unproven, which is the correct outcome and not a gap to argue away. Webhook token auth and the opt-out path are untouched by this diff (3 files: package.json, scripts/check-numerals.mjs, src/dashboard.ts)."
+    },
+    {
+      "lens": "product",
+      "verdict": "finding — the audited set never grows",
+      "evidence": "Round 19 told the loop to enumerate over STATES because a DOM count is blind to unrendered branches. That instruction was followed well: LIST_CAP, loss-cause counts and idle hours are all correct under their triggers, which I verified individually. But the SCREEN set stayed frozen at the six routes named in round 17, and the defect simply moved to route seven. #kb/<product> is not an obscure corner: it is where «أطلق حملة بهذه الخدمة ←» lives, it is one click from a nav item, and it carries the product's own knowledge-readiness story. The generalisable fix is not another list of sites — it is to derive the audit's route list from the router (every branch of render()'s hash dispatch, including its sub-routes) rather than from a human's memory of last round."
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "finding — one screen breaks the system, the rest is genuinely strong",
+      "evidence": "Against anti-ai-aesthetics and the Massar design language: #home in the aged state is excellent — the action queue reads «٤ إجراء» with «٢٦ ساعة بلا متابعة» and a real next action beneath each row, and the bidi reordering I warned about in round 19 is gone with the Latin digits. #kmon holds 8/8 cell alignment at every width. #kmon/5 at 375 renders the verdict card cleanly in «١٠٠٪». The failure is localised and loud: on #kb/<product> the four scoreboard numbers are the largest type on the page and they are Latin, immediately under an Arabic-Indic ring. Type hierarchy is doing the opposite of what it should — the system's exception is bigger than its rule."
+    },
+    {
+      "lens": "system_design",
+      "verdict": "finding — the mechanism is real but scoped narrower than its own claim",
+      "evidence": "The structural win is genuine and I want it on the record: 1 toLocaleString remains in the file and it is inside fmtN itself, against 76 fmtN calls. The bare-toLocaleString class is dead. Wiring check:numerals ahead of fly deploy in npm run deploy is the first structural move in six rounds. But the guard covers ONE syntactic shape, and the file's other shapes are unguarded — see guard_adversarial_review. Deeper: the guard reads only src/dashboard.ts, and it reads it as text, because the client script is a template literal. The right long-term shape is a runtime assertion in smoke.py (walk the rendered DOM on every route, fail on an ASCII digit outside an allowlisted phone/filename node) — which would have caught #kb/<product>, the 50, the import chips AND the TypeError, all four, with one check that cannot be fooled by syntax."
+    },
+    {
+      "lens": "slop",
+      "verdict": "finding — placeholder data shipped as real",
+      "evidence": "KB_SECTIONS at src/dashboard.ts:307-317 is a hardcoded nine-row array rendered only when name === «الإجازات المرضية», under a heading whose «92%» is also a hardcoded literal beside a computed ring. Its last row asserts «مواد ومرفقات — لا توجد ملفات. أضف الملفات التعريفية لتفعيل الإرسال — 0 ملفات» while the SAME SCREEN, 300px above, shows «الملف التعريفي · مرفق» with the real filename «الإجازات-المرضية-تعريفي.pdf». The screen contradicts itself with fabricated data, which is user-model Rule 2 head-on: honest zeros beat demo numbers, and a hardcoded zero that is false is neither. Also in scope: «2 من 8» and «3 عناصر» are invented completeness counts. Not slop: the guard's comment block, which documents its own three prior failure modes by name — that is unusually honest engineering and I want to say so."
+    },
+    {
+      "lens": "demo_risk",
+      "verdict": "finding — one screen, ruled below",
+      "evidence": "See demo_safety_ruling. Ordered by probability × damage: (1) #kb/<product>, live now, one click, no trigger needed; (2) the import-result chips, which fire on the file-onboarding flow he asked for by name; (3) the 50 in the launch modal, unreachable with 15 contacts; (4) the TypeError, proven unreachable today; (5) the 375px column drift, wrong viewport for a room demo."
+    },
+    {
+      "lens": "craft",
+      "verdict": "finding — the fix was applied without running the thing it edited",
+      "evidence": "Three craft tells in one commit, all the same shape. (a) `Math.roundfmtN` — a replacement applied to a line nobody executed afterwards. (b) That line lives in a function that has been dead since the previous commit, and nothing in six review rounds noticed, because the feature has no assertion. (c) The guard's success message asserts «every number in src/dashboard.ts routes through fmtN()» — a property it does not test — and that sentence is what was reported upward as «S6 shipped, ONE numeral path». The craft standard here is not «write the fix», it is «run the surface the fix touches, in the state that surfaces it». That standard was met for all three defects I named last round and missed for everything I did not name."
+    }
+  ],
+
+  "guard_adversarial_review": {
+    "question": "It is a heuristic, not a type checker. What does it STILL miss, and is it theatre or genuinely useful?",
+    "method": "I copied scripts/check-numerals.mjs into a sandbox with a copy of dashboard.ts and ran 13 mutations: 1 control, 3 reverts of the round-19 defects, and 9 defects I wrote myself in the shapes this file actually uses.",
+    "controls_reproduce": "Confirmed — clean tree exits 0; reverting the idle-hours fix, the LIST_CAP fix and the loss-count fix each exits 1. Your falsification claim is true.",
+    "defects_it_passes": [
+      "D1 · a literal Latin digit inside Arabic copy — «الحد الأعلى 50 جهة». PASSES. The guard inspects concatenation SHAPE and never inspects string CONTENT. Live instances at aed03a3: :967 «50», :1147 «92%», KB_SECTIONS «3 عناصر» / «2 من 8» / «0 ملفات».",
+      "D2 · a plain numeric property — ' + d.added + ' جهة'. PASSES. NUMERIC only matches Math.round|floor|ceil|abs(, .length|.count|.score, and LIST_CAP. Live instances: :1162, :1209, :1230, :1231 — «أُضيف 128 حُدّث 34 غير صالح 6», which I rendered in the browser to confirm.",
+      "D3 · an arithmetic expression — ' + (agg.targeted - agg.replied) + ' متبقٍ'. PASSES.",
+      "D4 · a template literal — `${entities.length} جهة`. PASSES. There is no backtick rule at all.",
+      "D5 · a Latin % closing an unlisted tag — '92%</h3>'. PASSES. LATIN_PCT hardcodes </span> and </div>. Live instance: :1147, the exact line.",
+      "D6 · Number(n).toLocaleString('ar-SA-u-nu-latn') — renders LATIN digits through a call the guard reads as correct formatting. PASSES. This is not hypothetical: that exact locale was in this file until d44236f.",
+      "D7 · a UI concat on a line whose FIRST numeric concat is CSS. PASSES. re.exec finds only the first match; CSS_CTX then skips it and the rest of the line is never re-scanned. Nearly every line in this file mixes inline styles with values.",
+      "D8/D9 · any identifier ENDING in fmtN( — blankFormatted does indexOf('fmtN(') with no left boundary, so `Math.roundfmtN(x)` is rewritten to `Math.roundN` and matches nothing. This is not a hypothetical defect: it is THE defect this commit shipped, and the guard's own paren-counting improvement — added this round to fix a previous false negative — is what conceals it.",
+      "Also unguarded by construction: array indexing (c[1], r[1]), which the script excludes DELIBERATELY and documents as a noise trade-off. That documented exclusion is directly responsible for the four 26px Latin numbers on #kb/<product>."
+    ],
+    "score": "1 shape caught, 9 realistic shapes passed, and 4 of the 9 have live instances in the file it just declared clean.",
+    "ruling_real_or_theatre": "Genuinely useful, and mis-labelled — which makes it dangerous in a specific, fixable way. Useful: it is a real regression lock on the exact shape that produced M4, it reproducibly fails on all three round-19 defects, it reads the SOURCE rather than the DOM (the correct insight), and it is wired ahead of fly deploy so it cannot be skipped. That is worth keeping. Dangerous: its success line asserts «every number in src/dashboard.ts routes through fmtN()», which is false at the commit that printed it, and that sentence became «S6 shipped… ONE numeral path» in the report to me. A check that claims a property it does not verify converts an unverified hope into a green tick that everyone downstream cites as proof — under user-model Rule 2 the guard's own output is a Rule-2 violation. The repair is cheap and I am ordering it, not deleting the guard: make the message state the shape checked, add the literal-Latin-digit-in-an-Arabic-string rule and the tag-agnostic % rule (three lines, catches :967 and :1147 today), fix blankFormatted's left boundary (one character: /(?<![\\w$])fmtN\\(/), and move the property-level assertion to smoke.py where the rendered DOM cannot lie."
+  },
+
+  "scores": {
+    "intent_fidelity": 8,
+    "completeness": 7,
+    "coherence": 7,
+    "taste": 8,
+    "surprise": 4,
+    "rationale": "intent_fidelity 8 (held). Every specific must I wrote in round 19 was executed and I verified each under its own trigger condition, not by reading the diff: the idle-hours counter, LIST_CAP, the loss-cause count, the readiness ring, the import-validation count, the typo. That is a clean execution record and it deserves the 8. It is not 9 because the intent was «one numeral system on the screens my team will see», and a screen one click inside the demo path reads 2 Arabic-Indic to 38 Latin. completeness 7 (held, and the number is again a net of two real movements in opposite directions — I would rather say that than pretend it is a clean 7). Up: the bare-toLocaleString class is genuinely dead (1 remaining, inside fmtN, against 76 fmtN calls), the enforcement exists and is wired ahead of deploy, and — the part I want to credit loudest — round-19's STATE lesson was actually applied; all three conditional defects hold under their triggers. Down: the audited screen set did not grow for the fourth round, three of round-19's should-orders (:1162's import chips, the 375px column CSS, the «معرفة» collision) were not attempted, and a new class of latent site — literal Latin digits inside Arabic string constants — is untouched and unguarded. coherence 7 (down from 8, and this is the score that moved). Two reasons, both structural rather than aesthetic. First, the product contradicts itself on one screen: «٩٢٪» in the ring, «7 0 0 1» in 26px Latin below it, «جاهزية الأقسام — 92%» below that, and «0 ملفات» asserting no attachments 300px under a row showing the attached file's real name. Second, the build now asserts a property it does not hold — the deploy pipeline prints «every number routes through fmtN()» at a commit where four surfaces do not. A system whose own checks disagree with its own screens is less coherent than one with no checks. taste 8 (held). The screens themselves are strong and the aged action queue is genuinely good work — real next actions, honest counts, correct bidi. The taste failure is one screen, not a drift. surprise 4 (up from 3). The guard is a real idea with a real insight — source over DOM — and its comment block names its own three prior failure modes, which is the opposite of the self-flattering engineering I usually have to discount. It falls short of its claim, but it is the first structural move in six rounds and it earns the point."
+  },
+
+  "score_movement_ruling": "I said round 19 would read ACCEPT at 9/8/8/8/4 with S6 done. S6 is done, and I am not paying out on it, because I said I would verify rather than credit the claim — and verification moved two scores the other way. Completeness cannot rise to 8 on a mechanism that covers one of ten shapes while four live counter-examples sit in the file it just cleared. Coherence has to fall when the enforcement and the screen disagree. The honest summary: the loop did the specific work I asked for, correctly and verifiably, and then over-stated what that work generalised to — which is the third consecutive round of the same over-claim and is now a rule.",
+
+  "demo_safety_ruling": {
+    "plain_answer": "Demo-safe on the path he will actually walk, with ONE screen he must not open, or must open only after a ten-minute fix. #home, #kmon, #kmon/<id>, #customers, #aimkt and #customer/<phone> are clean at 1440, 768 and 375 — I measured all seven routes at all three widths myself and every remaining Latin token is a phone number, a filename, or a phone-format rule. The round-19 timer is defused: I aged the clock and the queue reads «٢٦ ساعة». What is NOT safe is #kb/<product> — one click from «معرفة الخدمة» in the left nav — which reads 2 Arabic-Indic against 38 Latin, right now, with today's data, at every viewport.",
+    "if_there_is_time_for_exactly_one_fix": "Wrap the four scoreboard values on #kb/<product> (src/dashboard.ts:1105, `+ c[1] +` → `+ fmtN(c[1]) +`) and change the heading at :1147 from «جاهزية الأقسام — 92%» to «جاهزية الأقسام — ٩٢٪». Two anchored replacements, five minutes, and they remove the four largest Latin numbers in the product plus the one that sits beside a correct «٩٢٪». That takes the screen from 38 Latin to about 27, all of it seed copy in body type rather than 26px display numerals.",
+    "if_there_is_time_for_two": "Add the KB_SECTIONS chips («3 عناصر» → «٣ عناصر», «2 من 8» → «٢ من ٨», «0 ملفات» → «٠ ملفات») — or better, delete that hardcoded card entirely, because it contradicts the real file state 300px above it and it only renders for one hardcoded product name. Deleting it is faster than fixing it and strictly improves honesty.",
+    "if_there_is_no_time": "He can demo this. One instruction: stay out of «معرفة الخدمة» → any individual service. Everything else in the product, including the screen that was going to break at 14:48, holds. If someone in the room clicks it anyway, the damage is a credibility scratch on one sub-screen, not a broken flow — nothing errors, nothing is blank, nothing lies about a customer.",
+    "what_is_explicitly_not_a_demo_risk": "The TypeError at :1722 — I proved it unreachable by enumerating every element that feeds it, rather than assuming. The «50» in the launch modal — unreachable with 15 contacts. The 375px column drift on #kmon/5 — wrong viewport for a projector. Each is a must-fix for the product and none of them is a Thursday problem.",
+    "correctness_vs_craft": "Worth repeating a third round: nothing on any screen states a false fact about a customer, a campaign or a conversation. The verdicts, the evidence quotes, the counts and the funnel all reconcile. Every finding in this envelope is craft — how the product reads — except one, and that one is KB_SECTIONS, where a hardcoded «0 ملفات» is a false statement about the user's own uploaded file. That is the only correctness defect I found, and it is small."
+  },
+
+  "open_items_ruling": [
+    {
+      "item": "No UI path to create a service",
+      "demo_blocking": false,
+      "status": "OPEN — unchanged, fourth round with the same ruling",
+      "reason": "PRODUCTS is still a hardcoded six-service array and check-catalogue.mjs enforces it at build time (I ran it: «catalogue in step: 6 services, 0 drift»). The demo runs over the six existing services; nothing on screen invites creating one and nothing dead-ends when you do not. A real production gap, not a Thursday gap. It becomes urgent the first time a Lean salesperson wants to sell something the array does not contain."
+    },
+    {
+      "item": "QA D2 — #customers hides the sandbox contacts the one real campaign targets",
+      "demo_blocking": false,
+      "status": "OPEN — downgraded, not dismissed",
+      "reason": "Re-confirmed at this commit: #customers renders showTest=false, and the demo path campaign → audience → conversation never breaks, because #kmon/5 lists all four of campaign 5's targets with status and «المحادثة ←» — I measured that table again at 1440 and 375 this round. Revisit after the demo."
+    },
+    {
+      "item": "Launch classification proven by code path only",
+      "demo_blocking": false,
+      "status": "OPEN — and correctly left unproven",
+      "reason": "Proving it requires an outbound send, which user-model R5 and CLAUDE.md §5 forbid absolutely, and which he restated on 2026-08-12 in the strongest terms. It stays unproven and DECLARED unproven — that is the right outcome, not a gap to argue away. The in-row reclassify control means a misclassification is one click to repair, and I re-read the reclassify-api artifact this round rather than re-testing it live."
+    },
+    {
+      "item": "S5 — 375px column drift on the #kmon/5 audience table (attributed to 874a130, not to these commits)",
+      "demo_blocking": false,
+      "status": "OPEN — unchanged, and I am ruling plainly: acceptable to carry",
+      "reason": "I re-measured it at aed03a3 and the drift is exactly as I left it: at 1440 the header and row grid-template-columns are identical ('211.781 211.797 198.547 185.312 92.656 105.906'); at 375 they diverge ('76.33 71.23 55.98 25.45' header versus '61.95 68.81 45.44 52.80' row), so the four surviving column headings do not sit above their values. My geometric rect-overlap test found 0 chip-over-name collisions this run, so the visible symptom is misalignment rather than overprinting on this data. HOLD IT. Three reasons: it is pre-existing (the ≤900px rule at :209 dates to 874a130 and the diff under review contains no table CSS), it only appears below 900px on a screen he will show on a laptop or a projector, and — the reason that actually decides it — the fix is a change to a shared @media rule that governs every .thead/.trow in the product, hours before a demo, with no time to re-measure the four other tables it would touch. The right time to change a shared responsive rule is Friday, not this morning. If he demos from a phone, this moves to must and the one-line minmax(0, …) fix in round-19's S3 is still the right shape."
+    },
+    {
+      "item": "M2 split numeral systems",
+      "demo_blocking": true,
+      "status": "REOPENED as M2-FAIL / M6 / S1 — closed on the six audited routes, open one click below them",
+      "reason": "See per_must_verification M2. The property «one numeral system» is true of every route the loop has audited and false of the first route it has not."
+    }
+  ],
+
+  "change_orders": [
+    {
+      "priority": "must",
+      "id": "M1",
+      "order": "#kb/<product> — the demo-blocking one. (a) src/dashboard.ts:1105: `'…tabular-nums;\">' + c[1] + \"</div></div>\"` → wrap c[1] in fmtN. Four values, 26px, the largest numbers on the screen. (b) :1147: «جاهزية الأقسام — 92%» → «جاهزية الأقسام — ٩٢٪», and do not leave a hardcoded 92 beside a computed ring — either derive it from `ready` or delete the heading's number. Verify by loading #kb/الإجازات المرضية at 1440/768/375 and counting; the target is every Latin run being a filename or a phone number, same bar as the other six routes."
+    },
+    {
+      "priority": "must",
+      "id": "M2",
+      "order": "src/dashboard.ts:1722 — `Math.roundfmtN(target * eased)` is not a function and it is live in production. Fix it to `fmtN(Math.round(target * eased))`. Then make a decision about countUp() rather than leaving it: it has been dead since 825a557 because parseInt strips Arabic-Indic digits to NaN. Either revive it (parse «٠-٩» before parseInt) or delete the function and its call at :1692. Do not leave a dead animation with a live TypeError in it. Whichever you choose, prove it in a browser — no static tool in this repo can see this line."
+    },
+    {
+      "priority": "must",
+      "id": "M3",
+      "order": "src/dashboard.ts:967 — «حد الدفعة الواحدة حاليًا <b>50</b>» → «<b>٥٠</b>». It renders in the launch-confirm modal above «تأكيد الإطلاق ✓», four lines under «٧٠ مستهدف» in Arabic-Indic. Verify by selecting >50 contacts client-side and opening the modal, not by reading the diff."
+    },
+    {
+      "priority": "must",
+      "id": "M4",
+      "order": "The import-result chips, which round 19 named at :1162 and which were not done: :1162, :1209, :1230 and :1231 all concatenate d.added / d.updated / d.invalid raw. I rendered the shipped expression in the browser and it reads «أُضيف 128 حُدّث 34 غير صالح 6». This is the file-onboarding flow he asked for by name (user-model R1), so it is the second most likely defect to appear in the room after M1. Wrap all four in fmtN."
+    },
+    {
+      "priority": "should",
+      "id": "S1",
+      "order": "Make the guard honest and slightly wider — do NOT delete it, it earns its place. (a) Change the success message from «every number in src/dashboard.ts routes through fmtN()» to the shape it actually verifies, e.g. «no raw numeric expression is concatenated into UI text». (b) Fix blankFormatted's left boundary: /(?<![\\w$])fmtN\\(/ instead of indexOf('fmtN(') — one character of rigour that would have caught this round's own bug. (c) Add a rule for ASCII digits inside a string literal that also contains Arabic letters, with an allowlist for phone/version/CSS contexts — three lines, and it catches :967 and :1147 today. (d) Make LATIN_PCT tag-agnostic: /%<\\// rather than %</span>|%</div>."
+    },
+    {
+      "priority": "should",
+      "id": "S2",
+      "order": "Move the PROPERTY assertion to where it cannot be fooled by syntax: extend scripts/smoke.py to walk the rendered DOM of every route (derived from render()'s hash dispatch, including sub-routes — that is what would have added #kb/<product>) and fail on any ASCII digit outside an allowlisted node class (direction:ltr phone spans, filenames, CSS). One runtime check that would have caught M1, M3, M4 and the numeral half of M2 in a single pass, and that grows automatically as routes are added. This is the mechanism that actually ends the series; the source guard is the fast pre-filter in front of it."
+    },
+    {
+      "priority": "should",
+      "id": "S3",
+      "order": "KB_SECTIONS (src/dashboard.ts:307-317, rendered at :1147-1150) is hardcoded placeholder data rendered only when the product name equals «الإجازات المرضية», and its last row asserts «0 ملفات» on a screen that shows the real attached filename 300px above. That is a false statement about the user's own upload — user-model Rule 2. Recommendation: delete the card. It is faster than fixing it, it removes three Latin numerals and one hardcoded 92, and it removes a per-product special case that will embarrass the product the moment anyone opens a different service."
+    },
+    {
+      "priority": "should",
+      "id": "S4",
+      "order": "The embedded seed copy on #kb/<product> — «زمن الإصدار ↓70%», «القياسية 18,000 ر.س · المؤسسات 95,000 ر.س سنويًا», «(5 أيام)، (14 يومًا)» at :292, :309, :311, :312 — renders Latin numerals in Arabic body copy on the same screen as «٩٢٪». Convert to Arabic-Indic with «٪». Lower priority than M1 because it is body type rather than display type, but it is the tail of the same screen and should go in the same pass."
+    },
+    {
+      "priority": "should",
+      "id": "S5",
+      "order": "Carry-over, unattempted from round 19 and still correct: resolve the «معرفة» collision on #kb and #aimkt, where a service card can show «٩٢٪ درجة معرفة المساعد» beside «بانتظار ملف المعرفة». Two different measures sharing one word reads as a contradiction. Rename the score to «اكتمال ملف الخدمة» or similar."
+    },
+    {
+      "priority": "should",
+      "id": "S6",
+      "order": "Carry-over, unattempted: the 375px header/row column drift on #kmon/5 (src/dashboard.ts:209, minmax(0, …) on the ≤900px grid-template-columns). Explicitly NOT before the demo — see open_items_ruling. Schedule it with time to re-measure the other tables the shared rule governs."
+    },
+    {
+      "priority": "nice",
+      "id": "N1",
+      "order": "Ten minutes of data hygiene, unchanged from round 19 and still visible on the first screen: «clicnic» as a sector tile on #home's analytics, «القصيم» (a city) inside the SIZE facet on #aimkt, and «صغير» duplicating «صغيرة»."
+    }
+  ],
+
+  "user_model_updates": [
+    {
+      "type": "promote_rule",
+      "rule": "Rule 7 — The loop's own claims are subject to Rule 2. Every number, count and property assertion the loop makes ABOUT ITSELF — in evidence files, commit messages, check output and reports to the CPO — must be bounded by what was actually measured. A green check that asserts a property it does not verify is worse than no check, because the next role cites it as proof.",
+      "evidence": "THIRD consecutive occurrence, which meets the promotion bar. Round 18: «portal-wide numeral sweep» for a six-screen sweep. Round 19: «13 real non-zero ratios» when 12 were non-zero. Round 20, three at once: «15 comparisons, all with genuine non-zero ratios» when salespath@375 is 0.00000; «S6 shipped… ONE numeral path» when four surfaces still render Latin; and check-numerals.mjs printing «every number in src/dashboard.ts routes through fmtN()» at a commit where that is false. Note the pattern is consistently OVER-claim in the direction of completion, never under-claim — which is exactly the bias a CPO gate exists to correct."
+    },
+    {
+      "type": "signal",
+      "date": "2026-08-13",
+      "commit": "aed03a3",
+      "against": "Rule 6, SEVENTH consecutive occurrence — rule holds; the enumeration axis rotates but the audited set never grows",
+      "note": "Round 19's corollary (enumerate over STATES, from the SOURCE, because a DOM count is blind to unrendered branches) was applied properly this round — all three conditional defects verified under their own triggers. And the defect moved to the axis that was NOT instructed: the route list. The six audited routes have been the same since round 17, and the defect is now on route seven, #kb/<product>, one click below #kb. Generalisation to carry, and it is the last one this shape has left: an audit's SCOPE must be derived from the system (every branch of render()'s hash dispatch, including sub-routes), never from a human's recollection of which screens were named last round. Any scope a person types by hand is a scope that freezes."
+    },
+    {
+      "type": "signal",
+      "date": "2026-08-13",
+      "commit": "aed03a3",
+      "against": "new — extends decision 0001 (dashboard.ts: anchored replacements only, never range edits)",
+      "note": "Decision 0001 was written after a range edit deleted five helpers and shipped a blank page that tsc and node --check both cleared. This round an ANCHORED replacement produced `Math.roundfmtN(` — syntactically valid, type-invalid, and cleared by tsc, node --check, the new source guard, smoke's pageerror listener AND 57 QA scenarios. The rule needs its second half: anchored replacement is necessary but not sufficient, because src/dashboard.ts:247-1802 is a client <script> inside a template literal that NO static tool in this repo can parse. Any edit landing between those lines requires a runtime assertion — execute the edited surface in a browser, in the state that renders it — before it can be called done. Recommend amending .orbit/decisions/0001 rather than filing a new one."
+    },
+    {
+      "type": "signal",
+      "date": "2026-08-13",
+      "commit": "aed03a3",
+      "against": "new — credit where it is due, recorded so the gate stays calibrated",
+      "note": "Three things in this round were done well and I want them on the record so the model is not purely a complaint log. (1) Every specific must from round 19 was executed correctly AND holds under its own trigger condition — I checked each by injection, and none was a paper fix. (2) The bare-toLocaleString class is genuinely dead: 1 remaining call, inside fmtN, against 76 fmtN call sites. Mechanisms do work when scoped to a shape. (3) The visual-evidence bundle has zero re-baselines for the first time — all 15 baselines predate their actuals, which I verified pairwise. The loop's evidence discipline is improving on the axis I have been pushing hardest; the failure is in the PROSE around the evidence, not the evidence."
+    },
+    {
+      "type": "self_correction",
+      "date": "2026-08-13",
+      "note": "My own miss, recorded against myself: countUp() died at 825a557 — the commit I reviewed in round 19 — because the numeral sweep made every KPI value Arabic-Indic and countUp's parseInt strips them to NaN. I passed M2 on that commit through four DOM channels and never checked whether a FEATURE that consumes those values still worked. Lesson for my own procedure, symmetric to the one I keep giving the builder: when a change alters the DATA a feature reads, re-run the feature, not just the render. A pixel-identical screen can hide a dead behaviour."
+    }
+  ],
+
+  "verdict_rules_applied": {
+    "accept_precondition_qa": "MET — delivery-quality-gate.py --root . --commit aed03a3 → exit 0, passed:true, errors:[]. Envelope binds path, commit and SHA-256. I audited the bundle rather than accepting it and found the ratios sound and the re-baselining clean.",
+    "accept_precondition_memory": "MET — user_memory.py status --require-latest → exit 0; pending_event_ids []; requests_since_review 0; latest_request_reviewed true.",
+    "accept_score_gate": "NOT MET — completeness 7 (<8) and coherence fell to 7. intent_fidelity 8 and taste 8 clear.",
+    "accept_findings_gate": "NOT MET — four open musts (M1-M4 in change_orders), one of which I rule demo-blocking and one of which is a TypeError shipped to production.",
+    "iterate_vs_redevelop": "ITERATE, and not close to REDEVELOP. The approach is right, the mechanism is real, the execution record on named items is clean, and every open must is a small anchored edit. The gap is scope discipline, not design.",
+    "why_not_accept_with_a_note": "Because for the first time the failure is not something I would be TELLING him about — it is something a check inside his own deploy pipeline is telling him is fine. I can ship a note that says «avoid #kb/<product>». I cannot ship a note that makes «numerals consistent: every number routes through fmtN()» true. Accepting here would ratify the claim, and the claim is the thing that keeps regenerating this defect.",
+    "what_would_make_this_ACCEPT": "M1 and M2 done and verified in a browser, M3 and M4 done, S1's honesty fix on the guard's message. That is well under an hour of work and it reads 8/8/8/8/4."
+  },
+
+  "user_impact_summary_ar": "الخلاصة: العطل المؤقّت الذي كان سيظهر اليوم الساعة ٢:٤٨ ظهرًا بتوقيت الرياض أُغلق فعليًا — تحقّقتُ منه بنفسي بتقديم الساعة في المتصفّح، وقائمة الإجراءات على الشاشة الرئيسية تقرأ الآن «٢٦ ساعة بلا متابعة» بأرقام عربية، بلا رقم لاتيني واحد. والشاشات الستّ التي سيمرّ عليها فريقك — الرئيسية، متابعة الحملات، صفحة الحملة، جهات الاستهداف، إنشاء حملة، وصفحة العميل — نظيفة عند ١٤٤٠ و٧٦٨ و٣٧٥ بكسل؛ كلّ رقم لاتيني متبقٍ فيها هو رقم جوال أو اسم ملف، وهذا صحيح.\n\nلكنّي وجدتُ شاشة واحدة لم تُراجَع من قبل: «معرفة الخدمة» ← أي خدمة بعينها. فيها ٣٨ رقمًا لاتينيًا مقابل رقمين عربيَّين، الآن، دون أي شرط: أربعة أرقام بحجم ٢٦ بكسل («7 · 0 · 0 · 1») تحت حلقة جاهزية تقرأ «٩٢٪»، وعنوان «جاهزية الأقسام — 92%». توصيتي بوضوح: أصلِح هذين الموضعين قبل العرض — تعديلان بخمس دقائق — أو لا تفتح هذه الشاشة أثناء العرض. بقيّة المنتج جاهز.\n\nووجدتُ أيضًا خطأ برمجيًا حقيقيًا وصل إلى الخادم المباشر في هذا الإصدار (سطر ١٧٢٢): استدعاء لدالّة غير موجودة. أثبتُّ أنه لا يمكن أن يظهر ببياناتك الحالية، فهو ليس خطرًا على العرض — لكنّ الأهم أنّ ست فحوصات آلية مرّت عليه دون أن تراه، ومنها الفحص الجديد نفسه. الفحص الجديد مفيد ويستحق البقاء، لكنه يفحص شكلًا واحدًا من تسعة جرّبتُها، ورسالته تدّعي أكثر ممّا يتحقّق منه. طلبتُ تصحيح الرسالة وتوسيعه قليلًا.\n\nالحكم: إعادة تكرار، بأربعة أوامر تصحيح صغيرة أقلّها الأهمّ وأسرعها. لم تُرسَل أي رسالة واتساب لأي رقم في هذه المراجعة — كل الحالات اختُبرت داخل المتصفّح فقط."
+}

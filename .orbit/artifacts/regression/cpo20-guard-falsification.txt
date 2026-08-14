@@ -1,0 +1,56 @@
+CPO round-20 · adversarial falsification of massar-engine/scripts/check-numerals.mjs @aed03a3
+Method: sandbox copy of the guard + a copy of src/dashboard.ts; 13 mutations; node scripts/check-numerals.mjs each time.
+
+── PART 1 · controls — does it reproduce against the three real round-19 defects? ──
+  exit=0  (correct)  control: clean tree @aed03a3
+  exit=1  CAUGHT     R19-M4 idle hours reverted   (fmtN(Math.round(...)) -> Math.round(...))
+  exit=1  CAUGHT     R19 LIST_CAP reverted        (fmtN(LIST_CAP) -> LIST_CAP)
+  exit=1  CAUGHT     R19 loss-cause count reverted (fmtN(c.count) -> c.count)
+  → the falsification claim is TRUE. It is a real regression lock on that shape.
+
+── PART 2 · defects I wrote, in shapes this file actually uses ──
+  exit=0  PASSED  D1 literal Latin digit inside Arabic copy: 'الحد الأعلى 50 جهة'
+                  LIVE at :967 «حد الدفعة الواحدة حاليًا 50» · :1147 «جاهزية الأقسام — 92%»
+                  · KB_SECTIONS «3 عناصر» / «2 من 8» / «0 ملفات»
+  exit=0  PASSED  D2 plain numeric property: ' + d.added + ' جهة'
+                  LIVE at :1162, :1209, :1230, :1231 — rendered: «أُضيف 128 حُدّث 34 غير صالح 6»
+  exit=0  PASSED  D3 arithmetic expression: ' + (agg.targeted - agg.replied) + ' متبقٍ'
+  exit=0  PASSED  D4 template literal: `${entities.length} جهة`   (no backtick rule exists)
+  exit=0  PASSED  D5 Latin % closing an unlisted tag: '92%</h3>'  (LATIN_PCT hardcodes </span>|</div>)
+                  LIVE at :1147 — the exact line
+  exit=0  PASSED  D6 Number(n).toLocaleString('ar-SA-u-nu-latn')  — renders LATIN through a call
+                  the guard reads as correct formatting. That locale was in this file until d44236f.
+  exit=0  PASSED  D7 UI concat on a line whose FIRST numeric concat is CSS
+                  (re.exec finds match #1 only; CSS_CTX skips it; the rest of the line is never rescanned)
+  exit=0  PASSED  D8 identifier ending in fmtN( — e.g. myfmtN(x)
+  exit=0  PASSED  D9 THE ACTUAL aed03a3 BUG: Math.roundfmtN(target * eased)
+
+── PART 3 · sanity ──
+  exit=1  CAUGHT  D10 Math.round(x) + ' ساعة'  (canonical M4 shape on a fresh line)
+
+── the blankFormatted trace that explains D8/D9 ──
+  input : el.textContent = Math.roundfmtN(target * eased) + rest;
+  after : el.textContent = Math.roundN + rest;
+  blankFormatted() does indexOf("fmtN(") with no left boundary, so any identifier ENDING in
+  fmtN( is rewritten as if it were a correct fmtN call. The paren-counting improvement added
+  this round to remove a previous false negative is what conceals this round's own defect.
+  One-character repair: /(?<![\w$])fmtN\(/
+
+── also unguarded by construction ──
+  Array indexing (c[1], r[1]) is excluded DELIBERATELY and documented as a noise trade-off.
+  That documented exclusion is directly responsible for the four 26px Latin numbers
+  («7 · 0 · 0 · 1») on #kb/<product> at src/dashboard.ts:1105.
+
+── score ──
+  1 shape caught · 9 realistic shapes passed · 4 of the 9 have LIVE instances in the file
+  the guard just declared clean, printing:
+      «numerals consistent: every number in src/dashboard.ts routes through fmtN()»
+
+── ruling ──
+  Genuinely useful, and mis-labelled. Keep it: real regression lock, reads the SOURCE rather
+  than the DOM (the correct insight), wired ahead of `fly deploy` so it cannot be skipped.
+  Repair it: make the success message state the SHAPE checked rather than the PROPERTY hoped
+  for; fix blankFormatted's left boundary; add the literal-digit-in-an-Arabic-string rule and
+  a tag-agnostic % rule. Then move the property-level assertion into scripts/smoke.py, where
+  it runs against the rendered DOM on a route list derived from render()'s hash dispatch —
+  the only place it cannot be fooled by syntax, and the only scope that grows by itself.

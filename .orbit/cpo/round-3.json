@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "commit": "8ac9754",
+  "goal": "Each product carries an intro PDF the portal accepts; the agent sends it with its intro and whenever a customer asks for more details (campaign launches auto-attach it)",
+  "verdict": "ACCEPT",
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "8ac9754",
+    "sha256": "1d644c97adffd10cb4105e4464164370bc998c98f311fd63330e7e5821ffb9f2"
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 16,
+    "sha256": "d4ac23a55c64908db178008d4dc8ccd394815e63cb59c758ee04ae35d90d3173"
+  },
+  "basis": {
+    "skills": [
+      "user-model R16 feature-directive signal (checkpoint last_review_summary matches this goal verbatim): every product carries an intro PDF uploaded on ITS product page; agent sends with opener + on details/brochure request; launches auto-attach — the deliverable's three legs map 1:1",
+      "user-model R15-era correction (b66bce0, 'uploads live only inside product pages'): the intro zone lives inside the per-product page, honoring the user's own recorded structure correction",
+      "user-model R16 dead-air signal ('conversation guarantees enforced in code, not prompts'): grounds change order 1 — the no-repeat-file rule is prompt-only today",
+      "user-model Vocabulary: 'الملف التعريفي' is the customer's exact word in SC-12 ('أرسل لي الملف التعريفي') — the feature is named in the user's own domain language"
+    ],
+    "research": [
+      "delivery-quality-gate passed:true errors:[] bound to 8ac9754 (12 scenarios incl. negative/boundary/authorization/failure_recovery; 9 pixel comparisons 0.0; console 0 errors); user_memory status passed:true, request 16 reviewed, no pending events",
+      "SC-12 live chain on the deployed engine: upload product=الإجازات المرضية → publicId 60ebcd520bc96cecee (38702B) served 200 application/pdf → real customer details-request → [أُرسل الملف التعريفي: الإجازات المرضية] delivered + one-line commentary + follow-up question (the hook line, per the tool's return instruction 'علّق عليه بسطر واحد وسؤال متابعة')",
+      "verified the diff myself across 30d41a7+8ac9754: product_assets bytea table (product PK, public_id UNIQUE, upsert bounds storage to one file/product); GET /assets/:pid public-by-design for Gupshup fetch (randomBytes(9)=72-bit unguessable id, strips .pdf, honest 404, inline UTF-8 filename); POST /admin/product-asset/upload behind adminOk + agent.refreshKb(); agent send_asset resolves by product name → gupshup.sendDocument + transcript marker; system prompt lists per-product files with opener/details guidance + no-repeat line; launch resolves introAsset and sends the document after the opener per target; portal zone card with empty ('لا ملف بعد') / uploading / error / replace states, filename display, and ملف تعريفي 📎 grid chip",
+      "ordering fix verified BOTH sides at 8ac9754: paUpload and kbUpload now append the product field before the file in the multipart stream (dashboard.ts), and the server falls back to ?product= query param (index.ts) — the portal-upload bug QA found is closed at the transport and the API layer",
+      "size bounding verified: @fastify/multipart limits fileSize 25MB, files:1 (index.ts:14) + Fastify bodyLimit 26214400 — the 'bytea size cap' candidate is already enforced at transport; remaining gap is only the unfriendly 500 on an oversized file (order 3)",
+      "image-intro candidate NOT filed: the user's directive says intro PDF explicitly (checkpoint R16 verbatim); portal accept='.pdf' matches it, legacy assetsJson retains image support — adding image intros now would be invented scope"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "clean",
+      "evidence": "'الملف التعريفي' is the exact Saudi sales term — and the live customer's own words in SC-12; brochure-with-opener and brochure-on-details mirror real WhatsApp B2B practice; the public unguessable URL is the correct Gupshup media mechanic (WhatsApp media is fetched by URL, no authenticated fetch exists), and a marketing brochure is public content by nature; one file per product matches how sales kits actually work"
+    },
+    {
+      "lens": "policy",
+      "verdict": "clean",
+      "evidence": ".orbit/decisions/ is empty — nothing contradicted; both new admin endpoints keep the x-admin-token wall (adminOk is the first line of /admin/product-asset/upload and /admin/product-assets, code-verified; SC-5's 401×4 predates these routes — noted under order 2 coverage); /assets is public by deliberate, code-commented design with a 72-bit id; opt-out precedence in handleInbound untouched; upload bounded by multipart fileSize 25MB + files:1 + bodyLimit"
+    },
+    {
+      "lens": "product",
+      "verdict": "clean",
+      "evidence": "honors the user's recorded correction (b66bce0: uploads live only inside product pages) — the zone is on the per-product page; deliberately disambiguates the SEND file from the READ file (intro card 'الملف التعريفي — يرسله المساعد في واتساب' vs KB card renamed 'ملف المعرفة (Pitch Deck)', grid chips معرفة ✓ vs ملف تعريفي 📎); reuses chip idioms, dashed upload zone, refresh flow; transcript markers surface sends in the drawer the founder already reads"
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "evidence coverage of the new UI: the only product-page capture (actual-kbprod-1440x900.png, 09:11) predates the feature (13:14), so the intro zone has no pixel proof at the bound commit; the portal uploader has no on-record browser exercise AFTER the ordering fix it needed; the launch auto-attach leg is 'wired' (code-verified), not live-proven — third consecutive round with an evidence-coverage theme",
+          "waived": true,
+          "waiver": "every customer-facing leg is live-proven (upload API 200, public serve 200/38702B, agent sent the real PDF on a real details request with the hook line), and the unproven layers reuse those proven primitives (the launch path calls the same gupshup.sendDocument that SC-12 proved live); per the continuous-learning rule this is now a playbook gap, not a builder failure — recorded in the learning ledger as amendment proposal 'qa-evidence-freshness-capture-gate' and filed as change order 2"
+        },
+        {
+          "severity": "nice",
+          "finding": "an oversized upload (>25MB) throws in file.toBuffer() → unhandled 500 → portal shows generic 'تعذّر: 500' instead of a size message; the zone offers replace ('استبدال الملف التعريفي') but no removal, so the agent cannot be made to stop sending a stale brochure without substituting a file"
+        }
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "the no-repeat-file guarantee is prompt-only ('لا ترسل نفس الملف مرتين في المحادثة') and its only signal is inconsistent between the two send paths: agent execTool records the marker by PRODUCT (agent.ts:317) while campaign launch records it by FILENAME (index.ts:145) — after a launch auto-attach, the model may not recognize the file as already sent and re-send it on the first details reply; user-model R16 says conversation guarantees belong in code",
+          "waived": true,
+          "waiver": "the failure mode is benign duplication of a 38KB brochure (and a re-send on an explicit repeat ask is often desirable — the customer may have lost it); the code guard is a small, precisely-specified order (change order 1) that should not hold a live-proven feature"
+        },
+        {
+          "severity": "nice",
+          "finding": "GET /assets buffers the full bytea from Postgres per fetch with no Cache-Control (ids rotate on replace, so immutable caching is free); send_asset with an empty asset_id would match the first product via product.includes('') — guard the empty key"
+        }
+      ]
+    },
+    {
+      "lens": "slop",
+      "verdict": "clean",
+      "evidence": "hunted explicitly: copy is outcome-focused and specific ('أصبح المساعد يرسل هذا الملف ✓' states what changes for the user, not 'uploaded'; the zone explains exactly WHEN the file sends); live data is genuine (real 38702B PDF, real customer ask, real hook reply — nothing staged); the field-ordering comment is load-bearing semantics; no TODO stubs or dead buttons (paPick/paUpload wired end-to-end to a live-proven endpoint); empty states honest ('لا ملف بعد' chip; prompt tells the agent not to promise files when none exist); the ordering bug was surfaced and fixed in a dedicated honest commit, not buried"
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 9,
+    "completeness": 8,
+    "coherence": 9,
+    "taste": 8,
+    "surprise": 7
+  },
+  "change_orders": [
+    {
+      "priority": "should",
+      "order": "Enforce intro-file dedupe in code, not prompt only: in agent execTool send_asset, check the conversation transcript (since conversation start) for the intro marker of the resolved product and return steering text instead of re-sending; unify the marker key — index.ts:145 records [أُرسل الملف التعريفي: <filename>] while agent.ts:317 records <product> — use the product name in both so launch attaches and agent sends are mutually visible; treat an empty/whitespace asset_id as no-match instead of letting product.includes('') select the first product. Grounded in user-model R16: conversation guarantees are code-level law for this user."
+    },
+    {
+      "priority": "should",
+      "order": "Close the UI evidence gap at the bound commit: re-capture the product page @1440 showing the intro zone in both states (لا ملف بعد / ملف مرفق ✓ + filename) and add it to the pixel set; exercise the PORTAL uploader through the browser post-ordering-fix (the bug was in the portal path — its fix deserves a browser proof); run one live launch to the opted-in sandbox target with auto-attach and record opener+document delivery (SC-12's launch leg is 'wired' only). Third consecutive round with this theme — playbook amendment 'qa-evidence-freshness-capture-gate' recorded in the learning ledger for human review via scripts/orbit-memory review."
+    },
+    {
+      "priority": "nice",
+      "order": "Friendly size-cap error: wrap file.toBuffer() so an oversized file returns 400 with 'الملف أكبر من الحد المسموح (٢٥ ميغابايت)' instead of a generic 500/'تعذّر: 500' chip; consider a tighter intro-PDF cap (~10MB) since customers download it on mobile data."
+    },
+    {
+      "priority": "nice",
+      "order": "Add a removal affordance (حذف الملف التعريفي) next to replace, so the agent can be made to stop sending a stale brochure without substituting a file; while there, add Cache-Control: public, max-age=31536000, immutable to GET /assets (public_id rotates on every replace, so aggressive caching is safe) and skip the full-bytea buffer on repeat fetches."
+    }
+  ],
+  "user_model_updates": [
+    "Signal 2026-08-11 R16 [stated]: feature directive — every product carries an intro PDF on its product page; the agent sends it with the opener and on any details/brochure request; launches auto-attach. → The user specifies product content by what the ASSISTANT does with it (sends/reads/attaches); products are agent-operated sales kits. Second consecutive per-product-page placement signal (consistent with the b66bce0 correction).",
+    "Vocabulary: 'الملف التعريفي' → the per-product intro/brochure PDF the agent SENDS in WhatsApp — distinct from ملف المعرفة (Pitch Deck) the agent READS.",
+    "Ledger (process, observed — not user-model): 'qa-evidence-freshness-capture-gate' playbook-amendment proposal recorded after the third consecutive evidence-coverage round; awaiting human review via scripts/orbit-memory review."
+  ],
+  "reviewed_at": "2026-08-11T10:23:45Z"
+}

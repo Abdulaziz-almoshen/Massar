@@ -1,0 +1,206 @@
+{
+ "1440x900": {
+  "baseline_cb3fad0": {
+   "cards": 0,
+   "composer_box": {
+    "w": 1112,
+    "h": 676,
+    "top": 770
+   },
+   "scroll": {
+    "docScrollH": 900,
+    "docClientH": 900,
+    "innerScrollers": [
+     {
+      "tag": "NAV",
+      "cls": "ms-scroll",
+      "scrollH": 883,
+      "clientH": 735
+     },
+     {
+      "tag": "DIV",
+      "cls": "body ms-scroll",
+      "scrollH": 1683,
+      "clientH": 824
+     },
+     {
+      "tag": "TEXTAREA",
+      "cls": "",
+      "scrollH": 251,
+      "clientH": 176
+     }
+    ]
+   },
+   "console_errors": [],
+   "path": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-base-cb3fad0-1440x900.png"
+  },
+  "actual_1cf9b6d": {
+   "cards": 2,
+   "composer_box": {
+    "w": 1112,
+    "h": 769,
+    "top": 770
+   },
+   "scroll": {
+    "docScrollH": 900,
+    "docClientH": 900,
+    "innerScrollers": [
+     {
+      "tag": "NAV",
+      "cls": "ms-scroll",
+      "scrollH": 883,
+      "clientH": 735
+     },
+     {
+      "tag": "DIV",
+      "cls": "body ms-scroll",
+      "scrollH": 1776,
+      "clientH": 824
+     }
+    ]
+   },
+   "console_errors": [],
+   "path": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-new-1cf9b6d-1440x900.png"
+  },
+  "diff_stdout": "DIMENSION MISMATCH: /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-new-1cf9b6d-1440x900.png is 1112x770, /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-base-cb3fad0-1440x900.png is 1112x676 — treating as 100% diff",
+  "diff_stderr": "",
+  "diff_exit": 1,
+  "diff_image": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-diff-1440x900.png"
+ },
+ "1024x768": {
+  "baseline_cb3fad0": {
+   "cards": 0,
+   "composer_box": {
+    "w": 696,
+    "h": 771,
+    "top": 770
+   },
+   "scroll": {
+    "docScrollH": 768,
+    "docClientH": 768,
+    "innerScrollers": [
+     {
+      "tag": "NAV",
+      "cls": "ms-scroll",
+      "scrollH": 883,
+      "clientH": 603
+     },
+     {
+      "tag": "DIV",
+      "cls": "body ms-scroll",
+      "scrollH": 1778,
+      "clientH": 692
+     },
+     {
+      "tag": "TEXTAREA",
+      "cls": "",
+      "scrollH": 301,
+      "clientH": 176
+     }
+    ]
+   },
+   "console_errors": [],
+   "path": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-base-cb3fad0-1024x768.png"
+  },
+  "actual_1cf9b6d": {
+   "cards": 2,
+   "composer_box": {
+    "w": 696,
+    "h": 916,
+    "top": 770
+   },
+   "scroll": {
+    "docScrollH": 768,
+    "docClientH": 768,
+    "innerScrollers": [
+     {
+      "tag": "NAV",
+      "cls": "ms-scroll",
+      "scrollH": 883,
+      "clientH": 603
+     },
+     {
+      "tag": "DIV",
+      "cls": "body ms-scroll",
+      "scrollH": 1923,
+      "clientH": 692
+     },
+     {
+      "tag": "TEXTAREA",
+      "cls": "",
+      "scrollH": 251,
+      "clientH": 176
+     }
+    ]
+   },
+   "console_errors": [],
+   "path": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-new-1cf9b6d-1024x768.png"
+  },
+  "diff_stdout": "DIMENSION MISMATCH: /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-new-1cf9b6d-1024x768.png is 696x917, /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-base-cb3fad0-1024x768.png is 696x771 — treating as 100% diff",
+  "diff_stderr": "",
+  "diff_exit": 1,
+  "diff_image": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-diff-1024x768.png"
+ },
+ "390x844": {
+  "baseline_cb3fad0": {
+   "cards": 0,
+   "composer_box": {
+    "w": 326,
+    "h": 1139,
+    "top": 1432
+   },
+   "scroll": {
+    "docScrollH": 844,
+    "docClientH": 844,
+    "innerScrollers": [
+     {
+      "tag": "DIV",
+      "cls": "body ms-scroll",
+      "scrollH": 2927,
+      "clientH": 768
+     },
+     {
+      "tag": "TEXTAREA",
+      "cls": "",
+      "scrollH": 351,
+      "clientH": 176
+     }
+    ]
+   },
+   "console_errors": [],
+   "path": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-base-cb3fad0-390x844.png"
+  },
+  "actual_1cf9b6d": {
+   "cards": 2,
+   "composer_box": {
+    "w": 326,
+    "h": 1480,
+    "top": 1432
+   },
+   "scroll": {
+    "docScrollH": 844,
+    "docClientH": 844,
+    "innerScrollers": [
+     {
+      "tag": "DIV",
+      "cls": "body ms-scroll",
+      "scrollH": 3268,
+      "clientH": 768
+     },
+     {
+      "tag": "TEXTAREA",
+      "cls": "",
+      "scrollH": 251,
+      "clientH": 176
+     }
+    ]
+   },
+   "console_errors": [],
+   "path": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-new-1cf9b6d-390x844.png"
+  },
+  "diff_stdout": "DIMENSION MISMATCH: /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-new-1cf9b6d-390x844.png is 326x1480, /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-base-cb3fad0-390x844.png is 326x1139 — treating as 100% diff",
+  "diff_stderr": "",
+  "diff_exit": 1,
+  "diff_image": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px3-diff-390x844.png"
+ }
+}

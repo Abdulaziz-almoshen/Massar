@@ -1,0 +1,97 @@
+CPO round-19 independent column measurement @825a557
+Header on #kmon carries NO class (className === '') — a '.thead' selector finds zero families there.
+Located structurally: previous grid sibling of .trow.km with equal child count. All rows checked.
+
+
+===== #kmon @ 1440 =====
+  rows=1  docOverflow=False  scroller=None
+  headGTC 255.234px 146.766px 121.234px 89.3281px 89.3281px 89.3438px 146.766px 44px
+  every row GTC == head GTC : True
+  1 row(s) x 8 cols -> ALL ALIGNED
+  row0 readout:
+    idx0 vis 'الحملة'@866  ->  'حملة أغسطس — عيادات '@866 
+    idx1 vis 'الخدمة'@707  ->  'الإجازات المرضية'@707 
+    idx2 vis 'الحالة'@574  ->  'جارية'@574 
+    idx3 vis 'الجمهور'@472  ->  '٤'@472 
+    idx4 vis 'مشاهدة'@371  ->  '١٠٠٪'@371 
+    idx5 vis 'ردود'@270  ->  '٠٪'@270 
+    idx6 vis 'التقدّم'@111  ->  '١٠٠٪'@111 
+    idx7 vis ''@55  ->  '⇥'@55 
+
+===== #kmon @ 768 =====
+  rows=1  docOverflow=False  scroller={'cls': 'ms-scroll', 'sw': 900, 'cw': 702}
+  headGTC 198.094px 113.906px 94.0938px 69.3281px 69.3281px 69.3438px 113.906px 44px
+  every row GTC == head GTC : True
+  1 row(s) x 8 cols -> ALL ALIGNED
+  row0 readout:
+    idx0 vis 'الحملة'@515  ->  'حملة أغسطس — عيادات '@515 
+    idx1 vis 'الخدمة'@389  ->  'الإجازات المرضية'@389 
+    idx2 vis 'الحالة'@283  ->  'جارية'@283 
+    idx3 vis 'الجمهور'@202  ->  '٤'@202 
+    idx4 vis 'مشاهدة'@120  ->  '١٠٠٪'@120 
+    idx5 vis 'ردود'@39  ->  '٠٪'@39 
+    idx6 vis 'التقدّم'@-87  ->  '١٠٠٪'@-87 
+    idx7 vis ''@-143  ->  '⇥'@-143 
+
+===== #kmon @ 375 =====
+  rows=1  docOverflow=False  scroller={'cls': 'ms-scroll', 'sw': 900, 'cw': 309}
+  headGTC 198.094px 113.906px 94.0938px 69.3281px 69.3281px 69.3438px 113.906px 44px
+  every row GTC == head GTC : True
+  1 row(s) x 8 cols -> ALL ALIGNED
+  row0 readout:
+    idx0 vis 'الحملة'@122  ->  'حملة أغسطس — عيادات '@122 
+    idx1 vis 'الخدمة'@-4  ->  'الإجازات المرضية'@-4 
+    idx2 vis 'الحالة'@-110  ->  'جارية'@-110 
+    idx3 vis 'الجمهور'@-191  ->  '٤'@-191 
+    idx4 vis 'مشاهدة'@-273  ->  '١٠٠٪'@-273 
+    idx5 vis 'ردود'@-354  ->  '٠٪'@-354 
+    idx6 vis 'التقدّم'@-480  ->  '١٠٠٪'@-480 
+    idx7 vis ''@-536  ->  '⇥'@-536 
+
+=========== SIBLING FAMILY: .thead/.trow audience table on #kmon/5 ===========
+
+########## #kmon/5 @ 1440  docOverflow=False (1440/1440)
+  family#0  head[thead] row[trow] cells 6/6
+    headGTC 211.781px 211.797px 198.547px 185.312px 92.6562px 105.906px
+    rowGTC  211.781px 211.797px 198.547px 185.312px 92.6562px 105.906px
+    GTC-match: True   scroller: None
+    ok  idx0 vis       h'العميل'@909/w212  r'م مركز الياسمين '@909/w212  dl=0 dw=0
+    ok  idx1 vis       h'الحالة'@685/w212  r'شوهدت'@685/w212  dl=0 dw=0
+    ok  idx2 vis       h'الاهتمام والجدية'@475/w199  r'—'@475/w199  dl=0 dw=0
+    ok  idx3 vis       h'آخر رسالة'@278/w185  r'تست [مرفق في نفس'@278/w185  dl=0 dw=0
+    ok  idx4 vis       h'الوقت'@173/w93  r'٠٨:٤٧ ص'@173/w93  dl=0 dw=0
+    ok  idx5 vis       h''@55/w106  r'المحادثة ←'@55/w106  dl=0 dw=0
+    => ALIGNED
+
+########## #kmon/5 @ 768  docOverflow=False (768/768)
+  family#0  head[thead] row[trow] cells 6/6
+    headGTC 207.328px 193.516px 152.031px 69.125px
+    rowGTC  207.328px 193.516px 152.031px 69.125px
+    GTC-match: True   scroller: None
+    ok  idx0 vis       h'العميل'@506/w207  r'م مركز الياسمين '@506/w207  dl=0 dw=0
+    ok  idx1 vis       h'الحالة'@300/w194  r'شوهدت'@300/w194  dl=0 dw=0
+    ok  idx2 vis       h'الاهتمام والجدية'@136/w152  r'—'@136/w152  dl=0 dw=0
+    ok  idx3 hid       h'آخر رسالة'@0/w0  r'تست [مرفق في نفس'@0/w0  dl=0 dw=0
+    ok  idx4 hid       h'الوقت'@0/w0  r'٠٨:٤٧ ص'@0/w0  dl=0 dw=0
+    ok  idx5 vis       h''@55/w69  r'المحادثة ←'@55/w69  dl=0 dw=0
+    => ALIGNED
+
+########## #kmon/5 @ 375  docOverflow=False (375/375)
+  family#0  head[thead] row[trow] cells 6/6
+    headGTC 76.3281px 71.2344px 55.9844px 25.4531px
+    rowGTC  61.9531px 68.8125px 45.4375px 52.7969px
+    GTC-match: False   scroller: None
+    DESYNC idx0 vis       h'العميل'@244/w76  r'م مركز الياسمين '@258/w62  dl=14 dw=14
+    DESYNC idx1 vis       h'الحالة'@160/w71  r'شوهدت'@177/w69  dl=17 dw=2
+    DESYNC idx2 vis       h'الاهتمام والجدية'@92/w56  r'—'@120/w45  dl=28 dw=11
+    ok  idx3 hid       h'آخر رسالة'@0/w0  r'تست [مرفق في نفس'@0/w0  dl=0 dw=0
+    ok  idx4 hid       h'الوقت'@0/w0  r'٠٨:٤٧ ص'@0/w0  dl=0 dw=0
+    DESYNC idx5 vis       h''@55/w25  r'المحادثة ←'@55/w53  dl=0 dw=28
+    => 4 PROBLEM(S)
+
+RULING: #kmon (M1) ALIGNED at 1440/768/375, dl=dw=0 on all 8 pairs, GTC string-identical.
+        #kmon/5 audience table ALIGNED at 1440 and 768; DESYNCS at 375 (head GTC != row GTC).
+        Cause: bare 'fr' tracks in the <=900px rule (src/dashboard.ts:209) hit their implicit
+        min-content floor at 375, so the row resolves different track widths than the header and
+        the «شوهدت» chip paints over the customer name. PRE-EXISTING: the rule dates to 874a130 and
+        the d44236f..825a557 diff (22 lines) contains no table CSS and no audience-table markup.

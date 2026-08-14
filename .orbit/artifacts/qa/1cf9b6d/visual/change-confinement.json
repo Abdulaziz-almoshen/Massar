@@ -1,0 +1,104 @@
+{
+ "1440x900": {
+  "unchanged_steps": {
+   "step0": {
+    "base": {
+     "w": 1112,
+     "h": 368,
+     "head": "١ أي خدمة يبيعها المساعد؟ ال"
+    },
+    "new": {
+     "w": 1112,
+     "h": 368,
+     "head": "١ أي خدمة يبيعها المساعد؟ ال"
+    },
+    "diff": "PASS: 0/409216 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step0-diff-1440x900.png"
+   },
+   "step1": {
+    "base": {
+     "w": 1112,
+     "h": 264,
+     "head": "٢ من يتواصل معهم؟ اختر شريحة"
+    },
+    "new": {
+     "w": 1112,
+     "h": 264,
+     "head": "٢ من يتواصل معهم؟ اختر شريحة"
+    },
+    "diff": "PASS: 0/293568 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step1-diff-1440x900.png"
+   }
+  },
+  "picker_block_box": {
+   "w": 1060,
+   "h": 150
+  }
+ },
+ "1024x768": {
+  "unchanged_steps": {
+   "step0": {
+    "base": {
+     "w": 696,
+     "h": 368,
+     "head": "١ أي خدمة يبيعها المساعد؟ ال"
+    },
+    "new": {
+     "w": 696,
+     "h": 368,
+     "head": "١ أي خدمة يبيعها المساعد؟ ال"
+    },
+    "diff": "PASS: 0/256128 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step0-diff-1024x768.png"
+   },
+   "step1": {
+    "base": {
+     "w": 696,
+     "h": 264,
+     "head": "٢ من يتواصل معهم؟ اختر شريحة"
+    },
+    "new": {
+     "w": 696,
+     "h": 264,
+     "head": "٢ من يتواصل معهم؟ اختر شريحة"
+    },
+    "diff": "PASS: 0/183744 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step1-diff-1024x768.png"
+   }
+  },
+  "picker_block_box": {
+   "w": 644,
+   "h": 204
+  }
+ },
+ "390x844": {
+  "unchanged_steps": {
+   "step0": {
+    "base": {
+     "w": 326,
+     "h": 903,
+     "head": "١ أي خدمة يبيعها المساعد؟ ال"
+    },
+    "new": {
+     "w": 326,
+     "h": 903,
+     "head": "١ أي خدمة يبيعها المساعد؟ ال"
+    },
+    "diff": "PASS: 0/294378 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step0-diff-390x844.png"
+   },
+   "step1": {
+    "base": {
+     "w": 326,
+     "h": 391,
+     "head": "٢ من يتواصل معهم؟ اختر شريحة"
+    },
+    "new": {
+     "w": 326,
+     "h": 391,
+     "head": "٢ من يتواصل معهم؟ اختر شريحة"
+    },
+    "diff": "PASS: 0/127466 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step1-diff-390x844.png"
+   }
+  },
+  "picker_block_box": {
+   "w": 274,
+   "h": 423
+  }
+ }
+}

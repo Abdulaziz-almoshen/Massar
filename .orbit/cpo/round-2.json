@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "commit": "43a9717",
+  "goal": "The agent must converse — a handoff must never leave the customer in dead air; humans mute it only deliberately (explicit, reversible takeover)",
+  "verdict": "ACCEPT",
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "43a9717",
+    "sha256": "36fb4d35e10d3ba7ef617e9f5c3c09e4f4fc001589ebef8afb2cac0ec2e1d227"
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 16,
+    "sha256": "8f5da112c43aa709fe47296665ee3eef9f129f28e65a2d8249749392dd550ba7"
+  },
+  "basis": {
+    "skills": [
+      "user-model R16 signal (written this round from the user's own defect report, reviewed in checkpoint @R16): a requested handoff must never mute the agent; silence only via explicit reversible human takeover — never-dead-end is a code-level law for this user, not a prompt intention",
+      "user-model S1 (R15): user judges by fit to his founding workflow launch→track→qualify — the takeover toggle lives inside the tracker drawer he already works in, not a new admin surface",
+      "memory checkpoint last_review_summary (R16, 2026-08-11T10:05:42Z) matches this goal verbatim: 'silence only via explicit human takeover (portal toggle, reversible). The never-dead-end rule applies at code level, not just prompts.'"
+    ],
+    "research": [
+      "SC-11 live before/after on the REAL stranded thread: before — outcome=handoff human=True, 3 real customer messages (أبغى عرض تعريفي / الو؟ / الو) unanswered; after deploy 43a9717 + human=false + replay of the real «الو» — human=False, turns 3→4, contextual apology + demo continuation delivered; takeover/resume events in ledger",
+      "verified the diff myself @43a9717: src/tracker.ts setOutcome no longer flips human on handoff (semantic NOTE in place); new setHuman persists + logs human_takeover/agent_resumed; src/agent.ts silences only on contact.human (explicit takeover) and injects the handoff prompt-context line (serve normally, don't re-handoff without new reason); src/index.ts /admin/contact/human with 401 adminOk + 400 on missing phone + digit-normalized phone; src/dashboard.ts drawer toggle both states (إيقاف المساعد/استئناف المساعد ▶) + muted chip المساعد متوقف — بيد البشر",
+      "no silent path remains in handleInbound except deliberate ones: opted_out and explicit human takeover; the turn-cap branch still sends a reply (agent.ts MAX_AGENT_TURNS path), and recordInbound runs BEFORE the human check (index.ts webhook → tracker.recordInbound → handleInbound), so muted chats keep recording customer messages for the human driving the thread",
+      "delivery-quality-gate passed:true errors:[] bound to 43a9717 (11 scenarios incl. negative/boundary/auth/failure-recovery; SC-11 is the dead-air failure_recovery case; 9 pixel comparisons mismatch 0.0; console 0 errors); user_memory status passed:true, request 16 reviewed, no pending events",
+      "grepped the engine for any notification channel: the only 'إشعار' in src/ is the agent prompt line itself — no push/email/WhatsApp-to-operator exists when a handoff is raised (basis for change order 1)"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "the agent tells customers the specialist has been notified (prompt line 'سبق إشعار المختص', SC-11 reply 'تم إشعار المختص لترتيب عرض تعريفي'), but no notification channel exists — a raised handoff is only a portal record/chip, so a human arriving depends entirely on portal-checking cadence",
+          "waived": true,
+          "waiver": "the round's goal — the customer is never left in dead air — is met because the agent now keeps serving (arranges the demo, answers from KB) until a human deliberately takes over; the record the founder reads does exist in his daily screen. Auto-notify is filed as change order 1 rather than blocking a live-proven fix"
+        }
+      ]
+    },
+    {
+      "lens": "policy",
+      "verdict": "clean",
+      "evidence": ".orbit/decisions/ is empty — no recorded decision contradicted; the new /admin/contact/human keeps the admin-token wall (adminOk 401 is the handler's first line, code-verified; exercised with token in SC-11) and 400s on missing phone; webhook token check unchanged; the opt-out hard rule still precedes everything in handleInbound (optedOut return comes before the human check), so takeover semantics cannot resurrect messaging to an opted-out contact"
+    },
+    {
+      "lens": "product",
+      "verdict": "clean",
+      "evidence": "every affordance reuses an existing idiom: c-warn chip in chipRow, alertBar + refresh feedback, window.setHuman mirrors window.setCampFilter, endpoint follows the /admin/* + x-admin-token pattern, toggle placed inside the existing transcript drawer (visual note confirms no layout change, 9/9 comparisons 0.0); copy is in the product's voice (إيقاف المساعد — أنا أتولى المحادثة / استئناف المساعد ▶) — reads native, not bolt-on"
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "the drawer toggle button and muted chip have no interaction proof: all 9 pixel captures show closed drawers (mismatch 0.0 everywhere means the new UI is visible in none), and SC-11 exercised the endpoint via POST, not the button — the button layer is code-read + node --check + 0-console-errors only",
+          "waived": true,
+          "waiver": "the customer-facing goal is live-proven on the real stranded thread, and the endpoint the button calls is live-proven with both ledger events; the unproven layer is a 4-line fetch handler wired to a proven endpoint. Click-through capture filed as change order 2. NOTE: second consecutive round with an evidence-freshness/coverage theme — a third makes it a playbook amendment per product-acceptance"
+        }
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "post-cap behavior now repeats: with human no longer auto-set, every inbound after MAX_AGENT_TURNS re-calls setOutcome('handoff','turn cap reached') — re-bumping the outcome:handoff counter and re-logging the ledger line each time (inflating both) — and re-sends the identical canned reply forever",
+          "waived": true,
+          "waiver": "no dead air (the customer always gets a polite reply — strictly better than the old mute) and reaching 12 agent turns then continuing to message is a rare edge; a one-line no-op guard in setOutcome plus a varied cap reply is filed as change order 3"
+        }
+      ]
+    },
+    {
+      "lens": "slop",
+      "verdict": "clean",
+      "evidence": "hunted explicitly: copy is specific and domain-real (بيد البشر, أنا أتولى المحادثة — no filler); the tracker NOTE comment is load-bearing semantics, not narration; no TODO stubs — the toggle is wired end-to-end to a live-proven endpoint; evidence data is the genuine stranded sandbox thread, not staged (real unanswered الو replayed); SC-11 asserts behavior (turns 3→4, ledger events); console.txt 0 errors; the one overstatement found ('تم إشعار المختص') is graded under domain, not hidden"
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 9,
+    "completeness": 8,
+    "coherence": 9,
+    "taste": 8,
+    "surprise": 7
+  },
+  "change_orders": [
+    {
+      "priority": "should",
+      "order": "Auto-notify the operator when a handoff is raised: in tracker.setOutcome on 'handoff' (or at its call sites), send a real notification — reuse gupshup.sendText to the founder's own opted-in number (or email) with contact name, phone, reason, and a note to open the transcript drawer. Today grep shows no channel exists (the only 'إشعار' in src/ is the agent prompt line), so the agent's promise that the specialist was notified rests on portal-checking cadence."
+    },
+    {
+      "priority": "should",
+      "order": "Add interaction proof for the takeover affordance to the QA evidence: open a transcript drawer, click إيقاف المساعد — أنا أتولى المحادثة, capture the muted chip المساعد متوقف — بيد البشر at 1440, then استئناف المساعد ▶ and capture the resumed state; current pixel set shows only closed drawers. This is the second round running with an evidence-coverage gap — one more and it becomes a playbook amendment (per product-acceptance continuous-learning rule)."
+    },
+    {
+      "priority": "should",
+      "order": "Guard tracker.setOutcome to no-op (skip bump/logEvent/persist) when the outcome and reason are unchanged, and vary or soften the post-cap canned reply — after MAX_AGENT_TURNS every inbound currently re-bumps outcome:handoff, re-logs the ledger, and re-sends the identical line."
+    },
+    {
+      "priority": "nice",
+      "order": "Show who/when on the muted state: the ledger already records human_takeover/agent_resumed timestamps — surface the takeover time in the muted chip or drawer (e.g. بيد البشر منذ ١٠:٠٥) so the founder can spot chats muted long ago and forgotten."
+    }
+  ],
+  "user_model_updates": [
+    "Signal 2026-08-11 R16 [stated]: reported as a defect that a handed-off customer was left in dead air (3 real messages unanswered after outcome=handoff) — a requested handoff must never mute the agent; silence only via explicit, reversible human takeover. 'لا طريق مسدود' is a code-level law for this user: conversation guarantees must be enforced in code, not merely requested in prompts. (Rule candidate at 3 consistent signals; this is #1.)"
+  ],
+  "reviewed_at": "2026-08-11T10:11:14Z"
+}

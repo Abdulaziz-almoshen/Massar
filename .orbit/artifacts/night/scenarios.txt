@@ -1,0 +1,15 @@
+Overnight mission evidence @43a5015 — build/check/health green at every one of the night commits (7db6509, 84ac266, 3b87966, 0c2bf04, 9fc7cd2, 7a482fc, c595608, 67b0131, dd6ac2f, 267d7ce, 43a5015).
+SC-N5: /admin/intel/winloss uses the shared adminOk gate (401 without token).
+Win/loss live proof: board totals lost:2 active:3; causes التوقيت(1), الملف غير واضح(1) with verbatim quotes; drivers include «أبغى أشترك فورًا».
+Seeded demo threads are test-flagged (966500000781/2/3) — honest separation preserved; no real-customer sends all night; the only outbound was one single-bubble proof launch to the PM own number.
+
+SC-N8 opt-out matrix (executed against dist/agent.js @e9a735a): 22/22.
+  must-opt-out: إيقاف · stop · STOP · أوقف الرسائل · أوقفوا الرسائل · وقفوا الرسائل عني · توقفوا عن مراسلتي · لا أريد رسائلكم · كفى رسائل · بلاش رسائل · stop all messages · no more messages · إلغاء الاشتراك · لا تراسلني · احذف رقمي
+  must-NOT: كيف أوقف التزوير؟ · أبغى أوقف التأخير في الإصدار · ممكن نوقف الاجتماع لبكرة؟ · كم سعر الباقة؟ · نعم أرسل التفاصيل · هل النظام يوقف الأخطاء؟ · متى نبدأ الربط؟
+SC-N9: send_asset not-found paths retain their text turn (flag keyed on result).
+Win/loss boundary verified live: real-only board = all zeros (no real customers yet); ?all=1 = lost 2 / active 3 with التوقيت + الملف غير واضح.
+SC-N10: KPI values identical across a poll-spanning 6.5s window (count-up runs once per real change).
+S3 stall window + S4 CSV guard deployed (@0678f8b, @1f4672e); health green after each.
+SC-N13: browser click on «مؤجل» persisted — timeline shows [نتيجة بشرية: postponed].
+SC-N14: hub page captured ×3 (campaigns 5, market verdict chips, launch CTA).
+CPO round-9 orders landed @ab4b847: opt-out 26/26 (stem-anchored, verb+preposition forms), toggle title/aria, nav highlight on the profile route.

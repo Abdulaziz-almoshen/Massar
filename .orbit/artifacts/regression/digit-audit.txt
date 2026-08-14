@@ -1,0 +1,7 @@
+route                       arabic  latin   remaining Latin tokens (phones/versions stripped)
+#home                          158      0   []
+#kmon                           25      0   []
+#kmon/5                         66      0   []
+#customer/966500000850          85      0   []
+#aimkt                          24      0   []
+#kb                              1      0   []

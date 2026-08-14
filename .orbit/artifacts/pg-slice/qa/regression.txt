@@ -1,0 +1,5 @@
+regression: strict build + live health + webhook->tracker->state flow
+> tsc
+
+build exit: 0
+health ok: True | db connected: True

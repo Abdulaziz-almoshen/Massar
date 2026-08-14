@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "round": 15,
+  "commit": "8ff3f75",
+  "baseline": "round-14 (.orbit/cpo/round-14.json) ITERATE at 9b7cd54 with five musts (M1 fabricated interest in the store it actually lives in + inference must not look like fact, M2 one definition of «مؤهل», M3 a correction must not rewrite history, M4 wire the render guard, M5 make the evidence bundle true) and seven shoulds. New scope = git log --oneline 9b7cd54..8ff3f75 (4 commits: 3725740, 4d74359, f6ab762, 8ff3f75), 9 files, +144/-27. Every claim below was verified by me against the diff, the deployed system, the live ledger and my own browser captures — never against a commit message, STATE.md or the QA summary.",
+  "deployed_head": "Fly app massar-engine, machine 48e40d2a0e1598, image massar-engine:deployment-01KZV0T50CJ248BNVYG8KFF496, LAST UPDATED 2026-08-12T12:58:51Z. 8ff3f75 was authored 12:57:54Z — the deploy is 57s after the reviewed commit, so the running bundle IS the reviewed tree. Health at review time: ok:true, outbound.ok:true, model gpt-5.6-terra, db connected (20 contacts / 162 messages / 518 events), uptimeSec 6638 ⇒ boot ≈12:59:10Z, single boot across the review. `npm run build` at HEAD exits 0. Working tree clean.",
+  "goal": "Close round-14's five musts without inventing new falsehoods, and kill the user-reported defect he called «this is not ok» — the Gupshup sandbox activation phrase «proxy <botname>» reaching the model as the customer's first message. Underneath all of it, the standing bar from user-model R2: what the board shows him must be REAL. Weighting for this round, set by the founder's own calendar: he demos to his team TODAY, so the test is what would embarrass him on screen, not process debt.",
+  "verdict": "ITERATE",
+  "headline": "Four of five musts are genuinely closed and I want that on the record first, because this is the strongest round since I started gating: M1b is the best piece of design work in five rounds — I read computed styles myself at 1440 and 375 and an assistant reading is now transparent + dashed + font-weight 600 + a literal «قراءة» marker against a tool-written tag's solid #ECFDF3 fill + solid border + weight 700, i.e. three independent non-hue channels, identical at both viewports, zero console errors. M3 is right in every part I could test: ts is preserved per unchanged product, db.replaceTags is one BEGIN/COMMIT with ROLLBACK and a released client, memory mutates only after the DB promise resolves, and POST /admin/contact/tags returned 404 on an unknown phone with the contact count unchanged at 20 (401 without the token). ياسمين's «سجل التفاعل» now opens on her own delivery event at ٠٩:٥١ ص and her interest tag sits at ٠٨:٥٠ ص anchored to «تنسيق عرض موجز» with the meta «قراءة من هذه الرسالة» — round-13's M1(d) is finally shut. M4 I falsified rather than read: I swapped the #customer landmark for an impossible string and the guard printed FAIL and exited 1; the real run is 7/7 routes, exit 0; and the wiring exists in package.json, CLAUDE.md §4 and the domain skill §5. M5 is the one I expected to reject for a fourth time and could not: I re-hashed all twelve pairs and FOUR are genuinely different files at exactly the claimed ratios, with baselines stamped 11:54:57Z (frozen at 9b7cd54) against actuals stamped 12:45–12:46Z (after f6ab762). That is the first real pixel comparison this project has ever produced. The eight zeros each carry an honest baseline_note, and the one that smells laundered — wizard@375, byte-identical, note claiming «real comparison» — is TRUE on inspection: its baseline predates its actual by 51 minutes so it cannot be a copy; the page simply did not change. Fifth round on the 375 stepper: I opened v-salespath-375x812.png BY EYE and the current stage IS in it — «معالجة الاعتراض» as a dark-filled node, centred, with «عرض الحل ✓» behind it — and live at 375 the chip reads «المرحلة ٥ من ٦» in Arabic-Indic. Closed. What I cannot accept is two things the founder will see on screen today. First: the catalogue clamp works — «باقات NVR لتغطية 8 مواقع» and «خدمات لِين الأخرى» are gone from /admin/insights, from #home and from the #kmon/9 chip, and all 14 cached rows now hold only catalogue names — but the sentinel itself was renamed, not removed, and «خدمة أخرى: ١ مكتسبة · ٠ غير مكتسبة» is a row on «لماذا نكسب — ولماذا نخسر». That is round-14's M1(c) verbatim, third round running, on the flagship board, and it is a one-line filter. A market-verdict-BY-SERVICE board cannot render a verdict for a bucket defined as «not a service»; it is either noise that teaches him to distrust the board or a number he misreads as signal. Second, and this is the one that decides the verdict: the Proxy fix is forward-only. I pulled all four real transcripts from the live API. Every one still opens «Proxy Massar» → «هل تقصدون خدمة أو منتجًا باسم «Proxy Massar»؟»; Ibrahim's — his single «صفقة مكتسبة» and the hero of the demo — still escalates a human handoff for that non-existent service; and 966543464327's still carries the literal «**بروكسي مسار**» with the asterisks WhatsApp renders raw. These are not archived, they render today in «سجل التفاعل» on the client-360 page. He said «this is not ok» about exactly this text and exactly this text is still on the screen he will project. The leak is closed; the spill was never wiped. The fix is ten lines and destroys nothing: reuse the SANDBOX_ACTIVATION matcher that already exists at the transcript/timeline RENDER boundary, collapse the activation exchange behind «تفعيل المنصة — لا يخص العميل», and strip `**` on the way out. No data deletion, no §8 approval, no send.",
+  "scope_verification": [
+    {
+      "item": "M1(a) — canonicalService() clamps on parse, in winLossBoard, and at the read boundary",
+      "verdict": "PASS",
+      "evidence": "insights.ts now exports SERVICE_CATALOGUE (6 names) + OTHER_SERVICE + a 6-entry ordered SERVICE_PATTERNS table, canonicalService() (exact match → ordered regex containment → OTHER_SERVICE) and normalizeCached() (map + dedupe). All three call sites present in the diff: getInsights parse (`.map(p => ({product: canonicalService(...)}))`), winLossBoard (`[...new Set(products.map(canonicalService))]`), and BOTH read boundaries in index.ts — GET /admin/insights wraps every row in normalizeCached, GET /admin/customer/:phone wraps getInsights. The pattern order is deliberate and correct: «الربط مع سجل التطعيمات الوطني» hits تطعيم (index 1) before تكامل|ربط (index 5), so a phrase naming two nouns resolves to its subject."
+    },
+    {
+      "item": "M1(a) — live: no free-text service name reaches any surface",
+      "verdict": "PASS",
+      "evidence": "GET /admin/insights with the admin token, 14 rows: the complete set of distinct product strings is «الإجازات المرضية»(7), «تكامل الأنظمة (HIS/ERP)»(3), «خدمات التطعيمات»(4), «فحص الموظفين»(1), «خدمة أخرى»(3) — every one inside SERVICE_CATALOGUE ∪ {OTHER_SERVICE}, down from round-14's 17 distinct free-text names. «باقات NVR لتغطية 8 مواقع»: ZERO occurrences. «خدمات لِين الأخرى»: ZERO occurrences. My own #home capture at 1440: the «لماذا نكسب — ولماذا نخسر» block reads «خدمات التطعيمات: ١ مكتسبة» — the NVR free text is gone. My own #kmon/9 capture: the chip is «قراءة / خدمات التطعيمات · نية مرتفعة», the free text is gone. Both acceptance strings from round-14 M1 are met."
+    },
+    {
+      "item": "M1(c) — the OTHER_SERVICE sentinel must not render as a chip or as a by_product row with a «مكتسبة» count",
+      "verdict": "FAIL",
+      "evidence": "GET /admin/intel/winloss returns by_product = [خدمات التطعيمات {won 1, active 3}, «خدمة أخرى» {won 1, lost 0, stalled 0, active 0}, تكامل الأنظمة (HIS/ERP) {active 1}, الإجازات المرضية {active 1}]. It is the SECOND row, inside the .slice(0,4) the home board renders, and my #home innerText capture confirms it on screen verbatim: «خدمة أخرى: ١ مكتسبة · ٠ غير مكتسبة». canonicalService returns OTHER_SERVICE and winLossBoard's `.filter(Boolean)` keeps it. It also still renders as an interest chip at #kmon/9 («قراءة / خدمة أخرى · مهتم»). The sentinel was RENAMED («خدمات لِين الأخرى» → «خدمة أخرى»), which was never the ask. Round-14 M1(c) said «must never render as an interest chip or as a by_product row with a «مكتسبة» count» — unresolved, third round."
+    },
+    {
+      "item": "M1 — honesty ruling 1: does folding «باقات NVR لتغطية 8 مواقع» into «خدمات التطعيمات» LAUNDER a signal the agent refused in-transcript?",
+      "verdict": "NO — and I checked the transcript rather than reasoning about it",
+      "evidence": "I read Ibrahim's live record end to end. The specific evidence SURVIVES verbatim on his client-360 page: the summary still says «وطلب عرضًا تعريفيًا لباقات NVR لتغطية 8 مواقع»; the buy-signal list still quotes «وش يصلح لي من باقات ال NVR» and «عدد المواقع ٨»; the next action still reads «مراجعة عرض الأسعار لباقات NVR لثمانية مواقع»; and the transcript still carries the agent's own refusal «باقات NVR غير متاحة لدي ضمن المعلومات المعتمدة، وقد أحلت استفساركم…». Only the GROUPING KEY was normalised — which is what a grouping key is for. Round-14 established (correcting round-13) that NVR here is «السجل الوطني للتطعيمات», an approved Lean service and one of three permitted {{1}} values in VOICE-REFERENCE.md:20-22, so «خدمات التطعيمات» is the truthful catalogue name for what he asked about, not a euphemism. The interest was real: he wrote «لا خلاص بشتري». VERDICT: not laundering; the specific stays on the client page, the general goes to the aggregate, which is the correct split. WHAT IS GENUINELY LOST is different and worth its own order: there is now no surface anywhere that says the agent hit a knowledge-base gap on the highest-intent conversation in the system. That signal never lived in product_interest, so the clamp did not remove it — but it is the single most commercially valuable fact in these four transcripts and it is invisible. Filed as S1."
+    },
+    {
+      "item": "M1 — honesty ruling 2: should «خدمة أخرى» appear as a row on a market-verdict-by-service board?",
+      "verdict": "NO — this is my must",
+      "evidence": "«لماذا نكسب — ولماذا نخسر» answers one question: which SERVICES win and which lose. It cannot answer that for a bucket whose definition is «not one of our services». «خدمة أخرى: ١ مكتسبة» is therefore either noise he must learn to ignore — which trains him to distrust the one board he is proudest of — or a number he reads as a market signal, which is false. Worse, it is not even null: it is a genuinely useful counter wearing the wrong costume. «٣ محادثات سألت عن خدمة خارج الكتالوج» under a KB-gap heading is real intelligence; «خدمة أخرى: ١ مكتسبة» under a win/loss heading is not. Drop OTHER_SERVICE from by_product and from interest chips, and surface the count once, honestly, elsewhere."
+    },
+    {
+      "item": "M1b — an assistant reading cannot pass as a confirmed tag; holds at 375 and without hue",
+      "verdict": "PASS",
+      "evidence": "My own Playwright pass over #kmon/9, reading getComputedStyle on every .chip inside #body, at 1440x900 AND 375x812 — byte-identical results at both. Reading chips: class «chip c-read c-ok», backgroundColor rgba(0,0,0,0), borderTopStyle DASHED, fontWeight 600, text «قراءة\\nخدمات التطعيمات · نية مرتفعة». Tool-written tag one row below: class «chip c-ok», backgroundColor rgb(236,253,243), borderTopStyle SOLID, fontWeight 700, text «تكامل الأنظمة (HIS/ERP) · نية مرتفعة». The distinction rides three independent channels — FILL (transparent vs solid), BORDER STYLE (dashed vs solid) and a LITERAL ARABIC WORD («قراءة») — none of which is hue; the hue is retained only so the level still reads at a glance, which is the right call. Survives greyscale, survives a screenshot, survives touch, needs no hover. The title attribute is kept and improved («… قراءة المساعد من نص المحادثة، لم تُسجَّل كوسم مؤكد») but is no longer load-bearing. The intent-only fallback branch («نية مرتفعة» / «اهتمام مبدئي») also got c-read. 0 console errors at both viewports. This is the strongest single piece of work in the round."
+    },
+    {
+      "item": "M2 — one definition of «مؤهل» per screen; does the rename RESOLVE the contradiction or RELOCATE it?",
+      "verdict": "PASS — it resolves it, and it is the mature call",
+      "evidence": "dashboard.ts:595 now emits «ابدأ التواصل مع » + fmtN(hotHere.length) + « جهة تستحق المتابعة» with the subtitle «وسوم اهتمام مؤكدة، أو نية مرتفعة قرأها المساعد من نص المحادثة ولم تُسجَّل وسمًا بعد». RULING: hotHere and interestedOf measure genuinely different populations — one counts confirmed tags and human outcomes, the other also trusts an untagged high-intent reading. Forcing them equal, which round-14 offered as the first option, would have DESTROYED a real signal: a high-intent reading with no tag yet is precisely the person you call next. The honest fix for two different measurements is two different words plus a disclosed definition at the point of reading, and that is exactly what landed. The word «مهتمة» is no longer shared, the missing space after «مع» is fixed, and the count routes through fmtN so it renders ٢ beside «جهات مهتمة لكل ١٠٠». This is not relocation — a relocated contradiction would be two undisclosed definitions under two vague words; this is one disclosed definition per number, which is what user-model R4 asks of every intelligence surface."
+    },
+    {
+      "item": "M3(a) — tracker.replaceTags preserves ts; db.replaceTags is transactional; memory mutates after the DB",
+      "verdict": "PASS",
+      "evidence": "tracker.ts: `const prior = new Map((c.tags||[]).map(t => [t.product, t.ts]))` then `ts: t.ts ?? prior.get(t.product) ?? Date.now()` — an unchanged product keeps its original timestamp, an explicitly supplied ts wins, only a genuinely new product gets a fresh stamp. `Date.now()` no longer runs unconditionally. db.ts: `pool.connect()` → BEGIN → DELETE → N INSERTs → COMMIT, with `catch { ROLLBACK.catch(()=>{}) ; throw }` and `finally { client.release() }` — one client, one transaction, no leak, the throw propagates. Ordering in tracker.ts is `await db.replaceTags(phone, next)` BEFORE `c.tags = next`, so a DB failure leaves memory agreeing with the ledger rather than drifting ahead of it. Round-14's S1 is fully absorbed."
+    },
+    {
+      "item": "M3(a) — POST /admin/contact/tags 404s on an unknown phone WITHOUT creating a contact (my own live test)",
+      "verdict": "PASS",
+      "evidence": "Live, against the deployed machine. /health before: contacts 20, messages 162, events 518. POST /admin/contact/tags with x-admin-token and phone 966500000000999 → HTTP 404, body {\"error\":\"unknown phone — curation never creates a contact\"}. POST with no token → HTTP 401 (the adminOk gate fires before anything else). /health after: contacts 20, messages 162, events 518 — UNCHANGED. tracker.replaceTags swapped getContact (which manufactured a row) for findContact and returns false; index.ts turns false into 404 before the success payload. The round-12 class of defect — a typo minting a test:false contact that then counts as a real customer — is closed at the source."
+    },
+    {
+      "item": "M3(b) — buildTimeline anchors a tag to the last customer message at/before it",
+      "verdict": "PASS",
+      "evidence": "insights.ts buildTimeline now does `const spoken = (c.transcript||[]).filter(t => t.role === 'customer' && t.ts <= tg.ts).pop()` and pushes at spoken.ts with meta «… · قراءة من هذه الرسالة». Verified live on ياسمين (966592681957), the exact contact round-14 named: her «سجل التفاعل» now opens on «حالة التسليم · ٠٩:٥١ ص · شوهدت» — a real event of hers — and her interest tag «اهتمام: تكامل الأنظمة (HIS/ERP)» sits at ٠٨:٥٠ ص carrying «نية مرتفعة · قراءة من هذه الرسالة», anchored to her own «تنسيق عرض موجز» message at the same minute. The ٠٢:٤٨ م phantom five hours after her conversation ended is gone. Ibrahim's timeline newest entry is «[نتيجة بشرية: meeting_booked] · ١١:٠٨ ص», also real. Round-13 M1(d) closed."
+    },
+    {
+      "item": "M3 — edge-case ruling: a tag with NO preceding customer message is now DROPPED from the timeline entirely. Acceptable?",
+      "verdict": "NO — but it is a should, not a must",
+      "evidence": "The `if (spoken)` has no else branch, so the tag silently vanishes from «سجل التفاعل» for any contact who never sent a message (a curated tag on a target who only ever received a blast). WHY IT IS NOT A MUST: the tag still exists everywhere else the founder looks — the interest chips, «فهم المساعد», the tags API, the ledger — so no evidence is destroyed, only one row is not rendered; and all four real contacts have customer messages, so nothing is missing on today's demo (I confirmed each of the four renders its tags correctly). WHY IT IS STILL WRONG: the card's own caption promises «كل نقاط التماس — رسائل، حالات تسليم، وسوم، ملفات — الأحدث أولًا». The code now contradicts a caption that explicitly lists وسوم. A surface that silently omits a category it advertises is the same honesty failure as a surface that invents one, just quieter. The fix is an else branch rendering the tag at its own ts in the distinct lane the comment already imagines, labelled «وسم مُسجَّل — لا رسالة عميل مرتبطة». Filed as S3."
+    },
+    {
+      "item": "M4 — the guard is wired, and I falsified it rather than reading it",
+      "verdict": "PASS",
+      "evidence": "package.json: \"deploy\": \"fly deploy --ha=false && npm run smoke\", \"smoke\": \"./.venv/bin/python scripts/smoke.py\", \"smoke:setup\": venv + playwright + chromium. ./.venv/bin/python exists and .venv/ is gitignored. #customer/966500000850 with landmark «مسار البيع مع هذا العميل» is in ROUTES. REAL RUN: 7 routes (#home #kmon #customers #aimkt #kb #customer/966500000850 + the dynamic #kmon/11), all render, 0 runtime errors, exit code 0 — I captured the exit code separately, not from a pipeline. FALSIFICATION: I copied the script, replaced the #customer landmark with «LANDMARK-THAT-CANNOT-EXIST», and ran it — the route printed FAIL beside its 18531 chars while every other route printed ok, and the script exited 1. The per-route status line round-14 flagged as misreporting is fixed (a `before = len(failures)` watermark) and now prints the matched landmark, so a passing run is self-documenting. DOC WIRING CONFIRMED IN BOTH PLACES: CLAUDE.md §4 lines 48-49 carry «npm run deploy — fly deploy --ha=false && npm run smoke» with «a deploy is not done until it exits 0»; .orbit/skills/whatsapp-campaign-engineering.md §5 line 63 carries the same command plus the one-time `npm run smoke:setup` at line 67."
+    },
+    {
+      "item": "M4(c) — BASE overridable by an env var so the guard can run pre-deploy",
+      "verdict": "FAIL",
+      "evidence": "scripts/smoke.py line 18 is still `BASE = \"https://massar-engine.fly.dev\"`, a hardcoded literal with no os.environ lookup. The guard therefore only ever tests what is ALREADY live — it can catch a blank page after it has shipped, never before. That is the weaker half of the guard and it was an explicit part of round-14 M4. Not a must (the post-deploy assertion is the one that would have caught b639471), but it is the difference between a guard and a smoke alarm."
+    },
+    {
+      "item": "M5(a)(b) — baselines re-hashed by me AFTER the report; are the comparisons real?",
+      "verdict": "PASS — first genuine pixel comparison in four rounds",
+      "evidence": "I hashed all 24 files (12 pairs) and read their mtimes. FOUR ARE GENUINELY REAL, at exactly the claimed ratios: salespath@1440 55d53cbb… vs 01eff7d4… 0.000577; salespath@768 8d1118cf… vs 895cb672… 0.000949; wizard@1440 ff0823ce… vs f9fcb973… 0.000439; wizard@768 50cec4d0… vs bb605fb9… 0.000095. Their baselines are all stamped 11:54:57Z (frozen at 9b7cd54) and their actuals 12:45:43–12:46:17Z (after f6ab762 at 12:34:59Z) — a 51-minute gap, so a baseline cannot be a copy of its actual, and the gate compared two different renders of two different commits. That has never been true before in this project. EIGHT ARE 0.0 AND BYTE-IDENTICAL, and each carries an honest baseline_note: salespath@375 («baseline REPLACED this round: the prior baseline… never contained the element under test… 0.0 is by construction for this pair this round; first real comparison next round»), and home×3 + kmondetail×3 («first capture of this surface — it BECOMES the baseline; 0.0 is by construction this round»). THE ONE THAT LOOKED LAUNDERED IS NOT: wizard@375 is byte-identical yet claims «real comparison: fresh actual at f6ab762 vs baseline frozen at 9b7cd54» — and that claim is TRUE. Its baseline is stamped 11:54:57Z, 51 minutes BEFORE its actual at 12:46:27Z, so it cannot be a copy; #aimkt at 375 simply did not change between the two commits, which is what a deterministic server-rendered page does. A genuine 0.0 is a pass, not a fake. Round-12 S5d / round-13 M3(b) / round-14 M5(a): CLOSED."
+    },
+    {
+      "item": "M5(b) — captures postdate the commit they certify",
+      "verdict": "PASS (with a verified benign exception)",
+      "evidence": "Visual actuals are stamped 12:45–12:52Z, which PREDATES 8ff3f75 (authored 12:57:54Z) by 5–12 minutes. I did not accept that on its face: `git diff --stat f6ab762..8ff3f75 -- src/dashboard.ts src/insights.ts` returns EMPTY — 8ff3f75 touches src/agent.ts only, 23 insertions, zero UI surface. The certified pixels are therefore byte-identical to the reviewed commit's UI. Contrast with round-14, where the actuals predated a UI fix by hours and one visibly showed the broken element it was cited to prove fixed. Benign here, and I state the reasoning rather than the conclusion so the next gate can re-check it."
+    },
+    {
+      "item": "M5(b) — FIFTH ROUND: does .orbit/artifacts/copy/v-salespath-375x812.png contain the current stage? Opened BY EYE.",
+      "verdict": "PASS",
+      "evidence": "I rendered the PNG and looked at it. It contains the «مسار البيع مع هذا العميل» card with the stage chip, and the stepper shows «عرض الحل» completed with a teal ✓, «معالجة الاعتراض» as the CURRENT node — dark-filled circle, bold label, horizontally centred in the 375-wide viewport without any interaction — and «تنسيق العرض التعريفي» ahead of it in grey. The element under test is unambiguously in the frame. Cross-checked live: I loaded #customer/966543464327 at 375x812 on the deployed machine and the chip reads «المرحلة ٥ من ٦» with BOTH digits in Arabic-Indic. Round-13 M2 / round-14 M5(b): closed, and this is the first round where the artifact and the live product agree."
+    },
+    {
+      "item": "M5(c) — the mis-pointed SC evidence",
+      "verdict": "PASS",
+      "evidence": "SC-S1 (objection gauntlet), SC-S3 (composer output), SC-S13 (terminology greps), SC-D1 (ledger audit) and SC-D3 (a Python exit code) now all cite .orbit/artifacts/copy/round14-verification.txt, which exists and is 152 lines — an artifact that can actually contain a transcript, a grep count and an exit code. SC-D1's `actual` text is also honest about its own history: it states that the tag scrub cleaned contact.tags only, that product_interest lives in contact_insights and still showed the NVR row on #home, and that it was closed at f6ab762 — a scenario admitting its own earlier miss is exactly the discipline I asked for. SC-S9 still cites v-salespath-375x812.png and that is now CORRECT rather than stale: its claim is about rail geometry at 375 and the PNG contains the stepper."
+    },
+    {
+      "item": "M5(d) — EARN coverage_complete or set it false",
+      "verdict": "FAIL",
+      "evidence": "delivery-evidence.json still asserts coverage_complete: true. The case list is SC-A1..A6, SC-S1..S14, SC-D1..D3, SC-E1..E6 — I enumerated all 29 and there is NO scenario for POST /admin/contact/tags, the round's only destructive endpoint, nor for chipRow's «جديد» branch, nor for interestChips with an empty insCache. Round-14 M5(d) named all of these and asked for an honest `false` in the interim. I verified the endpoint's 401 and 404 behaviour MYSELF against the live machine, so the code is right — what is wrong is a bundle claiming complete coverage of behaviour it never exercised. Note for the next round: the >8-tags-truncated, invalid-level-coerced and rollback cases are all provable with an authenticated HTTP call and a /health count, i.e. NO WhatsApp send is involved, so the new standing outbound-silence rule does not block any of them."
+    },
+    {
+      "item": "NEW/M6 — the Proxy fix: does the code-level matcher work, and what is its false-positive risk?",
+      "verdict": "PARTIAL",
+      "evidence": "SANDBOX_ACTIVATION = /^\\s*(?:proxy\\b|بروكسي(?:\\s|$))[\\s\\S]{0,40}$/i, tested in handleInbound before anything reaches the model. I ran my OWN 18-case matrix rather than trusting the claimed 16/16. ZERO hard failures on the claimed behaviours: «proxy Massar», «proxy massar», «PROXY MASSAR», padded, «بروكسي مسار», bare «بروكسي», bare «proxy» all match; «مرحبا», a real Arabic first message, «نعم», and — critically — «إيقاف», «ايقاف» and «stop» all correctly do NOT match, so the check running BEFORE isOptOut cannot swallow an opt-out. The Arabic-boundary comment is right and needed: JS \\b is ASCII-only, so «بروكسي» genuinely requires its own whitespace/end anchor. THREE FALSE POSITIVES FOUND: «proxy server عندنا يمنع الاتصال», «Proxy settings for HIS?» and «بروكسي الشبكة يمنع الربط مع النظام» all match — short, real, technical messages an IT manager at a healthcare facility could plausibly send. Compounding it, the matcher runs on EVERY inbound, not only the first: mid-conversation such a message makes the agent abandon the thread and reply with a cold-open greeting, which is conversation-destroying. Low probability, high blast radius, and the fix is one clause — gate the matcher on the contact having no prior customer message. Filed as S2."
+    },
+    {
+      "item": "NEW/M6 — the Arabic opener against .orbit/artifacts/copy/VOICE-REFERENCE.md",
+      "verdict": "PASS with one register miss",
+      "evidence": "Opener: «أهلًا بكم. أنا المساعد الرقمي لشركة لِين لخدمات الأعمال، وأساعد المنشآت الصحية على تنفيذ خدمات مثل الإجازات المرضية وسجل التطعيمات الوطني مباشرة من داخل أنظمتها.\\nكيف يمكنني خدمتكم؟». Checked rule by rule: (1) صيغة الجمع للمخاطب — «بكم»، «خدمتكم» ✓; (2) أفعال قوية مبنية للمعلوم — «أساعد»، «تنفيذ» ✓; (3) مصطلحات القطاع الصحي — «المنشآت الصحية»، «أنظمتها» ✓; (4) بنية ثلاثية القيمة→الآلية→الخطوة — identity → mechanism → one question ✓; (5) لا مبالغة ولا إيموجي ولا علامات تعجب ✓; (7) خاتمة تعاونية لا إلحاحية — «كيف يمكنني خدمتكم؟» ✓; (8) أثر تشغيلي — «مباشرة من داخل أنظمتها» echoes the approved template's own core mechanism ✓. Two lines, one question, MSA — inside the agent's own §3 limits. THE MISS: it writes «سجل التطعيمات الوطني» where the founder's approved template says «السجل الوطني للتطعيمات (NVR)» (VOICE-REFERENCE.md:20-22) and the service catalogue says «خدمات التطعيمات». Three names for one service, against VOICE-REFERENCE's explicit «one word per concept» rule for the platform, and the demo will show at least two of them on the same screen. Filed as S4."
+    },
+    {
+      "item": "NEW/M6 — the residual (the English boilerplate only disappears on the production WABA number): adequately surfaced to a founder demoing today?",
+      "verdict": "PASS",
+      "evidence": ".orbit/artifacts/night/WAKE-UP.md carries a dedicated Arabic section headed «عن رسالة «Proxy bot» التي أرسلتَها — أصبتَ، ولم تكن مقبولة» which (a) opens by conceding he was right, (b) explains that the sandbox number FORCES «proxy Massar» from every new person after an English bot-platform message, (c) quotes the exact bad output «هل تقصدون خدمة أو منتجًا باسم Proxy Massar؟» and names Ibrahim's handoff for a non-existent service, (d) states what was fixed and deployed, and (e) has an explicit «ما لا أستطيع إصلاحه» paragraph saying the English boilerplate is Gupshup sandbox behaviour that only disappears on the production WABA number with Meta-approved templates, calling it his decision and the first item of the production plan. .orbit/STATE.md's cycle log carries the same, shorter. That is honest, founder-readable, and it does not oversell. THE ONE THING IT DOES NOT SAY is that the four transcripts he will demo still contain the exchange — it reads «أُصلح ونُشر الآن», from which a founder would reasonably conclude the screens are clean. That gap is the substance of MUST-2, not of this item."
+    },
+    {
+      "item": "NEW/M6 — THE MUST: the fix is forward-only; the four demo transcripts still show what he rejected",
+      "verdict": "FAIL",
+      "evidence": "I pulled all four real contacts from GET /admin/customer/:phone on the deployed machine and read the first turns of each. 966535106365 Ibrahim: customer «Proxy Massar» → agent «أنا مساعد لِين الرقمي. هل تقصدون خدمة أو منتجًا باسم «Proxy Massar»؟ سيتحقق مختص المبيعات من ال…» — 3 Proxy mentions in his transcript, and the handoff for the non-existent service is still recorded. 966502444737 Nasser: «Proxy massar» → «هل تقصدون خدمة أو نظامًا باسم «Proxy Massar»…» — 2 mentions. 966543464327: «Proxy massar» → «هل تقصدون **بروكسي مسار** أم خدمة/نظامًا آخر بهذا الاسم؟» — 2 mentions AND the literal markdown asterisks WhatsApp renders raw, the second half of the same user complaint. 966592681957 ياسمين: «Proxy Massar» → «هل تقصدون الاستفسار عن تكامل خدمات لِين مع نظام «مسار»…» — 1 mention. These render TODAY in «سجل التفاعل» on the client-360 page and in the conversation view. The cause is structural and visible in the diff: index.ts calls tracker.recordInbound(ev) BEFORE agent.handleInbound(contact, ev.text), so the activation phrase is written to the transcript regardless of whether the matcher intercepts the reply. GOOD NEWS I VERIFIED: the cached insights are clean — «PROXY-IN-INSIGHTS: False» for all four, so the analyst layer is not repeating it. The damage is confined to the rendered transcript, which is exactly the surface he will project."
+    },
+    {
+      "item": "NEW/M6 — the markdown ban",
+      "verdict": "PARTIAL",
+      "evidence": "Landed as a prompt line only: «لا تستخدم تنسيق ماركداون. واتساب لا يعرف **النجمتين**…». CLAUDE.md §4 states «Hard rules live in code (opt-out, turn caps, window checks) — never only in prompts», and this round's own headline lesson — now at four independent confirmations in the user-model — is that anything the model must apply MECHANICALLY belongs in code after the response returns. The activation matcher in the very same commit follows that rule; the markdown fix beside it does not. A two-line strip of `**` in safeSend before gupshup.sendText makes it unfalsifiable and also cleans the historical render. Filed as S5."
+    },
+    {
+      "item": "Carried should S4 (inline tag correction from the board) — has it become a must for today?",
+      "verdict": "NO — remains should",
+      "evidence": "Grepped dashboard.ts for any control calling /admin/contact/tags or offering «أزل الوسم»/«تصحيح» — zero. Correcting a wrong tag is still an authenticated curl. NOT a must for the demo: M1b now makes a reading visually honest, so nothing on screen is asserting a falsehood he must urgently correct, and he will not be editing tags on stage. It stays a should because the incident that started all of this was «the board says something untrue about my customer» and the loop he actually experiences is still not closed in the product."
+    },
+    {
+      "item": "Carried should S4b («camp» keyed to button markup) — has it become a must?",
+      "verdict": "NO — downgraded to nice, the harm is closed",
+      "evidence": "insights.ts no longer labels a button-bearing agent reply «حملة»; it now renders «المساعد · أزرار». Verified live in Ibrahim's timeline: «المساعد · أزرار · ٠٩:٥٤ ص». The FALSE CLAIM — that a template blast went out when none had, on a product whose §8 story is «no outbound without human approval» — is gone, which was the whole point. The structural fix (key «camp» to the campaign_targets record for that phone) is not done, so a genuine campaign send is now indistinguishable from a reply in the other direction; that is a smaller, non-false-claiming gap. Nice."
+    },
+    {
+      "item": "Carried should S5 (round-13's three-round queue) — has any item become a must?",
+      "verdict": "NO — two landed, the rest stay should/nice",
+      "evidence": "Grepped each at HEAD. LANDED: S8b — `ins.learning ? «المرحلة قيد التعلّم» : «المرحلة ٥ من ٦»` at dashboard.ts:1446 plus `if (!ins.learning) h += vSalesPath(ins)` at :1506, so a degraded contact no longer gets a confident stage number; that was the R2 violation in the queue and it is closed. S10 — .orbit/decisions/0001-dashboard-no-range-edits.md now exists (round-14's S2). NOT LANDED, fourth round: S6 «المنتج: ${product}» still at agent.ts:408; S7 still has no lastRungAt suppressor (zero matches); S9 stripPricing still tests only /(ريال|SAR|ر\\.س)/ and still omits the ﷼ glyph U+FDFC; S8c still has no template restore; N10 `const availableAssets = assets()` still dead at agent.ts:174. On S9 specifically I checked whether it is a live demo risk: GET /admin/kb contains «ريال» but NOT the ﷼ glyph, so the existing filter does catch today's KB and the AI-write button will not leak a price on stage. It stays a should because the filter is one glyph away from failing the moment anyone types ﷼."
+    },
+    {
+      "item": "Carried should S6 (chip clipping + Arabic-Indic digits) — has it become a must?",
+      "verdict": "NO — half landed, remains should",
+      "evidence": "LANDED: clip(product, 24) on interest chips and by_product chips with the full string in the title, so «باقات NVR…»-length strings no longer wrap a row to two lines; fmtN() applied to the campaign filter counts, the «تستحق المتابعة» count, the stepper node badges, the stage chip and the by_product counts — I confirmed «المرحلة ٥ من ٦» renders Arabic-Indic live at 375. NOT LANDED: my #home innerText capture still shows Western digits in the KPI and city blocks — «جهات الاستهداف 4», «ردّوا 4», «الرياض 5 / الدمام 3 / جدة 3», «5 +6 تجريبية», «15» — on the same screen that writes «٥ حملة» and «١٥ جهة». Mixed numerals on the flagship screen is a taste finding, not a truth finding, so it does not block; but it is the founder's own home screen and it is visibly inconsistent with itself."
+    }
+  ],
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "8ff3f75",
+    "sha256": "3a8a2e1a01dd1642d85f8428301ea8d85b4eaf8bf75a41c690c96896641d5343",
+    "gate": "python3 .orbit/checks/delivery-quality-gate.py --root . --commit 8ff3f75 → {\"passed\": true, \"status\": \"passed\", \"commit\": \"8ff3f75\", \"ui_required\": true, \"errors\": []}, exit 0. I did not rely on it: I re-hashed all 12 visual pairs, opened v-salespath-375x812.png by eye, enumerated all 29 scenario cases, and re-tested the tag endpoint against the live machine myself."
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 34,
+    "sha256": "fac0301832cc317108161ddc0b698ecc778f0a724446a9a2a24756234cf0b54c",
+    "note": "user_memory.py status --require-latest passed:true, pending_event_ids []. A new user event U34 was captured at 2026-08-12T14:52:04Z DURING this review and I resolved it as promote rather than letting it sit: «Don't ever send a text to the client for any test or anything. Don't shoot any WhatsApp message at all. Okay? Stop shooting messages, and I will tell you what number you need to test with», plus «hide the duplicate campaigns behind the sandbox filter». It is promoted to user-model Rule 5. It postdates 8ff3f75 so it is scope for the next round, not a defect of this commit — but it is now the highest-priority standing constraint in the project and it revokes CLAUDE.md §8's «sandbox self-tests to the team's own opted-in phones are fine» carve-out and every previously approved number. Every change order below is provable WITHOUT sending a WhatsApp message; I re-checked each one against that constraint."
+  },
+  "basis": {
+    "skills": [
+      "user-model R2 (numbers must be real, sourced, honestly bounded — never invented): the lens for M1's «خدمة أخرى: ١ مكتسبة» on the win/loss board and for accepting M1b, M3 and M5",
+      "user-model R4 (AI features must explain CAUSALLY with the customer's own words as evidence): the basis for PASSING M2 — two different measurements get two different words plus a disclosed definition at the point of reading, not a forced merge",
+      "user-model R1 (professional marketing-tool fit is the standing acceptance bar): the basis for treating a «خدمة أخرى» row on the flagship board as a must rather than a nit",
+      "user-model round-14 signal (an inference must be VISUALLY distinguishable from a fact; a title attribute is invisible at a glance, on touch and in every screenshot): the exact test I applied to M1b, and it passed on three non-hue channels",
+      "user-model round-12/13/14 signal, now four confirmations (a rule the model must apply MECHANICALLY belongs in code, not in a prompt): the basis for accepting the activation matcher and filing the markdown ban as a should",
+      "user-model Rule 6, promoted this round on its third consecutive occurrence (stopping the leak is not wiping the spill): the basis for MUST-2",
+      "product-acceptance.md verdict rules: ACCEPT requires intent_fidelity AND completeness ≥ 8 with nothing must outstanding; ITERATE when the goal is reachable from here with orders specific enough that the builder asks zero follow-ups",
+      "CLAUDE.md §4 (hard rules live in code — never only in prompts) and §8 (the safety charter, now tightened by U34)"
+    ],
+    "research": [
+      "Deploy identity proven, not assumed: image deployment-01KZV0T50CJ248BNVYG8KFF496 updated 12:58:51Z vs 8ff3f75 authored 12:57:54Z — 57 seconds, so the running bundle is the reviewed tree; uptimeSec 6638 confirms a single boot at ≈12:59:10Z",
+      "Read the full diff of all four commits across 9 files before touching the live system",
+      "GET /admin/insights (14 rows) and /admin/intel/winloss enumerated by hand for out-of-catalogue names — 5 distinct, all inside the catalogue ∪ sentinel",
+      "Own Playwright pass: #kmon/9 at 1440x900 and 375x812 with getComputedStyle on every chip; #home at 1440; three client-360 pages; full-page screenshots retained",
+      "Own 18-case regex matrix on SANDBOX_ACTIVATION including opt-out strings and three technical false positives",
+      "Live POST /admin/contact/tags: 404 on unknown phone, 401 without token, /health contact count unchanged before and after",
+      "All four real transcripts pulled from the live API and read from the first turn",
+      "All 12 visual pairs re-hashed with SHA-256 and mtimes compared against commit timestamps; v-salespath-375x812.png opened and viewed by eye",
+      "smoke.py falsified by substituting an impossible landmark (exit 1) and run for real (7/7, exit 0), with exit codes captured outside a pipeline",
+      "npm run build exits 0; delivery gate exits 0; user_memory --require-latest exits 0 after resolving U34"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "findings",
+      "findings": [
+        {"severity": "must", "finding": "«خدمة أخرى» is rendered as a market verdict on «لماذا نكسب — ولماذا نخسر». A WhatsApp sales-intelligence board answers «which of our services win»; a bucket defined as «not our service» has no verdict to give. A domain expert reads «خدمة أخرى: ١ مكتسبة» and either discounts the board or misreads a null as a signal."},
+        {"severity": "should", "finding": "Three names for one service will be on screen simultaneously: «خدمات التطعيمات» (catalogue), «سجل التطعيمات الوطني» (the new opener and the campaign copy), «السجل الوطني للتطعيمات (NVR)» (the founder's own approved template value). VOICE-REFERENCE demands one word per concept."},
+        {"severity": "should", "finding": "The agent hitting a knowledge-base gap on the single highest-intent conversation — «باقات NVR غير متاحة لدي ضمن المعلومات المعتمدة» on a customer who wrote «لا خلاص بشتري» — has no surface anywhere. It is the most commercially actionable fact in the four transcripts."}
+      ]
+    },
+    {
+      "lens": "policy",
+      "verdict": "findings",
+      "findings": [
+        {"severity": "should", "finding": "CLAUDE.md §4: «hard rules live in code — never only in prompts». The markdown ban landed as a prompt line while the activation matcher beside it landed in code. Same commit, same class of mechanical rule, two different standards."}
+      ],
+      "evidence": "Checked and clean otherwise: the opt-out path is intact and provably un-swallowed by the new matcher («إيقاف»/«ايقاف»/«stop» all fail SANDBOX_ACTIVATION, verified in my own matrix); webhook token auth untouched; adminOk still gates every /admin route (401 verified live); no secret in the diff; .env still gitignored and .venv/ added; no data deletion; NO WhatsApp message was sent by me or required by any finding; .orbit/decisions/0001-dashboard-no-range-edits.md now exists and the dashboard.ts edits in this diff are anchored string replacements, not range edits."
+    },
+    {
+      "lens": "product",
+      "verdict": "clean",
+      "evidence": "Every change reuses an existing idiom rather than bolting on. c-read is a modifier on the existing .chip system, not a new component. The «تستحق المتابعة» card is the existing moves list with a corrected label and the existing subtitle slot carrying the definition. The timeline anchor reuses the existing ev[] shape and meta string. canonicalService reuses the SALES_STAGES/LOSS_TAXONOMY whitelist pattern already established in insights.ts, which is exactly what round-14's N1 asked for. clip() and fmtN() are two small helpers used across five call sites rather than duplicated logic. Nav, routes and information architecture are unchanged."
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "findings": [
+        {"severity": "must", "finding": "The client-360 «سجل التفاعل» and conversation view still open, on all four real customers, with «Proxy Massar» → «هل تقصدون خدمة أو منتجًا باسم «Proxy Massar»؟», and one still shows literal «**بروكسي مسار**» asterisks. This is the exact text the user called «this is not ok», it is on the hero screen of today's demo, and no state — empty, loading or error — hides it."},
+        {"severity": "should", "finding": "A tag with no preceding customer message is silently omitted from «سجل التفاعل», whose own caption promises «رسائل، حالات تسليم، وسوم، ملفات». A card that advertises a category and then drops it is a quiet honesty failure."},
+        {"severity": "should", "finding": "Mixed numerals on #home: «الرياض 5»، «ردّوا 4»، «5 +6 تجريبية»، «15» sit beside «٥ حملة» and «١٥ جهة» on the same screen."}
+      ],
+      "evidence": "Walked #home, #kmon/9 and three client-360 pages as the founder at 1440 and 375, with console listeners attached: zero console errors and zero page errors on every route. The M1b chip distinction is genuinely excellent and needs no hover, no colour vision and no zoom."
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "findings": [
+        {"severity": "should", "finding": "SANDBOX_ACTIVATION runs on EVERY inbound rather than only the first, and matches three plausible short technical messages I constructed. A mid-conversation match makes the agent abandon the thread and send a cold-open greeting. One clause — gate on no prior customer message — removes the entire class."},
+        {"severity": "should", "finding": "scripts/smoke.py's BASE is a hardcoded production URL with no env override, so the guard can only ever assert what has already shipped."}
+      ],
+      "evidence": "The shapes are right where it counts. The clamp is applied at three boundaries (parse, aggregate, read) rather than one, which is why it actually worked this time — normalising only at the aggregate is precisely what failed at 3725740 and was caught at f6ab762. db.replaceTags is a correct single-client transaction with ROLLBACK and release-in-finally. The DB-before-memory ordering is the right failure mode. canonicalService is pure and total. The insights cache is not re-read per contact (no LLM call per row), which is the boring, cheap choice. Failure modes: db.replaceTags no-ops when the pool is absent, which is acceptable for a memory-only dev run."
+    },
+    {
+      "lens": "slop",
+      "verdict": "clean",
+      "evidence": "Hunted by name and found none. No filler copy: every string added is specific and load-bearing («وسوم اهتمام مؤكدة، أو نية مرتفعة قرأها المساعد من نص المحادثة ولم تُسجَّل وسمًا بعد» is a real definition, not a hedge). No placeholder or fake data — all 14 insight rows and 4 transcripts are real. No dead buttons: the new controls are a filter count and a chip, both wired. No TODO stubs. No tests that assert nothing — I falsified the one guard in the diff and it failed correctly. Comments earn their place: the ones on SANDBOX_ACTIVATION, buildTimeline and normalizeCached each explain a non-obvious WHY (ASCII \\b vs Arabic, a tag is not a touchpoint, the aggregate-only clamp left the chip dirty) rather than narrating the code. No gradients, no emoji, no over-abstraction — clip() and fmtN() are two lines each. The one thing I would have called slop, coverage_complete:true, is filed as a must-adjacent should under M5(d) rather than dismissed."
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 8,
+    "completeness": 6,
+    "coherence": 8,
+    "taste": 8,
+    "surprise": 6
+  },
+  "score_rationale": {
+    "intent_fidelity": "8 — the round's real intent (close five musts, kill the defect he named) is substantially met: four musts closed on my own evidence, and the Proxy defect cannot recur. The two open items are residues of correct fixes, not misdirected work. Not 9, because the user's own words («this is not ok») pointed at text that is still on his screen.",
+    "completeness": "6 — MUST-2 is the textbook half-shipped: the leak stopped, the spill unwiped, and the founder's briefing implies otherwise. MUST-1 is a third-round carry on the flagship board. M4(c) and M5(d) also did not land. Completeness is the score that keeps this from ACCEPT and it is the honest number.",
+    "coherence": "8 — c-read as a chip modifier, the disclosed-definition subtitle, the whitelist pattern reused from SALES_STAGES, and the timeline anchor all read as the product thinking about itself rather than as patches.",
+    "taste": "8 — judged by the user-model, not by me: R4 wants a surface that justifies its own reading, and the three-channel reading chip plus «قراءة من هذه الرسالة» on the timeline is exactly that. The M2 rename over a forced merge is the mature choice. Held off 9 by the mixed numerals on his own home screen.",
+    "surprise": "6 — the WAKE-UP.md section that opens by conceding «أصبتَ، ولم تكن مقبولة» and then states plainly what CANNOT be fixed and whose decision it is, is better than he asked for and the right register for a founder briefing."
+  },
+  "change_orders": [
+    {
+      "priority": "must",
+      "id": "M1",
+      "order": "Wipe the spill: the four transcripts the founder demos TODAY still show the defect he rejected. Every real contact's «سجل التفاعل» and conversation view still opens «Proxy Massar» → «هل تقصدون خدمة أو منتجًا باسم «Proxy Massar»؟»; 966535106365 (Ibrahim — the single «صفقة مكتسبة» and the hero of the demo) still shows the human handoff escalated for that non-existent service; 966543464327 still shows literal «**بروكسي مسار**». Root cause is in index.ts:41-42 — tracker.recordInbound(ev) runs BEFORE agent.handleInbound, so the activation phrase is stored regardless of the matcher. DO NOT DELETE DATA and do not send anything to verify. Fix at the RENDER boundary, reusing the matcher that already exists: (a) export SANDBOX_ACTIVATION from agent.ts (or lift it to a shared module) and apply it in insights.buildTimeline and in the transcript renderer — when a customer message matches it, collapse that message AND the agent reply immediately following it into one muted row reading «تفعيل المنصة — إجراء تقني من Gupshup، لا يخص العميل», styled like the existing sys/«نظام» lane so it is visibly not a customer touchpoint; (b) strip markdown emphasis (`**…**` → the inner text) at render for historical messages, and independently in safeSend for future ones — see S5; (c) if a contact's ENTIRE first exchange is the activation pair, the conversation must not open on it: the first customer message shown should be their real first message. ACCEPTANCE, all provable with an authenticated GET and a screenshot, zero sends: a capture of #customer/966535106365 in which no «Proxy» string and no «**» appears above the fold or anywhere in the interaction log, and the same for the other three real phones."
+    },
+    {
+      "priority": "must",
+      "id": "M2",
+      "order": "Take «خدمة أخرى» off the market-verdict board — round-14 M1(c), third round, one line. GET /admin/intel/winloss currently returns it as the SECOND by_product row ({won:1, lost:0, stalled:0, active:0}) and it renders on #home inside «لماذا نكسب — ولماذا نخسر» as «خدمة أخرى: ١ مكتسبة · ٠ غير مكتسبة»; it also renders as an interest chip at #kmon/9 («قراءة / خدمة أخرى · مهتم»). (a) In insights.winLossBoard, exclude OTHER_SERVICE from the by_product map — a board that answers «which SERVICES win» cannot answer it for a bucket defined as «not a service». (b) In dashboard.ts interestChips, drop OTHER_SERVICE entries rather than rendering them; if that empties the chip list, fall back to the existing intent/outcome branches. (c) Do not throw the count away — it is real intelligence in the wrong costume. Surface it ONCE, honestly, outside the win/loss verdict: a single line such as «٣ محادثات سألت عن خدمة خارج الكتالوج — راجعها» wherever the KB gaps belong. ACCEPTANCE: GET /admin/intel/winloss by_product contains no OTHER_SERVICE row; a #home capture whose win/loss block shows only catalogue services; a #kmon/9 capture with no «خدمة أخرى» chip."
+    },
+    {
+      "priority": "should",
+      "id": "S1",
+      "order": "Give the knowledge-base gap a surface. The most commercially valuable fact in these four transcripts is invisible: on the highest-intent conversation in the system — a customer who wrote «لا خلاص بشتري» — the agent answered «باقات NVR غير متاحة لدي ضمن المعلومات المعتمدة» and escalated. Nothing on any screen tells the founder that we lost the moment because the approved KB has no packaging or pricing. The clamp did not remove this (it never lived in product_interest), but nothing carries it either. Capture the agent's own refusals — it already emits them in a recognisable form — and aggregate them into one honest line on the command centre («٢ استفسارات لم يجب عنها المساعد لعدم توفرها في المعرفة المعتمدة») linking to the conversations. This is the «لماذا نخسر» he actually asked for, sourced from the agent's own words, and it satisfies user-model R4."
+    },
+    {
+      "priority": "should",
+      "id": "S2",
+      "order": "Bound the activation matcher to the first message. SANDBOX_ACTIVATION runs on every inbound in handleInbound, and my own matrix matched three plausible short technical messages: «proxy server عندنا يمنع الاتصال», «Proxy settings for HIS?», «بروكسي الشبكة يمنع الربط مع النظام». Mid-conversation, any of those makes the agent abandon the thread and reply with the cold-open greeting — low probability, conversation-destroying blast radius. Add one condition: only test the matcher when the contact has no prior customer message (or at most one turn on record). The sandbox phrase is by definition the first thing anyone sends, so this loses nothing and removes the whole false-positive class. Keep the length cap and both spellings. Provable with a unit-style matrix — no send required."
+    },
+    {
+      "priority": "should",
+      "id": "S3",
+      "order": "Stop dropping a tag that has no preceding customer message. buildTimeline's `if (spoken)` has no else, so such a tag disappears from «سجل التفاعل» entirely — while that card's caption explicitly promises «رسائل، حالات تسليم، وسوم، ملفات». No evidence is destroyed (the tag still shows in chips, فهم المساعد and the ledger) but a card that advertises a category and silently omits it is the same honesty failure as one that invents a row. Add the else: render the tag at its own ts in a visually distinct lane — the comment in the code already imagines it — labelled «وسم مُسجَّل — لا رسالة عميل مرتبطة» so it can never be mistaken for a touchpoint. Provable on a fixture contact with an admin curl and a screenshot."
+    },
+    {
+      "priority": "should",
+      "id": "S4",
+      "order": "One name per service, and make it the founder's name. The new opener says «سجل التطعيمات الوطني»; the catalogue says «خدمات التطعيمات»; his own approved template (VOICE-REFERENCE.md:20-22) says «السجل الوطني للتطعيمات (NVR)». At least two of the three will be on screen at the same time during the demo, against VOICE-REFERENCE's explicit one-word-per-concept rule. Pick the founder's approved wording for customer-facing copy and keep the catalogue name as the internal grouping key, or align them — but decide once, in one place, and apply it to the opener, the campaign copy and SERVICE_CATALOGUE together."
+    },
+    {
+      "priority": "should",
+      "id": "S5",
+      "order": "Move the markdown ban from the prompt into the code. CLAUDE.md §4 says hard rules live in code and never only in prompts, and the user-model now carries four independent confirmations that anything the model must apply mechanically has to be enforced after the response returns. The activation matcher in this very commit follows that rule; the markdown fix beside it does not, even though it is the second half of the same user complaint and the evidence of the failure («**بروكسي مسار**») is still in a live transcript. Strip `**…**` and `__…__` to their inner text in safeSend before gupshup.sendText, and at render for history (shared with M1(b)). Two lines, unfalsifiable, no send needed to verify."
+    },
+    {
+      "priority": "should",
+      "id": "S6",
+      "order": "Earn coverage_complete or set it false — round-14 M5(d), unlanded. delivery-evidence.json still asserts coverage_complete: true across 29 cases (SC-A1..A6, S1..S14, D1..D3, E1..E6) with NO scenario for POST /admin/contact/tags, the round's only destructive endpoint, none for chipRow's «جديد» branch and none for interestChips with an empty insCache. Add: 401 without the token, 404 on an unknown phone with the contact count proven unchanged, >8 tags truncated, an invalid level coerced to warm, a rollback case, and state correct after a restart. Every one of these is an authenticated HTTP call plus a /health count — NO WhatsApp send is involved, so the standing outbound-silence rule does not block any of them. Until they exist, set the flag false; an honest false is worth more than a true nobody checked."
+    },
+    {
+      "priority": "should",
+      "id": "S7",
+      "order": "Let smoke.py run before a deploy — round-14 M4(c), unlanded. BASE is still the hardcoded literal «https://massar-engine.fly.dev» at line 18, so the guard can only assert what has already shipped. Read it from an env var with the production URL as the default. Do not touch the assertions: I falsified them again this round and they work."
+    },
+    {
+      "priority": "should",
+      "id": "S8",
+      "order": "The three-round queue, now four rounds, minus the two that landed (S8b learning stage and .orbit/decisions/0001 are DONE — credit given). Land or explicitly waive on the record, each with a reason: S6 «المنتج: ${product}» at agent.ts:408; S7 the rung trigger with no lastRungAt suppressor; S9 stripPricing missing the ﷼ glyph U+FDFC (I verified the current KB contains «ريال» but not ﷼, so it is not a live demo risk — it is one keystroke from becoming one); S8c one click overwriting his approved template with no restore; N10 the dead `const availableAssets = assets()` at agent.ts:174. A queue nobody moves in four rounds is not a queue; waiving is a legitimate outcome, silence is not."
+    },
+    {
+      "priority": "nice",
+      "id": "N1",
+      "order": "Finish the Arabic-Indic digit pass on #home — round-10 S14 / round-13 S3 / round-14 S6, half landed. Chips, filters, stepper badges and the stage chip now render Arabic-Indic (verified live: «المرحلة ٥ من ٦»), but my #home capture still shows «الرياض 5»، «الدمام 3»، «ردّوا 4»، «5 +6 تجريبية»، «15» beside «٥ حملة» and «١٥ جهة» on the same screen. Route the KPI and city-distribution numbers through fmtN too."
+    },
+    {
+      "priority": "nice",
+      "id": "N2",
+      "order": "smoke.py: the #customer route hardcodes phone 966500000850, so removing that contact would fail the guard for the wrong reason — prefer picking the first real contact dynamically the way the campaign route already does. Also reconcile the route count: CLAUDE.md §4 says «six real routes», the domain skill says seven, the script runs seven, and SC-D3's actual still says six."
+    },
+    {
+      "priority": "nice",
+      "id": "N3",
+      "order": "Round-14's N2, unaddressed: reconsider whether a booked meeting should count as «صفقة مكتسبة». Ibrahim's deal_state is `won` off human outcomes meeting_booked + quote_sent, and «مكتسبة/غير مكتسبة» is the founder's own outcome vocabulary for a closed deal. Applying it to a stage that is neither inflates the only board that claims to explain why Lean wins — and it is the row today's demo will linger on."
+    }
+  ],
+  "waivers": [],
+  "user_model_updates": [
+    "PROMOTED TO RULE 5 (from U34, user-stated this session, safety-critical): zero outbound WhatsApp — no test is an exception, and he names the number. Not «no cold sends to real customers»: no WhatsApp message at all, of any kind, to anyone, until he personally supplies the number. This is stricter than CLAUDE.md §8's wording, which still permitted sandbox self-tests to the team's own opted-in phones; that carve-out is withdrawn, along with every previously approved number. His words: «Don't ever send a text to the client for any test or anything. Don't shoot any WhatsApp message at all. Okay? Stop shooting messages, and I will tell you what number you need to test with.» Consistent with R2's protect-the-number instinct — he tightened §8 rather than relaxing it. Every change order in this envelope was re-checked to be provable without a send.",
+    "PROMOTED TO RULE 6 on its third consecutive occurrence: stopping the leak is not wiping the spill — a fix must clean the artifacts the defect already produced. Round-13: the fabricated tag deleted from contact.tags while contact_insights kept asserting it. Round-14: the row removed while three derived surfaces still made the claim. Round-15: the Proxy matcher landed forward-only while all four real transcripts still open «هل تقصدون خدمة باسم Proxy Massar؟». Same shape three rounds running. Enumerate the derived surfaces — counters, aggregates, chips, next-actions, timelines, and above all the STORED TRANSCRIPTS he will actually open — before calling anything fixed.",
+    "Signal (round-15, confirmed — keep this behaviour): when two numbers legitimately measure different populations, the builder gave them different WORDS and disclosed the definition («ابدأ التواصل مع ٢ جهة تستحق المتابعة» + «وسوم اهتمام مؤكدة، أو نية مرتفعة قرأها المساعد… ولم تُسجَّل وسمًا بعد») instead of forcing them equal. That is the mature call — merging them would have destroyed a real signal, since a high-intent reading with no tag yet is exactly who you call next. Supports R4: the surface justifies its own reading at the point where the number is read.",
+    "Signal (round-15, gate discipline, FIRST genuine close after four rounds of the same finding): the pixel gate finally compared something. Four of twelve pairs are genuinely different files at the claimed ratios, baselines stamped 11:54:57Z against actuals stamped 12:45–12:46Z, and the eight zeros each carry an honest baseline_note naming why. The pair that looked laundered (wizard@375, byte-identical, note claiming «real comparison») is TRUE on inspection — its baseline predates its actual by 51 minutes so it cannot be a copy; the page simply did not change. Honest evidence was achievable here all along and it took being told three times; the deterministic gate checks SHAPE, only opening the artifact checks TRUTH.",
+    "Signal (round-15, technique — the code-not-prompt rule now at FOUR independent confirmations): the same commit fixed the activation phrase in code and the markdown defect in a prompt line, though both are mechanical rules the model must apply every time and both came from the same user complaint. The one enforced in code is unfalsifiable; the one in the prompt is a request. CLAUDE.md §4's «hard rules live in code — never only in prompts» has now been re-earned in rounds 12, 13, 14 and 15.",
+    "Process note for the learning ledger (fifth round citing the same class → a playbook amendment, per product-acceptance.md): the delivery-quality gate should mechanically (a) reject a bundle whose baseline and actual hash identically UNLESS a baseline_note explains it — this round proves the note convention works and it should be enforced rather than volunteered; (b) reject visual artifacts older than the commit under review unless the diff shows no UI surface changed; (c) reject coverage_complete:true when a route touched by the diff has no scenario. All three are short checks and all three would have caught what I had to catch by hand in rounds 12–15. Proposed for human review via `scripts/orbit-memory review` — project-scoped, not auto-promoted."
+  ],
+  "user_impact_summary": "الحكم: **إعادة تكرار قصيرة** — أربعة من خمسة مطالب مغلقة فعليًا، وبقي بندان يظهران على الشاشة اليوم.\n\n**ما أصبح صحيحًا (تحققتُ منه بنفسي، لا من التقرير):**\n- **قراءة المساعد لم تعد تشبه الحقيقة.** الوسم المؤكد ممتلئ بلون ثابت وحد متصل ووزن ٧٠٠؛ قراءة المساعد شفافة بحد متقطّع ووزن ٦٠٠ وكلمة «قراءة» مكتوبة. ثلاث إشارات مستقلة لا تعتمد على اللون، ومتطابقة على ١٤٤٠ وعلى ٣٧٥. أفضل عمل في خمس جولات.\n- **أسماء الخدمات انضبطت.** «باقات NVR لتغطية 8 مواقع» و«خدمات لِين الأخرى» اختفتا من كل الشاشات؛ الأربعة عشر سجلًا كلها الآن بأسماء الكتالوج.\n- **التصحيح لم يعد يزوّر التاريخ.** وسم ياسمين عاد إلى ٠٨:٥٠ ص مرتبطًا برسالتها نفسها، وسجل تفاعلها يفتح على حدث حقيقي لها. وتصحيح رقم غير موجود يعيد ٤٠٤ ولا يخترع عميلًا — اختبرته على النظام الحيّ وعدد العملاء لم يتغيّر.\n- **الحارس موصول ومُختبر.** كسرتُه عمدًا فأعطى FAIL وخرج بالرمز ١، وشغّلته حقيقيًا فمرّت ٧ مسارات بلا أخطاء. ومكتوب في CLAUDE.md وفي مهارة المجال معًا.\n- **أدلة الصور صارت حقيقية لأول مرة.** أربع مقارنات بين ملفين مختلفين فعلًا، والأصفار الباقية كلٌّ منها يشرح سببه بصدق. ولقطة ٣٧٥ — الجولة الخامسة — تحتوي المرحلة الحالية فعلًا.\n\n**ما يجب إصلاحه قبل العرض (بندان، لا يحتاجان إرسال أي رسالة):**\n1. **المحادثات الأربع ما زالت تبدأ بـ«Proxy Massar».** الإصلاح منع تكرار المشكلة، لكنه لم ينظّف ما حدث: كل عميل حقيقي — ومنهم إبراهيم، صاحب الصفقة المكتسبة — ما زال سجل تفاعله يفتح على «هل تقصدون خدمة أو منتجًا باسم Proxy Massar؟»، وأحدهم يعرض «**بروكسي مسار**» بالنجمتين. هذا نصّ قلتَ عنه «this is not ok» وهو معروض على الشاشة التي ستعرضها. الحل عشرة أسطر عند العرض فقط، بلا حذف أي بيانات.\n2. **«خدمة أخرى: ١ مكتسبة» على لوحة «لماذا نكسب ولماذا نخسر».** لوحة تحكم بالخدمات لا يمكنها إصدار حكم على خانة تعريفها «ليست خدمة». سطر واحد يزيلها — والعدد نفسه مفيد في مكان آخر: «٣ محادثات سألت عن خدمة خارج الكتالوج».\n\n**تنبيه مهم:** تعليمك الجديد — لا إرسال أي رسالة واتساب لأي رقم، ولا حتى للاختبار، حتى تحدد الأرقام بنفسك — سُجّل كقاعدة دائمة، ويلغي استثناء «أرقام الفريق» القديم. كل بند في قائمة التصحيح أعلاه قابل للإثبات دون إرسال أي رسالة."
+  ,
+  "follow_on_commits_reviewed": "NOT REVIEWED — three changes landed AFTER 8ff3f75 and are explicitly outside this envelope's binding. They are recorded here so the next gate picks them up, not audited by me: (1) campaigns gained an explicit `test` column + POST /admin/campaign/test, with campIsTest now keyed ONLY off that flag — the derived «every target is a sandbox contact» rule that had misfiled the one real campaign as sandbox is gone, the list opens on the «فعلية» tab, ten rehearsals are flagged and «فعلية (1)» = «حملة أغسطس — عيادات الرياض»; reported verified live with 0 duplicate rows in the default view and 0 console errors — UNVERIFIED BY ME. This also answers the second half of U34 («hide the duplicate campaigns behind the sandbox filter») and, if it holds, removes STATE.md's demo prerequisite about toggling «إظهار التجريبية». (2) A backtick inside a dashboard.ts comment closed the enclosing template literal and failed a deploy at the Docker build step (TS1005); fixed and recorded as rule 4 in .orbit/decisions/0001 — this is the third distinct dashboard.ts edit-hazard to earn a rule and it validates that decision file's existence. (3) The standing safety rule from U34 is now absolute and CLAUDE.md §5 is updated: NO WhatsApp message to any number, tests included, until the user supplies an explicit allowlist; this revokes the old «sandbox self-tests to the team's own opted-in phones are fine» line and every previously approved number. I re-scoped nothing because no change order in this envelope requires a live send — I checked each one against that constraint before writing it."
+  ,
+  "unverified_items": [
+    "The three follow-on changes listed in follow_on_commits_reviewed — reported to me by the coordinator, not audited at this commit.",
+    "Round-14 N2 (whether a booked meeting should count as «صفقة مكتسبة») is carried forward as a product question, not re-litigated with new evidence this round.",
+    "I did not exercise the >8-tags-truncated, invalid-level-coerced or rollback paths of POST /admin/contact/tags — I verified only the 401 and 404 paths live. Their absence from the scenario bundle is filed as S6."
+  ],
+  "reviewed_at": "2026-08-12T15:05:00Z"
+}

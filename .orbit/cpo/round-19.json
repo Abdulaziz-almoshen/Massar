@@ -1,0 +1,281 @@
+{
+ "schema_version": 1,
+ "round": 19,
+ "commit": "825a557",
+ "goal": "R48 «fix all issues and best UI must be delivered» — hours before he demos Massar to his own team, every screen the room will see must read as one deliberate, production-grade, Arabic-first marketing tool. Not «the numerals were patched on the screens someone looked at», but «this product counts in one language, everywhere, all day today».",
+ "verdict": "ITERATE",
+ "reviewed_at": "2026-08-13T05:05:00Z",
+ "qa_evidence": {
+  "path": ".orbit/qa/delivery-evidence.json",
+  "commit": "825a557",
+  "sha256": "6e5c3bee8ef33bac286d923a51647937717d861292f419154a6d31b0ceaba0a0",
+  "gate": ".orbit/checks/delivery-quality-gate.py --root . --commit 825a557 → exit 0, passed:true, ui_required:true, errors:[]",
+  "scenarios": "55 cases, coverage_complete true, 0 non-PASS",
+  "audited_not_summarised": "I recomputed all 15 pixel ratios myself from the PNGs on disk (see per_must_verification.M3) rather than reading QA's verdict field."
+ },
+ "user_memory": {
+  "path": ".orbit/memory/checkpoint.json",
+  "last_reviewed_request": 36,
+  "sha256": "c4b7c632699bbf4094528ce8351e80ec7c5c2b42aa22839e7e777e08e6cc6efe",
+  "status": ".orbit/checks/user_memory.py status --root . --require-latest → exit 0; pending_event_ids []; requests_since_review 0; latest_request_reviewed true",
+  "disposition": "checkpoint — no new durable preference this round. R48 was already reviewed at request 36 and correctly recorded as the THIRD escalation of Rule 1 rather than a new rule. Nothing invented."
+ },
+ "basis": {
+  "skills": [
+   "user-model R1 (professional marketing-tool fit is the standing bar) — the lens for scoring taste and coherence; 'works but reads like an admin script' fails, and split numerals are exactly that tell.",
+   "user-model R2 (numbers must be real, sourced, honestly bounded) — applied to the LOOP's own evidence, not only the product: I recomputed every pixel ratio instead of accepting the file's verdict.",
+   "user-model R5 (zero outbound WhatsApp, no exception, he names the number) — bounded this entire review; the launch-classification item stays unproven by choice, and nothing I ran touched a send path.",
+   "user-model R6 (stopping the leak is not wiping the spill; and its round-17 corollary: a fix stated as a page-level PROPERTY must be asserted across every screen that shares it, BY MEASUREMENT) — this round's finding is the sixth consecutive occurrence, in a new dimension: not another screen, another STATE of the same screen.",
+   "user-model round-18 signal 'a property fix must ship with its enforcement, or it returns' — I checked whether the enforcement shipped. It did not: fmtPct does not exist, 19 bare .toLocaleString(\"ar-SA\") and the raw-concatenation path both survive.",
+   "user-model round-18 signal 'the loop's own claims are subject to Rule 2' — applied to the commit messages and to visual.note this round."
+  ],
+  "research": [
+   "Independent numeral audit, my own script, NO exclusion list: visible-text-node walk over 6 routes x 3 widths (1440/768/375), plus three channels a text walk misses — CSS ::before/::after content, SVG <text>, and title/aria-label/alt/placeholder/value attributes — plus a hidden-node sweep. 18 route-width pairs.",
+   "Independent column-alignment measurement on #kmon: located the header structurally (it carries NO class, so a '.thead' selector silently finds nothing — the trap that hid this defect for rounds), compared every header/row cell rect and computed grid-template-columns at all three widths, across all rows.",
+   "Independent M3 audit: recomputed all 15 mismatch ratios pixel-by-pixel with Pillow, hashed every baseline/actual pair, and compared file mtimes against the claimed baseline_established timestamps.",
+   "Static audit of src/dashboard.ts for numeric values interpolated into Arabic text position without fmtN — the states a live-DOM count structurally cannot see.",
+   "Live proof-of-defect: fast-forwarded the client-side clock by 12h (in-memory only, no network write, no send) and screenshotted #home's action queue in the state it will be in this afternoon.",
+   "Walked all six screens as the user at 1440, and #kmon/5 + #home + #kmon at 375/768 visually.",
+   "git-verified the change scope: d44236f..825a557 is 4 commits, 22 lines, one file, all anchored single-line string replacements (decision 0001 honoured)."
+  ],
+  "weights": {
+   "skills": 0.4,
+   "research": 0.6
+  }
+ },
+ "per_must_verification": [
+  {
+   "must": "M1 — responsive column alignment on #kmon (re-verify: the numeral sweep touched the same rows)",
+   "verdict": "PASS",
+   "evidence": "Re-measured by me at this commit, not carried over. Note the trap first: the campaigns header carries NO class at all (className === ''), so any '.thead' selector finds zero families on #kmon and reports nothing — which is precisely how this defect survived several UI rounds. I located the header structurally instead (previous grid sibling of .trow.km with equal child count). Result: computed grid-template-columns are IDENTICAL for header and row at every width — 1440 '255.234 146.766 121.234 89.328 89.328 89.344 146.766 44px', 768 and 375 both '198.094 113.906 94.094 69.328 69.328 69.344 113.906 44px' — and every one of the 8 header/row cell pairs matches with dl=0 dw=0 (not 'within 2px' — exactly zero) at 1440, 768 and 375. The audience cell reads «٤» under «الجمهور» at all three widths (@472, @202, @-191). Negative offsets at 768/375 are the intended .ms-scroll horizontal scroller (scrollWidth 900 / clientWidth 702 at 768, 309 at 375); document-level horizontal overflow is FALSE at all three widths, so the page itself never smears. The numeral sweep did not disturb it: the four-commit diff (22 lines) contains no table CSS and no row markup — I grepped the diff for thead/trow/grid-template/max-width:900 and it is empty. M1 stays closed."
+  },
+  {
+   "must": "M2 — one numeral system across the demo path",
+   "verdict": "PASS on the rendered demo path — the must as I scoped and measured it is met; see M4 for the part of the GOAL it does not reach",
+   "evidence": "I re-ran the count my own way and refused the builder's script and its exclusion list. Method: walk every VISIBLE text node in the live DOM (skipping script/style, checking computed display/visibility/opacity and getClientRects on the node and every ancestor), count U+0660-0669 vs ASCII, and dump EVERY ASCII-digit run with its element path and surrounding text — nothing filtered, so I judge each survivor myself. Six routes x three widths. Result (arabic/latin): #home 158/12 · #kmon 25/0 · #kmon/5 66/48 at 1440 and 44/48 at 768+375 · #customer/966500000850 85/12 · #aimkt 40/180 · #kb 13/3 — IDENTICAL at 1440, 768 and 375 on every route. Every single Latin run, enumerated: 15 phone numbers on #aimkt (15 x 12 digits = 180), 4 phone numbers on #kmon/5 (48), 1 phone on #home (the product-manager alert number), 1 phone on #customer, and '2.1.3' inside «lean-proposal-deck-v2.1.3-upload.zip» on #kb. That is all of them. Compare to what I measured at d44236f: #home 107/51 → 158/12(phone only); #aimkt 8/27 → 40/180(phones only); #kb 0/16 → 13/3(filename only); #kmon/5 64/2 → 66/48(phones only). The two survivors I named verbatim in rounds 17-18 are both fixed: «١ توصية» and «⟲ إعادة استهداف هذه الفئة (٤)». So are the ones I listed as ~7 call sites on #home — the KPI band «١ +١٠ تجريبية», the four analytics rate cards now «٪١٠٠/٪١٠٠/٪١٠٠/٪٧٥», the stageBars label that this loop had itself broken into «٣ -25%» and now reads «٣ -٢٥٪», the action-queue pill «١ إجراء», the sandbox toggle «إظهار التجريبية (١٦)». ON YOUR EXCLUSIONS: I did not use them, and having judged every token myself I confirm they were NOT self-serving — a 9665… run and a semver inside a filename are identifiers, not quantities, and stripping them changed no conclusion I reached. AND I CHECKED THE CHANNELS A TEXT COUNT CANNOT SEE, because 'verified one way' is the same failure as 'verified one width': CSS ::before/::after content = 0 digits on all six routes; SVG <text>/<tspan> = 0 Latin (the funnel labels are Arabic-Indic); title/aria-label/alt/placeholder/value attributes = 0; hidden text nodes = 0 (the app re-renders innerHTML per route, so nothing latent hides in the DOM). RULING ON LEGITIMATE SURVIVORS, which you asked for: I accept exactly two classes and they are the two you named — phone numbers (+9665…, an identifier a Saudi reads and dials in Latin) and «lean-proposal-deck-v2.1.3-upload.zip» (a filename; renaming a file to please a numeral policy would be worse). I hold my round-18 position that percentages are NOT a carve-out, and this commit agrees with me: «٪١٠٠» is now the product's own convention on every screen that shows a rate. Latin letters that are not digits — «HIS/ERP», «NVR», «Product Hub», «صحة أعمال Plus», the WhatsApp profile names «Ibrahim»/«Nasser» — are names, not quantities, and are correct as they stand. There is no other Latin digit rendered on any of the six screens at any of the three widths."
+  },
+  {
+   "must": "M3 — evidence honesty at this commit",
+   "verdict": "PASS — and this is the strongest evidence bundle the loop has produced",
+   "evidence": "I did not audit a sample this time; I recomputed ALL 15 ratios pixel-by-pixel from the PNGs on disk with Pillow, and every one of the 15 reproduces to the sixth decimal. Not one number in that file is decorative. I also hashed every baseline/actual pair and read the file mtimes. YOUR THREE CLAIMS, checked one by one. (1) '15 comparisons' — true. (2) '13 real non-zero ratios' — NOT true, and this is a correction, not a catch: 13 rows carry the «real comparison — baseline <ts> predates this round's numeral sweep» note, but only 12 of them are non-zero. The thirteenth, salespath@375, records 0.0. I checked whether that is a re-baseline hiding as a real comparison, because that is exactly round-17's finding: it is NOT. Its baseline was written 2026-08-12T12:50Z, twelve hours BEFORE the actual (2026-08-13T01:16Z), so it cannot be a copy of it; the two files are byte-identical because that viewport's captured region genuinely did not change. It is an honest zero and its note is accurate. Your arithmetic is off by one; the file is not. (3) 'two re-baselined, both recording measured_before_rebaseline and stating the DOM digit audit is what confirms the change' — true and verified: home@768 0.011294 and wizard@768 0.010700, and both notes read «…the change was independently confirmed by a DOM digit audit rather than by the image alone». Their baselines were written 2-4 minutes AFTER their actuals, which is what a re-baseline looks like, and they say so. ROUND-18 RESIDUAL S3, which you asked about: RESOLVED. The kmondetail 768/375 baselines are no longer byte-identical copies of their own actuals — sha differs, and they now carry genuine non-zero ratios (0.001714, 0.002053) against baselines written 2026-08-13T00:45Z, which predates the numeral commits. The baseline_established fields also stopped contradicting the files: every row's stated timestamp is exactly mtime+3h across all 15 rows, i.e. the field is Riyadh local time consistently, not a stale value. ROUND-18 RESIDUAL S4 (stale visual.note): RESOLVED — the note now reads «Round-18 closure: responsive column alignment + a portal-wide numeral sweep. 15 comparisons at 3 viewports over 5 changed surfaces», which is current and arithmetically correct. One residual of my own, a `should`, in the same family as round-17's but far milder: the word «portal-wide» and the phrase «0 Latin digits on 6 screens» are both stated more absolutely than what was measured — the sweep covered six screens' rendered state, not the portal (the import flow and four other call sites were untouched), and the digit audit excluded phone numbers and a version string without saying so. The substance is right; I verified it independently. The wording is wider than the measurement, which is the one habit this loop keeps having to be told about."
+  },
+  {
+   "must": "M4 — NEW. The demo path is unified only in the state I photographed. #home reverts to mixed numerals this afternoon, on a timer, with nobody touching anything.",
+   "verdict": "FAIL — demo-blocking, one line to fix",
+   "evidence": "This is the finding of the round, and it is not a hypothetical. src/dashboard.ts:1460 builds the action-queue item as `(c.waName || c.phone) + \" · \" + Math.round((now - (c.lastEventAt || 0)) / 3600e3) + \" ساعة بلا متابعة\"` — raw concatenation, no fmtN. It renders only when a hot/high-intent contact has been idle more than 24h (the hotIdle predicate at :1446-1450), which is why it is invisible to a count taken now and invisible to every screenshot in the evidence bundle. I evaluated that exact predicate against the live page data: all four qualifying contacts (Ibrahim, Nasser, ابو البراء, ياسمين) share lastEventAt 2026-08-12T11:48Z and were 13.74h idle at the time of audit (2026-08-13T01:33Z). They cross the 24h threshold at 2026-08-13T11:48Z — 14:48 Riyadh, TODAY, ~10 hours after this audit — and nothing can reset the clock, because no inbound message is possible while sends are forbidden. I then PROVED the render rather than arguing it: I aged lastEventAt by 12h in the in-memory client cache and re-rendered (no network write, no API call, no send) and screenshotted the result at .orbit/artifacts/regression/cpo19-home-action-queue-plus12h.png. The card reads «٤ إجراء» in the pill and, in the three rows directly beneath it, «تواصل الآن مع الفرصة المؤهلة — Ibrahim · 26 ساعة بلا متابعة» three times, with a Latin 26. Six Latin digits, in the same card as an Arabic-Indic count, on the landing screen, above the fold, in the demo window. It is also worse than a numeral mismatch: with a Latin name and a Latin number inside an RTL line the bidi reordering shifts the «·» separator between rows, so the three rows do not even punctuate identically. Two more of the same class, both on screens already in the audit set: :1504 renders a loss-cause count raw (`c.count`) and is invisible today only because `winloss.totals.lost === 0` — the first judged loss puts a Latin count on #home's «✕ ما يخسّرنا الصفقات» list; and :919 renders `LIST_CAP` (60) raw in the wizard's «معاينة لأول 60» line, which appears the moment an audience exceeds 60 rows — i.e. on any real customer list, which is the whole point of the product. This is not a new class of defect. It is user-model Rule 6 for the SIXTH consecutive round, in its next dimension: rounds 17-18 missed adjacent SCREENS, this round missed adjacent STATES of the screens it fixed. And it is the direct, predicted consequence of not doing round-18's S6: I ordered the mechanism («add fmtPct, delete every bare toLocaleString and every raw concatenation, so there is exactly one way to render a quantity») and it was not attempted — fmtPct still does not exist, 19 bare .toLocaleString(\"ar-SA\") calls remain beside 53 fmtN calls, and the raw-concatenation path that produced this bug is untouched. Three ways to render a number still coexist in one file, and nothing makes the wrong one hard to write."
+  }
+ ],
+ "grill": [
+  {
+   "lens": "domain",
+   "verdict": "clean",
+   "evidence": "Arabic-Indic numerals with «٪» after the number is the correct MSA/Saudi convention, and the round applied it uniformly — «٪١٠٠», «٣ -٢٥٪», «٩٢٪ درجة معرفة المساعد». Phone numbers left in Latin with dir:ltr is right: a Saudi reads and dials +966… in Latin, and converting it would make it un-dialable. Dates render «١١ أغسطس» and «١٢‏/٨» via ar-SA. The one domain judgement I checked and accepted against my own instinct: the knowledge-bar CSS width stays `width:92%` in Latin while its label reads «٩٢٪» — CSS is not copy, and a sweep that converted it would have shipped a broken bar. That distinction was got right at every one of the 22 sites."
+  },
+  {
+   "lens": "policy",
+   "verdict": "clean",
+   "evidence": "Zero WhatsApp messages sent, by me or by anything I ran — every probe was a GET of /dashboard plus in-page DOM reads; the single mutation was a client-side in-memory field on a throwaway page, which reaches no network. user-model R5 and CLAUDE.md §5 held absolutely. Decision 0001 (dashboard.ts: anchored string replacements only, never range edits) honoured: d44236f..825a557 is 22 changed lines in one file, all single-line anchored replacements — and the smoke gate that exists because of that decision passes 7/7 with 0 runtime errors. Webhook token auth and the opt-out path are untouched by this diff (it contains no src/index.ts or src/agent.ts change). No secret appears in any artifact I wrote; I redacted ADMIN_TOKEN everywhere and my scripts read it from .env at runtime."
+  },
+  {
+   "lens": "product",
+   "verdict": "findings",
+   "findings": [
+    {
+     "severity": "should",
+     "finding": "#kb and #aimkt render «٩٢٪ درجة معرفة المساعد» directly beside «لا معرفة بعد» on the same card, for six of eight services. A high score labelled 'the assistant's knowledge level' sitting next to 'no knowledge yet' is a straight contradiction to a room reading it — the two measure different things (profile completeness vs uploaded KB documents) but share the word «معرفة». Pre-existing, not from this diff, but it is on the demo path and R48 says «fix all issues»."
+    },
+    {
+     "severity": "nice",
+     "finding": "#home shows «الحملات الفعلية ١ +١٠ تجريبية» in the KPI band and «مسار التحويل التسويقي · ٥ حملة» two cards below, under a caption reading «بيانات فعلية فقط». The builder documented the reason in a four-line comment at :1389-1392 and the reasoning is sound (the KPI asks 'is this campaign real?', the funnel asks 'did this launch reach a real person?'), so this is not the one-label-two-numbers defect that comment was written to prevent. But 1 and 5 under «فعلية فقط» will be the first question from the room. A three-word qualifier on the funnel subtitle would close it."
+    }
+   ]
+  },
+  {
+   "lens": "design_ux",
+   "verdict": "findings",
+   "findings": [
+    {
+     "severity": "should",
+     "finding": "#kmon/5 audience table at 375px: the «شوهدت» status chip physically OVERLAPS the customer name — «مركز اليابان الطبي» wraps to three lines and the green chip is painted on top of the middle one, on all four rows. I screenshotted it. Round-18 called this column drift; it is worse than drift, it is a text-on-text collision. Cause: the ≤900px rule at :209 uses bare `fr` tracks (`1.5fr 1.4fr 1.1fr .5fr`) whose implicit min-content floor is exceeded at 375 by «المحادثة ←», so the row's tracks resolve differently from the header's (head 76.3/71.2/56.0/25.5 vs row 62.0/68.8/45.4/52.8). Fix: `minmax(0, …)` on all four tracks. CONFIRMED NOT CAUSED BY THESE COMMITS — the rule dates to 874a130 and the four-commit diff contains no table CSS. At 768 the same table is genuinely production-grade: headers aligned, chips centred, names intact — I screenshotted that too."
+    },
+    {
+     "severity": "should",
+     "finding": "Arabic typo on a line this round edited: :885 reads «لا تقتصر على الخدمةات المدمجة» (should be «الخدمات»). It renders in the campaign wizard's step-1 subtitle, on #aimkt, which is the «إنشاء حملة» destination from the landing screen's primary button. 9f6620d changed the «1»→«١» badge sixty characters to its left and left the typo standing. Under «fix all issues», a misspelling on the primary creation flow is exactly the class of thing the room notices."
+    }
+   ]
+  },
+  {
+   "lens": "system_design",
+   "verdict": "findings",
+   "findings": [
+    {
+     "severity": "should",
+     "finding": "The numeral convention still has no mechanism, four rounds in. src/dashboard.ts holds 53 `fmtN(` calls, 19 bare `.toLocaleString(\"ar-SA\")` calls, and an unbounded number of raw `+ value +` concatenations — three ways to render a quantity, and the wrong one is the shortest to type. Round-18 ordered the fix as S6 (add `fmtPct` owning both digits and the «٪» glyph; delete every bare toLocaleString and every raw concat) and it was not attempted. M4 is that omission cashing out on the landing screen, on a timer. The boring-tech answer is one formatter per quantity kind plus a build-time grep in the existing catalogue-guard shape — the same enforcement pattern this repo already uses to keep PRODUCTS honest."
+    }
+   ]
+  },
+  {
+   "lens": "slop",
+   "verdict": "findings",
+   "findings": [
+    {
+     "severity": "nice",
+     "finding": "Sample-flavoured data is visible on the demo path but it is the user's OWN imported data, not fabricated by the loop, so this is data hygiene rather than slop: «صيدلية الدواء (مثال)» appears twice in the wizard's audience list with «(مثال)» in the name; «clicnic» (misspelled English) is a sector tile on #home's landing analytics; and «القصيم» (a city) and «صغير» (a duplicate of «صغيرة») appear inside the SIZE facet on #aimkt. Nothing here is invented by the system — user-model Rule 2 is intact — but a room reading «clicnic» on the first screen reads it as sloppiness. Ten minutes in the source file, or a one-line normalisation, before he presents."
+    },
+    {
+     "severity": "clean-note",
+     "finding": "Explicitly hunted and NOT found: no filler copy, no lorem, no dead buttons (I clicked nothing that sends, but every control I inspected has a handler), no TODO stubs, no purple-gradient genericism, no fabricated numbers — the 55 QA scenarios assert behaviour and the 15 pixel ratios all reproduce. The diff is 22 lines and every one of them changes a rendered quantity; there is no drive-by refactor, no speculative abstraction, and no comment narrating the obvious. This is disciplined work."
+    }
+   ]
+  },
+  {
+   "lens": "demo_risk",
+   "verdict": "findings",
+   "findings": [
+    {
+     "severity": "must",
+     "finding": "DATED: at 2026-08-13T11:48Z (14:48 Riyadh) #home's action queue starts rendering «26 ساعة بلا متابعة» three times, Latin digits, in the same card as «٤ إجراء». If the demo starts before ~14:45 Riyadh, every screen is clean; after it, the first screen mixes numerals. That is a coin-flip on a one-line fix, hours before he presents — I will not let it ride."
+    },
+    {
+     "severity": "should",
+     "finding": "SECONDARY, both reachable from the landing screen's own buttons: the entity-import flow renders six raw Latin counts in Arabic status copy (:1162 «أُضيف N / حُدّث N / غير صالح N», :1202 «تحقّق من الاسم والجوال في N صف», :1209, :1230-1232 «تُخطّي N», :1243 the toast «استُورد الملف — N جديد، N محدّث»). «استيراد جهات الاستهداف» is the left-hand primary button on #home. If he imports a file live, the confirmation he shows the room counts in Latin."
+    }
+   ]
+  },
+  {
+   "lens": "craft",
+   "verdict": "findings",
+   "findings": [
+    {
+     "severity": "clean-note",
+     "finding": "The craft of what WAS done is high and I want it on the record, because the verdict should not read as a dismissal. Four commits, 22 lines, one file, every one an anchored single-line replacement per decision 0001. Every one of the 22 sites got the display/CSS distinction right — `fmtN(x.sc) + '٪'` in the label while `width:' + x.sc + '%'` stays Latin in the style attribute — which is the exact place a careless sweep ships a collapsed progress bar. The commit messages are specific and scoped («The last Latin digit on the landing screen: the opportunity-count chip beside the sandbox toggle»), a visible correction of round-18's over-broad «one numeral system across the demo path». And the screens that were fixed are genuinely fixed: #kb went 0/16 → clean, #aimkt 8/27 → clean, #home 107/51 → clean, all three verified by me at three widths through four DOM channels."
+    },
+    {
+     "severity": "should",
+     "finding": "The verification method that was used cannot see what it needs to see. A live-DOM digit count only ever measures the states that happen to be rendered at the moment it runs, so it is structurally blind to conditional branches — which is why 1460, 1504 and 919 survived a sweep that its author reasonably believed was complete. The count is the right acceptance check; it is the wrong completeness check. Completeness needs the source-side pass: enumerate every site that concatenates a quantity into Arabic copy, then make the wrong form impossible."
+    }
+   ]
+  }
+ ],
+ "scores": {
+  "intent_fidelity": 8,
+  "completeness": 7,
+  "coherence": 8,
+  "taste": 8,
+  "surprise": 3,
+  "rationale": "intent_fidelity 8 (up from 7, and it clears the bar). What he asked for on the screens he will show is done, and done properly: I counted it myself, four ways, at three widths, with no exclusion list, and every Latin digit left on the six screens is a phone number or a filename version — the two carve-outs I named in round 18 and no others. The screens I flagged as untouched last round (#kb 0/16, #aimkt 8/27) are clean; the two survivors I named verbatim across two rounds («١ توصية», the «(٤)» retarget button) are fixed; the «٣ -25%» label this loop had itself broken now reads «٣ -٢٥٪». It is 8 and not 9 because the intent was «one numeral system on the screens my team sees TODAY», and one of those screens reverts at 14:48 Riyadh today. completeness 7 (unchanged, and the number is a net of two opposite movements — I would rather say that than pretend it is a clean 7). Visible completeness rose a long way: six screens x three widths, plus the two screens round-18 found wholly untouched. Structural completeness did not move at all: round-18's S6 — the mechanism that would have made this the last numeral round — was not attempted, fmtPct does not exist, 19 bare toLocaleString calls and the raw-concatenation path survive, and eight sites still render Latin quantities into Arabic copy, one of them on a timer that expires this afternoon. A property fix that ships its instances without its enforcement is half-shipped, and this is the fourth round of exactly that. coherence 8 (up from 6, the biggest genuine move of the round). The product now counts in one language everywhere a visitor walks: KPI band, analytics rates, funnel and its drop-off, action queue, win/loss chips and win-driver counts, opportunity chip, sandbox toggle, campaign minis, wizard step badges ١/٢/٣, audience facet chips, the retarget button, knowledge scores on both screens that show them. Held below 9 by three things a room will notice — «٩٢٪ درجة معرفة المساعد» beside «لا معرفة بعد», the «الخدمةات» typo on a line this round edited, and «١ حملة فعلية» versus «٥ حملة» a card apart under «بيانات فعلية فقط». taste 8 (up from 7), judged by the user-model and not by me: Rule 1's bar is 'would a best-in-class marketing platform ship this screen', and #kmon/5 at 768 now would — I have the screenshot. Rule 2's bar is met by the loop's own evidence for the first time without qualification: all 15 pixel ratios reproduce exactly, re-baselines are labelled as re-baselines, and the honest-limit prose survived a second round. Held below 9 by the 375 chip-on-name collision and the residual copy defects. surprise 3 (down from 4). Nothing arrived that he did not ask for. That is the right instinct at this hour and I am not penalising it much — but the one unrequested thing that WOULD have delighted him is the mechanism, because it is what stops him hearing about numerals a fifth time, and it was the one thing already on the order list."
+ },
+ "score_movement_ruling": "I said in round 18 that both gating scores were blocked by one thing — #home's numerals — and would clear 8 if it were fixed. #home's numerals ARE fixed, and I have held to that: intent_fidelity moved 7→8 exactly as promised. Completeness did not, and I owe a straight explanation rather than a quiet number. My round-18 sentence was about the visible defect, and the visible defect is gone. But completeness asks whether the goal is WHOLE, and in the same breath as that promise I also wrote the S6 order and the signal 'a property fix must ship with its enforcement, or it returns'. It was not shipped, and it returned — inside ten hours, provably, on the same screen. Scoring completeness 8 now would mean my own recorded diagnosis carries no weight against my own headline promise, which is the kind of inconsistency that makes a gate worthless. So: 7, with both halves of the movement stated. Had S6 been done, this envelope would read ACCEPT at 9/8/8/8/4.",
+ "demo_safety_ruling": {
+  "plain_answer": "Demo-safe right now, at desktop width, on every screen — and I mean that without hedging: I walked all six and every quantity on them reads Arabic-Indic. But it is demo-safe with an expiry time. At 14:48 Riyadh today the landing screen starts mixing numerals by itself, and I cannot tell him his demo is clean without telling him when.",
+  "what_changed_since_round_18": "The exposure I named — #home, «100%» in 30px Latin two clicks from «٪١٠٠» — is closed and I verified it four ways at three widths. #kb and #aimkt, which round-18 found completely untouched, are clean. The campaigns story (list → verdict → audience → conversation → next step) is whole and reads well at 1440 and 768.",
+  "the_one_dated_risk": "src/dashboard.ts:1460. All four hot contacts were last active 2026-08-12T11:48Z and cross the 24h idle threshold at 2026-08-13T11:48Z = 14:48 Riyadh. From that minute, #home's «ما يستحق المتابعة الآن» card shows «٤ إجراء» above three rows reading «… · 26 ساعة بلا متابعة» in Latin. Screenshot: .orbit/artifacts/regression/cpo19-home-action-queue-plus12h.png. Nothing resets the clock, because no inbound message is possible while sends are forbidden.",
+  "if_there_is_time_for_exactly_one_fix": "Wrap :1460's Math.round in fmtN. One line, one anchored replacement, verifiable in ninety seconds by re-running the count with the clock aged. Do :1504 (`fmtN(c.count)`) in the same pass since it is the same class and the same file. That removes the expiry entirely and this becomes an ACCEPT.",
+  "if_there_is_no_time": "He can demo this, with one instruction: if it is past 14:45 Riyadh, do not linger on #home's follow-up card — scroll past it, or open on #kmon. Everything else is clean at desktop width. Avoid a live file import in front of the room (the confirmation counts in Latin), and avoid showing #kmon/5 on a phone at 375 (the status chip sits on top of the customer name). Turn «إظهار التجريبية» ON before presenting, per STATE.md's standing prerequisite, or the win/loss board's loss side is honestly empty.",
+  "correctness_vs_craft": "Unchanged from round 18 and worth repeating: nothing on any screen states a wrong fact. M1's «الجمهور ٪٠» — the one defect that ever put a false claim in front of the room — has stayed closed for two rounds and I re-measured it at zero-pixel precision. What remains is register and craft, which is what R48 is about."
+ },
+ "open_items_ruling": [
+  {
+   "item": "No UI path to create a service",
+   "demo_blocking": false,
+   "status": "OPEN — unchanged",
+   "reason": "PRODUCTS is still a hardcoded array and the catalogue guard enforces it at build time. The demo runs over the six existing services; nothing on screen invites creating one and nothing dead-ends when you don't. A real production gap, not a Thursday gap. Third round with the same ruling."
+  },
+  {
+   "item": "QA D2 — #customers hides the sandbox contacts the one real campaign targets",
+   "demo_blocking": false,
+   "status": "OPEN — downgraded, not dismissed",
+   "reason": "Re-confirmed at this commit: #customers renders showTest=false and the demo path campaign → audience → conversation never breaks, because #kmon/5 lists all four of campaign 5's targets with status, interest column and «المحادثة ←» — I read all four rows again this round at 1440 and 768, and the four phone numbers are the only Latin on that screen. Revisit after the demo."
+  },
+  {
+   "item": "Launch classification proven by code path only",
+   "demo_blocking": false,
+   "status": "OPEN — and correctly left unproven",
+   "reason": "Proving it requires an outbound send, which user-model R5 and CLAUDE.md §5 forbid absolutely and without exception, and which he restated on 2026-08-12 in the strongest terms. It stays unproven and is DECLARED unproven — that is the right outcome, not a gap to argue away. The in-row reclassify control means a misclassification is one click to repair. I will note one adjacent observation I made incidentally, as a post-demo question and not a finding: #home's KPI counts 1 real campaign while the funnel counts 5 launches that reached a non-test contact, which means five campaigns flagged تجريبية reached contacts flagged real. That is contact-level and campaign-level classification disagreeing in the data, and it is worth a look after Thursday."
+  },
+  {
+   "item": "S5 — audience-table drift and chip/name collision at 375 on #kmon/5",
+   "demo_blocking": false,
+   "status": "OPEN — re-found independently, and it is a collision not a drift",
+   "reason": "I found it again from scratch this round (my column measurement flagged head/row grid-template-columns diverging at 375 only) and then screenshotted it: the «شوهدت» chip is painted on top of the wrapped customer name on all four rows. I confirm your attribution: NOT caused by these commits. The ≤900px rule at :209 dates to 874a130, and the four-commit diff contains no table CSS and no audience-table markup — I grepped it. Not demo-blocking at desktop or tablet width (768 is clean and looks genuinely professional); a `should` because 375 is a phone and phones happen."
+  },
+  {
+   "item": "M2 split numeral systems",
+   "demo_blocking": false,
+   "status": "CLOSED for the rendered demo path; reopened as M4 for the conditional states",
+   "reason": "The visible defect is gone and verified. What replaces it is narrower and dated: eight source sites still concatenate a quantity raw, one of which renders on #home this afternoon."
+  }
+ ],
+ "change_orders": [
+  {
+   "priority": "must",
+   "id": "M4",
+   "order": "Wrap the two conditional counters on #home in fmtN, and re-verify with the clock aged rather than with a plain count. (a) src/dashboard.ts:1460 — `Math.round((now - (c.lastEventAt || 0)) / 3600e3)` becomes `fmtN(Math.round((now - (c.lastEventAt || 0)) / 3600e3))`. This is the one that fires at 2026-08-13T11:48Z on the landing screen. (b) src/dashboard.ts:1504 — the loss-cause `c.count` in «✕ ما يخسّرنا الصفقات» becomes `fmtN(c.count)`; invisible today only because `winloss.totals.lost === 0`. Anchored single-line replacements, decision 0001. VERIFY THE WAY I DID, because a plain count cannot see either of these: load #home, subtract 12h from every `cache.contacts[].lastEventAt` in memory, call `render(false)`, and assert zero Latin digits in the «ما يستحق المتابعة الآن» card. My screenshot of the failing state is at .orbit/artifacts/regression/cpo19-home-action-queue-plus12h.png — reproduce it clean."
+  },
+  {
+   "priority": "should",
+   "id": "S1",
+   "order": "Do round-18's S6 now, in the same pass — it is the fourth round of this defect and it is the reason M4 exists. Add `fmtPct(n)` beside `fmtN` at src/dashboard.ts:379 owning BOTH the Arabic-Indic digits and the «٪» glyph; route all 11 «٪» sites through it; replace all 19 bare `.toLocaleString(\"ar-SA\")` calls with `fmtN`; and sweep every remaining raw `+ <quantity> +` into Arabic copy. Then make the wrong form impossible rather than merely discouraged: add a grep-based check in the shape of the existing catalogue guard that fails the build on a bare `.toLocaleString(\"ar-SA\")` in dashboard.ts. A convention that has leaked four times is not a convention."
+  },
+  {
+   "priority": "should",
+   "id": "S2",
+   "order": "Convert the seven remaining raw quantity sites, all reachable from the landing screen's own two buttons: :919 «معاينة لأول 60» (`LIST_CAP`, appears on any audience over 60 rows — i.e. any real customer list); :1162 «أُضيف N / حُدّث N / غير صالح N»; :1202 «تحقّق من الاسم والجوال في N صف»; :1209 «أُضيف N / حُدّث N»; :1230-1232 «أُضيف N / حُدّث N / تُخطّي N»; :1243 the toast «استُورد الملف — N جديد، N محدّث». «استيراد جهات الاستهداف» is the primary button on #home; if he imports a file live, the confirmation he shows the room counts in Latin."
+  },
+  {
+   "priority": "should",
+   "id": "S3",
+   "order": "Fix the 375px collision on #kmon/5's audience table: in the `@media (max-width: 900px)` rule at src/dashboard.ts:209, change `grid-template-columns: 1.5fr 1.4fr 1.1fr .5fr` to `minmax(0, 1.5fr) minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, .5fr)` on the `.thead, .trow:not(.km)` selector. The bare `fr` tracks carry an implicit min-content floor that «المحادثة ←» exceeds at 375, so the row resolves 62.0/68.8/45.4/52.8 while the header resolves 76.3/71.2/56.0/25.5 and the «شوهدت» chip lands on top of the customer name. Verify at 375 by asserting header and row `gridTemplateColumns` are string-equal — that single assertion would have caught both this and the M1 defect."
+  },
+  {
+   "priority": "should",
+   "id": "S4",
+   "order": "Fix the Arabic typo at src/dashboard.ts:885: «لا تقتصر على الخدمةات المدمجة» → «لا تقتصر على الخدمات المدمجة». It renders in the campaign wizard's step-1 subtitle on #aimkt, the destination of #home's primary «إنشاء حملة» button. Commit 9f6620d edited this same line and stepped over it."
+  },
+  {
+   "priority": "should",
+   "id": "S5",
+   "order": "Resolve the «معرفة» collision on #kb and #aimkt: six of eight service cards render «٩٢٪ درجة معرفة المساعد» directly beside «لا معرفة بعد». Two different measures sharing one word read as a contradiction. Rename one of them — e.g. the score to «اكتمال ملف الخدمة» and keep «لا معرفة بعد» for the missing KB documents — or merge them into one honest line."
+  },
+  {
+   "priority": "should",
+   "id": "S6",
+   "order": "Narrow two claims in .orbit/qa/delivery-evidence.json to what was actually measured, per user-model Rule 2 applied to the loop's own evidence. `visual.note` says «a portal-wide numeral sweep»: it covered six screens' rendered state, not the portal — say «the six demo-path screens». Both re-baseline notes say «confirmed by a DOM digit audit (0 Latin digits on 6 screens)»: the audit excluded phone numbers, 9+ digit runs and semver without disclosing it — say «0 Latin digits other than phone numbers and one filename version string». I verified the underlying facts independently and they hold; it is the wording that is wider than the measurement, which is the exact habit round-18 flagged."
+  },
+  {
+   "priority": "nice",
+   "id": "N1",
+   "order": "Qualify the funnel subtitle on #home: «مسار التحويل التسويقي · ٥ حملة» sits two cards below «الحملات الفعلية ١» under a caption reading «بيانات فعلية فقط». The comment at :1389-1392 explains why the two counts differ and the reasoning is right; put three words of it on screen — «٥ حملة وصلت جهات فعلية» — so the room does not have to ask."
+  },
+  {
+   "priority": "nice",
+   "id": "N2",
+   "order": "Ten minutes of data hygiene before he presents, since these render on the first screen and the wizard: «clicnic» as a sector tile on #home's analytics, «القصيم» (a city) inside the SIZE facet on #aimkt, «صغير» duplicating «صغيرة», and two audience rows literally named «صيدلية الدواء (مثال)». All of it is his own imported data rather than anything the loop invented, so Rule 2 is intact — but it reads as sloppiness in a room."
+  }
+ ],
+ "user_model_updates": [
+  "2026-08-13 round-19 @825a557 [against Rule 6, SIXTH consecutive occurrence — rule holds, next dimension]: the leak-vs-spill pattern has moved from adjacent SCREENS to adjacent STATES of the same screen. Rounds 17-18 fixed #kmon and left #kmon/<id>, fixed #kmon/<id> and left #home. Round 19 fixed #home's rendered state and left #home's conditional state: src/dashboard.ts:1460 renders «26 ساعة بلا متابعة» in raw Latin whenever a hot contact passes 24h idle, which for the live data happens at 2026-08-13T11:48Z — inside the demo window. Generalisation to carry: enumerating the surfaces in the user's traversal order (round-18's lesson) is necessary and not sufficient; a defect class defined by a CONDITION must be enumerated from the SOURCE, because a live-DOM count can only ever measure the branch that happens to be rendered. Acceptance check ≠ completeness check.",
+  "2026-08-13 round-19 @825a557 [new — an ordered mechanism that is skipped comes back as the same bug, one round later, with a timestamp]: round-18's S6 asked for fmtPct plus deletion of every bare toLocaleString and raw concatenation, on the explicit stated ground that «a convention that has leaked three times is not a convention». It was not attempted — fmtPct does not exist, 19 bare toLocaleString calls remain beside 53 fmtN calls, the raw-concat path is untouched — and the very next round produced M4 from that untouched path. This is now the second consecutive round in which the CPO diagnosed the mechanism gap and the loop shipped instances instead. Process lesson for the orchestrator, not for the builder: when a CPO order distinguishes an INSTANCE order from a MECHANISM order, the mechanism order cannot be silently deferred to the next round — it is the one that ends the series.",
+  "2026-08-13 round-19 @825a557 [closes the round-17 evidence-integrity caution — do NOT promote to a rule]: round-17 caught the delivery-evidence file asserting a measurement it had not made, and said a second occurrence would promote it. There has now been no second occurrence in two consecutive rounds, and this round is the strongest bundle the loop has produced: I recomputed ALL 15 pixel ratios myself and every one reproduces to six decimals; re-baselines are labelled as re-baselines with measured_before_rebaseline; round-18's byte-identical-baseline residual is resolved; the stale visual.note is rewritten and accurate. The caution is closed as corrected. What survives is smaller and belongs to the loop's PROSE, not its numbers: «portal-wide» and «0 Latin digits on 6 screens» are still stated wider than measured. That keeps the round-18 signal 'the loop's own claims are subject to Rule 2' alive at two occurrences, one short of a rule.",
+  "2026-08-13 round-19 @825a557 [new — the loop's self-measurement is trustworthy on this axis; recorded because a gate that only ever reports distrust is not calibrated]: I refused the builder's digit script and its exclusion list (phones, 9+ digit runs, semver) and counted from scratch with nothing filtered, then added three channels the builder's method never touched — CSS pseudo-element content, SVG text, and title/aria/alt/placeholder attributes. My independent count reproduced the builder's conclusion exactly, and the exclusions proved substantively correct rather than self-serving: every excluded token is an identifier a Saudi reader wants in Latin. Carry forward: challenge the loop's exclusion lists by re-deriving them, and say so plainly when they survive."
+ ],
+ "verdict_rules_applied": {
+  "accept_precondition_qa": "MET — delivery-quality-gate exit 0 at 825a557; envelope binds path + commit + sha256; I opened the raw artifacts and recomputed all 15 ratios rather than reading the verdict field.",
+  "accept_precondition_memory": "MET — user_memory status exit 0, latest request (36) reviewed, zero pending events, checkpoint sha bound.",
+  "accept_score_gate": "NOT MET — completeness 7 (< 8). intent_fidelity 8 clears.",
+  "accept_findings_gate": "NOT MET — one open `must` (M4, demo_risk + per-must M4). Per the playbook an unresolved must makes ACCEPT impossible.",
+  "iterate_vs_redevelop": "ITERATE, and comfortably: the approach is right, the shape is right, and the remaining work is one line for the blocker plus a formatter and a build-time grep for the class. REDEVELOP would be dishonest — this is two commits from done.",
+  "why_not_accept_with_a_note": "Because the failure is dated, not probabilistic. I can tell him the exact minute the landing screen breaks its own convention, and the fix is one anchored replacement. A gate that waves that through hours before a demo is not a gate."
+ },
+ "user_impact_summary_ar": "الخلاصة: الشاشات الستّ الآن بنظام أرقام عربي واحد — تحقّقتُ بنفسي، بأداتي لا بأداة الفريق، وبدون أي استثناءات مسبقة، على ثلاثة عروض (١٤٤٠ و٧٦٨ و٣٧٥) وعبر أربع قنوات في الصفحة (النصوص، وعناصر CSS الزائفة، ونصوص SVG، وسمات العناصر). كل رقم لاتيني متبقٍّ هو رقم جوال أو اسم ملف «lean-proposal-deck-v2.1.3» — ولا شيء غيرهما. الشاشة الرئيسية كانت ١٠٧ عربي مقابل ٥١ لاتيني قبل جولتين، وهي اليوم نظيفة تمامًا. وجدول الحملات مضبوط تمامًا: العنوان فوق خانته بفارق صفر بكسل على العروض الثلاثة، و«الجمهور ٤» في مكانه. وأدلّة الجودة صادقة بالكامل: أعدتُ حساب النِّسَب الخمس عشرة بكسلًا بكسل، وتطابقت كلّها.\n\nلكنني لا أستطيع أن أعتمدها بعد، لسبب واحد محدَّد بالساعة: في الساعة ٢:٤٨ ظهرًا بتوقيت الرياض اليوم، تبدأ بطاقة «ما يستحق المتابعة الآن» في الصفحة الرئيسية بعرض «26 ساعة بلا متابعة» بأرقام لاتينية ثلاث مرات، بجوار «٤ إجراء» بالعربية — في البطاقة نفسها. ليس احتمالًا: العملاء الأربعة المهتمّون آخر نشاط لهم أمس ٢:٤٨ ظهرًا، والعدّاد يعبر أربعًا وعشرين ساعة في تلك الدقيقة، ولا شيء يعيد ضبطه لأننا لا نرسل. صوّرتُ الشاشة في تلك الحالة لإثباتها. الإصلاح سطر واحد.\n\nما يعنيه هذا للعرض: إن كان العرض قبل الثانية والنصف ظهرًا فكل شيء نظيف. وإن كان بعدها، إمّا سطر واحد يُصلحه، أو ابدأ العرض من شاشة «متابعة الحملات» بدل الرئيسية. وتجنّب استيراد ملف أمام الحضور (رسالة التأكيد تعدّ باللاتينية)، وتجنّب فتح تفاصيل الحملة على الجوال بعرض ٣٧٥ (وسم «شوهدت» يركب على اسم العميل — عيب قديم لا علاقة له بتعديلات اليوم). لا شيء في العرض يذكر معلومة خاطئة؛ ما تبقّى مسألة اتّساق وحرفة، وهي بالضبط ما طلبته.\n\nوملاحظة واحدة تخصّ الطريقة لا النتيجة: هذه رابع جولة يعود فيها العيب نفسه، لأن الملف فيه ثلاث طرق مختلفة لكتابة رقم على الشاشة ولا شيء يمنع الطريقة الخاطئة. طلبتُ الآلية في الجولة الماضية ولم تُنفَّذ، فعاد العيب. مع السطر الواحد، نفّذوا الآلية أيضًا — وإلا سنلتقي هنا مرّة خامسة.",
+ "on_duty": {
+  "status": "OPEN — the goal is not parked",
+  "next": "Re-enter build with M4 (one line) and S1 (the mechanism). On the next commit I will re-run the aged-clock check on #home's action queue, re-run my no-exclusion digit count on all six screens at three widths, and re-verify that the header/row gridTemplateColumns assertion holds at 375 on both table families. Given M4 alone, this becomes ACCEPT.",
+  "artifacts_written": [
+   ".orbit/artifacts/regression/cpo19-home-action-queue-plus12h.png — the proof screenshot of the dated defect",
+   ".orbit/artifacts/regression/cpo19-digit-audit.txt — my own no-exclusion count, 6 routes x 3 widths, every Latin run enumerated",
+   ".orbit/artifacts/regression/cpo19-column-alignment.txt — my own header/row measurement on both table families at 3 widths",
+   ".orbit/artifacts/regression/cpo19-ratio-recompute.txt — all 15 pixel ratios recomputed from the PNGs"
+  ]
+ }
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "round": 16,
+  "commit": "a71cd51",
+  "verdict": "IN_PROGRESS — stub written early per instruction; overwritten on completion",
+  "reviewed_at": "2026-08-12T00:00:00Z",
+  "note": "If this stub is the final state, the review was interrupted. Nothing below was verified."
+}

@@ -1,0 +1,24 @@
+--- the 6 strings safety-gate proved were swallowed (must now be OPT_OUT) ---
+  OK   OPT_OUT    "proxy unsubscribe"
+  OK   OPT_OUT    "proxy remove me"
+  OK   OPT_OUT    "proxy stop messaging me"
+  OK   OPT_OUT    "proxy لا تراسلني"
+  OK   OPT_OUT    "بروكسي أوقفوا الرسائل"
+  OK   OPT_OUT    "proxy الغاء الاشتراك"
+
+--- genuine activation still handled (first turn) ---
+  OK   ACTIVATION "Proxy Massar"
+  OK   ACTIVATION "proxy massar"
+  OK   ACTIVATION "بروكسي مسار"
+  OK   ACTIVATION "PROXY MASSAR"
+
+--- «proxy …» later in a conversation is the CUSTOMER talking, not plumbing ---
+  OK   MODEL      "proxy massar" @ turn 5
+
+--- normal traffic unaffected ---
+  OK   MODEL      "عندكم نظام صحة؟"
+  OK   MODEL      "مرحبا"
+  OK   MODEL      "أبغى أشترك"
+
+ORDERING MATRIX PASS 14/14
+exit=0

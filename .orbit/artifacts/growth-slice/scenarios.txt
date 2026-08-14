@@ -1,0 +1,47 @@
+Growth slice — live scenario evidence @48bba0c→120058c (massar-engine.fly.dev, 2026-08-11)
+
+SC-G1 happy — PM lead alert (R20 "what is the next action" / R22 "add PM phone number")
+  NOTIFY_NUMBER=966559402621 (fly secret + .env). Simulated REAL v3 webhook inbound from
+  966500000777 («عيادة الاختبار للتجميل»): «…أبغى أشترك فورًا لعيادتنا. كم السعر وكيف نبدأ اليوم؟»
+  → agent tagged (الإجازات المرضية, hot) → notifyLead sent the lead card to the PM's WhatsApp
+  (delivered — team opted-in number), transcript marker «[أُبلغ المدير: عميل جاد]», event kind
+  lead_alert recorded. Home «عملاء جادّون الآن» lists the lead w/ its last message + 🔔 footer
+  showing the configured PM number (visible in actual-home-1440x900.png).
+
+SC-G2 alternate — throttle holds on immediate escalation
+  Same turn continued to outcome:handoff seconds later. /admin/state: outcome handoff, tags
+  [(الإجازات المرضية, hot)], transcript contains EXACTLY ONE «أُبلغ المدير» marker — the 6h
+  per-contact throttle suppressed the duplicate; handoff still recorded. Self-alert guard:
+  contact.phone === notifyNumber returns early (code @48bba0c agent.ts).
+
+SC-G3 happy — R21 "file embedded in the message + show buttons"
+  POST /admin/campaign/launch {1 target: 966559402621 عبدالعزيز, product الإجازات المرضية}
+  → {"campaignId":3,"requested":1,"sent":1,"failed":[]}
+  Transcript (last entry): «مرحبًا عبدالعزيز 👋 … [مرفق: الإجازات-المرضية-تعريفي.pdf]
+  [أزرار: أرغب بعرض تعريفي | أرسلوا التفاصيل | ليس الآن]» — the PRIMARY quick_reply-document
+  path succeeded (one bubble: PDF header + caption + 3 buttons; no fallback marker).
+  statusTimes gained delivered/read. Wizard preview now renders the embedded-file pill +
+  the same 3 buttons (aimkt3 captures).
+
+SC-G4 happy — retargeting (browser)
+  #kmon/1 → button «⟲ إعادة استهداف هذه الفئة (1)» → hash #aimkt, gold cohort card
+  «إعادة استهداف: الكل — ١ جهة … من حملة "حملة تجريبية — نظام الحملات الجديد"», campaign
+  name prefilled «إعادة استهداف — الكل — حملة تجريبية…», launch modal count = 1, CANCELLED
+  (no send). Screenshot actual-retarget-wizard-1440x900.png. 0 console errors.
+
+SC-G5 failure_recovery — alert independent of failing downstream send
+  The simulated lead's number is NOT sandbox-opted: the agent's reply send fails (async DLR
+  1008 path — the known sandbox behavior), yet the PM alert had already delivered and the
+  engine stayed healthy: /health ok:true outbound:true db:true immediately after. The launch
+  path additionally carries a 3-step capability ladder (quick_reply-document → document+caption
+  → plain text) so a rejected rich shape degrades instead of failing the send (code @48bba0c).
+
+Reviewer must-fix verification (repros from review.md, run against fixed dist @48bba0c):
+  numeric cell 966512345678 → "966512345678" exact (was corrupt "96651211"); literal
+  "9.66512E+11" text → skipped «جوال بصيغة رقمية تالفة … نسّق العمود كنص»; headers
+  [الاسم, رقم السجل, الواتساب] → phone col = الواتساب, رقم السجل demoted to attr;
+  normalizePhone('9660512345678')=966512345678, paste '0512345678' ≡ file import identity.
+
+Hygiene: the only WhatsApp sends were to the PM's own opted-in number (alert + 1-target
+launch demo) — sandbox self-tests, pre-authorized; retarget modal cancelled; no real-customer
+contact. Console errors: 0 across all 10 captures + interaction runs.

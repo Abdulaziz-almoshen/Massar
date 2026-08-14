@@ -1,0 +1,152 @@
+═══ M2 · numeral audit — 6 routes × 3 viewports, my own visible-text-node walk, nothing filtered
+
+  ── viewport 1440x900 ──
+    #home                        arabic-indic=158   latin=12   
+        LATIN ['966559402621']  «+966559402621»  [b<div<div.card]
+    #kmon                        arabic-indic=25    latin=0    
+        M1 header/row: identical=True  cols=255.234px 146.766px 121.234px 89.3281px 89.3281px 89.3438px 146.766px 
+           headerClass='(none)'  cells=8  docHOverflow=False
+           misaligned cell pairs: none — every pair dl=0 dw=0
+    #customers                   arabic-indic=2     latin=185  
+        LATIN ['05', '966']  «· التكرار يُحدَّث · أرقام 05 تتحول لـ966»  [div<div.card<div.body]
+        LATIN ['966535106365']  «+966535106365»  [span<div<div.tblwrap]
+        LATIN ['966556911173']  «+966556911173»  [span<div<div.tblwrap]
+        LATIN ['966502444737']  «+966502444737»  [span<div<div.tblwrap]
+        LATIN ['966543464327']  «+966543464327»  [span<div<div.tblwrap]
+        LATIN ['966512345004']  «+966512345004»  [span<div<div.tblwrap]
+        LATIN ['966501112233']  «+966501112233»  [span<div<div.tblwrap]
+        LATIN ['966559402621']  «+966559402621»  [span<div<div.tblwrap]
+        LATIN ['966512345002']  «+966512345002»  [span<div<div.tblwrap]
+        LATIN ['966598765432']  «+966598765432»  [span<div<div.tblwrap]
+        LATIN ['966512345001']  «+966512345001»  [span<div<div.tblwrap]
+        LATIN ['966512345678']  «+966512345678»  [span<div<div.tblwrap]
+        LATIN ['966512340099']  «+966512340099»  [span<div<div.tblwrap]
+        LATIN ['966512345005']  «+966512345005»  [span<div<div.tblwrap]
+        LATIN ['966512345003']  «+966512345003»  [span<div<div.tblwrap]
+        LATIN ['966592681957']  «+966592681957»  [span<div<div.tblwrap]
+    #aimkt                       arabic-indic=38    latin=180  
+        LATIN ['966535106365']  «+966535106365»  [span<div<div.ms-scroll]
+        LATIN ['966556911173']  «+966556911173»  [span<div<div.ms-scroll]
+        LATIN ['966502444737']  «+966502444737»  [span<div<div.ms-scroll]
+        LATIN ['966543464327']  «+966543464327»  [span<div<div.ms-scroll]
+        LATIN ['966512345004']  «+966512345004»  [span<div<div.ms-scroll]
+        LATIN ['966501112233']  «+966501112233»  [span<div<div.ms-scroll]
+        LATIN ['966559402621']  «+966559402621»  [span<div<div.ms-scroll]
+        LATIN ['966512345002']  «+966512345002»  [span<div<div.ms-scroll]
+        LATIN ['966598765432']  «+966598765432»  [span<div<div.ms-scroll]
+        LATIN ['966512345001']  «+966512345001»  [span<div<div.ms-scroll]
+        LATIN ['966512345678']  «+966512345678»  [span<div<div.ms-scroll]
+        LATIN ['966512340099']  «+966512340099»  [span<div<div.ms-scroll]
+        LATIN ['966512345005']  «+966512345005»  [span<div<div.ms-scroll]
+        LATIN ['966512345003']  «+966512345003»  [span<div<div.ms-scroll]
+        LATIN ['966592681957']  «+966592681957»  [span<div<div.ms-scroll]
+    #kb                          arabic-indic=13    latin=3    
+        LATIN ['2', '1', '3']  «lean-proposal-deck-v2.1.3-upload.zip»  [span<div<div]
+    #customer/966500000850       arabic-indic=85    latin=12   
+        LATIN ['966500000850']  «+966500000850»  [div<div<div]
+    #kmon/11                     arabic-indic=66    latin=12   
+        LATIN ['966502444737']  «+966502444737»  [div.ph<div<div.cust]
+        S5 audience table: rows=1  chip/name collisions=0
+    runtime errors at 1440x900: 0 []
+
+  ── viewport 768x1024 ──
+    #home                        arabic-indic=158   latin=12   
+        LATIN ['966559402621']  «+966559402621»  [b<div<div.card]
+    #kmon                        arabic-indic=25    latin=0    
+        M1 header/row: identical=True  cols=198.094px 113.906px 94.0938px 69.3281px 69.3281px 69.3438px 113.906px 
+           headerClass='(none)'  cells=8  docHOverflow=False
+           misaligned cell pairs: none — every pair dl=0 dw=0
+    #customers                   arabic-indic=2     latin=185  
+        LATIN ['05', '966']  «· التكرار يُحدَّث · أرقام 05 تتحول لـ966»  [div<div.card<div.body]
+        LATIN ['966535106365']  «+966535106365»  [span<div<div.tblwrap]
+        LATIN ['966556911173']  «+966556911173»  [span<div<div.tblwrap]
+        LATIN ['966502444737']  «+966502444737»  [span<div<div.tblwrap]
+        LATIN ['966543464327']  «+966543464327»  [span<div<div.tblwrap]
+        LATIN ['966512345004']  «+966512345004»  [span<div<div.tblwrap]
+        LATIN ['966501112233']  «+966501112233»  [span<div<div.tblwrap]
+        LATIN ['966559402621']  «+966559402621»  [span<div<div.tblwrap]
+        LATIN ['966512345002']  «+966512345002»  [span<div<div.tblwrap]
+        LATIN ['966598765432']  «+966598765432»  [span<div<div.tblwrap]
+        LATIN ['966512345001']  «+966512345001»  [span<div<div.tblwrap]
+        LATIN ['966512345678']  «+966512345678»  [span<div<div.tblwrap]
+        LATIN ['966512340099']  «+966512340099»  [span<div<div.tblwrap]
+        LATIN ['966512345005']  «+966512345005»  [span<div<div.tblwrap]
+        LATIN ['966512345003']  «+966512345003»  [span<div<div.tblwrap]
+        LATIN ['966592681957']  «+966592681957»  [span<div<div.tblwrap]
+    #aimkt                       arabic-indic=38    latin=180  
+        LATIN ['966535106365']  «+966535106365»  [span<div<div.ms-scroll]
+        LATIN ['966556911173']  «+966556911173»  [span<div<div.ms-scroll]
+        LATIN ['966502444737']  «+966502444737»  [span<div<div.ms-scroll]
+        LATIN ['966543464327']  «+966543464327»  [span<div<div.ms-scroll]
+        LATIN ['966512345004']  «+966512345004»  [span<div<div.ms-scroll]
+        LATIN ['966501112233']  «+966501112233»  [span<div<div.ms-scroll]
+        LATIN ['966559402621']  «+966559402621»  [span<div<div.ms-scroll]
+        LATIN ['966512345002']  «+966512345002»  [span<div<div.ms-scroll]
+        LATIN ['966598765432']  «+966598765432»  [span<div<div.ms-scroll]
+        LATIN ['966512345001']  «+966512345001»  [span<div<div.ms-scroll]
+        LATIN ['966512345678']  «+966512345678»  [span<div<div.ms-scroll]
+        LATIN ['966512340099']  «+966512340099»  [span<div<div.ms-scroll]
+        LATIN ['966512345005']  «+966512345005»  [span<div<div.ms-scroll]
+        LATIN ['966512345003']  «+966512345003»  [span<div<div.ms-scroll]
+        LATIN ['966592681957']  «+966592681957»  [span<div<div.ms-scroll]
+    #kb                          arabic-indic=13    latin=3    
+        LATIN ['2', '1', '3']  «lean-proposal-deck-v2.1.3-upload.zip»  [span<div<div]
+    #customer/966500000850       arabic-indic=85    latin=12   
+        LATIN ['966500000850']  «+966500000850»  [div<div<div]
+    #kmon/11                     arabic-indic=62    latin=12   
+        LATIN ['966502444737']  «+966502444737»  [div.ph<div<div.cust]
+        S5 audience table: rows=1  chip/name collisions=0
+    runtime errors at 768x1024: 0 []
+
+  ── viewport 375x812 ──
+    #home                        arabic-indic=158   latin=12   
+        LATIN ['966559402621']  «+966559402621»  [b<div<div.card]
+    #kmon                        arabic-indic=25    latin=0    
+        M1 header/row: identical=True  cols=198.094px 113.906px 94.0938px 69.3281px 69.3281px 69.3438px 113.906px 
+           headerClass='(none)'  cells=8  docHOverflow=False
+           misaligned cell pairs: none — every pair dl=0 dw=0
+    #customers                   arabic-indic=2     latin=185  
+        LATIN ['05', '966']  «· التكرار يُحدَّث · أرقام 05 تتحول لـ966»  [div<div.card<div.body]
+        LATIN ['966535106365']  «+966535106365»  [span<div<div.tblwrap]
+        LATIN ['966556911173']  «+966556911173»  [span<div<div.tblwrap]
+        LATIN ['966502444737']  «+966502444737»  [span<div<div.tblwrap]
+        LATIN ['966543464327']  «+966543464327»  [span<div<div.tblwrap]
+        LATIN ['966512345004']  «+966512345004»  [span<div<div.tblwrap]
+        LATIN ['966501112233']  «+966501112233»  [span<div<div.tblwrap]
+        LATIN ['966559402621']  «+966559402621»  [span<div<div.tblwrap]
+        LATIN ['966512345002']  «+966512345002»  [span<div<div.tblwrap]
+        LATIN ['966598765432']  «+966598765432»  [span<div<div.tblwrap]
+        LATIN ['966512345001']  «+966512345001»  [span<div<div.tblwrap]
+        LATIN ['966512345678']  «+966512345678»  [span<div<div.tblwrap]
+        LATIN ['966512340099']  «+966512340099»  [span<div<div.tblwrap]
+        LATIN ['966512345005']  «+966512345005»  [span<div<div.tblwrap]
+        LATIN ['966512345003']  «+966512345003»  [span<div<div.tblwrap]
+        LATIN ['966592681957']  «+966592681957»  [span<div<div.tblwrap]
+    #aimkt                       arabic-indic=38    latin=180  
+        LATIN ['966535106365']  «+966535106365»  [span<div<div.ms-scroll]
+        LATIN ['966556911173']  «+966556911173»  [span<div<div.ms-scroll]
+        LATIN ['966502444737']  «+966502444737»  [span<div<div.ms-scroll]
+        LATIN ['966543464327']  «+966543464327»  [span<div<div.ms-scroll]
+        LATIN ['966512345004']  «+966512345004»  [span<div<div.ms-scroll]
+        LATIN ['966501112233']  «+966501112233»  [span<div<div.ms-scroll]
+        LATIN ['966559402621']  «+966559402621»  [span<div<div.ms-scroll]
+        LATIN ['966512345002']  «+966512345002»  [span<div<div.ms-scroll]
+        LATIN ['966598765432']  «+966598765432»  [span<div<div.ms-scroll]
+        LATIN ['966512345001']  «+966512345001»  [span<div<div.ms-scroll]
+        LATIN ['966512345678']  «+966512345678»  [span<div<div.ms-scroll]
+        LATIN ['966512340099']  «+966512340099»  [span<div<div.ms-scroll]
+        LATIN ['966512345005']  «+966512345005»  [span<div<div.ms-scroll]
+        LATIN ['966512345003']  «+966512345003»  [span<div<div.ms-scroll]
+        LATIN ['966592681957']  «+966592681957»  [span<div<div.ms-scroll]
+    #kb                          arabic-indic=13    latin=3    
+        LATIN ['2', '1', '3']  «lean-proposal-deck-v2.1.3-upload.zip»  [span<div<div]
+    #customer/966500000850       arabic-indic=85    latin=12   
+        LATIN ['966500000850']  «+966500000850»  [div<div<div]
+    #kmon/11                     arabic-indic=62    latin=12   
+        LATIN ['966502444737']  «+966502444737»  [div.ph<div<div.cust]
+        S5 audience table: rows=1  chip/name collisions=0
+    runtime errors at 375x812: 0 []
+
+═══ import-result chips — the shipped expression at :1162 evaluated verbatim (no fetch, no write)
+    rendered: «أُضيف 128 حُدّث 34 غير صالح 6»
+    LATIN runs: ['128', '34', '6']

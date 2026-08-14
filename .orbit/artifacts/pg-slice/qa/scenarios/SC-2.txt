@@ -1,0 +1,3 @@
+SC-2 alternate: v2 Gupshup-format read event for same contact -> also parsed
+{"status":"ok"}
+statuses now: ['delivered', 'read']

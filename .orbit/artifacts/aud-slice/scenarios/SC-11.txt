@@ -1,0 +1,4 @@
+SC-11 (dead-air fix, live): handoff no longer mutes
+before: outcome=handoff human=True — real messages أبغى عرض تعريفي/الو؟/الو unanswered
+action: deploy 43a9717 + POST /admin/contact/human human=false + replay real «الو»
+after: human=False, turns 3→4, agent reply: 'أهلًا مجمع عبدالعزيز الطبي، أعتذر عن التأخير. تم إشعار المختص لترتيب عرض تعريفي...'

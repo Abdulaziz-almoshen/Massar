@@ -1,0 +1,3 @@
+SC-4 boundary: launch caps — 51 targets rejected; empty targets rejected
+51 targets -> 400 {"error":"launch cap: 50 recipients per launch"}
+empty -> 400

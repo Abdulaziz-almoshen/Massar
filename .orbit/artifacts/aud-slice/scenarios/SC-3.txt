@@ -1,0 +1,2 @@
+SC-3 negative: import garbage lines -> counted invalid, none stored
+{"added":0,"skipped":0,"invalid":3,"invalidLines":["سطر بلا رقم","، 123","فقط اسم"]}

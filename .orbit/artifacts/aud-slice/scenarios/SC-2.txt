@@ -1,0 +1,2 @@
+SC-2 alternate: campaign launch to 1 opted-in target ({name} personalization)
+{"requested":1,"sent":1,"failed":[]}

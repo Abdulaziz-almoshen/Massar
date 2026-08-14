@@ -1,0 +1,33 @@
+# Secrets — never commit. massar-engine/.env holds OPENAI_API_KEY, GUPSHUP_API_KEY,
+# WEBHOOK_TOKEN, ADMIN_TOKEN (CLAUDE.md §4). Belt-and-braces: massar-engine is a nested
+# repo with its own .gitignore, but this must hold if that ever changes.
+.env
+*.env
+!*.env.example
+
+# Build + dependency output
+node_modules/
+dist/
+*.log
+
+# Session-local Orbit state — never shared, and the lock is per-machine
+.orbit/locks/
+.orbit/archive/
+__pycache__/
+*.pyc
+
+# Evidence binaries: 365 PNGs / ~28M, regenerated every round, and the dashboard
+# captures contain real customer phone numbers and Arabic transcripts. Markdown and
+# JSON under .orbit/artifacts/ (BENCHMARK.md, VOICE-REFERENCE.md, …) stay tracked.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+
+.DS_Store
+
+# massar-engine is its own git repo (own history, no remote). Tracking it here would
+# only ever be an unresolvable gitlink that churns on every engine commit.
+# Independent QA targets that repo directly.
+massar-engine/

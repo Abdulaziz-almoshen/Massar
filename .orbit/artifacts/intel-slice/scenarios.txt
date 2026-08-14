@@ -1,0 +1,7 @@
+Intel slice scenarios — full transcripts of the API proofs and sweep audit recorded in the conversation @ef6353a:
+SC-I3 cache: second /admin/customer GET served identical payload with no new computed log; SC-I4: /admin/customer/966512345009 → 404 {"error":"لا محادثة لهذا الرقم بعد"}; SC-I6: both new endpoints 401 without token.
+Emoji audit of served page: fire/star/rocket/eye/handshake glyphs = 0 occurrences (only the defensive label-cleaning regex retains a star literal).
+Insights layer safety: module has no gupshup import — ZERO outbound capability; LLM reads a single contact ledger.
+
+M1 growth-recompute live proof @c27a3a7+: test lead transcript 5→6 after simulated inbound → insights log {"msg":"computed","phone":"966500000777","turns":6,"intent":"high"}; summary accurately reflects the NEW message (subscription confirmed + call scheduled). PM contact recomputed at live length (turns:29 log). M2: degraded uncached read + client timeout 20s + maxRetries 1 + refresh-button else/catch recovery in code.
+R29/R30 additions @a3617ab/@4a40ab9: rates strip (deterministic percentages), trapezoid funnel SVG, size/sector column charts, city treemap tiles, campaigns tabs/search/sort/rate-columns/progress — all client-side from live state; 0 console errors across final captures.

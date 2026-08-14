@@ -1,0 +1,91 @@
+{
+ "S7_upsell_opener_marker": {
+  "expected": "the opener is recorded with the template id, as [حملة:high_usage_upsell]",
+  "measured": {
+   "launch_http": 200,
+   "opener_buttons": [
+    "تفاصيل التكامل",
+    "أود مناقشة التكامل",
+    "ليس الآن"
+   ],
+   "transcript_marker": "امل | ليس الآن] [حملة:high_usage_upsell]"
+  }
+ },
+ "S8_upsell_turn_two_no_identity_question": {
+  "expected": "no «أي وصف يناسبكم» / no identity buttons; qualifies on implementation instead",
+  "measured": {
+   "sends": 1,
+   "body": "الربط يتم عبر واجهات برمجية تُنفَّذ الخدمة من خلالها داخل نظامكم مباشرة، فتتوقف إعادة إدخال البيانات ويقل زمن المعاملة.\nنبدأ بمراجعة تقنية قصيرة، ثم اختبار على بيئة تجريبية، ثم التفعيل — وفريقنا يرافق فريقكم في الثلاث.\nلنحدد نقطة البدء: من يتولى الربط لديكم؟",
+   "buttons": [
+    "فريقنا التقني",
+    "مزوّد النظام",
+    "العرض التجاري"
+   ],
+   "contains_identity_question": false,
+   "contains_implementation_question": true,
+   "identity_buttons_present": false
+  }
+ },
+ "S9_founder_sequence": {
+  "expected": "move 1 delivers rung one; moves 2 and 3 both carry the COMMERCIAL objective — never «أي وصف يناسبكم؟» again",
+  "measured": {
+   "steps": [
+    {
+     "move": "1 · taps «الملف التعريفي»",
+     "sends": 1,
+     "body": "يتيح التكامل للممارسين تنفيذ الخدمة من داخل نظام المنشأة نفسه، دون التنقل بين الأنظمة ودون إدخال مزدوج.\nالربط يتم عبر واجهات برمجية، وندعم فريقكم التقني في المتطلبات والاختبار وحتى التفعيل.\nولأوجّهكم إلى نموذج التكامل الأنسب: أي وصف يناسبكم؟",
+     "buttons": [
+      "منشأة صحية",
+      "مزوّد نظام HIS",
+      "العرض التجاري"
+     ],
+     "objective_after": {
+      "wantsCommercial": false,
+      "nextObjective": "سبق أن سألت عن نوع الجهة ولم يُجب. لا تكرّر السؤال — أعطِ قيمة ملموسة للحالتين معًا (منشأة أو مزوّد نظام) ثم اعرض خطوة عملية.",
+      "askedType": true,
+      "askedSystem": true,
+      "knowsType": false,
+      "knowsService": false
+     }
+    },
+    {
+     "move": "2 · taps «العرض التجاري»",
+     "sends_from_deterministic_path": 0,
+     "objective_after": {
+      "wantsCommercial": true,
+      "nextObjective": "طلب العميل الجانب التجاري. لا تبدأ استجوابًا جديدًا: أعطِ ما تسمح به المعرفة المعتمدة عن التسعير، وإن لم يكن مذكورًا نصًا فقل إن المختص يحدده حسب نطاق التكامل، واعرض الخطوة التجارية مباشرة.",
+      "askedType": true,
+      "askedSystem": true,
+      "knowsType": false,
+      "knowsService": false
+     }
+    },
+    {
+     "move": "3 · types «كم السعر؟»",
+     "sends_from_deterministic_path": 0,
+     "objective_after": {
+      "wantsCommercial": true,
+      "nextObjective": "طلب العميل الجانب التجاري. لا تبدأ استجوابًا جديدًا: أعطِ ما تسمح به المعرفة المعتمدة عن التسعير، وإن لم يكن مذكورًا نصًا فقل إن المختص يحدده حسب نطاق التكامل، واعرض الخطوة التجارية مباشرة.",
+      "askedType": true,
+      "askedSystem": true,
+      "knowsType": false,
+      "knowsService": false
+     }
+    }
+   ],
+   "move2_commercial": true,
+   "move3_commercial": true,
+   "move2_objective_is_reask": false,
+   "move3_objective_is_reask": false,
+   "rung_one_delivered_once": 1
+  }
+ },
+ "S10_rung_one_not_repeated": {
+  "expected": "a second info tap does NOT re-send rung one (read from the transcript, not memory)",
+  "measured": {
+   "sends_on_second_info_tap": 0,
+   "calls": [],
+   "bodies": []
+  }
+ }
+}

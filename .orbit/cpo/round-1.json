@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "commit": "859bdea",
+  "goal": "متابعة الحملات fits the founding use case — campaigns as launches: list → per-campaign detail showing the targeted people, filterable by who saw/replied, with each person's product interest and seriousness visible",
+  "verdict": "ACCEPT",
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "859bdea",
+    "sha256": "a55b5bbeca8bd3f2f94ae746b9cb4c8278a783316c202f3f03c82ace189e9dd8"
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 15,
+    "sha256": "f79c0ed48090f8304028b00a342563e8cf6df75953426b1070c8e039d130321c"
+  },
+  "basis": {
+    "skills": [
+      "user-model S1 (first signals written this round — file was empty, brand-new project): user judges screens by fit to the founding workflow launch→track→qualify; rejects global/aggregate views where per-campaign accountability belongs (his words: 'redesign this page to fit the use case', R15)",
+      "user-model S2: per-person product interest + seriousness (جاد vs مهتم) is a first-class tracker field for this user",
+      "user-model Vocabulary: 'حملة' = a concrete named launch persisted with name/product/targets — the deliverable's campaigns-as-launches shape matches his meaning"
+    ],
+    "research": [
+      "walked the flow as the user on artifacts: kmonlist @1440 shows the launch list (name/product/start/status/مستهدفون/وصلت/شوهدت/ردّوا/مهتمون + 'اضغط حملة لفتحها') → detail board shows scoped funnel, filter chips with real counts (الكل 1 · شوهدت 1 · ردّوا 1 · فشل 0), and the tracker row with الاهتمام والجدية = 'الإجازات المرضية · جاد 🔥' — the exact per-person product+seriousness read the goal demands (eye-verified in actual-interest-1440x900.png)",
+      "live proof chain on record: named launch → campaignId:1 persisted → detail filters with real counts → live pricing ask → exact published tiers quoted (18k/95k) → tag ('الإجازات المرضية','hot') → handoff (SC-9/SC-10)",
+      "delivery-quality-gate passed:true errors:[] bound to 859bdea (10 scenarios incl. negative/boundary/auth/failure-recovery; 9 pixel comparisons mismatch 0.0; console 0 errors); user_memory status passed:true, latest request 15 reviewed, no pending events",
+      "verified 859bdea diff myself: interestedOf = outcome==='interested' ∪ hot/warm tags, applied to campStats counters, detail filter, and home KPI — handoff no longer hides interest",
+      "reviewer stage on record: 8.5/10, no must-fix (campaigns persistence + filters + interest column)"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "clean",
+      "evidence": "funnel vocabulary maps to real WhatsApp delivery mechanics (أرسلت→وصلت→شوهدت→تم الرد proven against live DLRs in SC-2; failed shows the real Meta reason '1008 User is not Opted in' in SC-6, not a euphemism); seriousness ladder جاد🔥 matches Saudi sales speech; pricing the agent quoted was the published tiers only (SC-10) — a sales founder reads this board as his actual launch pipeline"
+    },
+    {
+      "lens": "policy",
+      "verdict": "clean",
+      "evidence": "no .orbit/decisions/ directory exists yet, so no recorded decision to contradict; standing constraints honored in evidence: launch cap 50 enforced with 400 + message (SC-4), admin auth 401 on all four endpoints (SC-5), sandbox opt-in reality handled without crashing the engine (SC-6)"
+    },
+    {
+      "lens": "product",
+      "verdict": "clean",
+      "evidence": "lives under the existing التسويق nav pair (إنشاء حملة / متابعة الحملات) with correct active state; reuses prototype tokens per QA tokens_basis (navy sidebar, teal chips, gold-tint active, IBM Plex Sans Arabic); two-level IA (list → per-campaign board with '→ كل الحملات' back link) matches the product's screen patterns — reads native, not bolt-on"
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "evidence freshness: actual-interest-1440x900.png (09:37) predates commit 859bdea (09:37:48) — the الاهتمام والجدية column is correct in it, but the مهتمون chip and funnel still read 0 for the hot-tagged contact; the fixed state (مهتمون ⭐ 1) has no post-fix capture",
+          "waived": true,
+          "waiver": "the fix is code-verified in the bound diff on all three surfaces (counters, filter, KPI) and the column the user actually reads is eye-verified live; blocking ship to re-screenshot a proven 4-line predicate would delay value with no user risk — re-capture filed as change order 1"
+        },
+        {
+          "severity": "nice",
+          "finding": "zero-campaign empty state of the list is unproven in the evidence set (list captured with 1 campaign); digit style mixes Western counts ('1') with Eastern clock/dates ('٠٩:٣٧', '١١ أغسطس')"
+        }
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "no transaction around the campaigns + campaign_targets inserts (src/db.ts:237-244) — a failure mid-loop persists a named campaign with partial targets",
+          "waived": true,
+          "waiver": "single-writer engine with launch cap 50 keeps the window tiny, and ON CONFLICT DO NOTHING makes re-launch safe; ordered as change order 2 rather than blocking a goal-meeting release"
+        },
+        {
+          "severity": "should",
+          "finding": "decodeURIComponent without try/catch in the client router (src/dashboard.ts:667) — a malformed #kb/… hash throws and can blank the view",
+          "waived": true,
+          "waiver": "reachable only by hand-editing the URL fragment; engine and normal navigation unaffected; ordered as change order 3"
+        },
+        {
+          "severity": "nice",
+          "finding": "contactByPhone is a linear .find per target at render (src/dashboard.ts:259) — O(campaigns×targets×contacts); fine at current scale, Map it when contacts grow (change order 4)"
+        }
+      ]
+    },
+    {
+      "lens": "slop",
+      "verdict": "clean",
+      "evidence": "hunted explicitly: copy is specific and domain-real (لوحة تحكم الحملة, مركز متابعة أداء حملات المساعد الذكي — no filler); the data is a genuine live sandbox run, not staged (real DLR timeline, real Meta error 1008, real quoted tiers 18k/95k); scenarios assert behavior (SC-3 echoes the invalid lines, SC-6 asserts the failure truth surfaces); zero-count states render honestly (فشل الإرسال (0), funnel 0 · 0%); console.txt: 0 messages, 0 errors; no dead buttons or TODO stubs in the walked surfaces"
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 9,
+    "completeness": 8,
+    "coherence": 9,
+    "taste": 8,
+    "surprise": 7
+  },
+  "change_orders": [
+    {
+      "priority": "should",
+      "order": "Re-capture the kmon detail/interest screenshots at 859bdea so the evidence shows the fixed predicate (مهتمون ⭐ (1) and funnel العملاء المهتمون = 1 for the hot-tagged handoff contact), and re-baseline the release pixel set; adopt per-release re-baselining so captures never lag the bound commit."
+    },
+    {
+      "priority": "should",
+      "order": "Wrap the campaigns + campaign_targets inserts (src/db.ts:237-244) in a single transaction so a mid-loop failure cannot persist a campaign with partial targets."
+    },
+    {
+      "priority": "should",
+      "order": "Guard decodeURIComponent at src/dashboard.ts:667 with try/catch (fallback '') so a malformed #kb/… hash cannot blank the client router."
+    },
+    {
+      "priority": "nice",
+      "order": "Build a phone→contact Map once per render instead of contactByPhone's linear .find (src/dashboard.ts:259) before contact counts grow."
+    },
+    {
+      "priority": "nice",
+      "order": "Unify digit style on kmon screens (counts render '1' Western while clock/dates render Eastern '٠٩:٣٧ / ١١ أغسطس') and add evidence for the zero-campaign empty state of the list."
+    }
+  ],
+  "user_model_updates": [
+    "Signal 2026-08-11 R15 [stated]: 'redesign this page to fit the use case' — متابعة الحملات must be campaigns-as-launches (named persisted list → per-campaign board with scoped funnel + filterable seen/replied/interested/failed tracker); user rejects global/aggregate views where per-campaign accountability belongs",
+    "Signal 2026-08-11 R15 [stated]: per targeted person, the user wants WHICH product they want and HOW serious they are (الإجازات المرضية · جاد 🔥) inside the tracker — qualification is first-class, not polish",
+    "Vocabulary: 'متابعة الحملات' → the campaign-monitor screen; 'حملة' → one concrete named launch to a targeted list; 'جاد' → hot/serious buying signal, distinct from مهتم"
+  ],
+  "reviewed_at": "2026-08-11T06:44:30Z"
+}

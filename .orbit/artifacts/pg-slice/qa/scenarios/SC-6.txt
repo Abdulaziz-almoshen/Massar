@@ -1,0 +1,4 @@
+SC-6 failure-recovery: machine restart (process death) -> state hydrates back from Postgres
+Machine 48e40d2a0e1598 restarted successfully!
+survived restart: True | statuses: ['delivered', 'read']
+counters restored: {'status:delivered': 1, 'status:read': 1}

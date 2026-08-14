@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "round": 26,
+  "role": "cpo",
+  "commit": "7ee77569813e7e6fc8f96996a825b01ba4a529e9",
+  "commit_short": "7ee7756",
+  "deployed_as": "fly v185 (verified: fly releases, health ok:true, outbound.ok:true)",
+  "goal": "R45 — «a second template I want you to allow me to send, which template I can [pick] in the campaign creation… which value based on the product, and let me test it», with R46 «dont worry about template pretend it is approved template». The outcome he is reaching for: campaign creation stops being a one-message screen and becomes a place where he chooses the OPENER that fits the audience, sees exactly what will land, and can try it himself without asking anyone.",
+
+  "verdict": "ITERATE",
+  "verdict_plain": "The founder's ask is DELIVERED and I proved it first-hand on the live deploy. The ROUND is not accepted. Those are two different sentences and both are true. He can open the portal right now, pick either template, watch {{1}} fill from the service, and see that template's own buttons in the preview — I did it on v185 at 1440 and at 390, with mouse and with keyboard, zero console errors. What I will not sign is the round: the delivery-evidence gate is mechanically blocked at this commit, the reviewer's own final pass ON this commit is 7.5/10 BLOCKED, and the blocker it names is live in production right now — a customer who TYPES «لا» is silently written into the ledger as «غير مهتم» with the reason «ضغط زر: لا», a button press that never happened.",
+  "verdict_is_not": "ACCEPT-WITH-CONDITIONS. The loop's schema has three verdicts and the gate keys on ACCEPT; inventing a fourth would let a must-finding through a gate that exists to stop exactly that. ITERATE is the honest machine-readable answer and the change orders below are small.",
+
+  "the_four_rulings": {
+
+    "ruling_1_can_the_founder_do_what_he_asked": {
+      "answer": "PROVEN — for the wizard. BELIEVED — for the message on his device, and it cannot be proven, by his own standing order.",
+      "what_is_proven_and_by_what": "I did not take this from QA. I drove the live deploy myself (playwright against https://massar-engine.fly.dev at v185 = 7ee7756, no sends, launch endpoints never touched). Measured, in one run: 2 cards with role=radio inside role=radiogroup, labels «تعريفي — التكامل مع HIS» and «استخدام مرتفع — اربطها بنظامكم»; aria-checked initial [true,false]; focus the second card and press SPACE → aria-checked [false,true]; textarea head flips from «ارتقِ بكفاءة منشأتكم…» to «مرحبًا 👋\\n\\nلاحظنا أن لديكم استخدامًا مرتفعًا لخدمة {{1}}…»; the WhatsApp preview renders «…لخدمة الإجازات المرضية…» with preview_contains_literal_{{1}} = false while the textarea correctly keeps the raw token; preview buttons = ['تفاصيل التكامل','أود مناقشة التكامل','ليس الآن'] — the SECOND template's own three, not the first's; click card one with the mouse → aria-checked [true,false] and the body restores; at 390x844 both radios still present; console_errors = []. Server side: GET /admin/templates on the live host returns 200 with exactly 2 templates, {{1}} present in both bodies (1 and 2 occurrences), and the same button arrays the preview drew. Screenshots: scratchpad/cpo26-picker-1440.png, cpo26-picker-390.png.",
+      "what_is_believed_not_proven": "Everything past the wire. No WhatsApp message has been sent, by anyone, in this round — QA attests zero, check-buttons prints its own limit («does NOT prove wire behaviour»), and user-model Rule 5 forbids it absolutely until he names a number. So: that Meta accepts «أود مناقشة التكامل» at 18 chars, that the Arabic renders correctly in a real button on a real handset, and that the upsell's 537-character body survives the interactive-message path — all unproven, correctly, and I am not going to launder them into proven. The honest sentence for him is: the picker is real and testable today; the message is code-correct and wire-unverified.",
+      "the_one_thing_that_would_make_it_whole": "He said «let me test it», and the only thing standing between him and that is his own send freeze — which is right, and which only he can lift. That is not a defect. It is the shape of the round."
+    },
+
+    "ruling_2_does_the_increment_meet_the_reviewer_gate": {
+      "answer": "NO. It does not meet it, and I am not going to describe 7.5 as 8.",
+      "correction_to_my_brief": "My brief told me the reviewer's last verdict predates the fix commit and that 7ee7756 has NOT been re-reviewed. That is wrong, and the correction cuts against the increment rather than for it. There are FIVE reviewer entries in .orbit/activity.jsonl, not three. The fifth, ts 2026-08-13T17:06:26Z — eight minutes AFTER 7ee7756 was committed at 16:58:45Z — is an explicit «final pass on 7ee7756». The fix commit WAS re-reviewed. It scored 7.5/10 BLOCKED.",
+      "score_trajectory": "6 @5f38d56 → 7 @f9a51f0 → 7 @1cf9b6d (rebound, unchanged) → 7.5 @e4121fa → 7.5 @7ee7756. The bar is 8. It has never been met, and the last two passes did not move it.",
+      "what_the_final_pass_actually_says": "It is not a grudging block. It certifies the three prior blockers CLOSED and says so with unusual rigour — closed «by mutation, not by reading»: MUT1 canonicalTitle→undefined produces 19 gate failures (the coverage floor is real), MUT2 disabling the affix gate produces 10, MUT3 unanchoring OBJECTION_STEM produces 3. I re-ran the denylist→allowlist inversion myself against the named refusals and it holds. The block is for something NEW that 7ee7756 introduced, plus a proven blind spot in the round's headline instrument (MUT5: flipping the real wantsInfo composition from && to || leaves the gate 133/133 GREEN, because the gate re-states that expression instead of executing it).",
+      "so": "§3's «reviewer ≥ 8/10» gate is NOT met, on a re-review of the exact delivered commit, and the reason is a defect that did not exist before this round."
+    },
+
+    "ruling_3_convergence_or_thrashing": {
+      "answer": "THRASHING. Not «it depends», not «converging with residue». Thrashing — and round 24 already ruled it, named the exit, saw the exit land, and watched the shape reappear one layer up within two rounds.",
+      "the_count": "FIVE commits in ninety minutes, five deployed, and every one of them closed the previous one's defect while introducing a new one of the same family. 5f38d56: the button contract missed the model's own emission site. f9a51f0: canonicalTitle rewrote «لا أريد العرض التجاري» into its affirmative, and the widened wantsInfo re-opened the founder's complaint #1 («التفاصيل والسعر لو سمحتم» short-circuiting to a brochure). 1cf9b6d: clean (dashboard only). e4121fa: the no-body branch returned a string starting «أُرسل», which the outer loop reads as proof a bubble was sent — silence, the exact failure the never-silence fallback exists to prevent; and a particle denylist that 10 of 11 verb-form Arabic refusals walked straight through. 7ee7756: «لا» and «موافق» added as BUTTON_INTENT keys next to a brand-new unprovenanced write path to the lead ledger.",
+      "the_single_shape": "Every one of these is the same move: WIDEN A SHARED TABLE OR MATCHER FOR ONE CONSUMER, RE-TEST ONLY THAT CONSUMER. BUTTON_INTENT, canonicalTitle's affix set, and wantsInfo's phrase set each have several readers. The tests are written per-reader, by whoever was in the file that hour. Round 24 diagnosed this precisely — «one string answering two opposed questions» — and named the exit: split `disclosed` from `asked`. That exit LANDED at round 25 (agent.ts:228-230, both derivations present, correctly commented). And the shape immediately reappeared one layer above the ladder, in `wantsInfo`, and then one layer above that, in `buttonIntent`. Fixing an instance of a structural defect by hand buys you exactly one round.",
+      "why_i_am_not_calling_it_convergence": "There is a real convergence case and I want to state it fairly before rejecting it: the per-defect code footprint IS shrinking, the mechanism changes ARE getting better (denylist→allowlist is a genuine inversion, not a patch — 0 of 14 named refusals invert, I measured it), and the gate grew 82→118→133 assertions. If severity were tracking size, this would be convergence. It is not. SEVERITY WENT UP ON THE LAST STEP. e4121fa's worst case was a wrong word on a button — visible, embarrassing, recoverable. 7ee7756's worst case is a SILENT, PERMANENT, FALSE WRITE to the lead ledger with a FABRICATED PROVENANCE STRING. «ضغط زر: لا» asserts a button press that never happened. This project has spent four rounds — Rule 2, Rule 4, Rule 7 — establishing that the system's own claims about itself must be true. The last commit of the round shipped a lie into the database. A process whose defects are getting smaller in bytes and larger in consequence is not converging on anything I would sign.",
+      "the_second_tell": "The instrument stopped discriminating. 133 green assertions, and the reviewer proved by mutation that flipping the real wantsInfo predicate from && to || leaves all 133 green. `assertButtonsHandled()` only checks emitted→has-intent, so ADDING a BUTTON_INTENT key is certified for free — which is exactly how «لا» and «موافق» walked in past a boot-time contract whose entire purpose is to stop unhandled button strings. When the gate's failure mode is silence on the change you actually made, the green number is not evidence, it is comfort.",
+      "the_exit_named_concretely": [
+        "1. PROVENANCE, NOT STRING EQUALITY. `buttonIntent()` must be unreachable for typed text. The distinction already exists on the wire — gupshup.ts parses msgType at both webhook versions — and was dropped at the call site. Gate every intent lookup on a real tap. (Note: this is exactly what is sitting UNCOMMITTED in the worktree right now — `isButtonTap()` at gupshup.ts:174 wired at index.ts:46. The exit has been found. It must land, be reviewed, and be deployed, because until it is, the defect is live.)",
+        "2. MAKE THE TABLE DECLARE ITS CONSUMERS. BUTTON_INTENT has at least four readers today: assertButtonsHandled, canonicalTitle, tappedCommercial, and the new decline→setOutcome writer. Adding one key is silently a change to all four. The check must assert, for every key, the behaviour of EVERY consumer — a consumer matrix, not a key list. This is the only change that converts «a new key is free» into «a new key costs N assertions», and it is the only thing that stops this class rather than its current instance.",
+        "3. ASSERTIONS EXECUTE THE SHIPPED EXPRESSION, NEVER RESTATE IT. MUT5 is proof: the gate slices `wantsInfo` out of agent.ts and hand-types the composition back. Extract `wantsInfo` to a named exported function and import it. A gate that reconstructs a predicate is a Rule 7 violation by construction, and this one is now being quoted upward as proof.",
+        "4. DO NOT DEPLOY A FIX BEFORE THE FIX IS REVIEWED. Five deploys, ninety minutes, four of them carrying an unreviewed new defect to production. His standing instruction is «once done, just deploy it and fly» — «once done» is load-bearing in that sentence, and this round treated it as «once written»."
+      ]
+    },
+
+    "ruling_4_the_grade_and_the_first_contact": {
+      "predicted_grade": "7/10 — up one from the 6/10 he gave the agent last round, and up for a reason he will name himself: he asked for one concrete thing and got exactly that thing, visible and testable the same day. That has not been true for several rounds. It does not go higher because the two surfaces he touches most — his phone, and a real conversation — each hand him something wrong within the first minute.",
+      "what_he_hits_first_in_order": [
+        "1. ON HIS PHONE, BEFORE ANYTHING ELSE. He QA-checks on his real phone and briefs by screenshot (user-model Rule 3). At 390x844 the sticky launch bar is three lines tall and permanently occupies roughly a quarter of the viewport, and at the natural scroll position for step ٣ it sits directly over the template cards — the one thing he asked for is the thing partly hidden. Measured in my own 390 capture, not inferred. The bar is pre-existing; the picker is what pushed content into the occluded zone, so this round made it worse.",
+        "2. A CONTRADICTION TWENTY PIXELS WIDE. The launch bar says «الملف مضمّن 📎» (the file is included). The preview caption directly above it says «رسالة واحدة بأزرار، والملف يُرسَل عند طلبه» (one message with buttons, the file is sent when requested). The second one is true; the first is false, and the code proves it — the wizard never sends buttons:false, so the document-with-caption branch at index.ts:213 is unreachable from the only real caller, and the opener OFFERS the file rather than carrying it. He is being told, on the confirmation surface, at the moment of the send decision, that something will be attached which will not be. The sibling warning at dashboard.ts:1156 («…أضف الملف من معرفة الخدمة ليُضمَّن») repeats the same false implication.",
+        "3. IF HE RUNS A REAL CONVERSATION: he taps «تفاصيل التكامل» — the button this round shipped — and gets a PDF bubble WITH NO WORDS AT ALL (agent.ts:868 calls sendDocument with the caption argument omitted, though gupshup.ts:141 accepts one), followed by a separate bubble with the paragraph. Round 25's ordering fix landed — the document IS awaited first — but he said, in his own words, that campaign messages should use WhatsApp's full richness in ONE bubble. A wordless file followed by a paragraph is the transactional shape he rejected, rebuilt from two correct halves.",
+        "4. AND THE ONE THAT WOULD ACTUALLY MAKE HIM ANGRY, IF HE FOUND IT. The agent asks «هل تستخدمون حاليًا نظام HIS أو ERP؟» — its own prescribed question. The customer types «لا». buttonIntent('لا') returns 'decline' (measured), /^لا$/ matches, and the contact is written to the ledger as not_interested with the reason «ضغط زر: لا». A lead who said «no, we don't have an HIS» — which is the strongest possible integration signal — is marked dead, and the audit trail claims a button press that never happened. He has spent four rounds insisting the system's claims about itself must be true. This is the defect he would screenshot."
+      ],
+      "what_he_will_like_and_should_be_told": "The template cards state WHO each opener is for («لِمن: جهات قائمة ذات استخدام مرتفع للخدمة»). That is not decoration — sending «لاحظنا أن لديكم استخدامًا مرتفعًا» to a facility that has never used the service is a visible lie, and the picker makes that mistake hard to make by accident. And turn two now knows which opener started the conversation, so the upsell asks who does the integration work rather than re-asking who they are. Both are things he did not ask for and both are correct."
+    }
+  },
+
+  "qa_evidence": {
+    "gate_command": ".orbit/checks/delivery-quality-gate.py --root . --commit 7ee7756",
+    "gate_result": "BLOCKED — passed:false, errors:[\"evidence commit cb3fad0 does not match delivered commit 7ee7756\"]",
+    "canonical_path": ".orbit/qa/delivery-evidence.json",
+    "canonical_commit": "cb3fad0",
+    "canonical_sha256": "1436de9a2ae0d14513a286e81f204a3d5078daa388d87eb7116c57e327cc051c",
+    "canonical_staleness": "FIVE commits behind the delivered artifact (cb3fad0 → 5f38d56 → f9a51f0 → 1cf9b6d → e4121fa → 7ee7756). It was never advanced past the pre-picker commit. The string 1cf9b6d appears zero times in it.",
+    "bundle_path": ".orbit/artifacts/qa/1cf9b6d-delivery-evidence.json",
+    "bundle_commit": "1cf9b6df65cf807392459a433ac07ec2ffac661a",
+    "bundle_sha256": "5d07b5a0d33f29958e4d0f10d97277ad8b69b46dcd0bb2c5873f6d609f992eaf",
+    "bundle_verdict_claimed": "PASS",
+    "no_bundle_exists_for": ["e4121fa", "7ee7756"],
+    "precondition_for_accept": "NOT MET. The playbook is explicit: ACCEPT requires the deterministic gate to exit 0 with the envelope binding that exact PASS artifact. It does not, for this commit or any commit in this round.",
+
+    "my_own_audit_of_the_bundle_qa_did_produce": {
+      "verdict": "Substantially real work — and it must not be quoted as covering the delivered commit, because on three separate axes it does not.",
+      "what_is_genuinely_strong": "11 scenarios across all six required kinds with captured output, not prose: real HTTP 400s with empty wire_calls on every launch guard, three real process boots with exit codes for the boot contract, a captured 401 for webhook auth, 60 real routing cases with per-case measured values, and a no-send attestation built by construction (the real gupshup client replaced by a poison stub or a node:fs-only recorder, plus a browser egress guard aborting six send endpoints, zero attempts recorded). The picker itself was genuinely CLICKED — the aria flip between tpl0 and tpl1 is only producible by a real selection event. That is honest work and I am crediting it.",
+      "axis_1_the_binding_refutes_itself": "The bundle claims commit 1cf9b6d by hashing the SERVED DASHBOARD HTML. src/dashboard.ts is byte-identical across 1cf9b6d, e4121fa and 7ee7756 — those two commits touch only agent.ts, templates.ts and check-buttons.mjs — so that instrument is structurally blind to exactly the commits it was used to rule out. Worse, the bundle contains positive proof against its own binding: scenarios/boot-contract.log prints 14 orphan intents, and 14 is arithmetically only possible against e4121fa's 24-key BUTTON_INTENT table; at 1cf9b6d the table has 12 keys and can produce at most 2. The log was executed against e4121fa source while the bundle asserts a single-commit binding to 1cf9b6d. My brief asked whether QA's «e4121fa is not deployed» error undermines the rest. Answer: it is not a stray remark in an activity line, it IS the bundle's root binding, and 32 of its conclusions sit on or under it — 9 binding statements, 6 that inherit the label, and 17 executed against source that provably differs from what shipped. Materially most of the 17 are probably still true; NONE of them are established for 7ee7756.",
+      "axis_2_four_of_five_pixel_comparisons_are_a_file_against_itself": "375x812, 1440x900, 1024x768 and 390x844 baselines are BYTE-IDENTICAL to their actuals (sha256-verified). «0/1296000 pixels differ = 0.0000%» is arithmetically guaranteed, not measured. The bundle discloses the re-baselining practice at method_limits[3] but never states that four of five comparisons therefore cannot fail. Only 768x1024 is a real comparison (7px, 0.0009%). This is user-model Rule 7 in its purest form: a green number that cannot go red, quoted upward as proof of a property.",
+      "axis_3_a_zero_byte_log_cited_as_a_pass": "dependency_regression.commands[0] records exit_code 0, verdict PASS, measured «strict TS build exit 0» — and regression/build.log is 0 bytes. Also: scenarios/cases[5].measured.unmappable_model_button_rejected is `{}`, an empty object standing where a named negative assertion should be; concerns[0].measured['لا ترسلوا التفاصيل'] is `{}`, the one refusal case in the negation set with no result; and launch-path case G, «opted-out contact in launch list», records http 200 with TWO recipients on the wire, per_target:null, NO verdict field, and is cited nowhere in the bundle. I checked the code myself and the opt-out guard is correct and correctly ordered (index.ts:186, before any send, with `continue`), and safety-gate verified the ordering mechanically — so this is an evidence-hygiene failure, not a safety failure. But an uncited, verdict-less row in the OPT-OUT domain is the single worst place in this product to leave an ambiguity.",
+      "the_honest_summary": "QA did real work, then labelled it with a commit it did not verify and a pixel result that could not fail. Every verdict field in the bundle is PASS; every failure lives one level down in the sub-artifacts, superseded or uncited. The rest of the bundle is not worthless — it is unbound."
+    },
+
+    "my_own_fresh_evidence_at_the_delivered_commit": {
+      "why": "There is no evidence bundle for 7ee7756, and the playbook forbids me from accepting QA's summary. So I measured the delivered commit myself.",
+      "build": "npm run build → tsc exit 0 (strict). §3 build gate MET.",
+      "check": "npm run check → catalogue + numerals + buttons, 133 checks · 0 failures. Caveat recorded: the reviewer proved by mutation that these 133 stay green when the real wantsInfo predicate is inverted.",
+      "smoke": "npm run smoke → 7 routes render in a real browser against the live deploy, 0 runtime errors (#home 33593, #kmon 4674, #customers 17702, #aimkt 23893, #kb 4720, #customer/966500000850 18531, #kmon/20 6457).",
+      "health": "GET /health → ok:true, outbound.ok:true, db connected, model gpt-5.6-terra. fly releases → v185 current.",
+      "live_endpoint": "GET /admin/templates (authenticated) → 200, 2 templates, both carrying {{1}}, button arrays matching the registry.",
+      "live_ui": "the playwright probe described in ruling 1 — the only measurement in this round that exercises the KEYBOARD path with a real keypress, which QA's bundle explicitly did not (it read the onkeydown attribute string and tabindex, and its own `expected` concedes it: «cards carry a key handler and are focusable»).",
+      "no_sends": "Zero WhatsApp messages sent by me. My probe never opens the launch modal and never posts to /admin/campaign/launch; the only writes anywhere in this review were this envelope, the activity line, and user-model.md."
+    },
+
+    "worktree_state_at_review_time": "MATERIAL, and I am recording it rather than smoothing it over. The tree was clean at 7ee7756 when I began. Partway through the review it went dirty — scripts/check-buttons.mjs, src/agent.ts, src/gupshup.ts, src/index.ts, src/templates.ts, +65/-27 — and what appeared is `isButtonTap()` at gupshup.ts:174 wired at index.ts:46, i.e. exactly the fix for the blocker I am about to name. So: the loop found the right exit while I was reviewing. That is good. It also means the deployed artifact and the source tree now disagree, the fix is uncommitted, undeployed, unreviewed and unevidenced, and the defect is live in production this minute. My verdict binds 7ee7756 — what is running — not the tree."
+  },
+
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 46,
+    "sha256": "befe2aaf3e45945bc4cefbeb1a252b8ce82c9263cde3c26a3f4ba07e9f3b3c1f",
+    "verified_by": "shasum -a 256 .orbit/memory/checkpoint.json, run by me at the start of this review — matches the value I was asked to bind.",
+    "gate": ".orbit/checks/user_memory.py status --root . --require-latest → passed:true, review_due:false, latest_request_reviewed:true, pending_event_ids:[]",
+    "note": "R46 is correctly recorded as a DATED SIGNAL, 2 of 3 toward a rule, explicitly NOT promoted. I agree with that restraint and I am not manufacturing the third signal this round either."
+  },
+
+  "basis": {
+    "weights": {"skills": 0.4, "research": 0.6},
+    "skills": [
+      "user-model R1 (professional marketing-tool fit is the standing bar) — the picker cards state audience and hint, which is how Mailchimp/Klaviyo-tier tools disambiguate two openers; that is why coherence scores 8 rather than 6. The same rule is what makes the 390px occlusion a real finding rather than pedantry.",
+      "user-model R2 (numbers and claims must be real, sourced, honestly bounded) — the load-bearing rule this round. «الملف مضمّن 📎» is a false claim on the send-decision surface; «ضغط زر: لا» is a false claim in the ledger; four self-comparing pixel results are a green number that cannot go red.",
+      "user-model R3 (he briefs by concrete reference and QA-checks on his real phone) — why I captured 390x844 myself and why the sticky-bar occlusion is ordered FIRST in what he hits.",
+      "user-model R4 (AI features must explain causally, with the customer's own words as evidence) — «ضغط زر: لا» does not merely fail to justify itself, it FABRICATES the evidence. That is the inversion of this rule, not a gap in it.",
+      "user-model R5 (zero outbound WhatsApp, no exceptions, he names the number) — honoured absolutely by every stage owner and by me; it is also the reason ruling 1's second half must stay BELIEVED, and I will not launder it.",
+      "user-model R6 + fifth corollary (a fix must teach its new vocabulary to every surface speaking about the same object) — «الملف مضمّن» is the un-taught surface: the round changed the file from carried to offered and one of the two strings on the same screen never learned it.",
+      "user-model R7 (the loop's own claims are subject to R2; a green check asserting a property it does not verify is worse than no check) — round-22 broke this streak by making instruments describe themselves. This round the streak resumes: MUT5 green on an inverted predicate, four self-comparing pixel diffs, a 0-byte build log cited as PASS.",
+      "product-acceptance playbook — ACCEPT requires the deterministic gate at exactly this commit, and no outstanding must. Neither holds.",
+      "CPO round-24 ruling_3 (THRASHING; exit = split the derived value per consumer) — the precedent this round is measured against, and the reason I am willing to say thrashing a second time instead of softening to «converging with residue».",
+      ".orbit/decisions/0001-dashboard-no-range-edits — the reviewer's ADR confirmation run on 1cf9b6d (definition counts 53→53, 116→116, exactly one backtick, client script parsed and executed in a VM) is the reason I am not re-litigating dashboard safety."
+    ],
+    "research": [
+      "Drove the live deploy myself with playwright at 1440x1000 and 390x844: picker, keyboard SPACE selection, mouse re-selection, body swap, {{1}} resolution, per-template preview buttons, console errors. This is the only keyboard-operability measurement in the round.",
+      "Read src/templates.ts, src/index.ts:145-244, src/agent.ts:600-700 and 760-900, src/dashboard.ts:848-891 and 1105-1180 at the delivered commit rather than trusting any summary.",
+      "Executed dist/templates.js directly to probe canonicalTitle against 14 constructed proposals and buttonIntent against the new yes/no keys — this is how I confirmed buttonIntent('لا') === 'decline' and /^لا$/ matches, i.e. the live ledger defect, from the code rather than from the reviewer's prose.",
+      "Ran the delivery-quality gate at 7ee7756 and at 1cf9b6d; both blocked on the same stale canonical artifact.",
+      "Ran build (0), check (133/0), smoke (7 routes), health (ok:true, v185) at the delivered commit.",
+      "sha256-verified the four self-comparing visual baselines and the two evidence files; measured the BUTTON_INTENT key counts across 1cf9b6d/e4121fa/7ee7756 from git to establish which source the boot-contract log actually ran against.",
+      "Read all five reviewer entries in activity.jsonl in full, including the fifth (final pass on 7ee7756) which my brief did not know existed.",
+      "Measured the rendered length of both templates (266 and 537 UTF-16 units) against WhatsApp's 1024 interactive-body limit — both clear, so the upsell's length is NOT a defect and I am recording that as a checked-clean rather than leaving it as an open worry."
+    ]
+  },
+
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "findings",
+      "earned_clean_parts": "Arabic and WhatsApp specifics are handled by someone who has been burned: the 20-char button cap is enforced in UTF-16 units AND code points because the adapter slices at 20 (131009 measured, «أرسلوا تفاصيل التكامل» at 21 shortened deliberately rather than truncated at the wire); the Arabic-substring trap is anchored on BOTH sides after an unanchored «لم» matched inside «الـمـلـف»; BUTTON_INTENT is Object.create(null)-backed so 'toString' cannot report an intent. Body lengths 266 and 537 are well inside the 1024 interactive limit — I measured rather than assumed. The two openers are genuinely different products, not variants, and the cards say so.",
+      "findings": [
+        {"severity": "must", "finding": "«لا» and «موافق» were added to BUTTON_INTENT as if a button title and an Arabic word were the same object. They are not. buttonIntent() is exact-match on trimmed inbound text with no tap provenance, so a customer TYPING «لا» — the single most common reply in Arabic, and the correct answer to the agent's own prescribed «هل تستخدمون حاليًا نظام HIS أو ERP؟» — is routed to the decline consumer. Measured at the delivered commit: buttonIntent('لا') === 'decline'."}
+      ]
+    },
+    {
+      "lens": "policy",
+      "verdict": "findings",
+      "earned_clean_parts": "The hard safety envelope is intact and I checked it in code, not in prose: zero WhatsApp sends this round by any stage owner or by me; the opt-out guard sits at index.ts:186 BEFORE any send with a `continue`; webhook token auth returns a captured 401; the 50-recipient launch cap returns a real 400; secrets are read from .env and never echoed. safety-gate PASS is earned. ADR-0001 (no range edits in dashboard.ts) was honoured and independently confirmed by the reviewer's VM parse-and-execute run. fly deploy is pre-authorised by the standing instruction of Aug 10.",
+      "findings": [
+        {"severity": "should", "finding": "The pre-authorisation to deploy was used five times in ninety minutes, four of those carrying an unreviewed new defect to production, and the fifth is live with a known blocker right now. «Once done, just deploy it and fly» pre-authorises the deploy; it does not redefine «done». The policy is not being violated — it is being read as permission to skip the gate that decides when it applies."},
+        {"severity": "should", "finding": "launch-path case G, «opted-out contact in launch list», records http 200, two recipients on the wire, per_target:null, no verdict, and is cited nowhere. The code is correct — I verified the guard and its ordering myself — so this is evidence hygiene, not a safety breach. But an unresolved, verdict-less row in the opt-out domain is the one place in this product where an ambiguity must never be left standing."}
+      ]
+    },
+    {
+      "lens": "product",
+      "verdict": "clean",
+      "evidence": "This is a genuine fit, not a bolt-on, and it earns the clean. The picker lives inside step ٣ of the existing wizard and inherits its card/step grammar rather than inventing a new one. Templates are DATA in src/templates.ts, served by GET /admin/templates, and read by BOTH the wizard preview and the launch path — so a template cannot preview one way and send another, which was the actual product bug in the previous shape. A third template is a new entry, not a code change; the founder can be told that in one sentence. Buttons resolve server-side from the registry by id and are never accepted from the request body, so the operator's freedom to edit the text cannot produce an arbitrary button title. Unknown templateId returns a real 400 instead of silently falling through to another template's buttons. The campaign marker carries the template id, so turn two knows which promise the opener made — the upsell asks who does the integration work instead of re-asking who they are, which is the difference between a follow-up and a contradiction."
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "earned_clean_parts": "Walked it as the operator on the live deploy at two viewports. The picker is a correct radiogroup — role=radiogroup, role=radio, tabindex=0, aria-checked tracking selection, Enter and Space both bound, and I confirmed the SPACE path flips state for real. Cards carry label, hint, «لِمن:» audience, and the template's actual buttons as chips, so the wrong opener is hard to pick by accident. The preview resolves {{1}} while the textarea correctly keeps the raw token — the right split, since one is what you edit and the other is what lands. Re-picking the active template restores its text, which is the escape hatch after an edit. tplLoad guards against overwriting text the operator typed in the first few hundred milliseconds. The launch button is genuinely disabled at zero targets rather than live-looking and dead. Zero console errors.",
+      "findings": [
+        {"severity": "must", "finding": "dashboard.ts:1171 renders «· الملف مضمّن 📎» in the launch bar whenever the service has an asset. It is false. The wizard never sends buttons:false, so index.ts:213's document-with-caption branch is unreachable from the only real caller and the opener OFFERS the file. Twenty pixels above, the preview caption says «والملف يُرسَل عند طلبه». Two contradictory claims on one screen, at the moment of the send decision, and the wrong one is the one printed next to the launch button."},
+        {"severity": "should", "finding": "dashboard.ts:1156's empty-asset warning carries the same stale implication — «أضف الملف من معرفة الخدمة ليُضمَّن» tells the operator that adding an asset changes the opener's shape. It does not; it changes what arrives when the customer taps. Both strings are the same un-taught vocabulary (Rule 6, fifth corollary)."},
+        {"severity": "should", "finding": "At 390x844 the sticky launch bar is three lines tall and permanently occupies roughly a quarter of the viewport, sitting over the step-٣ template cards at their natural scroll position — the feature he asked for is the content it hides. Measured in my own capture. He reviews on his phone and briefs by screenshot; this is the first frame he will send back."},
+        {"severity": "nice", "finding": "No screenshot anywhere in the round shows the SECOND template selected — all five of QA's visual comparisons capture the default state only, and four of those five compare a file with itself. The one image that would have proved the feature to a human reading the bundle does not exist. (It does now: scratchpad/cpo26-picker-1440.png.)"}
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "earned_clean_parts": "The seam is right and I want that on record: templates as data behind one endpoint read by both the preview and the wire is the correct boundary, and it eliminates a whole class of preview/send divergence. gupshup.ts remains the only file that knows the wire format. The rung-one guard was moved off process memory onto the transcript — correct, because there were 45 deploys in one day and an in-memory Set forgets. canonicalTitle's denylist→allowlist inversion is the right shape: it makes verb-form Arabic refusals impossible by construction rather than by enumeration, and I measured 0 of 14 named refusals inverting. The drop path prefers plain text over an unanswerable button, which is the correct failure direction. turnTextSends is per-phone, cleared at the top of each turn, and queue.ts serialises per key.",
+      "findings": [
+        {"severity": "must", "finding": "The system has the tap/typed provenance and throws it away. gupshup.ts parses msgType in BOTH webhook parsers and no consumer reads it; index.ts:44 drops it at the call site. Every intent lookup is therefore guessing from a string. This is not a missing feature — it is available data being discarded directly upstream of the decision that needs it, which is why one table addition could reach the ledger."},
+        {"severity": "must", "finding": "A new unguarded write path to a business outcome. agent.ts:830-833 calls setOutcome on any decline-matching text, and tracker.setOutcome overwrites unconditionally — unlike the turn-cap path at agent.ts:919, which explicitly guards `outcome !== 'handoff'`. A contact already at handoff or interested who taps «ليس الآن» on a proposed meeting time is silently downgraded, losing the chip the dashboard reads. Two defects in one branch: no provenance, and no state guard."},
+        {"severity": "should", "finding": "assertButtonsHandled() is one-directional — it checks emitted→has-intent, so ADDING a BUTTON_INTENT key is certified for free. The boot contract whose entire purpose is to stop unhandled button strings cannot see the change that caused this round's worst defect. A shared table with four consumers needs a consumer matrix, not a key list."},
+        {"severity": "should", "finding": "The allowlist is exact-string over the whole affix, so realistic compositions now refuse: «العرض التجاري، شكرًا» → undefined even though both «،» and «شكرًا» are individually benign; «الأحد صباحًا», «مكالمة قصيرة صباحًا», «أرسلوا لي الملف التعريفي» → all undefined (measured). Refusing is the SAFE direction and I am not asking for it to be loosened. But it means the scheduling close — the highest-value turn in the ladder — will frequently ship as plain text, and nothing measures how often. Instrument the drop rate before widening anything."},
+        {"severity": "nice", "finding": "lostDecline at agent.ts:651-656 is dead by construction: dedupe keys on title and buttonIntent is a pure function of title, so any decline in options is necessarily in deduped. Exhaustively false. The comment claims «actually keep the decline this time» over code that never runs — the third round in a row a dedupe comment has claimed an action the code does not take. The real protection is the separate collapse-to-text guard."}
+      ]
+    },
+    {
+      "lens": "slop",
+      "verdict": "findings",
+      "earned_clean_parts": "Very little conventional slop, and the copy is the opposite of filler — the template hints, the «لِمن:» line, and the rung-one bodies are specific enough that a domain reader can tell them apart, which is the bar. The 400 messages are real Arabic sentences an operator can act on («القالب يحتوي {{1}} ولم تُحدَّد الخدمة — اختر الخدمة قبل الإطلاق»), not error codes. No purple gradients, no lorem, no dead buttons in the wizard, no TODO stubs. The example contact is honestly labelled «(مثال)». Comments explain WHY with measured detail rather than narrating the obvious.",
+      "findings": [
+        {"severity": "must", "finding": "FABRICATED DATA PRESENTED AS REAL — the canonical slop finding, in the ledger rather than the UI. «ضغط زر: لا» is written as the reason for an outcome when no button was pressed. This product's entire value proposition is that the AI's readings are grounded in what the customer actually did (Rule 4). A reason string that invents the customer's action is worse than an empty one."},
+        {"severity": "must", "finding": "«الملف مضمّن 📎» — a claim about what will be sent, printed next to the send button, that the send path contradicts."},
+        {"severity": "should", "finding": "TESTS THAT ASSERT NOTHING, three ways: four of five pixel comparisons are a file against itself (0.0000% arithmetically guaranteed); regression/build.log is 0 bytes and cited as exit_code 0 / verdict PASS; and the info-gate re-states the wantsInfo composition instead of executing it, so the reviewer's MUT5 flips && to || in the shipped predicate and all 133 assertions stay green. QA's own audit file names a fourth in its own gate: «CANNOT FAIL — the expectation is derived from the actual»."},
+        {"severity": "nice", "finding": "Two named measurement slots are shipped as empty objects: scenarios.cases[5].measured.unmappable_model_button_rejected = {} and concerns[0].measured['لا ترسلوا التفاصيل'] = {}. An empty object under a named assertion reads as coverage and is not."}
+      ]
+    }
+  ],
+
+  "scores": {
+    "intent_fidelity": 9,
+    "completeness": 5,
+    "coherence": 8,
+    "taste": 8,
+    "surprise": 6,
+    "evidence_integrity": 4,
+    "overall": 6.5,
+    "note": "Intent fidelity is a 9 and it is the highest score this workstream has earned — he asked for a second template selectable at campaign creation with the value filled from the product, and that is exactly, demonstrably what exists on the live deploy; the registry shape even makes the third template free. It is not a 10 only because «let me test it» stops at the wire. Completeness is a 5 and it is what holds the verdict: there is no evidence bundle for the delivered commit, the deterministic gate is blocked, and a live defect corrupts the ledger the whole product exists to build. Evidence integrity is a 4 — the lowest score here — because the round's three loudest green numbers (0.0000% pixel diff, build PASS, 133/133) are each provably incapable of failing in the way that mattered. Taste holds at 8: the picker cards, the «لِمن:» line and the opener-aware turn two are genuinely good product thinking and should survive the rework verbatim."
+  },
+
+  "change_orders": [
+    {
+      "priority": "must",
+      "id": "M1",
+      "order": "Gate every BUTTON_INTENT lookup on real tap provenance, then redeploy. The data already exists: gupshup.ts parses msgType in both webhook parsers and index.ts:44 discards it. Thread it through handleInbound and make buttonIntent() unreachable for typed text; treat unknown/absent msgType as TYPED, because mistaking a tap for typing only forgoes a shortcut while the reverse corrupts the ledger. Verify by executing the shipped source: typed «لا» must NOT reach the decline consumer and must NOT write an outcome; a real button-type «لا» must. NOTE: this is already sitting uncommitted in the worktree as isButtonTap() at gupshup.ts:174 wired at index.ts:46 — so the order is land it, review it, deploy it, and assert it. It is not done until the assertion exists and v186 is live."
+    },
+    {
+      "priority": "must",
+      "id": "M2",
+      "order": "Fix the outcome writer at agent.ts:830-833, not just its trigger. Two separate defects live in those four lines. (a) The reason string must state what actually happened — «ضغط زر: X» only when a tap is proven, otherwise the customer's own words, never an invented action. (b) Guard the overwrite the way the turn-cap path at agent.ts:919 already does: a contact at handoff or interested must not be silently downgraded to later by tapping «ليس الآن» on a meeting time. Also decide, explicitly, whether one «لا» should mean not_interested at all — the prompt at agent.ts:398 and :415 says to probe once and mark not-interested only «إذا تكرر الرفض», and the code contradicts its own prompt on the first tap."
+    },
+    {
+      "priority": "must",
+      "id": "M3",
+      "order": "Produce a delivery-evidence bundle bound to the DELIVERED commit and write it to the canonical path .orbit/qa/delivery-evidence.json, so that .orbit/checks/delivery-quality-gate.py --commit <sha> exits 0. Today that file is five commits stale at cb3fad0 and the round's real work sits in .orbit/artifacts/qa/ where the gate does not look. Three specific integrity requirements, each of which failed this round: every visual comparison must be against a baseline that is NOT byte-identical to its actual, or be reported as a re-baseline with no diff claim; a cited command's log must be non-empty and its exit code must come from the run, not the author (build.log is 0 bytes and cited as PASS); and a named `measured` slot must carry a value or the row is reported UNVERIFIED, never PASS. Resolve launch-path case G explicitly — verdict or UNVERIFIED, never silent, because it is an opt-out row."
+    },
+    {
+      "priority": "must",
+      "id": "M4",
+      "order": "Make the gate execute the shipped expression instead of restating it. The reviewer proved MUT5: flipping wantsInfo's composition from && to || in agent.ts leaves check-buttons at 133/133 green, because the gate slices the expression out and hand-types it back. Extract wantsInfo to a named exported function and import it. Then apply the same rule to every other assertion that reconstructs shipped logic — a gate that reconstructs a predicate is user-model Rule 7 by construction, and this one is now being quoted upward by three roles as proof."
+    },
+    {
+      "priority": "must",
+      "id": "M5",
+      "order": "Delete «الملف مضمّن 📎» from dashboard.ts:1171 and correct the sibling warning at :1156. The opener offers the file, it does not carry it; the preview caption on the same screen already says so. State what will actually be sent, next to the button that sends it. While there: either wire the buttons:false path to something an operator can choose, or delete the unreachable document-with-caption branch at index.ts:213 — a documented founder-facing trade-off that no real caller can select is a decision that exists only in a comment."
+    },
+    {
+      "priority": "should",
+      "id": "S1",
+      "order": "Give BUTTON_INTENT a consumer matrix and stop the class. The table has at least four readers — assertButtonsHandled, canonicalTitle, tappedCommercial, and the decline→setOutcome writer — and adding one key silently changes all four; that is precisely how «لا» reached the ledger past a boot contract designed to stop unhandled button strings. Assert, for every key, the behaviour of every consumer, generated from the table so a new key cannot be added without paying for its assertions. This is the structural exit from the thrashing ruled in §3, and it generalises round-24's hand-made disclosed/asked split instead of repeating it a third time."
+    },
+    {
+      "priority": "should",
+      "id": "S2",
+      "order": "Send the profile PDF and its value paragraph as ONE bubble on the rung-one path. agent.ts:868 calls gupshup.sendDocument without the caption argument that gupshup.ts:141 already accepts, so the customer who taps «تفاصيل التكامل» — this round's own button — gets a file with no words, then a separate paragraph. Round 25's ordering fix landed; the one-bubble requirement he stated in his own words did not."
+    },
+    {
+      "priority": "should",
+      "id": "S3",
+      "order": "Instrument the button drop rate before touching the allowlist again. «الأحد صباحًا», «مكالمة قصيرة صباحًا», «العرض التجاري، شكرًا» and «أرسلوا لي الملف التعريفي» all refuse today (measured), and each refusal ships the scheduling close as plain text. Refusing is the correct direction and must not be loosened on instinct — count it in production first, then decide with a number. The console.error already fires; aggregate it."
+    },
+    {
+      "priority": "should",
+      "id": "S4",
+      "order": "Give the sticky launch bar a compact state below ~430px so it stops covering the step-٣ template cards. He reviews on his phone and briefs by screenshot; the feature he asked for should not be the content the chrome hides."
+    },
+    {
+      "priority": "nice",
+      "id": "N1",
+      "order": "Delete the dead lostDecline branch at agent.ts:651-656 or make it reachable. It is exhaustively false, and its comment claims an action the code does not take — the third consecutive round a dedupe comment has done that. A comment that describes unreachable code is a lie the next reviewer has to disprove by hand."
+    },
+    {
+      "priority": "nice",
+      "id": "N2",
+      "order": "Capture one screenshot of the SECOND template selected, at 1440 and at 390, and keep it in the bundle. No image in the round shows the feature working, which is the single artifact he would accept as proof at a glance."
+    }
+  ],
+
+  "waived_shoulds": [],
+
+  "user_model_updates": [
+    "2026-08-13 R45/R46 round-26 [Rule 7 — the streak RESUMES after one clean round, and the channel is confirmed a third way]. Round-22 broke this rule's four-round streak by making instruments describe themselves. Round 26 resumes it in the same channel — the loop's PROSE about its evidence is unbounded by its evidence — and adds a third mechanism beyond over/under-claiming: an instrument that is STRUCTURALLY INCAPABLE of the failure it is quoted for. Three at once, all measured: four of five pixel comparisons compare a file with itself (sha256-identical, so 0.0000% is arithmetic, not measurement); regression/build.log is 0 bytes and cited as exit_code 0 / verdict PASS; and MUT5 flips the shipped wantsInfo predicate from && to || with all 133 gate assertions still green, because the gate re-states the expression instead of executing it. The corollary to add: ask of every green number NOT «is it true» but «what input would make it red» — if the answer is «none», it is not evidence.",
+
+    "2026-08-13 R45/R46 round-26 [Rule 2 — FIRST EXTENSION FROM SCREENS TO THE LEDGER]. Every prior instance of «numbers must be real» was a rendered surface: a fabricated readiness card, invented knowledge scores, decorative 🔥 chips. This round the rule is violated in the DATABASE: agent.ts:832 writes «ضغط زر: لا» as the recorded reason for an outcome when the customer typed the word and pressed nothing. A false claim on a screen is corrected by a redeploy; a false claim in the ledger is permanent, propagates into every later reading, and is exactly the material Rule 4's causal explanations are built from. Rule 2 must be read as covering WRITES, not just renders. Watch for a second instance before promoting this to a numbered corollary.",
+
+    "2026-08-13 R45/R46 round-26 [THRASHING, second consecutive ruling, and the diagnosis sharpens]. Round 24 ruled thrashing on «one string answering two opposed questions» and named the exit: split disclosed from asked. That exit LANDED at round 25 and the shape reappeared within one round, one layer up (wantsInfo), then one layer above that (buttonIntent). The sharper diagnosis: the recurring unit is not a string, it is a SHARED TABLE OR MATCHER WITH MULTIPLE CONSUMERS, widened for one consumer and re-tested only for that consumer. Five commits, five new defects, one shape. The generalisable lesson: fixing one INSTANCE of a structural defect buys exactly one round; the fix has to make the property structural (a consumer matrix generated from the table) or the same class returns at a new address. Also new and important: severity went UP on the last step even as code footprint went DOWN — shrinking diffs are not evidence of convergence.",
+
+    "2026-08-13 R45/R46 round-26 [accepted pattern — DATA-SHAPED FEATURES ARE WHAT HE ASKED FOR, twice now]. He asked for «a second template»; what shipped was a registry where a third template is a new entry rather than a code change, served by one endpoint that both the preview and the send path read. This is the same shape that earned acceptance at round-22 (one numeral path, one catalogue). Signal 2 of 3 toward a rule: when he asks for «one more X», build the place where X lives, not the second X. Do NOT promote yet.",
+
+    "2026-08-13 R45/R46 round-26 [process, for the human ledger — deploy authorisation vs. definition of done]. «Once done, just deploy it and fly» (2026-08-10) was exercised five times in ninety minutes this round; four of those deploys carried an unreviewed new defect to production and the fifth is live with a known blocker. He pre-authorised the DEPLOY, not a redefinition of «done». Proposed loop amendment for human review via scripts/orbit-memory review: a commit that closes a reviewer blocker does not deploy until the reviewer has scored the commit that closes it. This is a playbook gap, not a builder failure — third round in which a fix shipped ahead of its own verification."
+  ],
+
+  "stop_conditions_checked": {
+    "safety_booleans_all_hold": true,
+    "whatsapp_sends_this_round": 0,
+    "opt_out_path_intact": "verified in code at index.ts:186, before any send, with continue; safety-gate PASS earned",
+    "webhook_token_auth_intact": "captured 401 in the QA bundle; independently unchanged in the diff",
+    "secrets_in_git": "none; .env gitignored, values never echoed",
+    "build_green": true,
+    "reviewer_ge_8": false,
+    "qa_delivery_gate_pass": false,
+    "note": "Two of four §3 eval gates fail. Under §8 that is a gate failure, not a hard stop — the streak counter is at one, and the fix for the top must is already identified and in the worktree."
+  },
+
+  "next_cycle_input": "M1 → M2 → M5 first: they are small, they are all in files already open, and together they take the round from «live defect» to «live and honest». M3 and M4 are the evidence rebuild and must land before any verdict on the next commit is quotable. S1 is the only order that changes the trajectory rather than the symptom — if one thing survives triage, make it that one.",
+
+  "addendum_07d087f": {
+    "recorded_at": "2026-08-13T17:19:00Z",
+    "why_this_exists": "A commit landed and deployed WHILE I was writing this verdict. Leaving the body of the envelope saying «the defect is live in production this minute» without this note would be my own Rule 2 violation, so it is recorded here rather than smoothed into the text above. The verdict still BINDS 7ee7756 — that is the commit I was asked to rule on and the one every stage owner's evidence covers.",
+    "what_landed": "07d087fa2058f42be00626d0aa44bf6823d94887 — «fix: gate button intents on tap provenance; make the info gate falsifiable», committed 20:12:18 +03, deployed as fly v186. This is the sixth deploy of the round.",
+    "verified_by_me_from_the_diff": {
+      "M1_tap_provenance": "CLOSED. gupshup.isButtonTap(ev) is wired at index.ts:46, handleInbound carries `wasTap = false`, and the decline branch now reads `tapped(text) === 'decline'`. The typed-«لا» path to the ledger is gone.",
+      "M2a_honest_reason_string": "CLOSED as a consequence — «ضغط زر: X» is now unreachable for typed text, so it can no longer assert a press that did not happen.",
+      "M2b_unguarded_overwrite": "OPEN. tracker.setOutcome still overwrites unconditionally and the decline branch still has no `outcome !== 'handoff'` guard, unlike the turn-cap path at agent.ts:919. A contact already at handoff or interested who TAPS «ليس الآن» on a proposed meeting time is still silently downgraded to later. M2 is half done.",
+      "M4_gate_executes_shipped_expression": "CLOSED. check-buttons.mjs now locates the `const wantsInfo =` statement structurally, fails loudly if the anchors move, and executes the real line instead of a retyped copy. MUT5 should now bite.",
+      "M3_evidence_bundle": "OPEN. There is still no delivery-evidence bundle at the canonical path for any commit in this round, and now none for 07d087f either.",
+      "M5_الملف_مضمّن": "OPEN. Still present in dashboard.ts, count 1. The contradiction the founder will read next to the launch button is unchanged.",
+      "S1_consumer_matrix": "OPEN — and it is the order that matters most, because M1 fixed this instance of the class, not the class."
+    },
+    "verdict_unchanged_and_why": "ITERATE stands. Three musts remain open (M2b, M3, M5), and the new commit is itself unreviewed, unevidenced, and already in production — which is the SIXTH deploy of this round and the exact process finding in ruling 3's exit item 4, recurring in real time while the verdict naming it was being written. That is not a gotcha; it is the strongest possible confirmation that the thrashing ruling is about the process, not about any one engineer's care. The fix is good work and it is the right fix. It should have been reviewed before it was live."
+  },
+
+  "reviewed_at": "2026-08-13T17:11:10Z",
+  "reviewer": "cpo (round 26)"
+}

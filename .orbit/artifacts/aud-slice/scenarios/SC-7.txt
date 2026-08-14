@@ -1,0 +1,5 @@
+SC-7 happy (AnyDoc path): prod E2E deck upload after extractor swap
+API response: {"product":"لِ الإجازات المرضية","md":"…","chars":1617} (HTTP 200)
+prod log: {"at":"kb","msg":"text extracted","via":"anydoc","chars":960,"filename":"test-deck.pdf"}
+local smoke: toMarkdownBytes(Arabic deck) → 961 chars GFM markdown, headings preserved
+post-proof cleanup: 2 test hub rows deleted; name-normalization prompt hardening deployed @b97244d

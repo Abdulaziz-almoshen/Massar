@@ -1,0 +1,264 @@
+{
+ "R1_picker_lists_both_templates": {
+  "expected": "2 cards, registry ids, one preselected, radiogroup semantics",
+  "measured": {
+   "cards": 2,
+   "tplCount": 2,
+   "defaultTplId": "intro_integration",
+   "groupRole": "radiogroup",
+   "cardRoles": [
+    {
+     "role": "radio",
+     "checked": "true",
+     "tabindex": "0"
+    },
+    {
+     "role": "radio",
+     "checked": "false",
+     "tabindex": "0"
+    }
+   ]
+  }
+ },
+ "R2_pick_swaps_body_and_buttons": {
+  "expected": "picking each template swaps BOTH body and preview buttons",
+  "measured": {
+   "tpl0": {
+    "id": "intro_integration",
+    "bodyHead": "ارتقِ بكفاءة منشأتكم من خلال التكامل المباشر بين نظام H",
+    "previewBtns": [
+     "الملف التعريفي",
+     "أرسلوا التفاصيل",
+     "ليس الآن"
+    ],
+    "aria": [
+     {
+      "role": "radio",
+      "checked": "true",
+      "tabindex": "0"
+     },
+     {
+      "role": "radio",
+      "checked": "false",
+      "tabindex": "0"
+     }
+    ]
+   },
+   "tpl1": {
+    "id": "high_usage_upsell",
+    "bodyHead": "مرحبًا 👋\n\nلاحظنا أن لديكم استخدامًا مرتفعًا لخدمة {{1}",
+    "previewBtns": [
+     "تفاصيل التكامل",
+     "أود مناقشة التكامل",
+     "ليس الآن"
+    ],
+    "aria": [
+     {
+      "role": "radio",
+      "checked": "false",
+      "tabindex": "0"
+     },
+     {
+      "role": "radio",
+      "checked": "true",
+      "tabindex": "0"
+     }
+    ]
+   },
+   "body_changed": true,
+   "buttons_changed": true
+  }
+ },
+ "R3_variable_resolution": {
+  "expected": "preview resolves {{1}} to the service; textarea keeps the RAW {{1}}",
+  "measured": {
+   "service": "الإجازات المرضية",
+   "preview_has_raw": false,
+   "preview_has_service": true,
+   "textarea_has_raw": true,
+   "campMsg_has_raw": true,
+   "previewHead": "مرحبًا 👋\n\nلاحظنا أن لديكم استخدامًا مرتفعًا لخدمة الإجازات المرضية، ونعتقد أن هناك فرصة لتسهيل العمل على فريقكم بشكل أكب"
+  }
+ },
+ "R4_service_switch_reresolves": {
+  "expected": "new service appears in the preview; textarea still raw",
+  "measured": {
+   "newService": "فحص الموظفين",
+   "preview_has_new": true,
+   "textarea_still_raw": true,
+   "previewHead": "مرحبًا 👋\n\nلاحظنا أن لديكم استخدامًا مرتفعًا لخدمة فحص الموظفين، ونعتقد أن هناك فرصة لتسهيل العمل على فريقكم بشكل أكبر.\n\n"
+  }
+ },
+ "R5_keyboard_operable": {
+  "expected": "cards carry a key handler and are focusable",
+  "measured": {
+   "hasKeyHandler": [
+    "tplKey(event,0)",
+    "tplKey(event,1)"
+   ],
+   "focusable": [
+    "0",
+    "0"
+   ]
+  }
+ },
+ "R6_no_edit_warning": {
+  "expected": "no warning after editing; «عدّلت نص القالب» absent from the emitted page; tplEdited gone",
+  "measured": {
+   "warning_string_in_visible_text": false,
+   "warning_string_in_page_source": false,
+   "tplEdited_defined_at_runtime": false,
+   "meta_approval_words_present": false,
+   "campMsgHead_after_edit": "نص كتبه المشغّل بنفسه تمامًا ولا يطابق القالب.",
+   "tplId_after_edit": "high_usage_upsell"
+  }
+ },
+ "R7_launch_payload_carries_templateId": {
+  "expected": "client sends templateId: tplId; server resolves buttons by id",
+  "measured": {
+   "served_payload_source": "body: JSON.stringify({ targets, message: msgOut, name: campName, product: prod, templateId: tplId })",
+   "tplId_now": "high_usage_upsell",
+   "note": "no launch performed; every send endpoint was network-blocked for the whole session"
+  }
+ },
+ "R8_console_errors_aimkt": {
+  "expected": "[]",
+  "measured": []
+ },
+ "R9_regression_routes": {
+  "expected": "each renders its landmark, >400 chars, zero console errors",
+  "measured": {
+   "#kmon": {
+    "chars": 816,
+    "landmark_present": true,
+    "console_errors": []
+   },
+   "#home": {
+    "chars": 3558,
+    "landmark_present": true,
+    "console_errors": []
+   },
+   "#customer/966500000850": {
+    "chars": 2646,
+    "landmark_present": true,
+    "console_errors": []
+   },
+   "#customers": {
+    "chars": 1331,
+    "landmark_present": true,
+    "console_errors": []
+   },
+   "#kb": {
+    "chars": 952,
+    "landmark_present": true,
+    "console_errors": []
+   }
+  }
+ },
+ "R10_pixel_pair_console": {
+  "1440x900": {
+   "base-cb3fad0": {
+    "console_errors": []
+   },
+   "new-1cf9b6d": {
+    "console_errors": []
+   }
+  },
+  "1024x768": {
+   "base-cb3fad0": {
+    "console_errors": []
+   },
+   "new-1cf9b6d": {
+    "console_errors": []
+   }
+  },
+  "390x844": {
+   "base-cb3fad0": {
+    "console_errors": []
+   },
+   "new-1cf9b6d": {
+    "console_errors": []
+   }
+  }
+ },
+ "R11_live_render": {
+  "expected": "picker renders at all 3 viewports, zero horizontal overflow, zero console errors",
+  "measured": {
+   "1440x900": {
+    "cards_rendered": 2,
+    "card_boxes": [
+     {
+      "w": 523,
+      "h": 150
+     },
+     {
+      "w": 523,
+      "h": 150
+     }
+    ],
+    "horizontal_overflow_px": 0,
+    "chip_radius": "999px",
+    "console_errors": []
+   },
+   "1024x768": {
+    "cards_rendered": 2,
+    "card_boxes": [
+     {
+      "w": 315,
+      "h": 204
+     },
+     {
+      "w": 315,
+      "h": 204
+     }
+    ],
+    "horizontal_overflow_px": 0,
+    "chip_radius": "999px",
+    "console_errors": []
+   },
+   "390x844": {
+    "cards_rendered": 2,
+    "card_boxes": [
+     {
+      "w": 274,
+      "h": 204
+     },
+     {
+      "w": 274,
+      "h": 204
+     }
+    ],
+    "horizontal_overflow_px": 0,
+    "chip_radius": "999px",
+    "console_errors": []
+   }
+  }
+ },
+ "R12_pixel_diff": {
+  "expected": "a bounded, intentional delta confined to the composer step",
+  "measured": {
+   "1440x900": {
+    "stdout": "FAIL: 24149/1296000 pixels differ = 1.8633% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px-diff-1440x900.png",
+    "stderr": "",
+    "exit": 1,
+    "diff_image": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px-diff-1440x900.png"
+   },
+   "1024x768": {
+    "stdout": "PASS: 0/786432 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px-diff-1024x768.png",
+    "stderr": "",
+    "exit": 0,
+    "diff_image": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px-diff-1024x768.png"
+   },
+   "390x844": {
+    "stdout": "PASS: 0/329160 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px-diff-390x844.png",
+    "stderr": "",
+    "exit": 0,
+    "diff_image": "/private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/px-diff-390x844.png"
+   }
+  }
+ },
+ "R13_egress_guard": {
+  "expected": "zero send-capable requests attempted",
+  "measured": []
+ }
+}

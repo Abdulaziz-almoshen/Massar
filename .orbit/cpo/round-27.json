@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "round": 27,
+  "role": "cpo",
+  "commit": "d887d4e8d5e9673b3dfceae3f37fe1257fb1a516",
+  "commit_short": "d887d4e",
+  "deployed_as": "massar-engine.fly.dev (health green per orchestrator report)",
+  "goal": "R45/R46 — campaign creation becomes a place where he picks the OPENER that fits the audience, sees exactly what will land, and can try it himself. Round 27's slice: the buttons the agent puts in front of a real customer must always be readable back by the system, and the launch bar must not hide the feature he asked for.",
+
+  "verdict": "ITERATE",
+  "verdict_plain": "NARROW ITERATE — the code is done, the record is not. I am freezing the button subsystem (planner upheld) and blocking only on three mechanical, zero-source-logic items: bind the evidence to d887d4e, re-baseline the three intended #aimkt rows, and correct one false claim about what the enum actually enforces.",
+  "verdict_is_not": "This is NOT a third round of button work. No agent.ts logic change is authorized. If the next cycle edits button routing, it has misread this verdict.",
+
+  "the_four_rulings": {
+    "1_accept_or_iterate": "ITERATE, narrowly. The reviewer's 8.5 is real and is the first time this workstream has cleared the bar — but it is bound to 090ef30, and TWO commits landed after it. Both land on measured surfaces: 05ead71 changes the tool schema that governs button emission (the routability scenarios), d887d4e changes the launch bar (the #aimkt pixel rows). So no gate in this round — reviewer, QA, or pixel — has actually seen the commit being accepted. The delivery gate says so in one line: 'evidence commit 090ef30a does not match delivered commit d887d4e'. I made this exact point a `must` last round (R26/M3, then five commits stale, now two). Accepting it the round after I blocked on it teaches the loop that must-priority orders decay if you ship past them.",
+    "2_is_this_still_thrashing": "The button subsystem: NO — the pattern breaks. Rounds 25 and 26 widened a hand-maintained table; 05ead71 removes the need for one. That is a categorically different move and it is the right one. But the round as a WHOLE thrashed in a new place: the fix shipped after the reviewer had already signed, unreviewed, and carried a claim stronger than the code. The thrash migrated from the mechanism to the record.",
+    "3_founder_grade": "7/10. He will not look at buttons — invisible plumbing that now works. He opens the campaign wizard on his phone, sees the launch bar genuinely docked, and moves straight to the next thing he cannot do: pick a segment, schedule it, launch it. His first words are most likely about that gap, not about this round.",
+    "4_planner_vs_discovery": "Discovery was right on DIRECTION; the planner was right on TIMING, and the outcome proves it. See `adjudication` below."
+  },
+
+  "adjudication_planner_vs_discovery": {
+    "ruling": "Ship the enum — keep it. But the planner's objection is vindicated in its consequence, not overruled.",
+    "discovery_was_right": "A hand-maintained allowlist re-harvested from production IS a treadmill: the model's title space is open, every prompt/product/dialect shift re-opens the gap, and the failure degrades silently. Their prescription — constrain the schema instead of widening the table — is the standard answer and removes a mechanism rather than widening one. That is exactly the move that breaks a thrashing pattern.",
+    "planner_was_right": "He said do not touch this subsystem after two thrashing rounds. What happened when it was touched anyway: the change landed AFTER the reviewer's 8.5 was recorded at 090ef30, so it went out unreviewed; and it shipped with a claim the code does not support. The planner's dissent was about the process risk of working inside a twice-burned subsystem under time pressure. That risk materialized.",
+    "the_gap_that_settles_it": "The commit message says 'the provider enforces the constraint during sampling and an off-table title cannot be produced at all' and the code comment says UNREPRESENTABLE. Neither is true as shipped. There is no `strict: true` anywhere in src/ (verified: grep for strict:true returns nothing). On chat.completions a function tool defaults to strict:false, where the JSON Schema — enum included — is advisory guidance, not a decoding grammar. The enum materially RAISES compliance; it does not make anything unrepresentable. And the schema cannot simply be flipped strict as written: `footer` is a property outside `required`, which strict mode rejects.",
+    "why_this_matters_beyond_pedantry": "The claimed property was the entire justification for overriding the planner. 'The treadmill is over' is only true if the constraint is enforced. As shipped, the runtime guarantee is still carried by canonicalTitle() at agent.ts:634 — the same fallback as at 090ef30, which QA measured at 24/24. So the product is safe and strictly better; what is wrong is the RECORD. Left standing, the next engineer deletes the fallback because 'the enum guarantees it', and the silent-drop class returns with no net."
+  },
+
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "090ef30abb98acad8d1a8586f17e3487d89d95e1",
+    "delivered_commit": "d887d4e8d5e9673b3dfceae3f37fe1257fb1a516",
+    "sha256": "e7976afff380850cb94925acc2f64cbd1074e0bc4f23af047798989ea2570451",
+    "gate_result": "blocked",
+    "binding_mismatch": true,
+    "cpo_note": "QA's delta work is honest and I credit it — 24 distinct titles independently re-harvested from live transcripts, 24/24 routable, max 19 units, zero new failures. The finding is not against QA's method; it is that the bundle is bound two commits behind the commit under acceptance, and both intervening commits touch surfaces the bundle measures."
+  },
+
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 47,
+    "sha256": "25605c6808434845facbaa1b2091bec26526568d8660476507c9d785cfe8735f",
+    "review_required": false,
+    "pending_event_ids": []
+  },
+
+  "basis": {
+    "skills": [
+      "user-model R7 (the loop's claims about itself are subject to R2): this is the round's decisive finding — 'UNREPRESENTABLE' and 'the provider enforces it during sampling' are property assertions unbounded by the code that shipped. Fifth instance in six rounds; the channel is again the loop's PROSE about its evidence, not the evidence.",
+      "user-model R2 (numbers/claims must be real and honestly bounded) — applied to a safety property rather than a UI number.",
+      "user-model R6 (stopping the leak is not wiping the spill) — HONOURED this round: the dock fix was found to be cosmetic (a 56px padding clamp still hid a card) and both anchored fixes landed. This is the rule working.",
+      "user-model R5 (zero outbound WhatsApp) — intact; safety-gate PASS corroborated by no new send path in either commit.",
+      "user-model R1 (professional marketing-tool fit) — the launch bar docking for real is on this axis.",
+      "user-model signal 2026-08-13 R47 ('try to do it quick you take too much') — THIRD consistent instance; it is why this ITERATE is scoped to mechanical items and why the button subsystem is frozen rather than re-opened."
+    ],
+    "research": [
+      "Read src/agent.ts:455-477 — the send_buttons schema. enum: Object.keys(templates.BUTTON_INTENT) is present on items; no strict flag; footer sits outside required.",
+      "grep -rn 'strict: true|strict:true|\"strict\"' over src/ returns zero hits — the enum is advisory, not compiled.",
+      "canonicalTitle() confirmed still live at agent.ts:634 (defined templates.ts:176) — the real runtime guarantee is unchanged from 090ef30, so the product is not regressed.",
+      "Ran .orbit/checks/delivery-quality-gate.py --commit d887d4e: blocked; first error is the commit binding mismatch, followed by the three intended #aimkt rows (9.47% / 11.45% / 21.69%).",
+      "git show --stat 05ead71 d887d4e: 05ead71 = src/agent.ts +12/-1; d887d4e = dashboard launch bar + file chip. Both land on surfaces the stale bundle measures.",
+      "Read .orbit/cpo/round-26.json: M3 was 'produce a delivery-evidence bundle bound to the DELIVERED commit'. Same defect class recurring at reduced magnitude (5 commits stale to 2)."
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+
+  "grill": [
+    {"lens": "domain", "verdict": "clean", "evidence": "Button titles are WhatsApp quick-reply titles bound by the 20-unit limit; QA measured max 19. Arabic titles route through canonicalTitle with affix tolerance. No domain-expert wince."},
+    {"lens": "policy", "verdict": "clean", "evidence": "Zero-send rule intact (no send path added in either commit); opt-out first and unweakened per safety-gate; webhook token auth untouched; .orbit/decisions/0001 honoured — the dashboard fixes are anchored string replacements, not range edits."},
+    {"lens": "product", "verdict": "clean", "evidence": "The enum reuses the existing BUTTON_INTENT table as its single source rather than introducing a parallel list; the dock fix uses the wizard's existing chrome. No bolt-on."},
+    {"lens": "design_ux", "verdict": "findings", "findings": [
+      {"severity": "should", "id": "S1", "finding": "The three #aimkt pixel rows are the INTENDED launch-bar redesign, but the baseline was never re-cut, so the gate reports the intended change as a failure at every viewport. A permanently-red row trains everyone to read past it — that is how a real regression gets waved through next round.", "located": ".orbit-evidence/ baselines for #aimkt @1440x900, 768x1024, 375x812"},
+      {"severity": "nice", "id": "N1", "finding": "Still no captured image of the launch bar docked on a 390px phone at d887d4e. He briefs by phone screenshot (user-model R3); one image is the artifact he would accept at a glance."}
+    ]},
+    {"lens": "system_design", "verdict": "findings", "findings": [
+      {"severity": "must", "id": "M1", "finding": "The enum is advisory, not enforced. No strict:true exists in src/; on chat.completions a non-strict function tool treats enum as guidance, so an off-table title remains producible. The shipped code and the shipped claim disagree about whether a guarantee exists. The behaviour is fine — canonicalTitle() still carries it — but the record asserts a structural property the system does not have, which is exactly how the fallback gets deleted later.", "located": "src/agent.ts:465-472 (comment), 05ead71 commit message"}
+    ]},
+    {"lens": "slop", "verdict": "findings", "findings": [
+      {"severity": "must", "id": "M2", "finding": "UNREPRESENTABLE, in a code comment and a commit subject line, for a constraint that is not enforced. This is the same slop class as fabricated data presented as real, moved from the UI into the engineering record — and the record is what the next role cites as proof.", "located": "src/agent.ts:465, 05ead71 subject"}
+    ]},
+    {"lens": "evidence_integrity", "verdict": "findings", "findings": [
+      {"severity": "must", "id": "M3", "finding": "The acceptance case is bound to the wrong commit. Reviewer 8.5 at 090ef30; QA bundle at 090ef30; the commit under acceptance is d887d4e, two commits later, and BOTH intervening commits change surfaces those gates measure. Nothing in this round has actually inspected d887d4e.", "located": ".orbit/qa/delivery-evidence.json"}
+    ]}
+  ],
+
+  "scores": {
+    "intent_fidelity": 9,
+    "completeness": 7,
+    "coherence": 9,
+    "taste": 8,
+    "surprise": 5,
+    "evidence_integrity": 5,
+    "overall": 7.4,
+    "note": "Coherence jumps to 9 — replacing a hand-maintained table with a schema constraint is the first move in this workstream that makes the system SMALLER, and the designer catching that the dock fix was cosmetic is R6 working as intended. Completeness is 7, up from 5: the feature is whole and the user-visible falsehoods are gone. Evidence integrity is 5 and it is the only thing holding the verdict — not because the work is unproven, but because it is proven at a different commit than the one being accepted, and because the round's headline claim overstates what shipped."
+  },
+
+  "change_orders": [
+    {"priority": "must", "id": "CO1", "order": "Make the claim and the code agree — pick ONE, in ten minutes, no logic change. EITHER (a) set strict: true on the send_buttons tool and move `footer` into `required` as a nullable type (strict rejects properties outside required), which makes UNREPRESENTABLE literally true and is the better end state; OR (b) amend the comment at src/agent.ts:465-472 to say the enum is a strong provider-side hint and that canonicalTitle() at :634 remains the enforcing gate. If (a), keep canonicalTitle anyway. Do not delete the fallback under any circumstance."},
+    {"priority": "must", "id": "CO2", "order": "Re-capture the delivery-evidence bundle at d887d4e so .orbit/checks/delivery-quality-gate.py --commit d887d4e stops reporting a binding mismatch. Mechanical re-run, not new QA design. Second consecutive round for this order (R26/M3)."},
+    {"priority": "must", "id": "CO3", "order": "Re-baseline the three #aimkt viewports at d887d4e and record in the bundle, in one line, that the baseline was intentionally re-cut for the launch-bar redesign and what changed. A red row that everyone knows to ignore is not evidence."},
+    {"priority": "should", "id": "CO4", "order": "Have the reviewer sign the 090ef30..d887d4e delta specifically. The 8.5 predates both commits; the enum went out unreviewed against a recorded dissent, which is the one place the planner's objection actually bit."},
+    {"priority": "nice", "id": "CO5", "order": "One 390px screenshot of the docked launch bar in the bundle."}
+  ],
+
+  "frozen": {
+    "button_subsystem": "CLOSED at d887d4e + CO1. No further rounds. 24/24 routable is sufficient and the enum plus canonicalTitle is the right end state. The planner is upheld going forward: the next increment does not touch button routing.",
+    "next_increment": "segment save -> schedule -> launch, per the planner. That is the gap he will hit first."
+  },
+
+  "user_model_updates": [
+    {
+      "target": "user-model.md R7",
+      "update": "FIFTH instance in six rounds, and the first where the over-claim is about a SAFETY/STRUCTURAL property rather than a count. Round-22 broke the streak by making instruments describe themselves; round 26 resumed it; round 27 confirms the channel is stable — the loop's PROSE (commit subjects, code comments, role reports) runs ahead of its code, while the machine-generated evidence stays clean. NEW COROLLARY: when a commit claims a class of bug is now IMPOSSIBLE, the claim must name the enforcing mechanism and a test that fails when the mechanism is removed. 'The provider enforces it' is not a mechanism; strict:true is. An impossibility claim without a falsifier is the most expensive kind of over-claim, because it authorizes deleting the thing that was actually protecting you."
+    },
+    {
+      "target": "user-model.md — signal 2026-08-13 R47",
+      "update": "Applied, and this verdict is the test of it: the founder's speed signal is honoured by SCOPING an ITERATE to mechanical items and freezing the subsystem, not by converting a blocked gate into an ACCEPT. Speed comes out of the loop's overhead — fewer rounds, parallel owners, shorter reports — never out of the evidence binding. Recommend promotion to a Rule next round if it holds a fourth time."
+    },
+    {
+      "target": "user-model.md — new candidate signal",
+      "update": "2026-08-13 round-27 [process, first instance]: a recorded DISSENT that is shipped past is worth more than a dissent that is smoothed away — 05ead71 wrote the planner's objection into its own commit message, which is what made this adjudication possible at all. Keep the practice. The lesson is not 'never override the planner'; it is 'when you override on the strength of a claimed property, verify the property in the same commit.'"
+    }
+  ],
+
+  "stop_conditions_checked": {
+    "gate_failure_streak": "This is ITERATE #2 in a row at the CPO gate (round 26 ITERATE, round 27 ITERATE). Per CLAUDE.md 8, two consecutive gate failures is a hard-stop trigger. I am explicitly NOT invoking it: round 26's five musts all closed, the reviewer bar was cleared for the first time, and every remaining item is mechanical rather than a re-attempt at the same fix. This is a round finishing, not a round failing. If CO1-CO3 do not close in one pass, STOP and hand to the founder.",
+    "no_whatsapp_sent": true,
+    "no_source_logic_edits_authorized": true,
+    "budget": "within caps"
+  },
+
+  "next_cycle_input": "Close CO1, CO2, CO3 in a single pass — all three are mechanical and can run in parallel (schema/comment edit, evidence re-capture, baseline re-cut). Then ACCEPT is automatic at the resulting commit; do not re-litigate buttons. The increment after that is segment save -> schedule -> launch.",
+
+  "reviewed_at": "2026-08-13T21:05:00Z",
+  "reviewer": "cpo"
+}

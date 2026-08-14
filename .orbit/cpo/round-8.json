@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "round": 8,
+  "commit": "4a40ab9",
+  "deployed_head": "4c18d20 — direct child of 4a40ab9 whose ENTIRE diff (verified by me: git diff 4a40ab9 4c18d20) is the removal of the stray </svg-fix> token, i.e. the reviewer's should-fix executed pre-verdict; the live served page byte-checks against it (0 'svg-fix' matches, 2 well-formed </svg>, all R29/R30 markers present)",
+  "goal": "Turn the platform from a message-mover into a customer-intelligence product he'd recognize from his reference screenshots: a العميل ٣٦٠ profile per contact (identity + context completeness + an honest AI reading with quoted evidence + full timeline) instead of decorative fires and a giant drop box (R27); a real analytics dashboard on home (R28) speaking the Tableau grammar he sent — rate KPIs, true funnel, distribution columns, location treemap (R29); and a campaigns list following the Emaily pattern — status tabs, search/sort, rate columns, progress bars (R30) — all in Massar's own design language with numbers that are real and sourced",
+  "verdict": "ACCEPT",
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "4a40ab9",
+    "sha256": "c03d2b7a7f460aac1409f009638348ece5c7dc58b3431a2f85f33263a4e5df51",
+    "gate": "python3 .orbit/checks/delivery-quality-gate.py --root . --commit 4a40ab9 → passed:true, errors:[], exit 0; SC-I1..I8 all PASS on top of the carried A/G/R23 matrix; 24 viewport comparisons; 0 console errors"
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 23,
+    "sha256": "93ec9e9cd221e7ddea56cbccff294b75050b7cc4780bdf6a674f592f6a5376f7",
+    "status": "user_memory.py status --require-latest → passed:true, requests_since_review:0, pending:[]; the R29-R30 reference-screenshot event was reviewed with the 'adopt the pattern, not the palette' summary — ratified and PROMOTED to user-model Rule 3 this round"
+  },
+  "reviewer_binding": {
+    "intel_slice": "review.md 'Re-review @4a40ab9' section: 8.5/10 PASS, no remaining blockers. M1 verified fixed (tracker.findContact read-only live lookup; watermark tracks the full transcript; live proof 5→6 turns → fresh compute) and M2 verified fixed (20s timeout + maxRetries:1; degraded Insights provably uncached — single saveInsights site after the catch's return; refresh button resets in both failure arms). One should-fix (stray </svg-fix> at dashboard.ts:980) + 2 informational nits.",
+    "should_fix_disposition": "EXECUTED, not waived — commit 4c18d20 removes the token (one-token diff verified); deployed and byte-verified live by me. Reviewer informationals (zero-filtered campaigns list lacks a لا نتائج row; funnel side-label alignment approximation) carried as nice orders below."
+  },
+  "per_request_verification": [
+    {
+      "request": "R27 — customer-intelligence pivot: 'this is the type of things I want… not PMF yet. Revise functions, solutions, UI/UX — huge drag-drop box, fires don't make sense. Worry about how we really get value.'",
+      "result": "DELIVERED-VERIFIED",
+      "evidence": [
+        "code: src/insights.ts read in full — the honesty contract holds structurally: the SYSTEM prompt forbids inventing intent/objections not present in the text; the output schema carries only sourced fields (summary, intent level, verbatim signals, objections, product interest, next action + why + best time) — no churn %, no LTV, no fabricated scores; learning gate at <2 inbound returns an honest «ما زال يتعلّم» state; LLM failure returns an UNCACHED degraded read with a refresh path; ZERO outbound capability (grep gupshup|send|fetch → no matches; the only client is the OpenAI reader)",
+        "live: GET /admin/customer/966559402621 → context 100 (8/8 deterministic parts), 38 timeline events, 3 campaign memberships, intent high, 4 verbatim signals, concrete next action — matches the transcript story; GET /admin/customer/966500000777 → the M1 growth proof: reading quotes the contact's NEWEST message verbatim («ننتظر اتصالكم غدًا الساعة عشرة الصباح…») and next_action carries that exact appointment (اتصل غدًا الساعة 10:00 صباحًا)",
+        "own-eyes: actual-profile-1440x900.png — identity header (avatar, name, تجريبي chip, attr chips, phone, first/last activity, campaign chips) + context rail (100% vertical meter) + فهم المساعد card (intent badge, summary, quoted إشارات الشراء, الخطوة التالية box with why + best time) + سجل التفاعل timeline — the reference's four-part anatomy in Massar's own language; actual-profile-learning-1440x900.png — honest Learning state (لا إشارة بعد, 50% rail with ينقصه list) instead of an invented reading",
+        "de-decoration: served page contains 0 🔥 and 0 🚀; the single ⭐ byte sits inside the inline script's defensive regex replace(/[✓⭐]/g,\"\") — never rendered as UI; seriousness is now words (نية مرتفعة/مهتم/فاتر), and the giant dropzone on the audience screen is a compact toolbar (upload button + template button + one-line explainer, paste demoted behind a details disclosure) — actual-customers2-1440x900.png"
+      ]
+    },
+    {
+      "request": "R28 — 'dashboard is a must' (Tableau reference link)",
+      "result": "DELIVERED-VERIFIED",
+      "evidence": [
+        "code: vHomeCharts on home — campaign funnel, 14-day stacked message activity (RTL-corrected: اليوم at the visible edge, Gregorian labels @ef6353a), interest by product, targets by city — every chart respects the R23 real/test toggle and states its scope («الحقيقية فقط» / «شاملة التجريبية») and its source («من أعمدة ملفك», «من وسوم المساعد»)",
+        "live: /dashboard served page carries vCustomer/ratesStrip/funnelSvg/treemapTiles markers (5/2/2/2 occurrences); /health ok:true outbound:true db connected",
+        "own-eyes: actual-home-charts-1440x900.png — KPI band with honest zeros (الحملات الحقيقية 0 «+3 تجريبية»), four populated charts from live data, honest empty-state copy paths in code for every chart"
+      ]
+    },
+    {
+      "request": "R29 — Tableau screenshot: rate KPIs, true marketing funnel, distribution columns, location treemap",
+      "result": "DELIVERED-VERIFIED",
+      "evidence": [
+        "code @a3617ab: ratesStrip (4 stage-over-stage rate KPIs with guarded division), funnelSvg (true trapezoid SVG geometry, 0.16 min-width floor so a zero stage stays visible, locale numerals), colChart (size/sector columns), treemapTiles (share-proportional flex tiles) — file-derived strings esc'd at every sink (reviewer-verified)",
+        "own-eyes: actual-home-charts-1440x900.png — rate strip (100% honest at n=3), six-segment funnel rendered with aligned side labels, الحجم/القطاع columns from his file's actual values, city treemap (الدمام/جدة/الرياض) sized by count",
+        "grammar adopted, palette Massar's own — with one taste exception filed below (treemap terracotta ramp)"
+      ]
+    },
+    {
+      "request": "R30 — Emaily screenshot: campaigns list with status tabs, search/sort, rate columns, progress bars — 'follow this'",
+      "result": "DELIVERED-VERIFIED",
+      "evidence": [
+        "code @4a40ab9: vKmon — tabs الكل/حقيقية/تجريبية with counts (boolean filter verified correct for all three), debounced search (distinct timer — no collision with customers search), whitelisted sort keys (newest/replies/seen), rate columns مشاهدة٪/ردود٪ with guarded pct, delivery progress bars, live-numbers footnote «الأرقام تتحدّث لحظيًا من حالات تسليم واتساب — لا تقديرات»",
+        "own-eyes: actual-kmonlist3-1440x900.png — the Emaily pattern recognizably present in Massar idiom: pill tabs with counts, search field, sort select, gold تجريبية status chips, teal/blue rate columns, gradient progress bars at 100%, honest «محادثات خارج الحملات ٠» section with the test-reveal chip",
+        "live: setCampTab/campSortKey markers present in the served page; row click routes to the campaign board (numeric id)"
+      ]
+    }
+  ],
+  "basis": {
+    "skills": [
+      "user-model Rule 1 (professional marketing-tool fit): the four surfaces now read as a marketing product — reference-grade profile, analytics grid, campaigns list with tabs/sort/progress — not an admin script; this is the rule the R27 'not PMF yet' complaint invoked, and the delivery answers it",
+      "user-model Rule 2 [promoted this round from R23 + R27 + R29/R30]: numbers real, sourced, honestly bounded — the delivery is built on it: honest zeros, test separation respected in every new chart, فهم المساعد labeled as the assistant's understanding with verbatim quotes, «لا تقديرات» footnote, learning/degraded states instead of fake readings",
+      "user-model Rule 3 [promoted this round from R17 + R21 + R27 + R28/R29 + R30]: briefs by reference artifact — adopt the pattern, not the palette; judged the five captures against the reference anatomies rather than pixel-cloning, and filed the one place the delivery itself borrowed a foreign palette (treemap terracotta) as a taste order",
+      "user-model R16 law (no dead ends, in code): the profile's failure modes all have a next step — 404 links back to القائمة, degraded reading names the recovery button, learning state says what will improve it",
+      "user-model R17 signal: heavy content behind explicit surfaces — the profile keeps the full chat behind «فتح المحادثة», never inline"
+    ],
+    "research": [
+      "read src/insights.ts in full (125 lines) and verified the honesty contract in structure, not prose: no invented-probability fields exist in the schema; degraded return provably precedes the single saveInsights call; zero outbound imports (grep exit 1)",
+      "read the /admin/customer route (index.ts:260-277) and tracker.findContact (read-only, live full transcript — the M1 fix) plus db contact_insights persistence; read all 1236 lines of dashboard.ts across vCustomer/vHomeCharts/vKmon/vCustomers and the render/refresh loop (5s poll never triggers LLM reads — list rows use the cached /admin/insights endpoint)",
+      "ran both gates myself from repo root: delivery-quality-gate exit 0 @4a40ab9; user_memory --require-latest exit 0; hashes bound above",
+      "waited for and read the reviewer's Re-review @4a40ab9 (8.5/10 PASS) — then independently confirmed its should-fix was already executed: git log -S svg-fix → introduced @a3617ab, removed @4c18d20 (one-token diff), served page re-fetched and byte-checked clean",
+      "live read-only verification: /health ok+outbound+db; both customer GETs return accurate, growth-fresh intelligence; /dashboard markers present; emoji sweep on the served bytes (0 🔥, 0 🚀, 1 non-rendered ⭐ inside a script regex); zero sends, zero mutating POSTs, zero deletions by me",
+      "judged the five required captures by eye at 1440x900 against R27/R29/R30 reference anatomies in Massar's design language; found the profile-page header mislabel (kmon title on #customer — TITLES has no 'customer' entry, nav falls back) that neither QA nor reviewer flagged",
+      "known pre-declared limits verified as declared, not discovered: S1 full-scans/batch-upserts/server-side segmentation on the ledger; campaign-detail stats not test-aware (list IS honest — verified in code line 434 vs 468); funnel zero-stage mitigated by the 0.16 floor in code"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "clean",
+      "evidence": "sales-intelligence reality respected: intent taxonomy anchored to concrete Saudi-sales behaviors (high = price/subscription/appointment asked صراحة), best_time constrained to KSA working days ٩ص–٥م and derived from the customer's own message timestamps, signals are verbatim Arabic quotes (the live 966500000777 reading quotes the actual booking message), timeline vocabulary matches WhatsApp delivery states (أُرسلت/وصلت/شوهدت/أول ردّ/فشل). One observed LLM-output wobble (a best_time reading «صباح…» alongside a 1–2pm window in the PM capture) sits inside an explicitly-suggestive field grounded on real message times — model variance, not a contract breach; noted, not ordered"
+    },
+    {
+      "lens": "policy",
+      "verdict": "clean",
+      "evidence": "§8 held: this slice adds ZERO outbound capability (insights.ts has no gupshup import — grep-verified; the only network client is the OpenAI reader with a 20s timeout); both new endpoints sit behind the same adminOk token gate (SC-I6 401 + code read); webhook token auth and opt-out path untouched; my own verification was GET-only with the token kept out of output; no data deleted; no template submissions; no real-customer contact. Commit binding: the envelope binds 4a40ab9 (the reviewed commit); deployed head 4c18d20 is a verified one-token descendant carrying only the reviewer's executed should-fix, semantically identical (the token was parser-ignored even before removal)"
+    },
+    {
+      "lens": "product",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "waived": true,
+          "waiver_reason": "the screen's own content is self-labeling and unambiguous (رجوع link + identity card + فهم المساعد); zero functional impact; a two-line fix (TITLES entry + nav highlight) against a six-commit verified delivery — the user's standing momentum instruction and the round-7 precedent (waived pill was fixed at the very next commit, 89b1b4e) both say ship and fold in; I will verify it next round exactly as I verified the pill",
+          "finding": "the flagship العميل ٣٦٠ page renders under the WRONG header — «الحملات الذكية · مركز متابعة أداء حملات المساعد الذكي» — because TITLES has no 'customer' entry and nav() falls back to TITLES.kmon (dashboard.ts:250); the sidebar also highlights no section on #customer. Visible in both profile captures; neither QA nor the reviewer caught it"
+        }
+      ]
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "nice",
+          "finding": "treemapTiles uses a terracotta ramp (#8a5a52 family) foreign to Massar's navy/teal/gold — the one spot where the delivery borrowed the reference's palette instead of only its pattern (Rule 3 cuts both ways); recolor to a Massar monochrome ramp"
+        },
+        {
+          "severity": "nice",
+          "finding": "learning-state badge reads «لا إشارة بعد» while a known interest tag chip sits directly beneath it (actual-profile-learning capture) — truthful (the LLM reading hasn't run) but momentarily contradictory; a wording like «القراءة قيد التعلّم — وسوم معروفة أدناه» removes the tension"
+        },
+        {
+          "severity": "nice",
+          "finding": "campaigns list filtered to zero (tab/search) renders the header row with no «لا نتائج» line — the picker and customers lists both have one (reviewer informational, adopted)"
+        }
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "nice",
+          "finding": "insights cache watermark is transcript LENGTH alone; after a restart the hydrated transcript re-bases at the persisted cap, so an exact length collision can serve one stale cached reading (self-heals on the next message; the refresh button is a manual recovery). Include the last message timestamp in the watermark (turns + lastTs) when touching insights next — same restart-collision class as the ledgered in-memory throttle"
+        }
+      ]
+    },
+    {
+      "lens": "slop",
+      "verdict": "clean",
+      "evidence": "hunted by name: the one genuine slop artifact found (stray </svg-fix> token shipped in the funnel markup string, rendering only via HTML-parser error recovery) was flagged by the reviewer, removed at 4c18d20, and byte-verified gone from the live page by me — resolved, not waived; emoji sweep of the served page: 0 🔥, 0 🚀, single ⭐ inside a non-rendered script regex; no placeholder data presented as real (every chart number traced to the live ledger; demo rows self-label «مثال»); no dead controls (refreshInsights/openConvo/setCampTab/setCampSort/campSearchFn/toggleShowTest/startRetarget all defined in the served JS and exercised in scenarios); copy is specific working Arabic (degraded state names its recovery button; empty charts name the action that fills them); the 🔥 in agent.ts is the WhatsApp lead-card TEXT to the PM's own phone — channel-native emoji in a chat message, not a portal chip, outside R27's complaint"
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 9,
+    "completeness": 8,
+    "coherence": 8,
+    "taste": 8,
+    "surprise": 7
+  },
+  "change_orders": [
+    {
+      "priority": "should",
+      "waived_for_this_round": true,
+      "order": "dashboard.ts — add a TITLES entry for the customer route (e.g. «ملف العميل ٣٦٠ · هوية العميل، فهم المساعد، وسجل التفاعل») and make nav() highlight العملاء (or a dedicated item) when location.hash starts with #customer, so the flagship profile stops rendering under the «الحملات الذكية» header. Two lines; fold into the very next dashboard touch — I will check it next round"
+    },
+    {
+      "priority": "nice",
+      "order": "Recolor treemapTiles to a Massar-language sequential ramp (navy #1F4470→light or gold #C9A227→light) — adopt the reference's pattern, keep our palette (user-model Rule 3)"
+    },
+    {
+      "priority": "nice",
+      "order": "vKmon: render a «لا نتائج» row when tab/search filters the campaigns list to zero, matching the picker and customers lists"
+    },
+    {
+      "priority": "nice",
+      "order": "Learning-state copy: when tags exist but inbound <2, badge «القراءة قيد التعلّم» (with the known-tags chips beneath) instead of «لا إشارة بعد» beside a hot chip"
+    },
+    {
+      "priority": "nice",
+      "order": "Insights watermark: include the last message timestamp alongside transcript length to close the one-stale-read restart window; pairs with the ledgered persistent lead-alert throttle"
+    },
+    {
+      "priority": "nice",
+      "order": "Carried from round-7 (still open, still ledgered): campaign-DETAIL test-awareness — «تجريبية» chip via campIsTest in the detail header + test-aware detail stats — plus one caption line clarifying that the home funnel counts campaign-sends while the KPI band counts people (2 vs ٣ on the same screen today); funnel zero-stage remains acceptably mitigated by the 0.16 min-width floor"
+    },
+    {
+      "priority": "nice",
+      "order": "Campaign-engine slice manifest unchanged (keep together on the ledger): server-side segmentation/pagination + indexed per-profile lookups (the S1 ruling), batched transactional upserts, persistent alert throttle, per-conversation alert deep links, NOTIFY_NUMBER portal-editable"
+    }
+  ],
+  "user_model_updates": [
+    "PROMOTED Rule 2: numbers must be real, sourced, and honestly bounded — no invented probabilities/estimates; AI readings labeled as فهم المساعد with quotable evidence and honest learning/degraded states; test traffic separated; honest zeros over demo numbers (evidence R23, R27, R29-R30 era).",
+    "PROMOTED Rule 3: he briefs by concrete reference artifact and 'follow this' means adopt the PATTERN re-expressed in Massar's own design language, never the palette/branding (evidence R17, R21, R27, R28/R29, R30).",
+    "Recorded R27 signal: he audits VALUE, not feature presence — decorative AI signals (fire chips) and oversized input chrome read as fake; intelligence must earn its place with evidence-backed readings ('not PMF yet' = revise functions+solutions+UX together).",
+    "Recorded R29-R30 signal: reference-screenshot briefing ratified (Tableau grammar, Emaily pattern) — third-through-fifth artifact-brief instances that promoted Rule 3.",
+    "Vocabulary added: 'not PMF yet' (functionally present but not yet worth paying for — revise function+solution+UX together); 'follow this'+screenshot (adopt the referenced structure in Massar's own design language)."
+  ],
+  "user_impact_summary": "طلباتك الأربعة الأخيرة أصبحت حقيقية على المنصة المباشرة، وتحققنا منها بالكود وبالخادم وبالصور وبأعيننا: (1) ملف «العميل ٣٦٠» الذي أريته لنا من منتج تجارب العملاء صار موجودًا لكل عميل: هوية العميل وشرائحه وحملاته، ومقياس «اكتمال السياق» الذي يخبرك ماذا ينقص، و«فهم المساعد» — قراءة صادقة مبنية على كلام العميل الحرفي: ملخص، مستوى النية، إشارات الشراء كما قالها العميل نصًا، الاعتراضات، والخطوة التالية الملموسة مع أفضل وقت للتواصل — وجربناها حية: عميل الاختبار الذي كتب «ننتظر اتصالكم غدًا الساعة عشرة» ظهرت خطوته التالية «اتصل غدًا الساعة 10:00 صباحًا». لا نسب مخترعة ولا أرقام تنبؤ وهمية: إن كانت المحادثة قصيرة يقول المساعد بصراحة إنه ما زال يتعلّم، وإن تعطّل محرك القراءة تبقى بقية الملف شغالة مع زر إعادة المحاولة. (2) لوحة التحليلات في الرئيسية أصبحت واقعًا كما طلبت. (3) وبقواعد لوحة Tableau التي أرسلتها: شريط نسب (وصول/مشاهدة/ردود/اهتمام)، قمع تسويق حقيقي الشكل، أعمدة التوزيع حسب الحجم والقطاع من أعمدة ملفك أنت، وخريطة مدن — وكلها تحترم فصل التجريبي عن الحقيقي. (4) قائمة الحملات صارت على نمط Emaily الذي قلت «اتبعه»: تبويبات الكل/حقيقية/تجريبية بأعدادها، بحث وترتيب، أعمدة نسب المشاهدة والردود، وأشرطة تقدّم — وتحتها سطر صادق: «الأرقام تتحدّث لحظيًا من حالات تسليم واتساب — لا تقديرات». وأزلنا ما اشتكيت منه بالاسم: لا رموز نار في الواجهة (الجدية الآن كلمات واضحة)، وصندوق السحب الضخم في شاشة المستهدفين صار شريط أدوات صغيرًا: زر رفع + القالب الجاهز + سطر شرح. المراجع الفني أعاد التقييم بعد إصلاح ملاحظتيه الجوهريتين: 8.5/10، وملاحظته الشكلية الأخيرة (رمز زائد في كود القمع) أُصلحت ونُشرت قبل هذا الاعتماد وتأكدنا منها على الصفحة الحية بايتًا بايتًا. ملاحظة واحدة وجدتها بنفسي ومسجلة لأول لمسة قادمة: صفحة ملف العميل تعرض عنوان «الحملات الذكية» في أعلى الشاشة بدل عنوان خاص بها — سطران وتُصلح، ولا تعطل شيئًا. المؤجل بشفافية كما هو: فلترة الخادم للقوائم الضخمة، وإحصاءات صفحة تفاصيل الحملة لم تفصل التجريبي بعد.",
+  "reviewed_at": "2026-08-11T17:55:59Z"
+}

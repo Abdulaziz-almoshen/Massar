@@ -1,0 +1,6 @@
+=== segment endpoint negative + authorization ===
+  {"def":{"match":"all","conditions":[{"signal":"zzz","compara → 400
+  {"def":{"match":"all","conditions":[]}} → 400
+  {"def":{"match":"all","conditions":[{"signal":"read","compar → 400
+  {"def":{"match":"all","conditions":[{"signal":"opted_out","c → 400
+  no token → 401

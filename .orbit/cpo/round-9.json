@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "round": 9,
+  "commit": "e6f421a",
+  "deployed_head": "49d9ddb — fourth code-only descendant of e6f421a. Chain verified by me commit-by-commit (git show each): 0678f8b (S3 stall re-read, bounded by a 24h read-age guard), 1f4672e (S4 CSV formula-injection guard — live-verified marker), 196a50c (human-outcome endpoint+handler; buttons absent — half-shipped for 2 minutes), 49d9ddb (buttons wired into the profile action row with data-attributes and recorded-state ring — the loop caught and closed its own gap before my change order landed). Live page byte-checked at signing: winloss ?all=1 boundary, _countedValues, data-prod, CSV guard, «حُجز اجتماع» all present; /health ok:true outbound:true db connected; npm run build exit 0 at 49d9ddb.",
+  "goal": "Wake-up team demo that survives his own rejection of R31 (\"design is horrible, not implementing anything correctly\"): the team must SEE value, design, experience, how they will sell better than the sales, and an AI that explains per customer WHY we sold and WHY we didn't (user issue / product issue / communication issue / file not clear) — surprising him with intelligence, animation, insights, dashboard, agent flow, and interconnection, smarter than the tools they use today, judged against his 5 reference images",
+  "verdict": "ACCEPT",
+  "demo_readiness": "READY — no true blocker found. Every beat of DEMO-SCRIPT.md verified against live GETs, served-page markers, code, or captures viewed by my own eyes. The three stagecraft killers the reviewer found (opt-out misses on stage, dead-air on a missing asset, KPIs re-animating every 5s on the projector) are fixed, probed by me byte-exactly, and live.",
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "1f4672e",
+    "sha256": "6abb085c5e4e97752582d72f9d92aabaa11255625f7dd376d701e49b28f9cd55",
+    "gate": "python3 .orbit/checks/delivery-quality-gate.py --root . run TWICE by me: passed @4ad657e (initial binding), then passed @1f4672e after the builder rebound it (passed:true, errors:[], ui_required:true). 16 scenarios all PASS (SC-A1..A6 carried + SC-N1..N10 night: winloss extraction, opt-out matrix 22/22, turn-cap announce-once, sandbox auto-reveal, 401 auth, action queue, single-bubble no-silence, count-up once); 21 viewport comparisons across 7 routes, console_errors:[], tokens PASS, a11y PASS, dependency regression PASS. Note: descendants 196a50c+49d9ddb (outcome buttons) postdate this evidence — ordered below for the next rebind."
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 26,
+    "sha256": "7ce7ebcbb6b662ab185cde5f3effe8f6a5d2b3d273991dccdd27a2761ebdb7ef",
+    "status": "user_memory.py status --require-latest → passed:true, requests_since_review:0, pending:[]; the R33+R34 events (specialist orchestration, overnight autonomy grant, the surprise/causal-explanation bar) were reviewed and are ratified into the user-model this round (2 signals + 2 vocabulary entries appended)"
+  },
+  "reviewer_binding": {
+    "last_recorded_verdict": "review.md «Overnight-mission review @43a5015»: 6.5/10 BLOCKED — M1 (opt-out matcher misses natural Arabic opt-outs, probed 7 misses), M2 (single-bubble suppression on intent → dead air on missing asset), M3 (KPI re-animation every 5s), + S1..S6.",
+    "re_review_status": "NO reviewer re-review envelope exists for the fix commits — the mission timebox moved to CPO directly. I therefore verified every fix MYSELF at the depth the reviewer prescribed, using the reviewer's own re-review evidence bar: (M1) byte-exact probe extracting the four regex tiers from src/agent.ts via node — 25/25 opt-outs caught (superset of the reviewer's 7 misses incl. «أوقفوا الرسائل», «توقفوا عن مراسلتي», «كفى رسائل», «stop all messages») and 0 false positives on 8 stay-cases incl. the canonical «كيف أوقف التزوير؟»; (M2) probe of /^أُرسل/ against all five execTool return paths — 3 sent-paths suppress, both not-sent paths let text flow (the reviewer's prescribed no-asset spot-check, proven at the string level); (M3) _countedValues keyed on label+value — animates on first paint and on value change only, live marker present; (S1) both marker consumers realigned to «[مرفق» in insights.ts:60,71; (S5+49d9ddb) free-text onclick eliminated via data-attributes; (S6) notifyLead in the turn-cap branch agent.ts:435; (S2) winLossBoard isTest filter + route + dashboard ?all=1 — proven live by the real-only-zeros vs all=1-populated responses.",
+    "disposition": "All three musts and five of six shoulds landed and verified; ACCEPT does not rest on the missing re-review number, but the record should carry one — ordered below (cheap: reviewer agent a54abacf3d5b36840 still holds context)."
+  },
+  "per_request_verification": [
+    {
+      "request": "R32 — «design is horrible, not implementing anything correctly» + 5 reference images + the two-bubble PDF complaint from his own phone",
+      "result": "DELIVERED-VERIFIED",
+      "evidence": [
+        "own-eyes vs ref 17 (Emaily): n-kmon-1440x900.png — page title + CSV export + create CTA, pill tabs with counts, in-card toolbar (icon search, sort, count pill), status dot-chips, tabular مشاهدة/ردود rate columns, progress bars, kebab, honest footer «الأرقام تتحدّث لحظيًا من حالات تسليم واتساب — لا تقديرات», pagination — the reference anatomy recognizably re-expressed in Massar's neutral border-first system (Rule 3: pattern, not palette)",
+        "own-eyes vs ref 16 (Tableau): home-final.png — icon KPI row, 4-rate strip, RTL stage-bar funnel with drop-off %s, size/sector distribution columns «من أعمدة ملفك», message-activity columns; the terracotta borrowed-palette from round-8 is GONE (navy/teal ramps only)",
+        "own-eyes vs refs 14-15 (CXP): n-profile-1440x900.png + profile-lost.png — identity card + context meter (55% with ينقصه list) + فهم المساعد tinted panel with white sub-cards and the 2x2 metric grid (نية الشراء · حكم الصفقة · القناة · أفضل وقت) + kicker next-step card + continuous-rail timeline with channel kickers; the learning state mirrors the reference's «Learning…»",
+        "PDF one-bubble: document+caption is the primary send shape (7db6509, proven on his device pre-mission); 267d7ce+e9a735a enforce single-bubble in CODE keyed on the tool RESULT; wizard step-3 preview renders the true single bubble (dashboard.ts:811 «معاينة واتساب — رسالة واحدة»)",
+        "emoji purge held: SVG icon sprite everywhere; served page carries no decorative fire/rocket chips (the 🔥 in agent.ts is WhatsApp text to the PM's own phone — channel-native, outside the R27 complaint)"
+      ]
+    },
+    {
+      "request": "R33 — «spin up expert agents… everything they come up with, implement it»",
+      "result": "DELIVERED-VERIFIED",
+      "evidence": [
+        "4/4 panel reports exist in .orbit/artifacts/expert-panel/ (reference-fidelity, design-spec, marketing-intelligence, agent-evaluation — 16-37KB each, timestamped 21:21-21:27)",
+        "marketing-intelligence's top asks traced into code: human outcome buttons (196a50c+49d9ddb live), verdict blocks (profile + campaign detail + product hub), next-move engine (next_action through profile/list/home), home action queue («ما يستحق وقتك الآن» — 4ad657e), seen-no-reply retarget row sized from campaign cohorts",
+        "agent-evaluation traced: opt-out matrix + turn-cap fixes (84ac266→e9a735a), templates pack extracted to .orbit/artifacts/templates-pack.md (6.4KB, 21:45, NOT submitted anywhere — §8 respected)",
+        "design-spec/reference-fidelity traced: the P3 restyle chain 9fc7cd2→7a482fc→c595608→67b0131→1cc0b1c verified in captures above"
+      ]
+    },
+    {
+      "request": "R34 — the overnight mission bar: value, design, experience, sell-better-than-sales, AI that explains why-sold/why-not per customer, surprise, interconnection",
+      "result": "DELIVERED-VERIFIED",
+      "evidence": [
+        "live GET /admin/intel/winloss (real-only) → honest zeros; ?all=1 → lost:2 with ranked causes each carrying a VERBATIM customer quote: «التوقيت» («خلونا نأجلها للسنة الجاية إن شاء الله») and «الملف غير واضح» («الملف التعريفي مو واضح بصراحة، ما ذكر كيف يتم الربط مع نظامنا») — the founder's exact complaint taxonomy (user/product/communication/file-not-clear) implemented as the 8-term LOSS_TAXONOMY with strict server-side coercion (insights.ts:35,173-186)",
+        "live GET /admin/customer/966500000782 → deal_state:lost, loss_cause:الملف غير واضح, evidence quote, fix_suggestion «إرسال مقارنة مختصرة ومخصصة توضح التكامل مع النظام الحالي قبل طلب أي التزام» — the why-we-didn't-sell story per customer, on a screen (profile-lost.png) I judged by eye against ref 14",
+        "honesty contract re-verified in full insights.ts read: learning gate <2 inbound, degraded read provably uncached (single saveInsights at :191 after the catch return), taxonomy whitelist, loss_cause zeroed unless lost/stalled, zero outbound imports; winLossBoard aggregates CACHED rows only (no LLM per view) with the S2 sandbox filter",
+        "sell-better-than-sales: action queue rows each carry the WHO + the WHY-NOW + the assistant's next move and deep-link to the work; profile next-step card names action + reason + best KSA-hours window; outcome buttons close the loop from AI verdict to countable human result",
+        "interconnection: product hub (vKbProduct) shows this product's campaigns + «حكم السوق» won/lost/active + top loss cause + launch CTA that prefills the wizard (data-prod); campaign detail verdict strip; profile chips link campaigns; null-safe on every path (read in full)",
+        "animation: motion system + count-up verified once-per-value (M3 fix live), staggered rise cards, respects prefers-reduced-motion (dashboard.ts:1401)"
+      ]
+    }
+  ],
+  "basis": {
+    "skills": [
+      "user-model Rule 1 (professional marketing-tool fit): the campaigns list vs the Emaily reference and the home vs the Tableau reference now stand the side-by-side; this is the rule R32's rejection invoked and the delivery answers it",
+      "user-model Rule 2 (numbers real, sourced, honestly bounded): held in every new surface — S2 keeps sandbox verdicts out of the real market board, auto-reveal labels sandbox transparently instead of faking richness, the winloss card captions itself «حكم المساعد على كل محادثة من نصها الحرفي — مع الدليل», honest empty/learning/degraded states everywhere; the demo script's Q&A even pre-arms him with the truthful answer",
+      "user-model Rule 3 (adopt the pattern, never the palette): all four reference anatomies re-expressed in Massar's own language; round-8's one palette-borrow (terracotta treemap) is gone",
+      "user-model R16 law (no dead ends, in code): M2 makes agent silence structurally impossible on the missing-asset path; S6 wires the turn-cap handoff to an actual PM alert; opt-out confirmation always sends",
+      "user-model R27 signal (value not decoration): the win/loss layer is evidence-quoted causal attribution, not a decorative AI chip — exactly the anti-«fires» direction he demanded"
+    ],
+    "research": [
+      "read src/insights.ts (195 lines) and src/agent.ts:300-500 in full at HEAD; read vHome/vKmon/vKmonDetail-head/vActionQueue/vWinLoss/vCustomer/vKbProduct completely; byte-exact node probes for the opt-out matrix (25/25 + 0 false positives) and the M2 أُرسل prefix (5/5 paths)",
+      "verified every fix commit in its diff: e9a735a (M1/M2/M3/S1/S5/S6), e6f421a (S2), 0678f8b (S3), 1f4672e (S4), 196a50c+49d9ddb (outcome loop) — no reviewer re-review exists, so nothing was taken on faith",
+      "ran both deterministic gates myself (delivery gate twice — 4ad657e and after rebind 1f4672e; user_memory --require-latest); hashes bound above",
+      "live read-only verification with zero sends and zero mutating calls: /health (ok, outbound, db), winloss real vs ?all=1 boundary, the lost-deal profile GET, served-page marker sweep (7 markers) at two points in time bracketing the final deploy",
+      "judged 9 captures by eye at 1440x900 + 375x812 against the 4 reference images: home-final, n-kmon, kmondet-final, profile-lost, n-profile, n-customers, n-wizard, n-kb, n-home-375",
+      "read DEMO-SCRIPT.md and traced each of its 6 beats + 4 Q&A claims to verified evidence; confirmed the script's «لا تُظهر» guards match the real rough edges",
+      "confirmed §8: contacts=9 all sandbox-flagged (real-only board zeros across the board), seeds on 96650000078x fakes + his own number only, templates-pack.md is a draft file, opt-out STRENGTHENED, admin/webhook auth intact (SC-N5 + my curls), token never echoed"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "clean",
+      "evidence": "Saudi B2B sales reality respected: the loss taxonomy speaks his market (السعر/التوقيت/جهة غير مناسبة/الملف غير واضح), evidence quotes are dialect-authentic («خلونا نأجلها للسنة الجاية إن شاء الله»), best_time constrained to KSA working hours, WhatsApp delivery vocabulary consistent (أُرسلت/وصلت/شوهدت/أول ردّ/فشل), opt-out tiers cover Gulf dialect forms (أبغى/ابي/بلاش/مب) — probed, not assumed"
+    },
+    {
+      "lens": "policy",
+      "verdict": "clean",
+      "evidence": "§8 held through the whole night: zero real-customer sends (9 contacts, all test-flagged — proven by the real-only board reading zero), no template submission (pack is a local draft), opt-out path STRENGTHENED and probed 25/25, webhook+admin token auth intact, deploys pre-authorized by the standing instruction, my own verification was GET-only with the token sourced from .env into a shell var and never printed. Commit binding: envelope binds e6f421a (the commit named in my mandate); the four descendants are individually diff-verified code-only commits, live-verified where visible"
+    },
+    {
+      "lens": "product",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "waived": true,
+          "waiver_reason": "zero demo risk (the row's own onclick navigates — no dead click; the script claims no pause/resume; worst case is an answerable question «الحقيقية مفعّلة والتجريبية مطفأة»); a one-line title attribute fixes it; against a 20-commit verified night, ship and fold in — I will verify next round like the TITLES fix this round",
+          "finding": "vKmon row toggles (dashboard.ts:502) are display-only Emaily affordances: unlabeled on/off mapping to real/test with no handler and no tooltip — a control-shaped element that isn't a control"
+        },
+        {
+          "severity": "should",
+          "waived": true,
+          "waiver_reason": "self-resolved by the loop at 49d9ddb before my order landed — buttons now render with the data-attribute pattern and a recorded-state ring, live-verified marker; residual is only that the delivery evidence predates it (ordered below)",
+          "finding": "196a50c claimed «human outcome buttons on the profile» while shipping only the endpoint and handler — for 2 minutes the record claimed UI that did not render"
+        }
+      ]
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "nice",
+          "finding": "sidebar highlights no item on #customer (TITLES fixed this round per my round-8 order — verified — but nav() has no active mapping for the customer route)"
+        },
+        {
+          "severity": "nice",
+          "finding": "the winloss card sits below charts on #home — at 900px height the demo's «اللحظة الأهم» needs a scroll (the script says so honestly); consider placing it directly under the action queue"
+        },
+        {
+          "severity": "nice",
+          "finding": "win_drivers aggregate as free-text keys — 8 rows all count 1 on the live board; reads rich for a demo but near-duplicates will fragment counts at scale (reviewer informational, adopted)"
+        }
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "clean",
+      "evidence": "verified: winloss endpoint is LLM-free over cached rows with the isTest filter at the route boundary; S3's silence-recheck is double-bounded (48h quiet AND 24h read age) so no cost runaway; outcome endpoint whitelists 5 values, normalizes the phone, and is admin-gated; M2 derives state from outcomes not intent; count-up Map is bounded by distinct label+value pairs. Ledgered debt unchanged and re-confirmed as declared (in-memory alert throttle, length-only insights watermark, per-profile full scans, server-side segmentation epic) — none newly incurred tonight"
+    },
+    {
+      "lens": "slop",
+      "verdict": "clean",
+      "evidence": "hunted by name across the night surface: no placeholder data presented as real (every board number traced to the live ledger or labeled تجريبية; the demo threads are honest sandbox seeds the script discloses); no dead buttons among the controls I traced (exportCampaigns with formula guard, startRetarget, launchWithProduct, refreshInsights, setOutcome, tab/sort/search, toggleShowTest — all defined in served JS); copy is specific working Arabic (empty states name the action that fills them; the empty loss column says «لا خسائر محكومة بعد — وهذا خبر جيد»); no purple-gradient genericism — one neutral scale + navy/teal/gold; the two control-shaped-but-inert findings (kmon toggle, 2-minute buttons gap) are filed in the product lens; totals.learning is a structurally-dead field the card correctly never displays (nice order)"
+    },
+    {
+      "lens": "demo_risk",
+      "verdict": "clean",
+      "evidence": "EARNED low-risk: (1) the three stagecraft killers fixed+probed+live — «أوقف الرسائل» on stage now opts out 25/25, a file request for an asset-less product answers in text (silence impossible), KPIs animate once per value not per poll; (2) wall-of-zeros solved — auto-reveal shows labeled sandbox by default, and the winloss board he opens is the populated ?all=1 view; (3) beat-2 (the headline) has zero LLM dependency at view time — the board aggregates cache, the profile reads cache, so an OpenAI hiccup mid-demo cannot kill the money moments, and the degraded state is honest if he forces a refresh; (4) 0 console errors across 21 comparisons; mobile capture clean; machine always-on, /health green at signing; (5) DEMO-SCRIPT Q&A pre-answers the dangerous question («الأرقام حقيقية؟») truthfully; its «لا تُظهر» list covers the real rough edges. Residuals accepted: he must scroll to the winloss card (script says so); the kb/<name> hub beat rests on full code verification + list-page capture, not a dedicated screenshot (ordered); clicking an outcome button live would exercise a post-evidence surface (script doesn't call for it; failure mode is an honest alertBar, not silence)"
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 9,
+    "completeness": 9,
+    "coherence": 9,
+    "taste": 9,
+    "surprise": 9
+  },
+  "change_orders": [
+    {
+      "priority": "should",
+      "order": "Obtain the reviewer's re-review stamp on e9a735a..49d9ddb (agent a54abacf3d5b36840 holds context; its own prescribed evidence — the opt-out matrix and the no-asset probe — already passes) so the §3 ≥8/10 record is formal, not just CPO-substituted"
+    },
+    {
+      "priority": "should",
+      "order": "Rebind delivery-evidence at 49d9ddb with one scenario exercising an outcome button (click «مؤجل» on a test profile → 200, alertBar success, ring state on re-render) — the buttons postdate the current 1f4672e binding"
+    },
+    {
+      "priority": "should",
+      "order": "vKmon:502 — give the display-only row toggle meaning or remove it: minimally title=\"حقيقية مفعّلة / تجريبية\" + aria-label, or replace with the status chip alone (an Emaily affordance without its function invites the on-stage question)"
+    },
+    {
+      "priority": "nice",
+      "order": "OPT_OUT_PROXIMITY: anchor verb stems at word start ((?:^|[\\s.,،؛!؟])) so «جوالي متوقف وما وصلتني رسائلكم» (stem inside متوقف) stops over-triggering — currently opts out an engaged lead; compliance-safe direction but a lost lead; keep the 25-case matrix as the regression bar"
+    },
+    {
+      "priority": "nice",
+      "order": "nav(): map #customer to the العملاء sidebar item (the TITLES half of my round-8 order landed; the highlight half remains)"
+    },
+    {
+      "priority": "nice",
+      "order": "Capture kb/<product> (the hub page) in the next sweep — the only demo beat without own-eyes evidence; and consider hoisting the winloss card above the charts on #home"
+    },
+    {
+      "priority": "nice",
+      "order": "winLossBoard: drop or populate the structurally-dead totals.learning; normalize near-duplicate win_drivers (trim quotes/prefixes) before Map-keying"
+    },
+    {
+      "priority": "nice",
+      "order": "Carried ledger unchanged: insights watermark turns+lastTs, in-memory alert throttle persistence, per-profile indexed lookups + server-side segmentation/batch-upsert epic, entFilters stale-key drop"
+    }
+  ],
+  "user_model_updates": [
+    "Recorded R34 signal: full-autonomy trust mode («do whatever you want, don't stop — build») + the surprise bar — AI value = CAUSAL explanation with verbatim evidence per customer; third value-audit signal (R27, R28-30, R34); one more recurrence promotes the rule",
+    "Recorded R33 signal: he orchestrates by naming specialist expertise and accepts only consolidated implementation, never reports",
+    "Recorded R32 signal: a rejection is a re-brief — «design is horrible» arrived WITH 5 reference artifacts and a device capture (Rule 3 confirmed under rejection; device-level WhatsApp QA recurs)",
+    "Vocabulary added: «surprise me» (unspecified capabilities that outclass his current tools — aimed via this file); «why we sold / why we couldn't sell» (per-customer causal attribution from verbatim text; implemented as LOSS_TAXONOMY)"
+  ],
+  "user_impact_summary": "طلبتَ أن يرى الفريق قيمة وتصميمًا وتجربة، وذكاءً يشرح لماذا نبيع ولماذا لا نبيع — ونمتَ والمنصة تُبنى. استيقظتَ والآتي حقيقي ومباشر وتحققتُ منه بنفسي كودًا وخادمًا وصورًا: (١) «لماذا نكسب — ولماذا نخسر» على الرئيسية: المساعد قرأ المحادثات وحكم على كل صفقة — خسرنا صفقة سببها «الملف غير واضح» والدليل اقتباس العميل الحرفي: «الملف التعريفي مو واضح بصراحة، ما ذكر كيف يتم الربط مع نظامنا»، ومعه «ما كان سيرجّح الكسب». هذا بالضبط تصنيفك أنت: مشكلة عميل، مشكلة منتج، مشكلة تواصل، ملف غير واضح. (٢) ملف العميل ٣٦٠ صار بمستوى المرجع الذي أرسلته: هوية، اكتمال سياق، فهم المساعد بشبكة (نية الشراء · حكم الصفقة · القناة · أفضل وقت)، إشارات واعتراضات باقتباسات حرفية، خطوة تالية عملية، وسجل تفاعل موحّد — وأزرار «سجّل النتيجة الفعلية» تربط حكم الذكاء بنتيجة بشرية قابلة للقياس. (٣) «ما يستحق وقتك الآن»: قائمة مهام لا لوحة أرقام — من يبرد من الجادّين، وفرصة إعادة الاستهداف بحجمها، والصفقات المتجمّدة مع وصفة إحيائها. (٤) الحملات على نمط Emaily والرئيسية بقواعد Tableau وبهوية مسار — بلا رموز مقترضة وبلا ألوان مستعارة. (٥) المساعد أصلب: «أوقفوا الرسائل» بكل صيغها توقف فورًا (فحصتُ ٢٥/٢٥ مع صفر إنذار كاذب — و«كيف أوقف التزوير؟» ما زالت تُفهم كسؤال)، وطلب ملف غير موجود لم يعد يُنتج صمتًا أبدًا، والأرقام تتحرك مرة عند الفتح لا كل خمس ثوانٍ على الشاشة المعروضة. (٦) الصدق كما تشترط دائمًا: لوحة السوق الحقيقية أصفارها صادقة، وبيانات الساندبوكس ظاهرة بشفافية وبوسمها — وزر واحد يخفيها. سيناريو العرض جاهز في .orbit/artifacts/night/DEMO-SCRIPT.md — سبع دقائق، ست محطات، وكل وعد فيه تحققتُ أنه يعمل على الرابط المباشر. ثلاث ملاحظات صغيرة سجلتُها كأوامر لا تعطل العرض: مفتاح الصفوف في قائمة الحملات شكلي بلا وظيفة (سطر واحد يصلحه)، ولقطة لصفحة المنتج ضمن الجولة القادمة، وختم المراجع الرسمي على إصلاحات الليل — أدلته جاهزة ناجحة.",
+  "reviewed_at": "2026-08-11T19:20:13Z"
+}

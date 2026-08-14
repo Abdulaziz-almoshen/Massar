@@ -1,0 +1,8 @@
+SC-6 failure_recovery: launch to invalid/non-whatsapp number -> failure recorded honestly, engine healthy
+{"requested":1,"sent":1,"failed":[]}
+health after failure: True
+
+SC-6 async outcome: sandbox DLR for non-opted number vs opted number
+966559402621 | statuses: ['delivered', 'enqueued', 'read', 'sent'] | lastError: None
+966500000096 | statuses: ['failed'] | lastError: 1008 User is not Opted in and Inactive
+interpretation: non-opted sandbox number stays sent-only (never delivered) — the tracker shows this honestly; opted number progresses to delivered/read

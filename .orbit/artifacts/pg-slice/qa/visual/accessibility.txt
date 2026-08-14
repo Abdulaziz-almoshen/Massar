@@ -1,0 +1,2 @@
+accessibility smoke basis:
+lang=ar: True | dir=rtl: True | real <button> elements: True | viewport meta: True | design-system contrast tokens (#13294b on #fff / #eef0f4): True

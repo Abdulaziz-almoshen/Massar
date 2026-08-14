@@ -1,0 +1,103 @@
+{
+ "A. templateId=intro_integration": {
+  "http": 200,
+  "response": {
+   "ok": null,
+   "sent": 2,
+   "campaignId": null
+  },
+  "wire_calls": [
+   "sendQuickReply",
+   "sendQuickReply"
+  ],
+  "buttons_on_wire": [
+   "الملف التعريفي",
+   "أرسلوا التفاصيل",
+   "ليس الآن"
+  ],
+  "body_on_wire": "ارتقِ بكفاءة منشأتكم من خلال التكامل المباشر بين نظام HIS وخدمة الإجازات المرضية.",
+  "body_contains_raw_{{1}}": false
+ },
+ "B. templateId=high_usage_upsell": {
+  "http": 200,
+  "response": {
+   "ok": null,
+   "sent": 2,
+   "campaignId": null
+  },
+  "wire_calls": [
+   "sendQuickReply",
+   "sendQuickReply"
+  ],
+  "buttons_on_wire": [
+   "تفاصيل التكامل",
+   "أود مناقشة التكامل",
+   "ليس الآن"
+  ],
+  "body_on_wire": "لاحظنا أن لديكم استخدامًا مرتفعًا لخدمة الإجازات المرضية، ويمكنكم ربط الإجازات المرضية مع نظام الـHIS.",
+  "body_contains_raw_{{1}}": false
+ },
+ "C. NO templateId (legacy launch)": {
+  "http": 200,
+  "response": {
+   "ok": null,
+   "sent": 2,
+   "campaignId": null
+  },
+  "wire_calls": [
+   "sendQuickReply",
+   "sendQuickReply"
+  ],
+  "buttons_on_wire": [
+   "الملف التعريفي",
+   "أرسلوا التفاصيل",
+   "ليس الآن"
+  ],
+  "body_on_wire": "رسالة قديمة بلا متغيّر ولا قالب.",
+  "body_contains_raw_{{1}}": false
+ },
+ "D. unknown templateId": {
+  "http": 400,
+  "response": {
+   "error": "قالب غير معروف: no_such_template"
+  },
+  "wire_calls": []
+ },
+ "E. {{1}} present, product EMPTY": {
+  "http": 400,
+  "response": {
+   "error": "القالب يحتوي {{1}} ولم تُحدَّد الخدمة — اختر الخدمة قبل الإطلاق"
+  },
+  "wire_calls": []
+ },
+ "F. {{1}} present, product MISSING": {
+  "http": 400,
+  "response": {
+   "error": "القالب يحتوي {{1}} ولم تُحدَّد الخدمة — اختر الخدمة قبل الإطلاق"
+  },
+  "wire_calls": []
+ },
+ "H. {product} legacy placeholder, no product": {
+  "http": 400,
+  "response": {
+   "error": "القالب يحتوي {{1}} ولم تُحدَّد الخدمة — اختر الخدمة قبل الإطلاق"
+  },
+  "wire_calls": []
+ },
+ "I. over the 50-recipient cap": {
+  "http": 400,
+  "response": {
+   "error": "launch cap: 50 recipients per launch"
+  },
+  "wire_calls": []
+ },
+ "G. opted-out contact in launch list": {
+  "http": 200,
+  "per_target": null,
+  "wire_calls": 2,
+  "recipients_on_wire": [
+   "966500000001",
+   "966500000002"
+  ]
+ }
+}

@@ -1,0 +1,4 @@
+SC-13 (skill-output compatibility, live prod): real lean-proposal-deck PDF → hub
+input: Lean_SehaAmal_Plus_Pitch.pdf (actual skill output, 8-section canonical structure)
+result: product 'صحة أعمال Plus' (override) · md 2927 chars · H1 'لين صحة أعمال بلس' · sections mapped (solution→overview/value, commercial→pricing verbatim rule)
+agent now includes this product's knowledge in every conversation (hub-only product visible in grid)

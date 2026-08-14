@@ -1,0 +1,99 @@
+{
+ "375x812": {
+  "baseline": "/Users/abdulaziz/Projects/Massar/.orbit/qa/baselines/wizard1cf9b6d-375x812.png",
+  "actual": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-375x812.png",
+  "diff": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-375x812-diff.png",
+  "mismatch_ratio": 0.0,
+  "diff_exit": 0,
+  "diff_stdout": "PASS: 0/304500 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-375x812-diff.png",
+  "baseline_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "actual_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "verdict": "PASS"
+ },
+ "768x1024": {
+  "baseline": "/Users/abdulaziz/Projects/Massar/.orbit/qa/baselines/wizard1cf9b6d-768x1024.png",
+  "actual": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-768x1024.png",
+  "diff": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-768x1024-diff.png",
+  "mismatch_ratio": 9e-06,
+  "diff_exit": 0,
+  "diff_stdout": "PASS: 7/786432 pixels differ = 0.0009% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-768x1024-diff.png",
+  "baseline_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "actual_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "verdict": "PASS"
+ },
+ "1440x900": {
+  "baseline": "/Users/abdulaziz/Projects/Massar/.orbit/qa/baselines/wizard1cf9b6d-1440x900.png",
+  "actual": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-1440x900.png",
+  "diff": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-1440x900-diff.png",
+  "mismatch_ratio": 0.0,
+  "diff_exit": 0,
+  "diff_stdout": "PASS: 0/1296000 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-1440x900-diff.png",
+  "baseline_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "actual_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "verdict": "PASS"
+ },
+ "1024x768": {
+  "baseline": "/Users/abdulaziz/Projects/Massar/.orbit/qa/baselines/wizard1cf9b6d-1024x768.png",
+  "actual": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-1024x768.png",
+  "diff": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-1024x768-diff.png",
+  "mismatch_ratio": 0.0,
+  "diff_exit": 0,
+  "diff_stdout": "PASS: 0/786432 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-1024x768-diff.png",
+  "baseline_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "actual_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "verdict": "PASS"
+ },
+ "390x844": {
+  "baseline": "/Users/abdulaziz/Projects/Massar/.orbit/qa/baselines/wizard1cf9b6d-390x844.png",
+  "actual": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-390x844.png",
+  "diff": "/Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-390x844-diff.png",
+  "mismatch_ratio": 0.0,
+  "diff_exit": 0,
+  "diff_stdout": "PASS: 0/329160 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/.orbit/artifacts/qa/1cf9b6d/visual/aimkt-390x844-diff.png",
+  "baseline_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "actual_meta": {
+   "console_errors": [],
+   "horizontal_overflow_px": 0,
+   "picker_cards": 2
+  },
+  "verdict": "PASS"
+ },
+ "_egress_blocked": [],
+ "_served_dashboard_sha256": "026ba672f2c2c2b6eadd8a1267f7700a56b3eccd643792fc7581685ce90661eb"
+}

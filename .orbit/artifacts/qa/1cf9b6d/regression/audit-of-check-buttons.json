@@ -1,0 +1,186 @@
+{
+ "A1_gate_input_is_a_copy": {
+  "gate_hardcoded_list": [
+   "منشأة صحية",
+   "مزوّد نظام HIS",
+   "العرض التجاري",
+   "فريقنا التقني",
+   "مزوّد النظام"
+  ],
+  "agent_EMITTED_BUTTONS": [
+   "منشأة صحية",
+   "مزوّد نظام HIS",
+   "العرض التجاري",
+   "فريقنا التقني",
+   "مزوّد النظام",
+   "العرض التجاري"
+  ],
+  "identical": false,
+  "note": "the gate re-types the emitted set rather than importing agent.EMITTED_BUTTONS (it already imports dist/agent.js)"
+ },
+ "A1b_actual_rung_one_buttons": {
+  "intro_integration": [
+   "منشأة صحية",
+   "مزوّد نظام HIS",
+   "العرض التجاري"
+  ],
+  "high_usage_upsell": [
+   "فريقنا التقني",
+   "مزوّد النظام",
+   "العرض التجاري"
+  ],
+  "undefined": [
+   "منشأة صحية",
+   "مزوّد نظام HIS",
+   "العرض التجاري"
+  ]
+ },
+ "A1c_rung_buttons_covered_by_gate_list": {
+  "emitted_at_rung_one": [
+   "منشأة صحية",
+   "مزوّد نظام HIS",
+   "العرض التجاري",
+   "فريقنا التقني",
+   "مزوّد النظام"
+  ],
+  "missing_from_gate_hardcoded_list": [],
+  "missing_from_agent_EMITTED_BUTTONS": []
+ },
+ "A2_tautological_routable_loop": {
+  "with_real_canonicalTitle": "4/4 pass",
+  "with_canonicalTitle_broken_to_always_undefined": "4/4 pass",
+  "verdict": "CANNOT FAIL — the expectation is derived from the actual; a total canonicalisation regression still passes"
+ },
+ "A3_identity_fastpath_only": {
+  "cases": [
+   {
+    "title": "أريد العرض التجاري",
+    "in_BUTTON_INTENT": true,
+    "canonicalTitle": "أريد العرض التجاري",
+    "reason_it_passes": "returned by the `if (BUTTON_INTENT[t]) return t` fast path — the substring-mapping branch is never reached"
+   },
+   {
+    "title": "منشأة صحية",
+    "in_BUTTON_INTENT": true,
+    "canonicalTitle": "منشأة صحية",
+    "reason_it_passes": "returned by the `if (BUTTON_INTENT[t]) return t` fast path — the substring-mapping branch is never reached"
+   },
+   {
+    "title": "مزوّد نظام HIS",
+    "in_BUTTON_INTENT": true,
+    "canonicalTitle": "مزوّد نظام HIS",
+    "reason_it_passes": "returned by the `if (BUTTON_INTENT[t]) return t` fast path — the substring-mapping branch is never reached"
+   }
+  ],
+  "note": "named «canonicalises»/«survives emit» but proves only that the title is already in the table"
+ },
+ "A4_negation_inversion": {
+  "لست مهتمًا بالعرض التجاري": {
+   "canonical": "العرض التجاري",
+   "intent": "commercial"
+  },
+  "لا أريد العرض التجاري": {
+   "canonical": "أريد العرض التجاري",
+   "intent": "commercial"
+  },
+  "بدون العرض التجاري": {
+   "canonical": "العرض التجاري",
+   "intent": "commercial"
+  },
+  "ليس الآن شكرًا": {
+   "canonical": "ليس الآن",
+   "intent": "decline"
+  },
+  "لا ترسلوا التفاصيل": {}
+ },
+ "A5_canonical_output_always_within_cap": {
+  "any_over_20": [],
+  "all_intents_routable": true
+ },
+ "A6_button_intent_table": [
+  {
+   "title": "الملف التعريفي",
+   "intent": "info",
+   "utf16": 14,
+   "codepoints": 14,
+   "legal": true
+  },
+  {
+   "title": "أرسلوا التفاصيل",
+   "intent": "info",
+   "utf16": 15,
+   "codepoints": 15,
+   "legal": true
+  },
+  {
+   "title": "تفاصيل التكامل",
+   "intent": "info",
+   "utf16": 14,
+   "codepoints": 14,
+   "legal": true
+  },
+  {
+   "title": "العرض التجاري",
+   "intent": "commercial",
+   "utf16": 13,
+   "codepoints": 13,
+   "legal": true
+  },
+  {
+   "title": "أريد العرض التجاري",
+   "intent": "commercial",
+   "utf16": 18,
+   "codepoints": 18,
+   "legal": true
+  },
+  {
+   "title": "أود مناقشة التكامل",
+   "intent": "commercial",
+   "utf16": 18,
+   "codepoints": 18,
+   "legal": true
+  },
+  {
+   "title": "احجز اجتماعًا",
+   "intent": "commercial",
+   "utf16": 13,
+   "codepoints": 13,
+   "legal": true
+  },
+  {
+   "title": "منشأة صحية",
+   "intent": "qualify",
+   "utf16": 10,
+   "codepoints": 10,
+   "legal": true
+  },
+  {
+   "title": "مزوّد نظام HIS",
+   "intent": "qualify",
+   "utf16": 14,
+   "codepoints": 14,
+   "legal": true
+  },
+  {
+   "title": "فريقنا التقني",
+   "intent": "qualify",
+   "utf16": 13,
+   "codepoints": 13,
+   "legal": true
+  },
+  {
+   "title": "مزوّد النظام",
+   "intent": "qualify",
+   "utf16": 12,
+   "codepoints": 12,
+   "legal": true
+  },
+  {
+   "title": "ليس الآن",
+   "intent": "decline",
+   "utf16": 8,
+   "codepoints": 8,
+   "legal": true
+  }
+ ]
+}

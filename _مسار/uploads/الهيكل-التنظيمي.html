@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الهيكل التنظيمي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --navy:#10233F; --navy-2:#1B3A5C; --navy-line:#25456B;
+  --gold:#C6A15B; --gold-soft:#E4D3AE;
+  --bg:#F4F6F9; --surface:#FFFFFF; --line:#E7EBF1;
+  --ink:#16202E; --muted:#6B7686; --muted-2:#98A2B3;
+  --ok:#1F9D6B; --ok-bg:#E7F5EF;
+  --warn:#B9810C; --warn-bg:#FBF1DA;
+  --bad:#C0392B; --bad-bg:#FBE9E7;
+  --radius:14px; --radius-sm:10px;
+  --shadow:0 1px 2px rgba(16,35,63,.04),0 8px 24px rgba(16,35,63,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Tajawal',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+input,select{font-family:inherit}
+
+/* ===== Shell ===== */
+.app{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+
+/* ===== Sidebar ===== */
+.side{background:var(--navy);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{padding:26px 24px 22px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--navy-line)}
+.brand .mark{width:40px;height:40px;border-radius:11px;background:linear-gradient(150deg,var(--gold),#a9843f);display:grid;place-items:center;flex-shrink:0}
+.brand .mark svg{width:22px;height:22px}
+.brand h1{font-size:16px;font-weight:800;letter-spacing:-.2px}
+.brand span{display:block;font-size:11.5px;font-weight:500;color:var(--gold-soft);margin-top:2px}
+.nav{padding:16px 14px;flex:1}
+.nav-label{font-size:11px;font-weight:700;color:#6B84A6;padding:0 12px 8px;letter-spacing:.4px}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:11px;color:#C3D0E2;text-decoration:none;font-size:14.5px;font-weight:500;margin-bottom:3px;position:relative;transition:background .15s,color .15s}
+.nav a svg{width:19px;height:19px;flex-shrink:0;opacity:.85}
+.nav a:hover{background:var(--navy-2);color:#fff}
+.nav a.active{background:var(--navy-2);color:#fff}
+.nav a.active::before{content:"";position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:3px;height:22px;background:var(--gold);border-radius:0 3px 3px 0}
+.side-foot{padding:16px;border-top:1px solid var(--navy-line);display:flex;align-items:center;gap:11px}
+.avatar{width:36px;height:36px;border-radius:10px;background:var(--navy-2);display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--gold-soft)}
+.side-foot .who{font-size:13.5px;font-weight:700}
+.side-foot .role{font-size:11.5px;color:#8CA0BC}
+
+/* ===== Main ===== */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);padding:20px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:20}
+.topbar .titles h2{font-size:21px;font-weight:800;letter-spacing:-.3px}
+.topbar .titles p{font-size:13px;color:var(--muted);margin-top:2px}
+.topbar .spacer{flex:1}
+.search{position:relative;display:flex;align-items:center}
+.search svg{position:absolute;right:12px;width:17px;height:17px;color:var(--muted-2)}
+.search input{width:230px;padding:10px 38px 10px 14px;border:1px solid var(--line);border-radius:11px;font-size:13.5px;background:#FBFCFE;color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--gold);background:#fff}
+.btn-add{display:flex;align-items:center;gap:8px;background:var(--navy);color:#fff;border:none;padding:11px 18px;border-radius:11px;font-size:14px;font-weight:700;transition:background .15s,transform .05s}
+.btn-add:hover{background:var(--navy-2)}
+.btn-add:active{transform:translateY(1px)}
+.btn-add svg{width:17px;height:17px}
+
+.content{padding:26px 32px 48px;flex:1}
+
+/* ===== KPI strip ===== */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+.kpi .k-top{display:flex;align-items:center;justify-content:space-between}
+.kpi .k-ico{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:#F0F3F8}
+.kpi .k-ico svg{width:18px;height:18px;color:var(--navy-2)}
+.kpi .k-ico.gold{background:#F7F0E1}.kpi .k-ico.gold svg{color:#a9843f}
+.kpi .k-val{font-size:25px;font-weight:800;margin-top:14px;letter-spacing:-.5px}
+.kpi .k-val small{font-size:13px;font-weight:600;color:var(--muted)}
+.kpi .k-label{font-size:13px;color:var(--muted);font-weight:500;margin-top:2px}
+
+/* ===== Card + table ===== */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card-head{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.card-head h3{font-size:16px;font-weight:800}
+.card-head .count{font-size:12.5px;color:var(--muted);font-weight:600;background:#F1F4F8;padding:4px 11px;border-radius:20px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{text-align:right;font-size:12px;font-weight:700;color:var(--muted);padding:13px 22px;background:#FAFBFD;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:15px 22px;border-bottom:1px solid #F1F4F8;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{transition:background .12s}
+tbody tr:hover{background:#FBFCFE}
+.cell-main{font-weight:700;color:var(--ink)}
+.cell-sub{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.money{font-weight:700;font-variant-numeric:tabular-nums}
+.money small{font-weight:500;color:var(--muted);font-size:11.5px}
+
+/* ===== Badges ===== */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 11px;border-radius:20px;white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.b-ok{color:var(--ok);background:var(--ok-bg)}
+.b-warn{color:var(--warn);background:var(--warn-bg)}
+.b-bad{color:var(--bad);background:var(--bad-bg)}
+.b-navy{color:var(--navy-2);background:#EDF1F7}
+.tag{font-size:12px;font-weight:600;padding:4px 10px;border-radius:8px;background:#F0F3F8;color:var(--navy-2)}
+.tag.gold{background:#F7F0E1;color:#8a6a2e}
+.dot-imp{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:13px}
+.dot-imp i{width:8px;height:8px;border-radius:50%}
+.act-btn{background:none;border:1px solid var(--line);width:32px;height:32px;border-radius:9px;display:inline-grid;place-items:center;color:var(--muted);transition:.15s}
+.act-btn:hover{border-color:var(--bad);color:var(--bad);background:var(--bad-bg)}
+.act-btn svg{width:16px;height:16px}
+
+/* progress */
+.prog{width:150px}
+.prog-track{height:7px;background:#EDF1F6;border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;border-radius:5px}
+.prog-meta{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;margin-top:6px;font-variant-numeric:tabular-nums}
+
+/* ===== Drawer ===== */
+.overlay{position:fixed;inset:0;background:rgba(16,35,63,.42);opacity:0;visibility:hidden;transition:.25s;z-index:40;backdrop-filter:blur(2px)}
+.overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;left:0;height:100vh;width:440px;max-width:92vw;background:var(--surface);z-index:50;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:8px 0 40px rgba(16,35,63,.18)}
+.drawer.open{transform:translateX(0)}
+.drawer-head{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.drawer-head h3{font-size:18px;font-weight:800}
+.drawer-head p{font-size:12.5px;color:var(--muted);margin-top:2px}
+.x-btn{background:#F1F4F8;border:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--muted)}
+.x-btn:hover{background:#E7EBF1;color:var(--ink)}
+.drawer-body{padding:22px 26px;overflow-y:auto;flex:1}
+.field{margin-bottom:17px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.field label .opt{font-weight:500;color:var(--muted-2);font-size:12px}
+.field input,.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#FBFCFE;color:var(--ink)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold);background:#fff}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.calc{background:#F7F0E1;border:1px solid var(--gold-soft);border-radius:11px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.calc .lbl{font-size:13px;font-weight:700;color:#8a6a2e}
+.calc .val{font-size:19px;font-weight:800;color:#7a5c26;font-variant-numeric:tabular-nums}
+.drawer-foot{padding:18px 26px;border-top:1px solid var(--line);display:flex;gap:12px}
+.btn-primary{flex:1;background:var(--navy);color:#fff;border:none;padding:13px;border-radius:11px;font-size:14.5px;font-weight:700}
+.btn-primary:hover{background:var(--navy-2)}
+.btn-ghost{background:#F1F4F8;color:var(--ink);border:none;padding:13px 20px;border-radius:11px;font-size:14.5px;font-weight:700}
+.btn-ghost:hover{background:#E7EBF1}
+
+/* toast */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;opacity:0;visibility:hidden;transition:.28s;z-index:60;box-shadow:0 10px 30px rgba(16,35,63,.3)}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.toast svg{width:18px;height:18px;color:var(--gold-soft)}
+
+.segmented{display:inline-flex;background:#EDF1F7;padding:4px;border-radius:12px;margin-bottom:20px;gap:2px}
+.segmented button{border:none;background:none;padding:9px 18px;border-radius:9px;font-size:14px;font-weight:700;color:var(--muted);transition:.15s}
+.segmented button.active{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(16,35,63,.1)}
+.role-chip{font-size:12px;font-weight:700;padding:4px 11px;border-radius:20px}
+.role-mgr{background:#F7F0E1;color:#8a6a2e}.role-sales{background:#EDF1F7;color:var(--navy-2)}
+.role-switch{display:flex;align-items:center;gap:8px;background:#F0F3F8;border-radius:11px;padding:0 12px}
+.role-switch svg{width:17px;height:17px;color:var(--navy-2)}
+.role-switch select{border:none;background:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--navy);padding:10px 4px;cursor:pointer}
+.role-switch select:focus{outline:none}
+.page{display:none}
+.page.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.empty{padding:60px 20px;text-align:center;color:var(--muted)}
+
+@media(max-width:920px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;right:-264px;transition:right .3s;z-index:70}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .topbar{padding:16px}
+  .content{padding:18px}
+  .search input{width:140px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/><path d="M6.5 10v2h11v-2M12 12v2"/></svg>
+      </div>
+      <div><h1>الهيكل التنظيمي<span>القطاعات والإدارات والموظفون</span></h1></div>
+    </div>
+    <div class="side-foot" style="margin-top:auto">
+      <div class="avatar">ح</div>
+      <div><div class="who">حسّان</div><div class="role">مدير عام المنتجات</div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="titles"><h2>الهيكل التنظيمي</h2><p id="pageSub">القطاعات والإدارات والموظفون</p></div>
+      <div class="spacer"></div>
+      <div class="role-switch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11h-6"/></svg>
+        <select id="roleSelect" onchange="setRole(this.value)">
+          <option value="مدير النظام">مدير النظام</option>
+          <option value="مدير إدارة">مدير إدارة (أعمال)</option>
+        </select>
+      </div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="searchBox" type="text" placeholder="بحث..." oninput="onSearch(this.value)">
+      </div>
+      <button class="btn-add" onclick="openDrawer()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span id="addLabel">إضافة</span>
+      </button>
+    </header>
+
+    <div class="content">
+      <div class="kpis" id="kpis"></div>
+      <div class="segmented" id="orgTabs">
+        <button class="active" onclick="setOrgTab('sectors')">القطاعات</button>
+        <button onclick="setOrgTab('depts')">الإدارات</button>
+        <button onclick="setOrgTab('emps')">الموظفون</button>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3 id="org-h">القطاعات</h3><span class="count" id="cnt-org"></span></div>
+        <div class="table-wrap" id="org-table"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div><h3 id="drawerTitle">إضافة</h3><p id="drawerSub">أدخل البيانات ثم احفظ</p></div>
+    <button class="x-btn" onclick="closeDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <button class="btn-primary" id="saveBtn" onclick="save()">حفظ</button>
+    <button class="btn-ghost" onclick="closeDrawer()">إلغاء</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+
+<script>
+const ROLES=['مدير قطاع','مدير إدارة','مدير منتج','موظف مبيعات','موظف'];
+let sectors=[
+ {name:'القطاع التجاري',category:'تجاري',head:'طلال الحربي',email:'talal@company.sa'},
+ {name:'خدمات وحلول الأعمال',category:'أعمال',head:'',email:''},
+ {name:'الصحة الرقمية',category:'أعمال',head:'د. أحمد الزهراني',email:'ahmad@company.sa'},
+ {name:'خدمات البيانات',category:'أعمال',head:'',email:''},
+ {name:'صحتي',category:'أعمال',head:'',email:''},
+ {name:'تقنية المعلومات',category:'داعم',head:'',email:''},
+ {name:'المالية',category:'داعم',head:'',email:''},
+ {name:'القانونية',category:'داعم',head:'',email:''},
+ {name:'العمليات',category:'داعم',head:'',email:''},
+ {name:'الخدمات المشتركة',category:'داعم',head:'',email:''},
+];
+let departments=[
+ {name:'إدارة المبيعات',sector:'القطاع التجاري',manager:'ماجد العنزي',email:'majed@company.sa'},
+ {name:'إدارة تطوير الأعمال',sector:'القطاع التجاري',manager:'ريم الشهري',email:'reem@company.sa'},
+ {name:'إدارة التقارير الطبية',sector:'الصحة الرقمية',manager:'حسّان العتيبي',email:'hassan@company.sa'},
+ {name:'إدارة الشهادات والفحوصات',sector:'الصحة الرقمية',manager:'سارة القحطاني',email:'sara@company.sa'},
+ {name:'إدارة منتجات البيانات',sector:'خدمات البيانات',manager:'خالد الدوسري',email:'khaled@company.sa'},
+];
+let employees=[
+ {name:'حسّان العتيبي',dept:'إدارة التقارير الطبية',email:'hassan@company.sa'},
+ {name:'سارة القحطاني',dept:'إدارة الشهادات والفحوصات',email:'sara@company.sa'},
+ {name:'نورة السالم',dept:'إدارة الشهادات والفحوصات',email:'noura@company.sa'},
+ {name:'خالد الدوسري',dept:'إدارة منتجات البيانات',email:'khaled@company.sa'},
+ {name:'عبدالله الشمري',dept:'إدارة المبيعات',email:'abdullah@company.sa'},
+ {name:'منى الحربي',dept:'إدارة المبيعات',email:'mona@company.sa'},
+ {name:'فهد المطيري',dept:'إدارة المبيعات',email:'fahad@company.sa'},
+];
+function sectorOf(deptName){const d=departments.find(x=>x.name===deptName);return d?d.sector:'—';}
+function categoryOfSector(sectorName){const s=sectors.find(x=>x.name===sectorName);return s?s.category:'';}
+function categoryOfDept(deptName){return categoryOfSector(sectorOf(deptName));}
+function roleOf(deptName){const c=categoryOfDept(deptName);return c==='تجاري'?'موظف مبيعات':c==='أعمال'?'مدير منتج':'موظف';}
+const sectorNames=()=>sectors.map(s=>s.name);
+const deptNames=()=>departments.map(d=>d.name);
+const productMgrNames=()=>employees.filter(e=>roleOf(e.dept)==='مدير منتج').map(e=>e.name);
+const salesRepNames=()=>employees.filter(e=>roleOf(e.dept)==='موظف مبيعات').map(e=>e.name);
+function catClass(c){return c==='تجاري'?'b-navy':c==='أعمال'?'b-ok':'b-warn';}
+
+const ORG_TABS={sectors:{h:'القطاعات',add:'',count:'قطاع'},depts:{h:'الإدارات',add:'إضافة إدارة',count:'إدارة'},emps:{h:'الموظفون',add:'إضافة موظف',count:'موظف'}};
+let search='', orgTab='sectors', editIdx=-1, editDept=-1, role='مدير النظام';
+const CAN_ADD={'مدير النظام':{org:true},'مدير إدارة':{org:true}};
+const canEditDept=()=>role==='مدير النظام';
+
+function setRole(r){ role=r; refreshAddBtn(); render(); }
+function setOrgTab(t){ orgTab=t; search=''; document.getElementById('searchBox').value='';
+ document.querySelectorAll('#orgTabs button').forEach((b,i)=>b.classList.toggle('active',['sectors','depts','emps'][i]===t));
+ const m=ORG_TABS[orgTab]; document.getElementById('addLabel').textContent=m.add||'إضافة'; document.getElementById('org-h').textContent=m.h;
+ refreshAddBtn(); render(); }
+function refreshAddBtn(){ const b=document.querySelector('.btn-add'); if(b) b.style.display=(orgTab==='sectors')?'none':''; }
+function onSearch(v){ search=v.trim(); render(); }
+function match(txt){ return !search || txt.includes(search); }
+
+function render(){ renderKpis(); rOrg(); }
+function renderKpis(){
+ const box=document.getElementById('kpis');
+ const card=(ico,val,label,gold)=>`<div class="kpi"><div class="k-top"><div></div><div class="k-ico ${gold?'gold':''}">${ico}</div></div><div class="k-val">${val}</div><div class="k-label">${label}</div></div>`;
+ const iUsers='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>';
+ const iBox='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z"/></svg>';
+ box.innerHTML=card(iBox,sectors.length,'القطاعات',true)+card(iBox,departments.length,'الإدارات')+card(iUsers,productMgrNames().length,'مدراء المنتجات')+card(iUsers,salesRepNames().length,'موظفو المبيعات');
+}
+function rOrg(){
+ const box=document.getElementById('org-table'); let head,body,cnt;
+ if(orgTab==='sectors'){
+  const rows=sectors.filter(s=>match(s.name+s.category+s.head));
+  cnt=rows.length; head='<th>القطاع</th><th>النوع</th><th>رئيس القطاع</th><th>البريد</th><th>الإدارات</th><th></th>';
+  body=rows.map(s=>{const gi=sectors.indexOf(s);
+   return `<tr><td><div class="cell-main">${s.name}</div></td>
+   <td><span class="badge ${catClass(s.category)}">${s.category}</span></td>
+   <td>${s.head||'<span style="color:var(--muted-2)">غير معيّن</span>'}</td>
+   <td style="color:var(--muted)">${s.email||'—'}</td>
+   <td><span class="badge b-navy">${departments.filter(d=>d.sector===s.name).length} إدارة</span></td>
+   <td><button onclick="editSector(${gi})" style="background:#EDF1F7;border:none;color:var(--navy-2);font-weight:700;font-size:12px;padding:7px 14px;border-radius:9px;cursor:pointer">${s.head?'تعديل':'تعيين رئيس'}</button></td></tr>`;}).join('')||emptyRow(6);
+ }else if(orgTab==='depts'){
+  const rows=departments.filter(d=>match(d.name+d.sector+d.manager+categoryOfDept(d.name)));
+  cnt=rows.length; head='<th>الإدارة</th><th>القطاع</th><th>النوع</th><th>مدير الإدارة</th><th>البريد</th><th>الموظفون</th><th></th>';
+  body=rows.map((d,i)=>{const c=categoryOfDept(d.name);
+   return `<tr><td><div class="cell-main">${d.name}</div></td><td><span class="tag gold">${d.sector}</span></td>
+   <td><span class="badge ${catClass(c)}">${c}</span></td><td>${d.manager||'—'}</td>
+   <td style="color:var(--muted)">${d.email||'—'}</td>
+   <td><span class="badge b-navy">${employees.filter(e=>e.dept===d.name).length} موظف</span></td>
+   <td style="display:flex;gap:6px">${canEditDept()?`<button onclick="editDeptRow(${i})" style="background:#EDF1F7;border:none;color:var(--navy-2);font-weight:700;font-size:12px;padding:7px 13px;border-radius:9px;cursor:pointer">تعديل</button>`:''}${delBtn('departments',i)}</td></tr>`;}).join('')||emptyRow(7);
+ }else{
+  const rows=employees.filter(e=>match(e.name+e.dept+roleOf(e.dept)));
+  cnt=rows.length; head='<th>الموظف</th><th>الإدارة</th><th>الدور</th><th>البريد</th><th></th>';
+  body=rows.map((e,i)=>{const rl=roleOf(e.dept); const sales=rl==='موظف مبيعات';
+   return `<tr><td><div class="cell-main">${e.name}</div></td><td>${e.dept}</td>
+   <td><span class="role-chip ${sales?'role-sales':'role-mgr'}">${rl}</span></td>
+   <td style="color:var(--muted)">${e.email||'—'}</td><td>${delBtn('employees',i)}</td></tr>`;}).join('')||emptyRow(5);
+ }
+ document.getElementById('cnt-org').textContent=cnt+' '+ORG_TABS[orgTab].count;
+ box.innerHTML=`<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+}
+function delBtn(t,i){ return `<button class="act-btn" onclick="del('${t}',${i})" aria-label="حذف"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>`; }
+function emptyRow(c){ return `<tr><td colspan="${c}"><div class="empty">لا نتائج مطابقة</div></td></tr>`; }
+function del(t,i){ const M={departments,employees}; const arr=M[t]; const list=arr.filter(x=>match(Object.values(x).join(''))); const item=list[i]; const idx=arr.indexOf(item); if(idx>-1)arr.splice(idx,1); render(); toast('تم الحذف'); }
+function editSector(i){ editIdx=i; openDrawer(); }
+function editDeptRow(i){ const list=departments.filter(x=>match(x.name+x.sector+x.manager+categoryOfDept(x.name))); editDept=departments.indexOf(list[i]); openDrawer(); }
+
+function opt(arr,sel){ return arr.map(v=>`<option ${v===sel?'selected':''}>${v}</option>`).join(''); }
+function field(label,inner,o){ return `<div class="field"><label>${label} ${o?'<span class="opt">(اختياري)</span>':''}</label>${inner}</div>`; }
+function drawerForm(){
+ if(orgTab==='sectors'){ const s=sectors[editIdx]||{};
+  return field('القطاع',`<input value="${s.name||''}" disabled>`)
+   +field('النوع',`<input value="${s.category||''}" disabled>`)
+   +field('رئيس القطاع',`<input id="f-head" placeholder="اسم رئيس القطاع" value="${s.head||''}">`)
+   +field('البريد الإلكتروني',`<input id="f-email" type="email" placeholder="name@company.sa" value="${s.email||''}">`); }
+ if(orgTab==='depts'){ const d=editDept>-1?departments[editDept]:{};
+  return field('اسم الإدارة',`<input id="f-name" placeholder="مثال: إدارة التقارير الطبية" value="${d.name||''}">`)
+   +field('القطاع',`<select id="f-sector" onchange="deptTypeHint()">${opt(sectorNames(),d.sector)}</select>`)
+   +field('نوع الإدارة','<input id="f-type" disabled>')
+   +`<div class="grid-2">${field('مدير الإدارة',`<input id="f-mgr" placeholder="اسم المدير" value="${d.manager||''}">`)}${field('البريد الإلكتروني',`<input id="f-email" type="email" placeholder="name@company.sa" value="${d.email||''}">`,true)}</div>`; }
+ return field('اسم الموظف','<input id="f-name" placeholder="الاسم الكامل">')
+  +field('الإدارة',`<select id="f-dept" onchange="empRoleHint()">${opt(deptNames())}</select>`)
+  +field('الدور','<input id="f-role" disabled>')
+  +field('البريد الإلكتروني','<input id="f-email" type="email" placeholder="name@company.sa">',true);
+}
+function deptTypeHint(){ const s=sectors.find(x=>x.name===val('f-sector')); document.getElementById('f-type').value=s?s.category:''; }
+function empRoleHint(){ document.getElementById('f-role').value=roleOf(val('f-dept')); }
+
+function openDrawer(){
+ let title;
+ if(orgTab==='sectors') title='تعيين/تعديل رئيس القطاع';
+ else if(orgTab==='depts') title=editDept>-1?'تعديل الإدارة':ORG_TABS.depts.add;
+ else title=ORG_TABS.emps.add;
+ document.getElementById('drawerTitle').textContent=title;
+ document.getElementById('drawerBody').innerHTML=drawerForm();
+ if(orgTab==='depts') deptTypeHint();
+ if(orgTab==='emps') empRoleHint();
+ document.getElementById('overlay').classList.add('open');
+ document.getElementById('drawer').classList.add('open');
+ setTimeout(()=>{const f=document.querySelector('#drawerBody input:not([disabled]),#drawerBody select'); f&&f.focus();},250);
+}
+function closeDrawer(){ editIdx=-1; editDept=-1; document.getElementById('overlay').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); }
+function val(id){ const e=document.getElementById(id); return e?e.value.trim():''; }
+
+function save(){
+ if(orgTab==='sectors'){ if(editIdx>-1){ sectors[editIdx].head=val('f-head'); sectors[editIdx].email=val('f-email'); } closeDrawer(); render(); toast('تم تحديث رئيس القطاع'); return; }
+ if(orgTab==='depts'){ if(!val('f-name'))return warnField('f-name');
+   if(editDept>-1){ if(!canEditDept()){toast('لا تملك صلاحية تعديل الإدارة');return;} Object.assign(departments[editDept],{name:val('f-name'),sector:val('f-sector'),manager:val('f-mgr')||'—',email:val('f-email')||'—'}); closeDrawer(); render(); toast('تم تحديث الإدارة'); return; }
+   departments.unshift({name:val('f-name'),sector:val('f-sector'),manager:val('f-mgr')||'—',email:val('f-email')||'—'}); }
+ else { if(!val('f-name'))return warnField('f-name'); employees.unshift({name:val('f-name'),dept:val('f-dept'),email:val('f-email')||'—'}); }
+ closeDrawer(); render(); toast('تمت الإضافة بنجاح');
+}
+function warnField(id){ const e=document.getElementById(id); e.style.borderColor='var(--bad)'; e.focus(); }
+let toastT;
+function toast(msg){ const t=document.getElementById('toast'); document.getElementById('toastMsg').textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2400); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeDrawer(); });
+refreshAddBtn(); render();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+=== reclassify endpoint: negative + authorization ===
+unknown id 9999 → 404
+non-numeric id → 400
+missing test → 400
+no token → 401
+bad token → 401
+=== state unchanged (campaign 5 must still be real) ===
+ campaign 5 test = [False]
+ real: 1 | test: 10

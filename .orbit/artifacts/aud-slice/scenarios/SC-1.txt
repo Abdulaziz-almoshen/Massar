@@ -1,0 +1,3 @@
+SC-1 happy: paste-import 3 entities -> list them
+{"added":3,"skipped":0,"invalid":0,"invalidLines":[]}
+listed: 3 ['صيدلية الاختبار/صغيرة', 'مجمع الاختبار الكبير/كبيرة', 'مجمع عبدالعزيز الطبي/كبيرة']

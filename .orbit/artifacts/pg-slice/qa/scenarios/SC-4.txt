@@ -1,0 +1,4 @@
+SC-4 boundary: empty/malformed bodies with valid token -> 200 ok, no crash
+{"status":"ok"}
+{"status":"ok"}
+still ok: True

@@ -1,0 +1,2 @@
+SC-3 negative: webhook without token -> 401, event NOT ingested
+http 401

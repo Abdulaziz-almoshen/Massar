@@ -1,0 +1,6 @@
+
+> massar-engine@0.1.0 check:catalogue
+> node scripts/check-catalogue.mjs
+
+catalogue in step: 6 services, 0 drift
+exit=0

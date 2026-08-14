@@ -1,0 +1,5 @@
+SC-5 authorization (corrected): GET/POST admin endpoints without token -> 401
+GET /admin/entities: 401
+GET /admin/kb: 401
+POST /admin/campaign/launch: 401
+POST /admin/kb/upload: 401

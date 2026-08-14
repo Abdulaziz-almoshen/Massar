@@ -1,0 +1,4 @@
+regression: strict build + page-JS syntax check + live health
+npm run build → exit 0 (tsc strict)
+node --check served-page.js → PAGE JS SYNTAX OK ✓ (after newline-escape fix)
+health ok: True | db: True | outbound: True

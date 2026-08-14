@@ -1,0 +1,5 @@
+
+> massar-engine@0.1.0 build
+> tsc
+
+exit=0

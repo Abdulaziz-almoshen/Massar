@@ -1,0 +1,19 @@
+
+> massar-engine@0.1.0 check
+> npm run check:catalogue && npm run check:numerals
+
+
+> massar-engine@0.1.0 check:catalogue
+> node scripts/check-catalogue.mjs
+
+catalogue in step: 6 services, 0 drift
+
+> massar-engine@0.1.0 check:numerals
+> node scripts/check-numerals.mjs
+
+numeral regression-lock clear: src/dashboard.ts has none of the shapes this check knows.
+NOTE: this is a regression lock, not a property check — it catches the defect shapes prior
+review rounds named (raw concat of .length/.count/.score/Math.*/LIST_CAP, Latin % in markup,
+non-existent Math methods). It does NOT prove every number routes through fmtN(); a review
+wrote 21 mutations and 18 passed. Treat a clean run as "no known regression", not "correct".
+exit=0

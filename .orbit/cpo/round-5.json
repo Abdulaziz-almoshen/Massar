@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "commit": "19b6f00",
+  "goal": "Make متابعة الحملات read like a best-in-class marketing campaign tracker (the user's reference: how marketing platforms build these), and stop the 'click a user → whole chat dumps inline' pattern he called horrible — transcripts move to a proper conversation side panel",
+  "verdict": "ITERATE",
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "19b6f00",
+    "sha256": "62a32b5d05d2850e825956f6afc2f0c19c8d19a692b1ab6b9ddc933c0add2a3b"
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 17,
+    "sha256": "a0cf7f0e3659a5b0f75139745467f4d54701ce16e03302ba6e6c62e07ad04a6a"
+  },
+  "basis": {
+    "skills": [
+      "user-model R15 [stated]: campaigns are judged as launches → per-campaign board with scoped funnel + filterable contact tracker — the statgrid-as-funnel + table-first layout is that workflow executed, not decoration",
+      "user-model R15 [stated]: per-person product interest + seriousness (جاد 🔥) is a first-class tracker field — kept as its own column and repeated in the panel's sticky chip header",
+      "user-model R16 [stated]: no-dead-air law — the agent may go silent ONLY via explicit, reversible human takeover; the panel's takeover footer is that exact mechanism, so shipping it dead (setHuman undefined) violates the user's own recorded law, not just polish",
+      "user-model Vocabulary: 'متابعة الحملات' and 'جاد' used exactly as this user means them; copy in the captures matches his terms"
+    ],
+    "research": [
+      "delivery-quality-gate --commit 19b6f00: passed:true, errors:[], ui_required:true (exit 0); user_memory status --require-latest: passed:true, request 17 latest, no pending events — both artifacts hash-bound above",
+      "OPENED all four captures (actual-redesign-detail-1440x900, actual-panel-open-1440x900, actual-redesign-mobile-375x812, actual-kb-download-1440x900): stat-tile funnel row with % of targeted + mini progress bars, table card with filters+count+search in its header, start-edge RTL drawer over a dimmed backdrop with sticky avatar/chips header, WhatsApp-wallpaper thread auto-scrolled to latest, full-width takeover footer; mobile collapses statgrid 2-up and table to 3 columns; kb page shows the teal skill-download card and 8 product cards with __skill__ correctly absent",
+      "prior-art comparison held: the detail page now reads like a Mailchimp campaign report (KPI tiles over recipient-activity table) and the panel like a HubSpot/Intercom inbox conversation drawer — the inline-accordion the user called horrible is gone from contactRowsHtml (rows are now openConvo() launchers)",
+      "code-walked every new sink: esc() covers &<>\"' and wraps nm/phone/chip products/outcomeReason/bubble text/camp name/filename/public_id; phone is digits-only at every ingress (index.ts:100,131,134,195; gupshup.ts:167) so the onclick JS-string sinks cannot be broken — XSS clean",
+      "found by grep, not prose: window.setHuman was DELETED in this same commit while dashboard.ts:340 (panel footer) still calls it — the takeover button throws ReferenceError; /admin/contact/human server route still exists, only the client fn is gone",
+      "agent.ts refreshKb() line 165 loads db.listAssets() UNFILTERED → systemPrompt line 203 advertises every asset product incl. __skill__ as a sendable 'ملف تعريفي'، and the send lookup line 314 matches product===key OR product.includes(key) — the kb capture proves the __skill__ zip is live in the same product_assets table, so the customer-facing agent is currently told it can send internal tooling",
+      "setInterval(5000) → refresh() → render(true) + renderConvo(): full innerHTML rebuild of the view AND the panel every 5s — search input loses focus/caret mid-typing (also rebuilt on every 250ms debounce fire), the drawer replays its slideIn animation, and msgs scroll force-snaps to bottom while the user reads history"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "nice",
+          "finding": "funnel vocabulary (أُرسلت/وصلت/شوهدت/ردّوا) matches WhatsApp delivery reality and the % base is honestly المستهدفون — but the hosted skill zip is still named lean-proposal-deck-v2.1.3-upload.zip while the installed skill is v1.1 (round-4's phantom-version finding now lives in a user-visible filename; re-host the zip under a truthful name when executing round-4's should-order)"
+        }
+      ]
+    },
+    {
+      "lens": "policy",
+      "verdict": "clean",
+      "evidence": ".orbit/decisions/ is empty (checked); asset serving stays on the established unguessable-public-id route (/assets/:pid); admin surfaces stay behind x-admin-token — no recorded constraint contradicted"
+    },
+    {
+      "lens": "product",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "must",
+          "finding": "__skill__ leaks into the customer-facing product surface: the dashboard filters it (kbRegistry + the download card) but agent.ts never does — refreshKb() (line 165) ingests it, the system prompt (line 203) lists it as a product with a sendable intro PDF, and send_asset's fuzzy lookup (line 314, ===/includes) can resolve it, i.e. a WhatsApp customer can be sent the internal skill zip the moment the model takes the prompt at its word"
+        }
+      ]
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "must",
+          "finding": "the 5s refresh dismantles the two new interactions it should feed: the header search input is rebuilt on every render (focus and caret lost mid-typing — every 250ms debounce fire and every 5s poll), and renderConvo() rebuilds the whole drawer (slideIn replays every 5s as a visible pulse; msgs scroll is force-snapped to bottom, yanking the reader out of history). Live data refreshing INSIDE a stable panel is the point of the redesign; rebuild only what changed and keep focus/scroll"
+        },
+        {
+          "severity": "should",
+          "finding": "panel lifecycle gaps: no Escape-to-close and no focus trap despite role=dialog; the fixed drawer persists across hashchange (navigate to #kb with it open → it overlays the KB page); convoPhone is not cleared when the contact vanishes from a refresh (panel silently disappears but state goes stale). Backdrop-click and × both work"
+        },
+        {
+          "severity": "nice",
+          "finding": "at ≤900px the action column ('عرض المحادثة ←') is hidden so nothing signals rows are tappable (they are — whole row opens the panel); 375px chips run dense against the client column"
+        }
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "should",
+          "finding": "root cause of the churn must: the portal's render model is 'wipe #body innerHTML every 5s' and renderConvo inherited it — fine for read-only views, structurally wrong for surfaces holding focus/scroll state; scope the fix to targeted updates (table body + msgs list), not a framework migration. Otherwise the shape is right: logical inset-inline-start gives the correct RTL start edge, z-stack verified sane (lmodal 60 < backdrop 69 < drawer 70 < alertBar 99), esc + digits-only phone ingress keep every new sink XSS-clean, zero new dependencies"
+        }
+      ]
+    },
+    {
+      "lens": "slop",
+      "verdict": "findings",
+      "findings": [
+        {
+          "severity": "must",
+          "finding": "dead button shipped as done: the panel's flagship footer 'إيقاف المساعد — أنا أتولى المحادثة' calls setHuman(), whose window.setHuman definition this very commit deleted (sole remaining reference is the call site, dashboard.ts:340) — clicking it throws ReferenceError and nothing happens, breaking the user's R16 no-dead-air takeover law at its only entry point in the new UI. Everything else is slop-free: copy is specific Arabic, captures show real transcript data, dead openSet var left behind is the only residue (fold into cleanup)"
+        }
+      ]
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 8,
+    "completeness": 5,
+    "coherence": 8,
+    "taste": 8,
+    "surprise": 6
+  },
+  "change_orders": [
+    {
+      "priority": "must",
+      "order": "Restore window.setHuman in dashboard.ts (POST /admin/contact/human with x-admin-token, alertBar feedback, then refresh() so the panel footer flips state) — it was deleted in 19b6f00 while the panel footer (line 340) still calls it. Add a QA scenario that CLICKS the takeover button in the open panel and asserts contact.human flips and the button relabels to 'استئناف المساعد ▶'."
+    },
+    {
+      "priority": "must",
+      "order": "Fence __skill__ (and any future internal asset namespace) out of the agent: filter product !== '__skill__' in agent.ts refreshKb() line 165 (or add listAssets({excludeInternal:true}) in db.ts) so the system prompt (line 203) never advertises it and send_asset's lookup (line 314) cannot resolve it; add a scenario asserting the prompt's asset list and send_asset both refuse '__skill__' while /assets/<pid> download and the portal card keep working."
+    },
+    {
+      "priority": "must",
+      "order": "Make the 5s refresh non-destructive on the two new surfaces: (a) search — re-render only the table body on debounce and poll (or skip input re-creation / restore focus+caret) so typing survives; (b) renderConvo — rebuild only #convoMsgs when the transcript/chips/human actually changed, keep scroll position unless the user was already at bottom (then follow new messages), and never replay the slideIn animation on a data refresh (animate only on open)."
+    },
+    {
+      "priority": "should",
+      "order": "Panel lifecycle: close on Escape, close (or re-anchor) on hashchange away from the campaign detail, clear convoPhone when the contact disappears, and move initial focus into the dialog (basic focus trap) to honor role=dialog."
+    },
+    {
+      "priority": "nice",
+      "order": "Mobile affordance: at ≤900px keep a compact chevron/‘عرض’ affordance on each row instead of hiding the action column entirely; loosen 375px chip density. Remove the now-dead openSet."
+    },
+    {
+      "priority": "nice",
+      "order": "When executing round-4's version-record correction, also re-host the skill zip under a truthful filename (it currently says v2.1.3 in the user-visible download card while the installed skill is v1.1)."
+    }
+  ],
+  "user_model_updates": [
+    "Signal 2026-08-11 R17 [stated]: 'see how marketing platforms build campaign trackers; clicking a user opening all chat is horrible' → the user briefs by prior-art reference (best-in-class marketing tools are the acceptance bar for this screen) and rejects inline disclosure of heavy content: full transcripts belong behind an explicit dedicated surface (side panel), never inline expansion. Second consecutive campaign-screen signal judging by professional-tool fit (with R15) — one more makes it a Rule.",
+    "Signal 2026-08-11 R17 [derived-from-R16-law, applied]: the takeover toggle is the user's only sanctioned mute path; any redesign that moves it must prove the button still works by clicking it in QA — visual presence of the control is not evidence."
+  ],
+  "reviewed_at": "2026-08-11T10:48:06Z"
+}

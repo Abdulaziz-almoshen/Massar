@@ -1,0 +1,53 @@
+Audience slice — live scenario evidence @874a130 (deployed massar-engine.fly.dev, 2026-08-11)
+All curls against the live service with x-admin-token; browser proofs via Playwright chromium.
+
+SC-A1 happy — Arabic xlsx import end-to-end
+  Generated real .xlsx (sheet المستهدفون): headers الاسم/الجوال/المدينة/الحجم/القطاع, 7 data rows
+  incl. Arabic-digit phone ٠٥١٢٣٤٥٠٠٤, bare 512345005, already-966 row, one row w/o phone, one w/o name.
+  POST /admin/entities/import → {"added":5,"updated":0,"skipped":0,"totalRows":7,
+    "columns":{"name":"الاسم","phone":"الجوال","attrs":["المدينة","الحجم","القطاع"]},
+    "skippedRows":[{"row":7,"reason":"جوال غير صالح: (فارغ)"},{"row":8,"reason":"بدون اسم"}],"skippedCount":2}
+  Stored attrs verified via GET /admin/entities: e.g. 966512345001 مجمع النور الطبي
+  {'الحجم':'كبيرة','القطاع':'مجمعات طبية','المدينة':'الرياض'} — all 5 rows carry 3 attrs.
+
+SC-A2 boundary — KSA phone-format normalization (all four forms in one file)
+  05XXXXXXXX (0512345001) → 966512345001 ✓ · Arabic digits ٠٥١٢٣٤٥٠٠٤ → 966512345004 ✓
+  bare 9-digit 512345005 → 966512345005 ✓ · already-966 966512345003 unchanged ✓
+
+SC-A3 alternate — re-import of the same file is an update, not duplication
+  Second POST of identical file → added:0, updated:5, skippedCount:2. Entity count stays 5.
+
+SC-A4 negative — malformed rows rejected with per-row Arabic reasons
+  Row 7 (empty phone) and row 8 (empty name) skipped with reasons echoed in response
+  (and rendered in the portal summary under the dropzone).
+
+SC-A5 authorization — no token
+  POST /admin/entities/import without x-admin-token → 401.
+
+SC-A6 failure_recovery — unusable files fail clean, engine stays healthy
+  CSV with headers العنوان/الملاحظات (no name/phone) → 422 "تعذر التعرف على أعمدة الاسم/الجوال —
+  العناوين الموجودة: العنوان، الملاحظات". Junk single-line file → 422 "الملف يحتاج صف عناوين وصفًا
+  واحدًا على الأقل من البيانات". /health after both: ok:true, outbound:true, db:true.
+
+SC-A7 happy (browser) — column-derived segment launch (the user's core ask)
+  Playwright 1440x900, #aimkt: three derived chip groups rendered [الحجم:, القطاع:, المدينة:]
+  with per-value counts. Clicked جدة (2) + صغيرة (2) → "تحديد المطابقين (1)" (correct intersection:
+  مركز الابتسامة لطب الأسنان only) → clicked → selected counter "1 مختار من 5" → 🚀 → confirm modal
+  shows «1 مستهدف». Modal CANCELLED — nothing sent. Screenshots:
+  actual-aimkt-segfilter-1440x900.png (filters applied + filtered list), actual-launch-modal-1440x900.png.
+  Console errors: 0.
+
+SC-A8 happy (browser) — customers screen file-first onboarding
+  #customers: dropzone card primary (Excel/CSV copy, شريحة استهداف explainer, 05→966 note),
+  paste demoted to collapsed details, section header "المستهدفون 5 جهة · شرائح: الحجم، القطاع،
+  المدينة", rows carry dynamic attr chips + LTR phones + delete. Eye-verified at 1440; captured
+  at 1440/768/375. Console errors: 0 across all captures.
+
+Round-6 folded orders (same commit):
+  convoSig now includes statusTimes keys + tags (panel chip freshness) — code @874a130 dashboard.ts;
+  setHuman guards res.ok + network failure with error alertBar; duplicate window.pick removed
+  (served page grep: exactly 1 definition).
+
+Hygiene: no WhatsApp messages sent during any scenario; launch modal cancelled in browser;
+test entities are visibly-fake sequential numbers left in place as a working demo of the
+segment picker (deletable per-row via ×).

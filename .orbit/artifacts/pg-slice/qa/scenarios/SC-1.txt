@@ -1,0 +1,4 @@
+SC-1 happy: v3 delivered status for 966500000098 -> tracked + persisted
+{"status":"ok"}
+tracked: True | statuses: ['delivered']
+pg contacts: 1

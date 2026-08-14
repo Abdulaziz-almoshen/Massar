@@ -1,0 +1,10 @@
+=== MUST-1: intent vs disclosure ===
+  كم السعر؟      | filtered→commercial: false | raw→commercial: true
+  كم التكلفة؟    | filtered→commercial: false | raw→commercial: true
+  كيف نبدأ؟      | filtered→commercial: false | raw→commercial: true
+  متى نبدأ؟      | filtered→commercial: false | raw→commercial: true
+  نبغى نبدأ      | filtered→commercial: true  | raw→commercial: true
+
+=== opt-out ordering ===
+
+ORDERING MATRIX PASS 14/14

@@ -1,0 +1,4 @@
+SC-12 (intro PDF, live): upload → public URL → agent sends on details-request
+upload: product=الإجازات المرضية publicId=60ebcd520bc96cecee (38702B, served 200 application/pdf)
+live: customer 'أرسل لي الملف التعريفي...' → [أُرسل الملف التعريفي: الإجازات المرضية] → commentary + follow-up question
+launch path: introAsset auto-attach wired (document after opener when product has a file)

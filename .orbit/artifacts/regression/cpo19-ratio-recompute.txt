@@ -1,0 +1,37 @@
+CPO round-19 independent recomputation of every visual mismatch_ratio @825a557
+Pillow, pixel-by-pixel, from the PNGs on disk. Nothing taken from QA's verdict fields.
+base_est is Riyadh local (UTC+3); mtimes printed in UTC — the consistent +3h offset on all 15
+rows is what proves the baseline_established fields are current rather than stale.
+
+ # surface                      vp           claimed  recomputed match  base=act? base_est          base_mtime        act_mtime
+ 0 home @ 1440x900              1440x900    0.008176    0.008176 OK     False     2026-08-12T20:03  2026-08-12T17:03  2026-08-13T01:15
+ 1 home @ 768x1024              768x1024    0.000000    0.000000 OK     True      2026-08-13T04:19  2026-08-13T01:19  2026-08-13T01:15   [pre-rebaseline 0.011294]
+ 2 home @ 375x812               375x812     0.009330    0.009330 OK     False     2026-08-12T15:52  2026-08-12T12:52  2026-08-13T01:15
+ 3 kmonlist @ 1440x900          1440x900    0.000324    0.000324 OK     False     2026-08-13T02:50  2026-08-12T23:50  2026-08-13T01:15
+ 4 kmonlist @ 768x1024          768x1024    0.001392    0.001392 OK     False     2026-08-13T02:50  2026-08-12T23:50  2026-08-13T01:15
+ 5 kmonlist @ 375x812           375x812     0.001701    0.001701 OK     False     2026-08-13T02:50  2026-08-12T23:50  2026-08-13T01:15
+ 6 salespath @ 1440x900         1440x900    0.000369    0.000369 OK     False     2026-08-12T20:03  2026-08-12T17:03  2026-08-13T01:16
+ 7 salespath @ 768x1024         768x1024    0.001556    0.001556 OK     False     2026-08-12T14:54  2026-08-12T11:54  2026-08-13T01:16
+ 8 salespath @ 375x812          375x812     0.000000    0.000000 OK     True      2026-08-12T15:50  2026-08-12T12:50  2026-08-13T01:16
+ 9 kmondetail @ 1440x900        1440x900    0.008566    0.008566 OK     False     2026-08-12T20:03  2026-08-12T17:03  2026-08-13T01:16
+10 kmondetail @ 768x1024        768x1024    0.001714    0.001714 OK     False     2026-08-13T03:45  2026-08-13T00:45  2026-08-13T01:16
+11 kmondetail @ 375x812         375x812     0.002053    0.002053 OK     False     2026-08-13T03:45  2026-08-13T00:45  2026-08-13T01:16
+12 wizard @ 1440x900            1440x900    0.006615    0.006615 OK     False     2026-08-12T20:03  2026-08-12T17:03  2026-08-13T01:16
+13 wizard @ 768x1024            768x1024    0.000000    0.000000 OK     True      2026-08-13T04:19  2026-08-13T01:19  2026-08-13T01:17   [pre-rebaseline 0.010700000000000001]
+14 wizard @ 375x812             375x812     0.003176    0.003176 OK     False     2026-08-12T14:54  2026-08-12T11:54  2026-08-13T01:17
+
+zero-ratio rows: 3   non-zero rows: 12   total 15
+
+RULING: 15/15 ratios reproduce to six decimals. Every number in the file is real.
+  - 12 non-zero + 3 zeros (NOT '13 non-zero'): rows 1 and 13 are the two declared re-baselines
+    (baseline written 2-4 min AFTER its actual = a copy, and both say so, both carry
+    measured_before_rebaseline, both name the DOM digit audit as what confirms the change).
+  - Row 8 salespath@375 is the third zero and is an HONEST zero, not a hidden re-baseline: its
+    baseline predates its actual by 12 hours, so it cannot be a copy of it; the two files are
+    byte-identical because that captured region genuinely did not change.
+  - Round-18 residual S3 RESOLVED: kmondetail 768/375 baselines are no longer byte-identical to
+    their actuals (sha differs) and now carry genuine non-zero ratios 0.001714 / 0.002053.
+  - Round-18 residual S4 RESOLVED: visual.note is rewritten, current and arithmetically correct.
+  - Residual (should, S6): 'portal-wide' and '0 Latin digits on 6 screens' are stated wider than
+    measured — the sweep covered six screens' rendered state, and the digit audit excluded phone
+    numbers and a version string without disclosing it. Substance verified; wording overreaches.

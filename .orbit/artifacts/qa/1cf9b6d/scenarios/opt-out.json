@@ -1,0 +1,60 @@
+{
+ "webhook_token_auth": {
+  "expected": "401 on a wrong token",
+  "measured": "401 {\"status\":\"unauthorized\"}",
+  "verdict": "PASS"
+ },
+ "optout_marks_contact": {
+  "expected": "contact.optedOut true / outcome opted_out",
+  "measured": {
+   "optedOut": true,
+   "outcome": "opted_out"
+  },
+  "verdict": "PASS"
+ },
+ "optout_confirmation_reply": {
+  "expected": "exactly one confirmation text, no opener, no buttons",
+  "measured": [
+   {
+    "fn": "sendText",
+    "text": "تم إيقاف الرسائل. شكرًا لوقتكم، ونعتذر عن الإزعاج."
+   }
+  ],
+  "verdict": "PASS"
+ },
+ "optout_silences_info_button": {
+  "expected": "0 sends — an opted-out contact tapping an info button gets nothing",
+  "measured": {
+   "sends": 0,
+   "calls": []
+  },
+  "verdict": "PASS"
+ },
+ "launch_skips_opted_out": {
+  "expected": "sent=1, only 966500000012 on the wire, 966500000011 reported 'opted out — skipped'",
+  "measured": {
+   "sent": 1,
+   "requested": 2,
+   "failed": [
+    {
+     "phone": "966500000011",
+     "ok": false,
+     "error": "opted out — skipped"
+    }
+   ],
+   "recipients_on_wire": [
+    "966500000012"
+   ]
+  },
+  "verdict": "PASS"
+ },
+ "launch_buttons_for_survivor": {
+  "expected": "high_usage_upsell buttons",
+  "measured": [
+   "تفاصيل التكامل",
+   "أود مناقشة التكامل",
+   "ليس الآن"
+  ],
+  "verdict": "PASS"
+ }
+}
