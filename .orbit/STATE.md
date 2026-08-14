@@ -36,8 +36,28 @@ Two P1s, both of which I reproduced myself rather than taking on the reviewer's 
   over the parsed object; Codex ran `shasum` over the file bytes. Different inputs. The
   review prompt should say so.
 
-NOT fixed here — two P1 security changes belong in their own reviewed increment, and this
-increment's goal was the gate. Both are the top of the queue.
+**Opt-out bypass FIXED and deployed** (@dcdc7b2, user directive "fix the opt-out bypass now").
+New `src/outbound.ts` is the policy door: opt-out is absolute with NO template exception;
+session sends additionally require an open 24h window. Both admin routes now refuse with 409.
+The module states in code that it does NOT enforce the agent turn cap, so a null return is
+never read as "all safety rules passed". Falsified rather than asserted — 5 cases including a
+negative control proving the guard can still ALLOW (a guard that only refuses proves nothing).
+`npm run deploy` green: 7 routes render, 0 runtime errors, health `ok:true` `outbound.ok:true`.
+
+**Round 2 @dcdc7b2: AC1-optout FAIL → PASS**, score 2.5 → 3.5, verdict still CHANGES_REQUIRED.
+
+STILL OPEN, honestly stated:
+- **AC2 (P1) webhook fails open** — `WEBHOOK_TOKEN` unset ⇒ no auth. Not attempted this round.
+- **AC4 (P1) still FAIL** — the two admin routes were fixed; ~13 other call sites
+  (agent.ts 616/686/705/711/712/919/930/1047, index.ts 227/239/243) still reach Gupshup
+  directly. The single-door property does NOT hold yet; only the reported hole was closed.
+  This is exactly the Rule-6 shape — an instance fixed, the class alive.
+- **P2 no committed regression test** for these invariants. The falsification harness ran from
+  scratch space and was not committed; it should move into the repo.
+
+**Capability chain skipped by user decision** ("close it as-is"): T2 config change with no UI
+surface, so product-discovery/business-analyst/market-researcher/planner/designer were not
+dispatched. Recording it rather than letting the gate log imply they ran.
 
 Also: broke a stale writer lock (session edca6286, 5h35m past its 1800s TTL) to do any of this.
 

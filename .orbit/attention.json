@@ -2,10 +2,10 @@
   "schema": 1,
   "source": "Claude Code",
   "session_id": "5c610ef4-4c87-4f7f-b356-e08b212f2bdd",
-  "notification_type": "idle_prompt",
-  "title": "",
-  "message": "Claude is waiting for your input",
-  "question_available": false,
+  "notification_type": "permission_request",
+  "title": "Permission requested",
+  "message": "Allow AskUserQuestion?",
+  "question_available": true,
   "answer_in": "originating Claude Code terminal",
-  "updated_at": "2026-08-13T18:57:38Z"
+  "updated_at": "2026-08-14T00:46:03Z"
 }
