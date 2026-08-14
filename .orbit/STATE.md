@@ -1,3 +1,35 @@
+## 2026-08-14 · [T2] Agent sales motion → usage-led account expansion (deployed)
+
+User supplied a full AE prompt and asked "is this fixed?" — it was not in the code at all (0
+matches). Now it is. The agent is a senior Account Executive running expansion on existing
+accounts: known usage is the buying signal, the pitch is moving the workflow into the customer's
+HIS, not selling an API. All 13 strategies present, plus answer-first, diagnose-before-answering,
+discount-as-buying-signal, handoff-as-progress.
+
+**New `src/accounts.ts`** — the place account facts live (`ACCOUNTS_JSON`, keyed by phone):
+branches, HIS name/architecture, measured transaction volume, current products, per-account
+pricing, decision maker. Facts present are stated as KNOWN and never re-asked; facts absent are
+asked for, never guessed. **Registry is empty — every conversation takes the cold path until the
+user supplies the customer list.**
+
+**DELIBERATE DEVIATION from the supplied spec**, recorded because it was not his instruction: the
+spec assumes an existing customer whose account we know, but the engine also takes cold inbound.
+Running the motion on a stranger would produce «بحكم حجم استخدامكم الحالي» about usage we do not
+have — inventing a fact about the customer's own operation, the sharpest form of Rule 2. So the
+motion is gated on an account record; without one the agent is explicitly forbidden to claim usage
+knowledge, and the two strategies that assert it (usage-insight, value-amplification) are withheld.
+
+**Price**: correcting my own earlier reading — `stripPricing` only strips hub KB, not the product
+table, so `agent.ts:78`'s «باقة المؤسسات (حتى 10 فروع): 95,000 ر.س سنويًا» IS quotable, exactly
+the spec's example. Inventing a price, range or discount stays banned in both states.
+
+**`scripts/check-ae-prompt.mjs`** (wired into `npm run check`, blocks deploy) asserts both states
+and pins the five hard guards that a prompt rewrite silently deleted at round-11 — opt-out never
+offered, AI self-disclosure, no markdown, plural address, human-handoff path. It prints its own
+limit: it asserts prompt CONTENT, not model behaviour.
+
+NOT VERIFIED: whether the model obeys the strategies live. Unprovable without sending.
+
 ## 2026-08-14 · [T2] Independent QA (Codex) ENABLED and proven running — 2 P1 findings
 
 User: "switch it on". Done, and the gate is live rather than merely flag-flipped.

@@ -1,10 +1,12 @@
 {
-  "last_review_summary": "DURABLE, safety-scoped: he named 0559402621 (966559402621) as the test number, which is the explicit allowlist Rule 5 said would lift the zero-send rule. Scope is that number and this opt-out test only; the blanket rule stands for every other number. Not a new preference - the exercise of one he already stated.",
-  "last_reviewed_at": "2026-08-14T01:43:10Z",
-  "last_reviewed_request": 55,
-  "pending_event_ids": [],
-  "requests_since_review": 1,
-  "review_required": false,
+  "last_review_summary": "R59, his own framing of the working contract: 'I give you a goal, and you'll give me a deliverable.' Two hard rules follow. (1) INCIDENTAL WORK RUNS SILENTLY: technical debt, prerequisites and self-inflicted fixes must not consume his attention or his turns - do them without narrating each step, or defer them. He should be interrupted only for a decision only he can make. (2) HIS TIME IS THE SCARC\u2026",
+  "last_reviewed_at": "2026-08-14T01:52:18Z",
+  "last_reviewed_request": 59,
+  "pending_event_ids": [
+    "U60"
+  ],
+  "requests_since_review": 2,
+  "review_required": true,
   "schema_version": 1,
-  "total_requests": 56
+  "total_requests": 61
 }

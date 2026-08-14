@@ -103,6 +103,7 @@ copied to other repos or global memory.
 
 ## Signals (dated observations, newest first)
 
+- 2026-08-14 U59 [stated]: R59, his own framing of the working contract: 'I give you a goal, and you'll give me a deliverable.' Two hard rules follow. (1) INCIDENTAL WORK RUNS SILENTLY: technical debt, prerequisites and self-inflicted fixes must not consume his attention or his turns - do them without narrating each step, or defer them. He should be interrupted only for a decision only he can make. (2) HIS TIME IS THE SCARC…
 - 2026-08-13 R48/R49 [stated, CORROLARY to Rule 2 — third instance, promote into the Rule next round]:
   «this doesnt represent the real interation make it reflect the agent and customer feedback», then
   «just sent a campaign why this data is not real? the user hasnt seen it». **The corollary: a number
