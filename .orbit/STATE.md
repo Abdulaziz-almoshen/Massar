@@ -1,3 +1,24 @@
+## 2026-08-14 06:32 · LIVE PROOF — the commercial path holds on v201
+
+Founder ran the full flow on his own number (campaign 26). «العرض التجاري» now returns:
+«التكلفة النهائية تُبنى على عدد الفروع ونطاق الربط المركزي مع نظام HIS، لذلك **أبدأ** مراجعة تجارية
+… الربط يقلل الإدخال المزدوج ويوحّد متابعة الإصدارات عبر الفروع. / إذا وصلنا لاتفاق مناسب على السعر،
+هل يوجد أي شيء آخر قد يوقف البدء بالتكامل؟»
+
+Against the round-1 failure («تم إشعار المختص بطلب العرض التجاري» — no price, no step, no question)
+every element of Strategy 9 is now present: honest scope instead of an invented number, the
+operational change, ownership retained («أبدأ» not «تم إشعار»), and the conditional-commitment close
+verbatim. It also used disclosed facts («بما أن لديكم نظام HIS وفروعًا») rather than re-asking.
+This is BEHAVIOURAL proof, which check-ae-prompt.mjs explicitly cannot give — that gate asserts
+prompt content only.
+
+Residual: `outcome: handoff` with 14 tags — it escalated at the same turn as the closing question;
+per spec the escalation should follow the customer's ANSWER to that question, not precede it. Minor,
+not fixed, logged.
+
+Still unexercised: `ACCOUNTS_JSON` empty, so this was the COLD path. The expansion motion — the
+premise of the whole spec — has never run against a real account. Blocked on the customer list.
+
 ## 2026-08-14 · [T2] Agent prompt: ONE sales motion (v201, deployed)
 
 Follow-up to the increment below, on his "ok". Sections ١–٩ predated his AE spec and still ran an
