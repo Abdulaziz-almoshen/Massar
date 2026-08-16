@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "R86 + R88: two durable items. (1) STANDING TEST CONTRACT, his words: 'test the agent inputs and outputs with codex. make sure Claude is not the one communicating with customers we are using openai key for this project. make sure codex model test our agent and fine tune the agent prompt till it is 100% ready for prod. must be market competitive.' So: the agent runs on HIS OpenAI key (gpt-5.6-terra)\u2026",
-  "last_reviewed_at": "2026-08-16T15:47:01Z",
-  "last_reviewed_request": 87,
+  "last_review_summary": "R92 \u2014 MAJOR RE-FRAME, supersedes the R60/R75 closer spec for what the agent's JOB is. His words: 'this is not sales skills. Please redo your work.' The agent is a SORTER, not a closer. Required behaviour: (a) prospect asks a question -> answer their most important question, then connect them to a salesperson; (b) interested -> establish a SCHEDULED TIME ('when are we going to schedule them?'); (c)\u2026",
+  "last_reviewed_at": "2026-08-16T16:51:58Z",
+  "last_reviewed_request": 92,
   "pending_event_ids": [],
-  "requests_since_review": 1,
+  "requests_since_review": 0,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 88
+  "total_requests": 92
 }

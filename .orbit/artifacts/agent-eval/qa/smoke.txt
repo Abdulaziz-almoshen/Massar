@@ -1,0 +1,14 @@
+
+> massar-engine@0.1.0 smoke
+> ./.venv/bin/python scripts/smoke.py
+
+  #home                        34354 chars  ok  «مركز القيادة»
+  #kmon                        13898 chars  ok  «الحملات»
+  #customers                   17702 chars  ok  «جهات الاستهداف»
+  #aimkt                       23977 chars  ok  «أي خدمة يبيعها المساعد؟»
+  #kb                           4720 chars  ok  «خدمات المساعد»
+  #customer/966500000850       18954 chars  ok  «مسار البيع مع هذا العميل»
+  #kmon/34                      6492 chars  ok  «حكم الحملة»
+
+smoke: 7 routes render, 0 runtime errors
+smoke exit: 0

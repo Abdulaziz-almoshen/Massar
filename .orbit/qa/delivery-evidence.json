@@ -1,247 +1,139 @@
 {
   "schema_version": 1,
-  "commit": "6c64991c2be9b1f31afd42424a0244ab3b383069",
-  "verdict": "PASS",
-  "honesty_note": "P0 PASS at 717ba69. The founder's original complaint is off the screen: campaign 22 «حملة الإجازات المرضية — ١٣/٨/٢٠٢٦» now reports أُرسلت ٢ · وصلت ٠ · شوهدت ٠ · ردّوا ٠ · جهات مهتمة ٠ · فشل الإرسال ٢, which is the ground truth (both contacts' delivered/read/reply timestamps are 2026-08-12, ~35h BEFORE the 2026-08-13T18:10:40.706Z launch; both carry a failed timestamp seconds after it). campWin() sliced verbatim out of the SERVED /dashboard returns a finite epoch equal to created_at for 22 of 22 live campaigns (0 return 0, 0 return Infinity) — the int8-as-digit-string no-op of f26a2c1 is gone. The windowed result differs from the pre-fix lifetime result for 5 of 22 campaigns and is legitimately identical for the other 17, whose events all post-date their launch. TWO NON-BLOCKING FINDINGS ARE REPORTED, NOT HIDDEN. (1) P2, latent: the ISO fallback regex reaches the browser as /^d{4}-d{2}/ — the \\d escapes are consumed by the TS template literal at src/dashboard.ts:388 — so it matches nothing and every ISO string returns Infinity. The direction is FAIL-CLOSED (shows nothing, never everything) and no live campaign reaches that branch because created_at is always a positive epoch-millis digit-string, so no delivered number is wrong; the branch is nonetheless dead code that does not do what its comment claims. (2) P2, cosmetic: on #kmon/22 the counters correctly read ردّوا ٠ while the target row's الحالة chip still reads «ردّ» (a lifetime contact fact, not a campaign number). The commit's contract covers campaign NUMBERS and holds; the row chip is a separate surface and is filed for the next cycle. PROVENANCE: local git HEAD advanced to the later, UNDEPLOYED commit f023acd mid-run; the served bundle contains none of f023acd's dashboard change, and both gate logs pre-date it, so every artifact here binds 717ba69.",
-  "no_whatsapp_sent": true,
-  "no_send_enforcement": "Read-only admin GETs only (/health, /admin/state, /admin/campaigns, /admin/customer/:phone) plus browser GETs of /dashboard. Zero POST/PUT/PATCH to any route. src/gupshup.ts was never imported or invoked. campStats was executed inside an isolated node:vm context that was asserted at runtime to expose no fetch, no XMLHttpRequest and no require before any campaign code ran.",
+  "commit": "bf944d0aff26f0541cebb61083ab37458b21f84c",
+  "verdict": "CONCERNS",
   "scenarios": {
     "coverage_complete": true,
     "cases": [
       {
         "id": "SC-1",
         "kind": "happy",
-        "title": "campaign 22's numbers are windowed to that campaign's launch",
-        "persona": "the founder opening the campaign he launched minutes ago",
-        "preconditions": "Given campaign id=22 «حملة الإجازات المرضية — ١٣/٨/٢٠٢٦», created_at \"1786644640706\" = 2026-08-13T18:10:40.706Z, 2 targets (966535106365, 966543464327). Both contacts' sent/delivered/read timestamps are 2026-08-12 (06:54:3x and 08:52:1x) and both last spoke on 2026-08-12 — roughly 35h BEFORE the launch. Both carry a failed timestamp on 2026-08-13 (18:10:47.584Z and 18:10:44.633Z) and no delivered timestamp after launch.",
-        "steps": "When campWin/atOrAfter/repliedIn/seenOf/interestedOf/campStats/contactByPhone are sliced VERBATIM (3090 bytes, sha256 prefix 702a50137e55b6ec) out of the LIVE deployed /dashboard HTML and executed in a node:vm against the live /admin/state + /admin/campaigns payloads, and the same input is scored by a re-implementation of the pre-fix lifetime logic.",
-        "expected": "Then campStats(22) reports targeted 2 · sent 2 · delivered 0 · seen 0 · replied 0 · interested 0 · failed 2, and that result is NOT byte-identical to the lifetime result.",
-        "actual": "campWin(camp22) returned 1786644640706, exactly created_at. campStats returned {targeted:2,sent:2,delivered:0,seen:0,replied:0,interested:0,failed:2} — the expected windowed truth. The lifetime re-implementation returned {targeted:2,sent:2,delivered:2,seen:2,replied:2,interested:1,failed:0}. DEPLOYED === LIFETIME evaluated to false, so the window is genuinely applied rather than a no-op.",
-        "measured": "DEPLOYED 717ba69: {targeted:2,sent:2,delivered:0,seen:0,replied:0,interested:0,failed:2} | LIFETIME pre-fix: {targeted:2,sent:2,delivered:2,seen:2,replied:2,interested:1,failed:0} | DEPLOYED===LIFETIME: false | campWin(22)=1786644640706 === created_at.",
+        "persona": "مشترٍ في منشأة صحية",
+        "preconditions": "Given a campaign opener was delivered and the 24h window is open",
+        "steps": "When the buyer taps «تفاصيل التكامل» on the live number 966559402621",
+        "expected": "Then the agent answers with the three real integration phases and does not offer a menu",
+        "actual": "Agent replied «الربط يخلي الإجراء يتم من داخل الـHIS… عمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.» Verified in the live ledger, not only on screen.",
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/campstats-proof.txt"
+        "evidence": ".orbit/artifacts/sorter-reframe/real-conversations-rows.json"
       },
       {
         "id": "SC-2",
         "kind": "alternate",
-        "title": "the fix holds across the whole campaign population, not just campaign 22",
-        "persona": "an operator scrolling the campaign list after months of sends",
-        "preconditions": "Given all 22 campaigns returned by the live /admin/campaigns, whose created_at values arrive from node-pg as int8 digit-strings, and the live contact ledger from /admin/state.",
-        "steps": "When the deployed campWin is applied to every campaign, and campStats is compared to the lifetime re-implementation campaign by campaign.",
-        "expected": "Then every campaign resolves to a finite positive window equal to its own created_at (none falls through to 0 or Infinity), and campaigns whose history predates their launch must diverge from the lifetime numbers.",
-        "actual": "22 of 22 campaigns resolved to a finite epoch window, and campWin equalled created_at exactly for 22 of 22. Zero campaigns returned window 0 (the f26a2c1 no-op signature) and zero fell through to Infinity. The windowed result differs from lifetime for 5 campaigns and is identical for 17 — legitimate, since those 17 have no event predating their own launch.",
-        "measured": "campWin finite-and-correct: 22/22 · win===0: 0/22 · win===Infinity: 0/22 · windowed differs from lifetime: 5/22 · legitimately identical: 17/22.",
+        "persona": "مشترٍ يسأل عن القيمة",
+        "preconditions": "Given the same conversation",
+        "steps": "When the buyer asks «وش ميزة الباقة؟» in the offline harness",
+        "expected": "Then the reply leads with the operational change, not APIs or dashboards",
+        "actual": "Codex scored package-benefit 7/10 on this build (v6) — PASS with note that it could name the practitioner staying inside the HIS.",
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/campstats-proof.txt"
+        "evidence": ".orbit/artifacts/agent-eval/v6/transcripts.json"
       },
       {
         "id": "SC-3",
         "kind": "negative",
-        "title": "a stale reply, tag or read receipt can no longer be credited to a newer campaign",
-        "persona": "a sales lead judging whether a fresh blast actually landed",
-        "preconditions": "Given contact 966535106365, who replied and was read on 2026-08-12T06:54Z and carries lifetime interest tags, and campaign 22, launched 2026-08-13T18:10:40.706Z.",
-        "steps": "When the deployed repliedIn/seenOf/interestedOf are run against that contact with win = the campaign-22 launch, and when the deployed refusal reader in src/insights.ts is exercised by check:campaigns across 14 Arabic refusal / non-refusal strings.",
-        "expected": "Then none of replied, seen or interested may be credited from pre-launch history, and morphologically inflected refusals («لسنا مهتمين», «غير مهتمة») must read as refusals while buying signals («مو مهتم بالسعر بقدر الجودة», «مهتمين جدًا بالتكامل») must not.",
-        "actual": "replied 0, seen 0, interested 0 for campaign 22 despite both contacts having lifetime replies, read receipts and one lifetime «interested» outcome — the pre-launch history is excluded. The refusal reader measured 12/12 correct in both directions, including «لسنا مهتمين» true and «مو مهتم بالسعر بقدر الجودة» false, and the «الملف التعريفي» false positive stays closed.",
-        "measured": "replied=0 · seen=0 · interested=0 against a contact with a lifetime reply, a lifetime read receipt and outcome=interested. Refusal reader: 7/7 refusals true, 6/6 non-refusals false, plus «sandbox activation is not surfaced as the customer's voice» measured null.",
-        "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/check.log"
+        "persona": "مشترٍ يرفض",
+        "preconditions": "Given an active conversation",
+        "steps": "When the buyer says «لسنا مهتمين»",
+        "expected": "Then the agent explores once respectfully and does not push a new offer",
+        "actual": "Codex scored not-interested 0.5/10 — the agent re-offered instead of closing. KNOWN FAIL, recorded not hidden.",
+        "verdict": "FAIL",
+        "evidence": ".orbit/artifacts/agent-eval/v6/verdict.json"
       },
       {
         "id": "SC-4",
         "kind": "boundary",
-        "title": "an unreadable launch time fails CLOSED — shows nothing, never everything",
-        "persona": "an operator opening a campaign whose launch timestamp is missing or corrupt",
-        "preconditions": "Given the safety-gate advisory that a bare \"0\" or \"-1\" reaching Date.parse resolves to the year 2000 and would open the window on all history through the very fallback meant to close it.",
-        "steps": "When the deployed campWin is called with created_at set to undefined, null, \"\", \"  \", \"0\", \"-1\", 0, -1, \"abc\", {}, and with the two real shapes \"1786644640706\" and 1786644640706, and when check:campaigns asserts the resulting campaign counters.",
-        "expected": "Then every unreadable shape must return Infinity (counters all zero) and only a positive epoch-millis value, string or number, may open a window.",
-        "actual": "All ten unreadable shapes returned Infinity; none returned 0 and none returned a year-2000-scale number. Both real shapes returned exactly 1786644640706. check:campaigns independently measured [0,0,0,0] counters for all ten, and [0,0,0] for a contact with no status at all.",
-        "measured": "campWin: undefined→Infinity · null→Infinity · \"\"→Infinity · \"0\"→Infinity · \"-1\"→Infinity · 0→Infinity · -1→Infinity · \"abc\"→Infinity · \"1786644640706\"→1786644640706 · 1786644640706→1786644640706. check:campaigns counters measured [0,0,0,0] for every unreadable shape. Reported separately: \"2026-08-13T18:10:40.706Z\"→Infinity, because the served ISO regex is /^d{4}-d{2}/ (escapes eaten by the TS template literal) — fail-closed, and unreachable with the live int8 schema.",
+        "persona": "مشترٍ خارج نافذة ٢٤ ساعة",
+        "preconditions": "Given the customer's last inbound was >24h ago",
+        "steps": "When a session send is attempted through checkOutbound",
+        "expected": "Then it is refused with outside_window and nothing reaches the wire",
+        "actual": "scripts/check-optout.mjs asserts this with a 33h-old fixture; green in the recorded run.",
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/campstats-proof.txt"
+        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
       },
       {
         "id": "SC-5",
         "kind": "authorization",
-        "title": "campaign and contact data stay behind the admin token",
-        "persona": "an unauthenticated visitor who has the dashboard URL",
-        "preconditions": "Given the live deployment at massar-engine.fly.dev with ADMIN_TOKEN set as a Fly secret.",
-        "steps": "When /admin/state, /admin/campaigns and /admin/customer/966535106365 are fetched with no token and again with a wrong token, and when /dashboard#kmon/22 is rendered in a browser with no token at 1440x900.",
-        "expected": "Then every admin GET must return 401 and the dashboard must render only the login gate, exposing no campaign number and no customer phone.",
-        "actual": "All six admin GETs returned HTTP 401 (three with no header, three with a wrong x-admin-token). The unauthenticated /dashboard#kmon/22 render showed only «الدخول إلى مسار» with an admin-token field — no campaign counters, no target rows, no phone numbers. No POST was issued to the webhook: its token auth was left untouched per the NO-SEND policy.",
-        "measured": "GET /admin/state no-token→401, bad-token→401 · /admin/campaigns no-token→401, bad-token→401 · /admin/customer/966535106365 no-token→401, bad-token→401 · unauthenticated #kmon/22 renders the login gate only.",
+        "persona": "مشغّل بلا صلاحية",
+        "preconditions": "Given no or wrong admin token",
+        "steps": "When GET /admin/customer/<phone> is called",
+        "expected": "Then the API returns 401 and the portal shows the auth gate instead of an infinite spinner",
+        "actual": "Measured live: bad-token and no-token both return 401; the portal now gates on every route.",
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/auth.log"
+        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
       },
       {
         "id": "SC-6",
         "kind": "failure_recovery",
-        "title": "a campaign whose sends all failed recovers a truthful, actionable screen",
-        "persona": "the founder whose blast failed at the wire and who must be told so",
-        "preconditions": "Given campaign 22, where both targets carry a failed timestamp within 7 seconds of launch and neither has a post-launch delivered timestamp — the worst case, a campaign that delivered to nobody.",
-        "steps": "When #kmon/22 is rendered in a real browser at 1440x900, 768x1024 and 375x812, and when the seven-route smoke suite loads every dashboard screen and fails on a blank render or a runtime error.",
-        "expected": "Then the screen must say the campaign failed rather than inheriting old success: failed 2, delivered 0, a «لم تصلهم الرسالة ٢» recovery card, and no console error on any route.",
-        "actual": "The campaign header reads «أُرسلت، وبانتظار الرد الأول.» with أُرسلت ٢ · وصلت ٠ · شوهدت ٠ · ردّوا ٠ · جهات مهتمة ٠, the filter chip reads «فشل الإرسال (٢)», and the red recovery card reads «٢ لم تصلهم الرسالة — تحقق من الأرقام، ثم أعد المحاولة لاحقًا». Smoke loaded all seven routes with 0 runtime errors, including #kmon/22 at 7669 chars asserting «حكم الحملة». Console capture on both changed routes reported 0 messages and 0 errors.",
-        "measured": "smoke: 7/7 routes render, 0 runtime errors, exit 0 (#kmon/22 7669 chars, #customer/966500000850 18856 chars). console: #kmon/22 0 errors, #customer/966535106365 0 errors. On-screen: failed chip ٢, delivered ٠, recovery card present at all three viewports.",
+        "persona": "المساعد ينتج مخرجًا غير صالح",
+        "preconditions": "Given the model returns reasoning text or a bare menu",
+        "steps": "When safeSend / the send path processes it",
+        "expected": "Then the reasoning is blocked, the menu is refused and retried, and a safe Arabic line is sent rather than silence",
+        "actual": "check-sendable and check-buttons-enforced assert both; the menu-dodge refusal fired 2-3 times per eval run and forced longer answers.",
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/smoke.log"
+        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
       },
       {
         "id": "SC-7",
         "kind": "happy",
-        "title": "the contact sales-path screen still reads correctly after the insights change",
-        "persona": "a salesperson opening the contact whose campaign just failed",
-        "preconditions": "Given #customer/966535106365, the contact whose lifetime record carries a reply, read receipts and interest tags, rendered against the 717ba69 insights refusal reader.",
-        "steps": "When the route is rendered at 1440x900, 768x1024 and 375x812 in independent browser sessions and pixel-diffed against a same-commit baseline, and the console is captured.",
-        "expected": "Then the contact's own lifetime history stays intact and legible (it is contact state, not a campaign number), with no console error and no layout break at any viewport.",
-        "actual": "The route rendered identically in both independent capture runs at all three viewports (0 differing pixels of 304500 / 786432 / 1296000), carries no console error, and preserves the contact's lifetime transcript and interest reading. Nothing on this screen regressed under the morphology fix.",
-        "measured": "pixel mismatch 0.0000% at 375x812, 768x1024 and 1440x900 (0/304500, 0/786432, 0/1296000); console 0 messages, 0 errors; smoke rendered a sibling contact route at 18856 chars.",
-        "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/console.log"
+        "persona": "مدير مبيعات في الصباح التالي",
+        "preconditions": "Given the four real non-test conversations in the live ledger",
+        "steps": "When Codex classifies each into an outcome row with a verbatim evidence quote",
+        "expected": "Then every row is justified by a customer line and a stated time is detected when present",
+        "actual": "4/4 rows produced with quotable evidence. TWO customers (966502444737, 966535106365) stated a time («صباح» / «صباحًا») that the system did not record — both are stored as `interested`. This falsifies FR-3 on 100% of cases and is the headline finding.",
+        "verdict": "FAIL",
+        "evidence": ".orbit/artifacts/sorter-reframe/real-conversations-rows.json"
       }
     ]
   },
   "dependency_regression": {
-    "coverage_complete": true,
-    "verdict": "PASS",
     "changed_units": [
-      "src/dashboard.ts :: campWin — the ISO fallback now fails closed instead of resolving \"0\"/\"-1\" to the year 2000",
-      "src/dashboard.ts :: the client campaign-stats block (atOrAfter, repliedIn, seenOf, interestedOf, campStats)",
-      "src/insights.ts :: the Arabic refusal reader, now suffix-tolerant across morphological inflection",
-      "scripts/check-campaign-scope.mjs :: the falsifiable gate that asserts both behaviours with the REAL int8-digit-string created_at shape",
-      "the rendered /dashboard bundle served to every browser"
+      "src/agent.ts (systemPrompt, menuDodge, price directive, per-turn state)"
     ],
     "direct_dependents": [
-      "#kmon/:id — the campaign detail screen (verdict card, six counters, filter chips, recovery card)",
-      "#kmon — the campaign list, whose per-row numbers come from the same campStats",
-      "#customer/:phone — the contact sales-path screen, which renders the insights refusal reading",
-      "#home — the command-centre cards that aggregate campaign counters",
-      "npm run check:campaigns — the deploy gate that consumes both changed units"
+      "src/index.ts (webhook + admin send routes)",
+      "scripts/check-buttons.mjs (slices systemPrompt)"
     ],
     "transitive_dependents": [
-      "npm run check:buttons — shares the tsc build with check:campaigns, so a dashboard.ts regression trips it",
-      "the seven-route smoke suite, which fails on a blank render of any screen that touches the changed bundle",
-      "the interest/refusal chips shown on #customers and inside campaign target rows"
+      "src/dashboard.ts (renders transcripts)",
+      "src/insights.ts (reads the same transcript)"
     ],
     "related_user_flows": [
-      "launch a campaign, then open it minutes later and read its numbers",
-      "scroll the campaign list and compare campaigns against one another",
-      "open a target from a campaign and read that contact's sales path",
-      "decide the next action from the recommendation card when every send failed",
-      "sign in / be refused at the admin gate"
+      "campaign launch → reply → agent turn",
+      "opt-out",
+      "admin send-test refusal",
+      "contact profile render"
     ],
     "commands": [
       {
-        "command": "npm run check  (check:catalogue -> check:numerals -> check:buttons[tsc + buttons] -> check:campaigns[tsc + campaign scope & refusal reading])",
+        "command": "npm run check (18 gates)",
         "exit_code": 0,
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/check.log"
+        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
       },
       {
-        "command": "npm run smoke  (Playwright loads seven real dashboard routes against the live deploy and fails on a blank render)",
+        "command": "npm run smoke (7 routes, 0 runtime errors)",
         "exit_code": 0,
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/smoke.log"
+        "evidence": ".orbit/artifacts/agent-eval/qa/smoke.txt"
       },
       {
-        "command": "node prove717.mjs  (campWin/campStats sliced verbatim from the SERVED /dashboard, executed in a network-free node:vm against live /admin/state + /admin/campaigns)",
+        "command": "node scripts/eval-agent.mjs (10 scenarios, 0 sends escaped)",
         "exit_code": 0,
         "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/campstats-proof.txt"
-      },
-      {
-        "command": "curl read-only authorization probe of /admin/state, /admin/campaigns, /admin/customer/:phone with no token and with a wrong token",
-        "exit_code": 0,
-        "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/auth.log"
-      },
-      {
-        "command": "snapshot.py console on #kmon/22 and #customer/966535106365 against the live deploy",
-        "exit_code": 0,
-        "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/console.log"
-      },
-      {
-        "command": "deployed-commit provenance check: the served bundle contains none of f023acd's dashboard change, and both gate logs pre-date f023acd",
-        "exit_code": 0,
-        "verdict": "PASS",
-        "evidence": "massar-engine/.orbit-evidence/717ba69/provenance.log"
+        "evidence": ".orbit/artifacts/agent-eval/v6/transcripts.json"
       }
-    ]
+    ],
+    "coverage_complete": true,
+    "verdict": "PASS"
   },
   "visual": {
-    "applicable": true,
-    "verdict": "PASS",
-    "tokens_verdict": "PASS",
-    "accessibility_verdict": "PASS",
+    "applicable": false,
+    "reason": "This delivery changes src/agent.ts only — server-side prompt and send-path logic. No route, component or token changed, so a pixel comparison would compare a screen against itself and assert nothing. The portal's own smoke (7 routes, 0 console errors) is recorded above as the render check.",
+    "changed_routes": [],
+    "comparisons": [],
+    "tokens_verdict": "NOT_APPLICABLE",
+    "accessibility_verdict": "NOT_APPLICABLE",
     "console_errors": [],
-    "changed_routes": [
-      "#kmon/22",
-      "#customer/966535106365"
-    ],
-    "notes": "Baselines were re-captured at 717ba69 into .orbit/qa/baselines/ (the previous kmondetail-* baselines were taken against the broken f26a2c1 render and are stale). Actuals were captured in a SEPARATE, later browser run in reverse viewport order, so each comparison is two independent captures rather than a self-comparison: the #kmon/22 rows carry a small non-zero mismatch (164-490 pixels) produced by the live «مباشر» clock ticking between the two runs, which is the positive control that the differ actually executed. #customer/966535106365 measures 0.0000% because that screen renders no live-updating element; its baseline and actual are nonetheless two separately captured files. Design tokens verified by check:numerals (all portal numerals Arabic-Indic, enforced as a deploy gate) and by on-screen inspection of the Massar palette, RTL direction and card idiom at every viewport. Accessibility: RTL preserved, headings and the verdict card keep their contrast on the dark navy, filter chips remain hit-target sized at 375x812, no content clipped at any viewport.",
-    "comparisons": [
-      {
-        "route": "#kmon/22",
-        "viewport": "375x812",
-        "mismatch_ratio": 0.000755,
-        "verdict": "PASS",
-        "baseline": ".orbit/qa/baselines/kmon22-375x812.png",
-        "actual": "massar-engine/.orbit-evidence/717ba69/act-kmon22-375x812.png",
-        "diff": "massar-engine/.orbit-evidence/717ba69/diff-kmon22-375x812.png",
-        "measured": "230/304500 pixels differ = 0.0755%"
-      },
-      {
-        "route": "#kmon/22",
-        "viewport": "768x1024",
-        "mismatch_ratio": 0.000623,
-        "verdict": "PASS",
-        "baseline": ".orbit/qa/baselines/kmon22-768x1024.png",
-        "actual": "massar-engine/.orbit-evidence/717ba69/act-kmon22-768x1024.png",
-        "diff": "massar-engine/.orbit-evidence/717ba69/diff-kmon22-768x1024.png",
-        "measured": "490/786432 pixels differ = 0.0623%"
-      },
-      {
-        "route": "#kmon/22",
-        "viewport": "1440x900",
-        "mismatch_ratio": 0.000127,
-        "verdict": "PASS",
-        "baseline": ".orbit/qa/baselines/kmon22-1440x900.png",
-        "actual": "massar-engine/.orbit-evidence/717ba69/act-kmon22-1440x900.png",
-        "diff": "massar-engine/.orbit-evidence/717ba69/diff-kmon22-1440x900.png",
-        "measured": "164/1296000 pixels differ = 0.0127%"
-      },
-      {
-        "route": "#customer/966535106365",
-        "viewport": "375x812",
-        "mismatch_ratio": 0.0,
-        "verdict": "PASS",
-        "baseline": ".orbit/qa/baselines/cust966535106365-375x812.png",
-        "actual": "massar-engine/.orbit-evidence/717ba69/act-cust966535106365-375x812.png",
-        "diff": "massar-engine/.orbit-evidence/717ba69/diff-cust966535106365-375x812.png",
-        "measured": "0/304500 pixels differ = 0.0000%"
-      },
-      {
-        "route": "#customer/966535106365",
-        "viewport": "768x1024",
-        "mismatch_ratio": 0.0,
-        "verdict": "PASS",
-        "baseline": ".orbit/qa/baselines/cust966535106365-768x1024.png",
-        "actual": "massar-engine/.orbit-evidence/717ba69/act-cust966535106365-768x1024.png",
-        "diff": "massar-engine/.orbit-evidence/717ba69/diff-cust966535106365-768x1024.png",
-        "measured": "0/786432 pixels differ = 0.0000%"
-      },
-      {
-        "route": "#customer/966535106365",
-        "viewport": "1440x900",
-        "mismatch_ratio": 0.0,
-        "verdict": "PASS",
-        "baseline": ".orbit/qa/baselines/cust966535106365-1440x900.png",
-        "actual": "massar-engine/.orbit-evidence/717ba69/act-cust966535106365-1440x900.png",
-        "diff": "massar-engine/.orbit-evidence/717ba69/diff-cust966535106365-1440x900.png",
-        "measured": "0/1296000 pixels differ = 0.0000%"
-      }
-    ]
+    "verdict": "NOT_APPLICABLE"
   },
-  "commit_note": "Rebound to HEAD. QA passed at 717ba69; the commits since fix the two P2 findings it reported (chipRow lifetime contradiction, template-literal regex escaping) plus the index-as-window bug it found on #home. No scenario weakened."
+  "notes": "NO CODE SHIPPED IN THIS INCREMENT — research only. The agent's job was re-framed by the founder from closer to SORTER (answer the question, get a scheduled time, accept a no). Three specialists + a Codex classification of his four real conversations. Verdict stays CONCERNS and MUST NOT be forced to PASS: the deployed agent scores 3.3/10 against his stated bar of 8/10, and the outcome he asked for (a scheduled time) has no field to live in. A green delivery gate here would assert quality the evidence does not support."
 }
