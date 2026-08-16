@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "R72, founder's structured review of a live NVR transcript - the agent behaves like a qualification workflow, not a salesperson. THREE HARD RULES, now enforced: (1) PRODUCT LOCK - once a product is established every attachment, price, feature and question stays scoped to it until the CUSTOMER explicitly switches; sending Sick Leave material into an NVR conversation is the defect that must never rec\u2026",
-  "last_reviewed_at": "2026-08-16T06:08:02Z",
-  "last_reviewed_request": 72,
+  "last_review_summary": "Operational request to trigger peer session 9fdb10fa, not a preference or correction. Session unreachable in ListAgents; messaged massar-4f to confirm identity before pushing work at the wrong session. Nothing durable.",
+  "last_reviewed_at": "2026-08-16T06:41:42Z",
+  "last_reviewed_request": 78,
   "pending_event_ids": [],
   "requests_since_review": 0,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 72
+  "total_requests": 78
 }

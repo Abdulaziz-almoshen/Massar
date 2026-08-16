@@ -1,3 +1,39 @@
+## 2026-08-16 · [T2] AE spec v2 adopted verbatim + buttons enforced in code (deployed)
+
+Founder supplied a second, fuller AE spec (supersedes the 2026-08-14 one) plus a new hard rule:
+«enforce buttons if the answers are three or less options».
+
+**Sections ١–٢١ replaced WHOLESALE**, not patched — the prompt kept accumulating competing ladders
+and patching was how two motions ended up coexisting last round. Structure now mirrors his spec
+end to end, including the parts the old prompt actively contradicted: don't always close with a
+question · customer chooses the path · give a known price rather than hiding it behind scope ·
+outcomes before features · high usage is an opportunity, never «a problem you have».
+
+**BUTTONS ENFORCED IN CODE.** The prompt has asked for buttons since the button contract existed,
+and the model still wrote «صباحًا أم بعد الظهر؟» and numbered lists as prose — twice. So the text
+send path now DETECTS 2–3 offered choices (numbered lists, Arabic-Indic numerals, bullets, «أ أم
+ب؟») and converts them to quick-replies, with a text fallback when Meta rejects the shape or a
+title exceeds the 20-char limit that returns 131009.
+
+**Its own gate caught a data-loss bug in my regex**: the list class was anchored `[1-3]`, so a
+FOUR-item list matched only its first three and would have shipped as three buttons with the
+fourth option silently dropped. Now matches any digit and lets the count decide.
+
+Also this session, from the founder's screenshot of a live thread — **the model's raw reasoning
+was sent to a customer** («We need respond Arabic … Let's invoke.»), because the send path shipped
+`msg.content` unchecked. `safeSend` now blocks on two independent tests: SCRIPT (this agent writes
+Arabic; a Latin-dominant reply is never valid for this product — catches the class without
+enumerating English phrasings) and INTENT (thinking-aloud markers, since reasoning can leak in
+Arabic too). Blocked text becomes a safe Arabic line, never silence.
+
+14 gates green, smoke 7/7, deployed. Prompt published: the artifact link in the 2026-08-14 entry
+is now stale — regenerate before sharing.
+
+**NOT structural, stated plainly**: fake-action claims («سأمضي بالمراجعة التجارية») are banned in
+the prompt but NOT enforced in code, so they can recur. Free-prose choices («ممكن نبدأ بالربط، أو
+بالعرض») are not detected by the button converter and still go out as text. Both printed by the
+gates themselves so neither reads as covered.
+
 ## 2026-08-16 · [T2] Product lock + stop the interview + no fake actions (deployed)
 
 Founder's structured review of a live NVR transcript: «the agent is still behaving like a
