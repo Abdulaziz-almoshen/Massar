@@ -1,3 +1,51 @@
+## 2026-08-16 · [T2] Campaign provenance on the contact profile + the profile hang (deployed)
+
+Founder ran the team on this («please run this with the team and come up with real market
+solution») — first time he has asked for the specialist roles himself.
+
+**THE HANG** — `#customer/<phone>` stuck on «جارٍ تجميع ملف العميل» forever. Measured: every
+endpoint healthy, 200 in 0.36–0.75s. It was a **401 with no state**. Three defects, one shape —
+*the failure had no state, so the spinner WAS the state*: `gate()` fired only for kmon/home so a
+#customer deep link fell through silently; the profile fetch handled only ok/404 so any other
+status left `profileData` null; and the 5s poll skips `refresh()` on this route, making one
+failure permanent. Now 401 gates everywhere, other failures render «تعذّر فتح ملف العميل» with a
+retry.
+
+**THE REAL ASK — provenance, not analytics.** DISCOVERY ARGUED AGAINST THE BIGGER BUILD AND WAS
+RIGHT, and I took that over the market-pattern route. Campaign performance already lives at
+`#kmon/<id>`; on the contact screen he needs to NAME the source out loud while demoing. The
+deliverable is a sentence, not a metric. Measured cause was smaller than anyone assumed: the
+payload returned `{id,name}` only — no date, no order — rendered as identical blue chips linking
+AWAY to #kmon. Nothing marked the last one.
+
+Shipped: «بدأت هذه المحادثة من: ‹الحملة› · ‹التاريخ›», older campaigns demoted to history; chips
+scope IN PLACE (`#customer/<phone>/<campId>`) instead of navigating away; lifetime stays the
+DEFAULT with scope opt-in; an unreadable launch time refuses attribution in words.
+
+**NOT built, on discovery's argument**: no journey table, no attribution mode, no credit
+splitting, no «unattributed» state, no default-scoped profile, and NO windowing of tags /
+contextScore / insights — a tag is a durable fact about a buyer, not event state, so scoping it
+would delete truth from the screen. (This corrects the "same defect class" note in the entry below,
+which was wrong.)
+
+**TWO DEFECTS IN MY OWN CODE, both caught by the team:**
+1. `profileCampaign` declared, read, NEVER ASSIGNED — `?campaign=` was never sent, so the
+   server-side window committed in 4a63ffe had never once run. The exact inert-edit trap I had
+   flagged in the crashed session's work an hour earlier.
+2. `campaignWindow` returned `to: Infinity` — an older campaign's window stayed open forever and
+   credited every later reply. **The founder's own complaint surviving inside the fix meant to end
+   it.** Now closes at WhatsApp's 24h service window (`CAMPAIGN_WINDOW_MS`), so the scope is
+   explainable in one sentence rather than a number we picked; Klaviyo uses the same 24h for SMS.
+
+**SCHEMA LIMITS the designer verified — do not build per-campaign delivery stats on today's data:**
+`statusTimes` is `Record<status, latest_ts>` (one value, overwritten), so at most ONE campaign can
+honestly own a delivered/read time; and `campaign_targets` has NO per-recipient send timestamp, so
+«أُرسلت» cannot be derived per recipient — using the launch time as the recipient's send time would
+be fabrication.
+
+19 gates green, smoke 7/7. **Next signal to watch**: if his next sentence is "now show me only this
+campaign's replies", the journey model has earned its cost. Not before.
+
 ## 2026-08-16 · [T2] Recovered session 9fdb10fa's abandoned edit; completed and deployed
 
 **What killed 9fdb10fa — a writer-lock identity bug in the Orbit plugin, not its own work.**

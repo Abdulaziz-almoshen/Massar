@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "No new durable preference. 'deployed?' is a verification request, not a correction. Worth noting as technique only: he asks this after I have already said 'deployed', which means a claim from me is not evidence to him - and he is right, since a fly deploy succeeding does not prove the fix is in the running build. Answered by checking the release version against uptime, local HEAD, a clean working \u2026",
-  "last_reviewed_at": "2026-08-16T06:53:19Z",
-  "last_reviewed_request": 80,
+  "last_review_summary": "R83 + R84/R85: three signals from one exchange. (1) BUG REPORT: the contact profile hung forever on \u00ab\u062c\u0627\u0631\u064d \u062a\u062c\u0645\u064a\u0639 \u0645\u0644\u0641 \u0627\u0644\u0639\u0645\u064a\u0644\u00bb - measured as a 401 with no error state, not slow loading; every endpoint returned 200 in under 0.75s. (2) THE REAL COMPLAINT, and it is PROVENANCE not analytics: 'I see all campaign details and not sure which one is related to the last one to measure campaign performance.' D\u2026",
+  "last_reviewed_at": "2026-08-16T09:08:31Z",
+  "last_reviewed_request": 83,
   "pending_event_ids": [],
-  "requests_since_review": 2,
+  "requests_since_review": 0,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 82
+  "total_requests": 83
 }

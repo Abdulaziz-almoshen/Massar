@@ -1,0 +1,54 @@
+{
+  "cycle": "journey-scope",
+  "screen": "#customer/<phone> — vCustomer() in massar-engine/src/dashboard.ts (~line 1878)",
+  "impact_level": "HEAVY",
+  "gate": "B — style already approved (massar-design-language.md / _مسار/مسار.dc.html); variants explore layout within it",
+  "variants_shown": 3,
+  "previews": [
+    ".orbit/design/previews/customer-journey-scope/v1-scope-strip.html",
+    ".orbit/design/previews/customer-journey-scope/v2-journey-cards.html",
+    ".orbit/design/previews/customer-journey-scope/v3-ledger-scope.html"
+  ],
+  "chosen": "v3-ledger-scope",
+  "why_chosen": [
+    "Only variant where the boundary is BOTH visible and persistent: the sticky navy scope banner states the window in words and travels with the operator down the page, so no scoped number is ever read without its scope in view.",
+    "The founder's literal question is comparative ('which one relates to the last one'). V3 is the only layout that puts all four per-recipient timestamps for every journey side by side in one scan. V1 hides them behind a tab switch; V2 hides them behind an accordion.",
+    "V2 has no page-level scope, so the lifetime blocks below it stay unscoped with nothing declaring the current scope — it solves the journey list but not the mixed-scope complaint."
+  ],
+  "rejected": {
+    "v1-scope-strip": "Tab strip is a filter, not a ledger — you cannot compare two journeys without losing the first. Mailchimp's date-filter failure mode.",
+    "v2-journey-cards": "Strong per-journey isolation and the best empty/unattributed copy, but no global scope declaration; three stacked cards also push فهم المساعد far below the fold at 375."
+  },
+  "remix_notes": [
+    "Take V2's unattributed-row copy and its ٤-step wording verbatim into the V3 ledger.",
+    "Take V1's banner label «الأرقام في هذه الصفحة تخصّ» — more explicit than V3's original.",
+    "At 375 reduce ledger side padding 20px → 14px and let the scope <select> go full-width (width:100%) below the label block."
+  ],
+  "taste_preflight": {
+    "design_read": "An operator's magnifying glass: the page must say out loud which send it is currently reporting on, and refuse to show a number it cannot prove belongs there.",
+    "dials": { "variance": "low", "motion": "none-to-minimal", "density": "high" },
+    "design_system": "none — bespoke (Massar design language, derived from _مسار/مسار.dc.html)",
+    "surface": "app/dashboard — operational interface",
+    "taste_skill_scope": "excluded",
+    "taste_skill_exclusion_reason": "Dashboard + data-table surface. TasteSkill v2's own scope excludes these; its marketing-layout and cinematic-motion recipes must not be imported. Only its brief-inference, accessibility floor, dark-mode-neutral, and anti-slop preflight discipline are applied.",
+    "checklist_passed": true,
+    "checklist_notes": [
+      "No em-dashes in shipped Arabic UI copy (Arabic uses — only inside campaign display names supplied by the operator).",
+      "Focus-visible ring on every interactive element (tabs, rows, select): 2px #2E7D77.",
+      "No motion beyond a 140ms hover tint; nothing animates on load.",
+      "No purple/indigo gradient, no glassmorphism, no emoji, no generic 'Insights' card.",
+      "Colour is never the sole carrier: every state chip pairs a tinted dot with an Arabic word."
+    ]
+  },
+  "qa_baseline": {
+    "route": "#customer/<phone>",
+    "states_to_capture": [
+      "scoped-to-campaign (replied, overlapping)",
+      "scoped-to-campaign (empty window)",
+      "unreadable launch timestamp",
+      "lifetime scope"
+    ],
+    "viewports": ["375x812", "768x1024", "1440x900"],
+    "compare_against": ".orbit/design/previews/customer-journey-scope/v3-ledger-scope.html + DESIGN.md token assertions"
+  }
+}
