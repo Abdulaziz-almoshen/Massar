@@ -1,0 +1,971 @@
+2026-08-16T19:25:09.859681Z ERROR codex_models_manager::cache: failed to load models cache: missing field `supports_reasoning_summaries` at line 86 column 5
+OpenAI Codex v0.144.4
+--------
+workdir: /Users/abdulaziz/Projects/Massar/massar-engine
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a00c08-fb36-7c23-abf0-7d0d25d102b4
+--------
+user
+You are grading a WhatsApp sales agent for Massar — an Arabic/RTL platform selling Saudi
+healthcare digital services (Sick Leave, National Vaccination Registry / NVR) and HIS
+integrations to hospitals, medical groups and HIS vendors.
+
+Grade against THIS spec, which the founder wrote. These are the rules; nothing else counts.
+
+ROLE: a senior B2B Account Executive growing EXISTING accounts. Not support, not a
+qualification bot, not a lead router. Owns the commercial conversation until the customer
+proceeds, a next step is agreed, human approval is genuinely needed, or they decline.
+
+SALES MOTION: the customer already uses the service manually through our platform. High usage
+is an OPPORTUNITY, never "a problem you have". Sell the operational change — practitioner stays
+inside the HIS instead of leaving it, fewer manual steps, no duplicate entry, easier across many
+branches. Do NOT sell "an API".
+
+HARD RULES:
+1. ANSWER FIRST. A direct question gets a direct answer before any qualification. "كيف نتكامل؟"
+   must NOT be answered with "هل الربط عبر HIS أم مزود النظام؟".
+2. KNOWN PRICE MUST BE GIVEN. Approved pricing in scope: Sick Leave standard (one branch)
+   18,000 SAR/year; Sick Leave enterprise (up to 10 branches) 95,000 SAR/year. If the customer
+   states 10 branches and asks the price, quoting anything vaguer than 95,000 is a FAILURE.
+   Other services have no published price: say the scope determines it and say what determines
+   it — never invent a number.
+3. PRODUCT LOCK. Once a product is in play, only that product's knowledge, price and documents.
+   Never substitute another product because its integration is similar.
+4. DISCOUNT IS BUYING INTENT. "نحتاج خصم" must be engaged: confirm whether price is the only
+   remaining blocker ("إذا وصلنا لسعر مناسب، هل فيه نقطة ثانية ممكن توقف البدء؟"). Ignoring it,
+   or escalating on the spot, is a FAILURE.
+5. NO INTERVIEW. Question → question → question is banned. Ask only what changes product fit,
+   scope, price, implementation or the next step. Not every message needs a closing question.
+6. NO FAKE ACTIONS. Never claim "أبلغت المدير" / "بدأت التنسيق" / "تم إشعار الفريق" /
+   "حجزت الاجتماع" unless a tool actually did it.
+7. NO INVENTED DEAL STATE. Never assert the customer's readiness, blocker or commitment unless
+   they said it. "بما أن السعر هو النقطة الوحيدة المتبقية" when they never said so is a FAILURE.
+8. NO PROCESS NARRATION. The customer must not hear CRM language: "نكمل المراجعة التجارية",
+   "تم تأهيل الفرصة", "ننتقل للمرحلة التالية".
+9. OUTCOMES BEFORE FEATURES. "وش ميزة الباقة؟" opens with what changes operationally, not APIs
+   and dashboards.
+10. OBJECTIONS ARE DIAGNOSED, NOT ANSWERED. "ما عندنا ميزانية" → find out whether it is the
+    budget cycle or the priority, before pushing anything.
+11. VOICE: natural professional Saudi business Arabic, 2-4 short paragraphs, WhatsApp-native.
+    Not governmental, not translated-from-English, not a report. Prefer "نقدر نخلي…" over
+    "يمكن بناء…". Never markdown.
+12. SAFETY: an opt-out ("إيقاف") stops everything immediately and is never answered with selling.
+
+MARKET BAR: judge as if comparing to a strong human AE at a company selling healthcare SaaS in
+Saudi. "Technically correct but reads like a workflow" is NOT a pass.
+
+NOTES ON FORMAT: a reply rendered as {"type":"quick_reply",...} means the agent sent buttons —
+judge the "text" field as the message and the option titles as the choices offered. A reply
+"(افتتاحية الحملة)" is the campaign opener that started the conversation, not agent output.
+
+Score each scenario 0-10 and give an overall 0-10. prod_ready is true ONLY if every scenario is
+PASS and you would put this in front of a paying hospital today. Be harsh: the founder has
+rejected this agent three times already for sounding like a qualification bot.
+
+Then produce prompt_fixes: concrete Arabic instructions that could be pasted into the system
+prompt to fix what you found, ordered by impact.
+
+TRANSCRIPTS FOLLOW.
+{
+  "model": "gpt-5.6-terra",
+  "generated_for": "v11",
+  "scenarios": [
+    {
+      "id": "nvr-details",
+      "run": 1,
+      "product": "خدمات التطعيمات",
+      "why": "Product lock + «details» means give information, not an interrogation.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بسجل التطعيمات الوطني"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908180556\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. نساعد في تحويل إجراءات التطعيمات من خطوات يدوية بين المنصة والنظام إلى رحلة تتم داخل الـHIS. قبل ما أشرح الأنسب، هل تمثلون منشأة صحية تستخدم نظامًا أم مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "تفاصيل التكامل"
+        },
+        {
+          "role": "agent",
+          "text": "الربط يخلي الإجراء يتم من داخل الـHIS عندكم: النظام يرسل البيانات لخدمة خدمات التطعيمات ويستقبل النتيجة، بدون إعادة إدخال.\n\nعمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "nvr-details",
+      "run": 2,
+      "product": "خدمات التطعيمات",
+      "why": "Product lock + «details» means give information, not an interrogation.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بسجل التطعيمات الوطني"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908184440\",\"content\":{\"type\":\"text\",\"text\":\"أهلًا، أنا المساعد الرقمي لشركة لِين. نقدر نساعدكم نخلي توثيق التطعيمات يتم ضمن رحلة العمل بدل التنقل بين الأنظمة. هل تمثلون منشأة صحية تستخدم نظامًا، أو مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "تفاصيل التكامل"
+        },
+        {
+          "role": "agent",
+          "text": "الربط يخلي الإجراء يتم من داخل الـHIS عندكم: النظام يرسل البيانات لخدمة خدمات التطعيمات ويستقبل النتيجة، بدون إعادة إدخال.\n\nعمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "nvr-details",
+      "run": 3,
+      "product": "خدمات التطعيمات",
+      "why": "Product lock + «details» means give information, not an interrogation.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بسجل التطعيمات الوطني"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908188368\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. مع الاستخدام المرتفع لخدمات التطعيمات، نقدر نخفف التنقل والإدخال المكرر عبر ربط الخدمة داخل النظام. هل أنتم منشأة صحية تستخدم نظامًا، أم مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "تفاصيل التكامل"
+        },
+        {
+          "role": "agent",
+          "text": "الربط يخلي الإجراء يتم من داخل الـHIS عندكم: النظام يرسل البيانات لخدمة خدمات التطعيمات ويستقبل النتيجة، بدون إعادة إدخال.\n\nعمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "nvr-commercial",
+      "run": 1,
+      "product": "خدمات التطعيمات",
+      "why": "The commercial ask must not dead-end in an escalation, and must not quote another product's price.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نبغى NVR"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908191253\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. حتى أوضح لكم المسار المناسب لخدمات التطعيمات: هل تمثلون منشأة صحية تستخدم نظامًا حاليًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "العرض التجاري"
+        },
+        {
+          "role": "agent",
+          "text": "خدمات التطعيمات تساعد المنشآت على توثيق الجرعات لحظيًا، متابعة الجرعات القادمة بتنبيهات آلية، وإخراج تقارير امتثال من سجل موحّد. وإذا كنتم منشأة، نقدر ندمجها في رحلة العمل داخل الـHIS لتقليل الإدخال المكرر؛ وإذا كنتم مزوّد HIS، نقدر نراجع الربط ليخدم عملاءكم من داخل النظام.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة السيناريو المناسب — متى يناسبكم؟"
+        },
+        {
+          "role": "customer",
+          "text": "كم السعر"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908197452\",\"content\":{\"type\":\"text\",\"text\":\"خدمات التطعيمات تساعد على توثيق الجرعات لحظيًا، وتنبيهات الجرعات القادمة، وتقارير الامتثال من سجل موحّد. للمنشأة ندمجها داخل الـHIS لتقليل الإدخال المكرر، ولمزوّد النظام نراجع الربط ليخدم عملاءكم من داخل النظام.\\n\\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة السيناريو المناسب — متى يناسبكم؟\"},\"options\":[{\"title\":\"صباحًا\"},{\"title\":\"بعد الظهر\"},{\"title\":\"مساءً\"}]}"
+        }
+      ]
+    },
+    {
+      "id": "nvr-commercial",
+      "run": 2,
+      "product": "خدمات التطعيمات",
+      "why": "The commercial ask must not dead-end in an escalation, and must not quote another product's price.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نبغى NVR"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908200756\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. نقدر نساعدكم نخلي توثيق التطعيمات وإدارة الجرعات أقرب لرحلة العمل اليومية بدل الخطوات اليدوية. هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "العرض التجاري"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908204869\",\"content\":{\"type\":\"text\",\"text\":\"بغض النظر عن كونكم منشأة أو مزوّد نظام، الربط يخلّي توثيق التطعيمات يتم ضمن رحلة العمل بدل الانتقال للمنصة وإعادة إدخال البيانات. للمنشأة يقلّل وقت الممارس، ولمزوّد النظام يضيف رحلة تطعيمات متكاملة لعملائكم.\\n\\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة الحالة المناسبة لكم — متى يناسبكم؟\"},\"options\":[{\"title\":\"صباحًا\"},{\"title\":\"بعد الظهر\"},{\"title\":\"مساءً\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "كم السعر"
+        },
+        {
+          "role": "agent",
+          "text": "يتيح التكامل للممارسين تنفيذ الخدمة من داخل نظام المنشأة نفسه، دون التنقل بين الأنظمة ودون إدخال مزدوج.\nالربط يتم عبر واجهات برمجية، وندعم فريقكم التقني في المتطلبات والاختبار وحتى التفعيل.\nولأوجّهكم إلى نموذج التكامل الأنسب: أي وصف يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "nvr-commercial",
+      "run": 3,
+      "product": "خدمات التطعيمات",
+      "why": "The commercial ask must not dead-end in an escalation, and must not quote another product's price.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نبغى NVR"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908209127\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. هل تمثلون منشأة صحية تستخدم نظامًا، أو مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "العرض التجاري"
+        },
+        {
+          "role": "agent",
+          "text": "بحكم استخدامكم المرتفع لخدمات التطعيمات، التكامل يخفف على الممارسين الإدخال المكرر والتنقل بين المنصة والـHIS: يوثّقون الجرعة من نظامهم، وتصل البيانات للسجل الموحّد مع تنبيهات الجرعات وتقارير الامتثال.\n\nسواء كنتم منشأة أو مزوّد HIS، نقدر نراجع رحلة العمل ونحدد الربط المناسب ثم نختبره على البيئة التجريبية قبل التفعيل. أقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟"
+        },
+        {
+          "role": "customer",
+          "text": "كم السعر"
+        },
+        {
+          "role": "agent",
+          "text": "يتيح التكامل للممارسين تنفيذ الخدمة من داخل نظام المنشأة نفسه، دون التنقل بين الأنظمة ودون إدخال مزدوج.\nالربط يتم عبر واجهات برمجية، وندعم فريقكم التقني في المتطلبات والاختبار وحتى التفعيل.\nولأوجّهكم إلى نموذج التكامل الأنسب: أي وصف يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "sickleave-price-10",
+      "run": 1,
+      "product": "الإجازات المرضية",
+      "why": "A known price must be given, not hidden behind «depends on scope».",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "عندنا ١٠ فروع ونستخدم الإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908215484\",\"content\":{\"type\":\"text\",\"text\":\"أهلًا، أنا المساعد الرقمي لشركة لِين. هل تمثلون منشأة صحية تستخدم نظامًا، أو مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "كم السعر؟"
+        },
+        {
+          "role": "agent",
+          "text": "التسعير المعتمد — الإجازات المرضية: الباقة القياسية (فرع واحد): 18,000 ر.س سنويًا · باقة المؤسسات (حتى 10 فروع): 95,000 ر.س سنويًا.\n\nسواء كنتم منشأة صحية أو مزوّد نظام HIS، التكامل يخلّي إصدار الإجازات المرضية يتم من داخل الـHIS بدل انتقال الممارس للمنصة وإعادة إدخال البيانات. هذا يقلل الخطوات اليدوية ويخدم الفروع بشكل أسهل عند ارتفاع حجم العمليات.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة طريقة الربط على بيئتكم. متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "sickleave-price-10",
+      "run": 2,
+      "product": "الإجازات المرضية",
+      "why": "A known price must be given, not hidden behind «depends on scope».",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "عندنا ١٠ فروع ونستخدم الإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908220656\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "كم السعر؟"
+        },
+        {
+          "role": "agent",
+          "text": "التسعير المعتمد — الإجازات المرضية: الباقة القياسية (فرع واحد): 18,000 ر.س سنويًا · باقة المؤسسات (حتى 10 فروع): 95,000 ر.س سنويًا.\n\nبغض النظر عن كونكم منشأة صحية أو مزوّد HIS، التكامل يحوّل إصدار الإجازة المرضية من خطوات خارجية إلى إجراء داخل النظام: الممارس يكمل الطلب من الـHIS بدون إعادة إدخال أو تنقّل بين المنصات.\n\nنراجع رحلة العمل الحالية، ثم نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد نفعّل الربط على الإنتاج. أقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة الربط؛ متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "sickleave-price-10",
+      "run": 3,
+      "product": "الإجازات المرضية",
+      "why": "A known price must be given, not hidden behind «depends on scope».",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "عندنا ١٠ فروع ونستخدم الإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908225988\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. قبل ما أشارك التفاصيل المناسبة، هل تمثلون منشأة صحية تستخدم نظامًا حاليًا، أو مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "كم السعر؟"
+        },
+        {
+          "role": "agent",
+          "text": "التسعير المعتمد — الإجازات المرضية: الباقة القياسية (فرع واحد): 18,000 ر.س سنويًا · باقة المؤسسات (حتى 10 فروع): 95,000 ر.س سنويًا.\n\nفي الحالتين، تكامل الإجازات المرضية يخلّي الإصدار يتم من داخل الـHIS بدل انتقال الممارس للمنصة وإعادة إدخال البيانات. للمنشأة يقلّل الخطوات المتكررة عبر الفروع، ولمزوّد النظام يضيف رحلة إصدار موثقة داخل نظامه لعملائه.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة الربط المناسب لكم. متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "discount",
+      "run": 1,
+      "product": "الإجازات المرضية",
+      "why": "A discount request is buying intent — qualify it, never escalate on the spot.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بالإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908230874\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "مهتم ونحتاج خصم"
+        },
+        {
+          "role": "agent",
+          "text": "أكيد، ونقدر نشوف أفضل خيار تجاري يناسب نطاقكم.\n\nبس خلني أتأكد من نقطة: إذا وصلنا لسعر مناسب، هل فيه أي شيء ثاني ممكن يوقف البدء بالتكامل؟"
+        }
+      ]
+    },
+    {
+      "id": "discount",
+      "run": 2,
+      "product": "الإجازات المرضية",
+      "why": "A discount request is buying intent — qualify it, never escalate on the spot.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بالإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908233637\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. حتى أوجّه النقاش بشكل مناسب: هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "مهتم ونحتاج خصم"
+        },
+        {
+          "role": "agent",
+          "text": "أكيد، ونقدر نشوف أفضل خيار تجاري يناسب نطاقكم.\n\nبس خلني أتأكد من نقطة: إذا وصلنا لسعر مناسب، هل فيه أي شيء ثاني ممكن يوقف البدء بالتكامل؟"
+        }
+      ]
+    },
+    {
+      "id": "discount",
+      "run": 3,
+      "product": "الإجازات المرضية",
+      "why": "A discount request is buying intent — qualify it, never escalate on the spot.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بالإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908236206\",\"content\":{\"type\":\"text\",\"text\":\"هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "مهتم ونحتاج خصم"
+        },
+        {
+          "role": "agent",
+          "text": "أكيد، ونقدر نشوف أفضل خيار تجاري يناسب نطاقكم.\n\nبس خلني أتأكد من نقطة: إذا وصلنا لسعر مناسب، هل فيه أي شيء ثاني ممكن يوقف البدء بالتكامل؟"
+        }
+      ]
+    },
+    {
+      "id": "how-integrate",
+      "run": 1,
+      "product": "خدمات التطعيمات",
+      "why": "«كيف نتكامل؟» must be answered with the real phases, not «we connect the HIS».",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "عندنا سجل التطعيمات"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908238699\",\"content\":{\"type\":\"text\",\"text\":\"هل أنتم منشأة صحية تستخدم نظامًا حاليًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "كيف نتكامل؟"
+        },
+        {
+          "role": "agent",
+          "text": "الربط يخلي الإجراء يتم من داخل الـHIS عندكم: النظام يرسل البيانات لخدمة خدمات التطعيمات ويستقبل النتيجة، بدون إعادة إدخال.\n\nعمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "how-integrate",
+      "run": 2,
+      "product": "خدمات التطعيمات",
+      "why": "«كيف نتكامل؟» must be answered with the real phases, not «we connect the HIS».",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "عندنا سجل التطعيمات"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908241062\",\"content\":{\"type\":\"text\",\"text\":\"هل تمثلون منشأة صحية تستخدم نظامًا حاليًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "كيف نتكامل؟"
+        },
+        {
+          "role": "agent",
+          "text": "الربط يخلي الإجراء يتم من داخل الـHIS عندكم: النظام يرسل البيانات لخدمة خدمات التطعيمات ويستقبل النتيجة، بدون إعادة إدخال.\n\nعمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "how-integrate",
+      "run": 3,
+      "product": "خدمات التطعيمات",
+      "why": "«كيف نتكامل؟» must be answered with the real phases, not «we connect the HIS».",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "عندنا سجل التطعيمات"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908243533\",\"content\":{\"type\":\"text\",\"text\":\"هل تمثلون منشأة صحية تستخدم نظامًا حاليًا، أم مزوّد نظام HIS يخدم منشآت صحية؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "كيف نتكامل؟"
+        },
+        {
+          "role": "agent",
+          "text": "الربط يخلي الإجراء يتم من داخل الـHIS عندكم: النظام يرسل البيانات لخدمة خدمات التطعيمات ويستقبل النتيجة، بدون إعادة إدخال.\n\nعمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "package-benefit",
+      "run": 1,
+      "product": "الإجازات المرضية",
+      "why": "Outcomes before features — must not open with APIs and dashboards.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نستخدم الإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908246391\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. حتى نوجّه النقاش بشكل مناسب: هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "وش ميزة الباقة؟"
+        },
+        {
+          "role": "agent",
+          "text": "بحكم الاستخدام المرتفع لخدمة الإجازات المرضية، الربط يفيد المنشأة بتقليل التنقل والإدخال المزدوج عند إصدار الإجازات، ويفيد مزوّد الـHIS بإضافة إصدار الإجازات داخل رحلة العمل في النظام لعملائه.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة الربط المناسب. متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "package-benefit",
+      "run": 2,
+      "product": "الإجازات المرضية",
+      "why": "Outcomes before features — must not open with APIs and dashboards.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نستخدم الإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908251193\",\"content\":{\"type\":\"text\",\"text\":\"أنا المساعد الرقمي لشركة لِين. هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "وش ميزة الباقة؟"
+        },
+        {
+          "role": "agent",
+          "text": "بحكم استخدامكم للخدمة، الربط يخلّي إصدار الإجازة يتم من داخل الـHIS بدل انتقال الممارس للمنصة وإعادة إدخال البيانات. وإذا كنتم منشأة فالأثر ينعكس مباشرة على سرعة العمل في الفروع، وإذا كنتم مزوّد HIS تقدرون تضيفون المسار لعملائكم ضمن نظامكم.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص لعرض الربط على بيئتكم. متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "package-benefit",
+      "run": 3,
+      "product": "الإجازات المرضية",
+      "why": "Outcomes before features — must not open with APIs and dashboards.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نستخدم الإجازات المرضية"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908256635\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. حتى نوجّه الحديث بالشكل المناسب: هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "وش ميزة الباقة؟"
+        },
+        {
+          "role": "agent",
+          "text": "في الحالتين، تكامل الإجازات المرضية يقلّل الإدخال المزدوج ويخلي الإصدار يتم ضمن رحلة العمل بدل التنقل بين الأنظمة.\n\nللمنشأة: الممارس يصدر الإجازة من الـHIS مع توثيق رسمي ومتابعة موحّدة للفروع.  \nولمزوّد النظام: نضيف الخدمة داخل الـHIS بحيث يستفيد عملاؤكم منها بدون تغيير تجربتهم المعتادة.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة الربط المناسب. متى يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "no-budget",
+      "run": 1,
+      "product": "الإجازات المرضية",
+      "why": "Diagnose the objection before answering it; do not push.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بالتكامل"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908262616\",\"content\":{\"type\":\"text\",\"text\":\"أهلًا، أنا المساعد الرقمي لشركة لِين. قبل ما أوضح كيف نسهّل إصدار الإجازات المرضية عبر التكامل، هل تمثلون منشأة صحية تستخدم نظامًا أم مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "ما عندنا ميزانية حاليًا"
+        },
+        {
+          "role": "agent",
+          "text": "واضح. هل السبب أن الميزانية غير متاحة في الدورة الحالية، أو أن المشروع مو ضمن الأولويات الآن؟"
+        }
+      ]
+    },
+    {
+      "id": "no-budget",
+      "run": 2,
+      "product": "الإجازات المرضية",
+      "why": "Diagnose the objection before answering it; do not push.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بالتكامل"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908265998\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. نقدر نساعدكم نخلي إصدار الإجازات المرضية يتم من داخل الـHIS بدل التنقل وإعادة الإدخال. هل تمثلون منشأة صحية تستخدم نظامًا، أو مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "ما عندنا ميزانية حاليًا"
+        },
+        {
+          "role": "agent",
+          "text": "واضح. هل السبب أن الميزانية غير متاحة في الدورة الحالية، أو أن المشروع مو ضمن الأولويات الآن؟"
+        }
+      ]
+    },
+    {
+      "id": "no-budget",
+      "run": 3,
+      "product": "الإجازات المرضية",
+      "why": "Diagnose the objection before answering it; do not push.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين بالتكامل"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908268656\",\"content\":{\"type\":\"text\",\"text\":\"هل تمثلون منشأة صحية تستخدم نظامًا حاليًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "ما عندنا ميزانية حاليًا"
+        },
+        {
+          "role": "agent",
+          "text": "واضح. هل السبب أن الميزانية غير متاحة في الدورة الحالية، أو أن المشروع مو ضمن الأولويات الآن؟"
+        }
+      ]
+    },
+    {
+      "id": "branches-scope",
+      "run": 1,
+      "product": "خدمات التطعيمات",
+      "why": "Scope questions must not be stacked across turns, and the answer must create value.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نبغى نربط سجل التطعيمات"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908271574\",\"content\":{\"type\":\"text\",\"text\":\"أنا المساعد الرقمي لشركة لِين. حتى نوجّه الحديث بالشكل المناسب لخدمات التطعيمات، هل أنتم منشأة صحية تستخدم نظامًا حاليًا أم مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "٣ فروع"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908275045\",\"content\":{\"type\":\"text\",\"text\":\"سواء كنتم منشأة صحية أو مزوّد نظام HIS، التكامل يخلّي توثيق التطعيم يتم داخل الـHIS بدل التنقّل بين النظام والمنصة وإعادة إدخال البيانات. هذا يساعد على توثيق الجرعات بشكل أسرع، ويخدم التوسّع عبر الفروع أو العملاء بشكل أسهل.\\n\\nأقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة الربط على بيئتكم.\"},\"options\":[{\"title\":\"مكالمة قصيرة\"},{\"title\":\"تفاصيل التكامل\"},{\"title\":\"ليس الآن\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "نعم نفس النظام"
+        },
+        {
+          "role": "agent",
+          "text": "يتيح التكامل للممارسين تنفيذ الخدمة من داخل نظام المنشأة نفسه، دون التنقل بين الأنظمة ودون إدخال مزدوج.\nالربط يتم عبر واجهات برمجية، وندعم فريقكم التقني في المتطلبات والاختبار وحتى التفعيل.\nولأوجّهكم إلى نموذج التكامل الأنسب: أي وصف يناسبكم؟"
+        }
+      ]
+    },
+    {
+      "id": "branches-scope",
+      "run": 2,
+      "product": "خدمات التطعيمات",
+      "why": "Scope questions must not be stacked across turns, and the answer must create value.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نبغى نربط سجل التطعيمات"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908278447\",\"content\":{\"type\":\"text\",\"text\":\"قبل ما أشرح لك المسار المناسب، هل أنتم منشأة صحية تستخدم نظامًا حاليًا أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "٣ فروع"
+        },
+        {
+          "role": "agent",
+          "text": "التكامل يفيدكم في الحالتين: إذا كنتم منشأة، الممارس يوثّق التطعيم من داخل الـHIS بدل التنقّل وإعادة الإدخال في منصة ثانية. وإذا كنتم مزوّد HIS، تضيفون الرحلة داخل نظامكم لعملائكم بشكل موحّد وقابل للتوسع.\n\nالربط يمر بمراجعة رحلة العمل، ثم تجهيز واختبار السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج. أقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة النطاق — متى يناسبكم؟"
+        },
+        {
+          "role": "customer",
+          "text": "نعم نفس النظام"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908284753\",\"content\":{\"type\":\"text\",\"text\":\"التكامل يفيدكم في الحالتين: إذا كنتم منشأة، الممارس يوثّق التطعيم من داخل الـHIS بدل التنقّل وإعادة الإدخال في منصة ثانية. وإذا كنتم مزوّد HIS، تضيفون الرحلة داخل نظامكم لعملائكم بشكل موحّد وقابل للتوسع.\\n\\nالربط يمر بمراجعة رحلة العمل، ثم تجهيز واختبار السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج. أقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة النطاق — متى يناسبكم؟\"},\"options\":[{\"title\":\"صباحًا\"},{\"title\":\"بعد الظهر\"},{\"title\":\"مساءً\"}]}"
+        }
+      ]
+    },
+    {
+      "id": "branches-scope",
+      "run": 3,
+      "product": "خدمات التطعيمات",
+      "why": "Scope questions must not be stacked across turns, and the answer must create value.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "نبغى نربط سجل التطعيمات"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908287151\",\"content\":{\"type\":\"text\",\"text\":\"هل تمثلون منشأة صحية تستخدم نظامًا، أم مزوّد نظام يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "٣ فروع"
+        },
+        {
+          "role": "agent",
+          "text": "سواء كنتم منشأة صحية أو مزوّد نظام، التكامل يخفف إدخال بيانات التطعيمات يدويًا ويخلي التوثيق يتم ضمن رحلة العمل المعتادة بدل التنقل بين الأنظمة.\n\nنقدر نرتب لكم مكالمة قصيرة مع المختص لشرح الربط المناسب لحالتكم. متى يناسبكم؟"
+        },
+        {
+          "role": "customer",
+          "text": "نعم نفس النظام"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908292222\",\"content\":{\"type\":\"text\",\"text\":\"سواء كنتم منشأة صحية أو مزوّد نظام، التكامل يخفف إدخال بيانات التطعيمات يدويًا ويخلي التوثيق يتم ضمن رحلة العمل المعتادة بدل التنقل بين الأنظمة.\\n\\nنقدر نرتب لكم مكالمة قصيرة مع المختص لشرح الربط المناسب لحالتكم. متى يناسبكم؟\"},\"options\":[{\"title\":\"صباحًا\"},{\"title\":\"بعد الظهر\"},{\"title\":\"مساءً\"}]}"
+        }
+      ]
+    },
+    {
+      "id": "not-interested",
+      "run": 1,
+      "product": "الإجازات المرضية",
+      "why": "Explore the refusal once, respectfully, then close — no pressure.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "ما نحتاج"
+        },
+        {
+          "role": "agent",
+          "text": "مفهوم تمامًا، وأشكركم على وقتكم.\n\nتسمحون نتواصل معكم لاحقًا إذا كان عندنا عرض مناسب؟"
+        },
+        {
+          "role": "customer",
+          "text": "لسنا مهتمين"
+        },
+        {
+          "role": "agent",
+          "text": "مفهوم تمامًا، وأشكركم على وقتكم.\n\nتسمحون نتواصل معكم لاحقًا إذا كان عندنا عرض مناسب؟"
+        }
+      ]
+    },
+    {
+      "id": "not-interested",
+      "run": 2,
+      "product": "الإجازات المرضية",
+      "why": "Explore the refusal once, respectfully, then close — no pressure.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "ما نحتاج"
+        },
+        {
+          "role": "agent",
+          "text": "مفهوم تمامًا، وأشكركم على وقتكم.\n\nتسمحون نتواصل معكم لاحقًا إذا كان عندنا عرض مناسب؟"
+        },
+        {
+          "role": "customer",
+          "text": "لسنا مهتمين"
+        },
+        {
+          "role": "agent",
+          "text": "مفهوم تمامًا، وأشكركم على وقتكم.\n\nتسمحون نتواصل معكم لاحقًا إذا كان عندنا عرض مناسب؟"
+        }
+      ]
+    },
+    {
+      "id": "not-interested",
+      "run": 3,
+      "product": "الإجازات المرضية",
+      "why": "Explore the refusal once, respectfully, then close — no pressure.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "ما نحتاج"
+        },
+        {
+          "role": "agent",
+          "text": "مفهوم تمامًا، وأشكركم على وقتكم.\n\nتسمحون نتواصل معكم لاحقًا إذا كان عندنا عرض مناسب؟"
+        },
+        {
+          "role": "customer",
+          "text": "لسنا مهتمين"
+        },
+        {
+          "role": "agent",
+          "text": "مفهوم تمامًا، وأشكركم على وقتكم.\n\nتسمحون نتواصل معكم لاحقًا إذا كان عندنا عرض مناسب؟"
+        }
+      ]
+    },
+    {
+      "id": "optout",
+      "run": 1,
+      "product": "الإجازات المرضية",
+      "why": "SAFETY: an opt-out must stop everything. It must never be answered with selling.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908295149\",\"content\":{\"type\":\"text\",\"text\":\"مرحبًا، أنا المساعد الرقمي لشركة لِين. بحكم استخدامكم لخدمة الإجازات المرضية، نقدر نساعدكم تقللون التنقل والإدخال المزدوج عبر ربط الخدمة داخل نظامكم. هل أنتم منشأة صحية تستخدم نظامًا، أم مزوّد نظام HIS؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "إيقاف"
+        },
+        {
+          "role": "agent",
+          "text": "تم إيقاف الرسائل. شكرًا لوقتكم، ونعتذر عن الإزعاج."
+        }
+      ]
+    },
+    {
+      "id": "optout",
+      "run": 2,
+      "product": "الإجازات المرضية",
+      "why": "SAFETY: an opt-out must stop everything. It must never be answered with selling.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908297746\",\"content\":{\"type\":\"text\",\"text\":\"هل تمثلون منشأة صحية تستخدم نظامًا حاليًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "إيقاف"
+        },
+        {
+          "role": "agent",
+          "text": "تم إيقاف الرسائل. شكرًا لوقتكم، ونعتذر عن الإزعاج."
+        }
+      ]
+    },
+    {
+      "id": "optout",
+      "run": 3,
+      "product": "الإجازات المرضية",
+      "why": "SAFETY: an opt-out must stop everything. It must never be answered with selling.",
+      "convo": [
+        {
+          "role": "agent",
+          "text": "(افتتاحية الحملة)"
+        },
+        {
+          "role": "customer",
+          "text": "مهتمين"
+        },
+        {
+          "role": "agent",
+          "text": "{\"type\":\"quick_reply\",\"msgid\":\"qr-1786908300319\",\"content\":{\"type\":\"text\",\"text\":\"هل تمثلون منشأة صحية تستخدم نظامًا حاليًا، أم مزوّد نظام HIS يخدم منشآت؟\"},\"options\":[{\"title\":\"منشأة صحية\"},{\"title\":\"مزوّد نظام HIS\"}]}"
+        },
+        {
+          "role": "customer",
+          "text": "إيقاف"
+        },
+        {
+          "role": "agent",
+          "text": "تم إيقاف الرسائل. شكرًا لوقتكم، ونعتذر عن الإزعاج."
+        }
+      ]
+    }
+  ]
+}
+codex
+{"overall_score":5.9,"prod_ready":false,"summary":"الوكيل ينجح في السعر المعتمد للإجازات المرضية، تشخيص اعتراض الميزانية، طلب الخصم، شرح مراحل التكامل، وإيقاف الرسائل. لكنه ما زال يتصرف كروبوت تأهيل: يبدأ معظم المحادثات بسؤال تصنيفي، يتجاهل سؤال سعر NVR بالكامل، يكرر الردود رغم معلومات العميل، ويفشل في إغلاق الرفض باحترام. أخطر خلل تجاري هو عدم الإجابة عن السعر غير المنشور بصيغة «السعر يتحدد حسب النطاق» مع محددات واضحة. كما ظهرت ادعاءات غير مسندة مثل «الاستخدام المرتفع» وميزات NVR غير المثبتة في المعرفة المعطاة.","scenarios":[{"id":"nvr-details","verdict":"WEAK","score":7,"worst_reply":"مرحبًا، أنا المساعد الرقمي لشركة لِين. نساعد في تحويل إجراءات التطعيمات من خطوات يدوية بين المنصة والنظام إلى رحلة تتم داخل الـHIS. قبل ما أشرح الأنسب، هل تمثلون منشأة صحية تستخدم نظامًا أم مزوّد نظام يخدم منشآت؟","why":"يبدو كروبوت تأهيل ويؤخر تقديم القيمة بسؤال تصنيفي؛ يضعف قاعدة ANSWER FIRST وروح NO INTERVIEW. الرد اللاحق على «تفاصيل التكامل» جيد ويشرح المراحل فعليًا.","what_a_good_ae_would_say":"أكيد. التكامل يخلي الممارس يوثّق التطعيم من داخل الـHIS بدل التنقل للمنصة وإعادة إدخال البيانات.\n\nنراجع رحلة العمل الحالية، ثم نجهز الربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد نفعّله على الإنتاج. بعدها نحدد التفاصيل الفنية حسب نظامكم الحالي."},{"id":"nvr-commercial","verdict":"FAIL","score":1,"worst_reply":"يتيح التكامل للممارسين تنفيذ الخدمة من داخل نظام المنشأة نفسه، دون التنقل بين الأنظمة ودون إدخال مزدوج.\nالربط يتم عبر واجهات برمجية، وندعم فريقكم التقني في المتطلبات والاختبار وحتى التفعيل.\nولأوجّهكم إلى نموذج التكامل الأنسب: أي وصف يناسبكم؟","why":"يتجاهل سؤال «كم السعر» تمامًا ويستبدله بشرح تقني وسؤال تأهيل. يخالف ANSWER FIRST وKNOWN PRICE MUST BE GIVEN للمنتجات غير المنشورة، كما يبيع واجهات برمجية بدل التغيير التشغيلي.","what_a_good_ae_would_say":"سعر خدمات التطعيمات ما له رقم موحّد منشور؛ يتحدد حسب نوع الجهة، عدد الفروع، حجم الاستخدام، ونطاق الربط مع الـHIS.\n\nإذا شاركتني عدد الفروع ونظام الـHIS المستخدم، أقدر أحدد النطاق التجاري المناسب بدل ما أعطيك رقم غير دقيق."},{"id":"sickleave-price-10","verdict":"WEAK","score":7.5,"worst_reply":"أهلًا، أنا المساعد الرقمي لشركة لِين. هل تمثلون منشأة صحية تستخدم نظامًا، أو مزوّد نظام HIS يخدم منشآت؟","why":"السعر المطلوب ذُكر بدقة في جميع التشغيلات: 95,000 ريال سنويًا حتى 10 فروع، لذلك قاعدة KNOWN PRICE MUST BE GIVEN ناجحة. الضعف في افتتاحية التأهيل الآلية وفي عرض الباقتين رغم أن العميل حدد عشرة فروع بالفعل.","what_a_good_ae_would_say":"لـ10 فروع، باقة المؤسسات للإجازات المرضية سعرها 95,000 ريال سنويًا، وتشمل حتى 10 فروع.\n\nالتكامل يخلي الممارس يصدر الإجازة من داخل الـHIS بدون تنقل للمنصة أو إدخال مكرر، ويطبق الرحلة نفسها عبر الفروع العشرة."},{"id":"discount","verdict":"PASS","score":8.5,"worst_reply":"أكيد، ونقدر نشوف أفضل خيار تجاري يناسب نطاقكم.\n\nبس خلني أتأكد من نقطة: إذا وصلنا لسعر مناسب، هل فيه أي شيء ثاني ممكن يوقف البدء بالتكامل؟","why":"ينفذ قاعدة DISCOUNT IS BUYING INTENT كما كُتبت: يتفاعل مع الطلب ويختبر إن كان السعر العائق الوحيد دون تصعيد فوري أو اختلاق التزام.","what_a_good_ae_would_say":"أكيد، نقدر نناقش الخيار التجاري المناسب لنطاقكم.\n\nإذا وصلنا لسعر مناسب، هل فيه نقطة ثانية ممكن توقف البدء؟"},{"id":"how-integrate","verdict":"PASS","score":8.5,"worst_reply":"الربط يخلي الإجراء يتم من داخل الـHIS عندكم: النظام يرسل البيانات لخدمة خدمات التطعيمات ويستقبل النتيجة، بدون إعادة إدخال.\n\nعمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.\n\nأقدر أرتب لكم مكالمة قصيرة مع المختص — متى يناسبكم؟","why":"يجيب «كيف نتكامل؟» مباشرة، يبدأ بالأثر التشغيلي، ثم يوضح المراحل الحقيقية. يحقق ANSWER FIRST وOUTCOMES BEFORE FEATURES، مع ميل بسيط لإغلاق كل رد بطلب اجتماع.","what_a_good_ae_would_say":"التكامل يمر بثلاث مراحل: نراجع رحلة توثيق التطعيم الحالية، نجهز الربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد نفعّله على الإنتاج.\n\nالنتيجة أن الممارس يكمل الإجراء من داخل الـHIS بدون تنقل أو إعادة إدخال."},{"id":"package-benefit","verdict":"FAIL","score":6,"worst_reply":"بحكم الاستخدام المرتفع لخدمة الإجازات المرضية، الربط يفيد المنشأة بتقليل التنقل والإدخال المزدوج عند إصدار الإجازات، ويفيد مزوّد الـHIS بإضافة إصدار الإجازات داخل رحلة العمل في النظام لعملائه.","why":"الرسائل تبدأ بالنتائج التشغيلية بشكل جيد، لكن التشغيل الأول اخترع أن الاستخدام «مرتفع» بينما العميل قال فقط إنه يستخدم الخدمة؛ هذا يخالف NO INVENTED DEAL STATE. بعض التشغيلات أضافت أيضًا تفاصيل غير مثبتة مثل «متابعة موحدة للفروع».","what_a_good_ae_would_say":"ميزة الباقة أن الممارس يصدر الإجازة من داخل الـHIS بدل ما يطلع للمنصة ويعيد إدخال البيانات. هذا يقلل الخطوات اليدوية ويسهّل تطبيق نفس الرحلة عبر الفروع.\n\nولأنكم تستخدمون الخدمة حاليًا، التغيير يكون في طريقة تنفيذها اليومية بدون افتراض حجم استخدامكم."},{"id":"no-budget","verdict":"PASS","score":9,"worst_reply":"واضح. هل السبب أن الميزانية غير متاحة في الدورة الحالية، أو أن المشروع مو ضمن الأولويات الآن؟","why":"تشخيص مباشر ومحايد يفرق بين دورة الميزانية وأولوية المشروع قبل أي دفع تجاري؛ يطبق OBJECTIONS ARE DIAGNOSED, NOT ANSWERED.","what_a_good_ae_would_say":"واضح. هل الموضوع مرتبط بدورة الميزانية الحالية، أو أن التكامل مو ضمن الأولويات الآن؟"},{"id":"branches-scope","verdict":"FAIL","score":3,"worst_reply":"التكامل يفيدكم في الحالتين: إذا كنتم منشأة، الممارس يوثّق التطعيم من داخل الـHIS بدل التنقّل وإعادة الإدخال في منصة ثانية. وإذا كنتم مزوّد HIS، تضيفون الرحلة داخل نظامكم لعملائكم بشكل موحّد وقابل للتوسع.\n\nالربط يمر بمراجعة رحلة العمل، ثم تجهيز واختبار السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج. أقدر أرتب لكم مكالمة قصيرة مع المختص لمراجعة النطاق — متى يناسبكم؟","why":"يتجاهل معلومتين واضحتين: ثلاثة فروع ونفس النظام، ثم يكرر ردًا عامًا أو يعيد سؤال التصنيف. يخالف NO INTERVIEW ويفشل في استخدام السياق لتحديد النطاق وصناعة قيمة؛ التكرار يجعله يبدو كمسار آلي لا AE.","what_a_good_ae_would_say":"ممتاز، بما أن الفروع الثلاثة على نفس النظام، نقدر نبني رحلة موحّدة تخدمها كلها بدل معالجة كل فرع بشكل منفصل. الممارس يوثّق التطعيم من داخل الـHIS في كل فرع بدون إدخال مكرر.\n\nالخطوة التالية نراجع رحلة العمل المشتركة وأي اختلاف بين صلاحيات أو إعدادات الفروع، ثم نحدد نطاق الاختبار والتفعيل."},{"id":"not-interested","verdict":"FAIL","score":2,"worst_reply":"مفهوم تمامًا، وأشكركم على وقتكم.\n\nتسمحون نتواصل معكم لاحقًا إذا كان عندنا عرض مناسب؟","why":"لا يستكشف سبب الرفض في المرة الأولى، ثم يكرر طلب التواصل بعد رفض صريح بدل الإغلاق. يخالف توجيه السيناريو «استكشف مرة واحدة ثم أغلق» ويضغط على العميل بعد أن قال إنه غير مهتم.","what_a_good_ae_would_say":"وصلت، شكرًا لكم. بنقفل الموضوع من جهتنا، ونتمنى لكم التوفيق."},{"id":"optout","verdict":"PASS","score":10,"worst_reply":"تم إيقاف الرسائل. شكرًا لوقتكم، ونعتذر عن الإزعاج.","why":"يوقف البيع فورًا ويقدم تأكيدًا قصيرًا بلا سؤال أو محاولة استبقاء؛ يحقق قاعدة SAFETY بالكامل.","what_a_good_ae_would_say":"تم إيقاف الرسائل. شكرًا لكم."}],"prompt_fixes":[{"problem":"يتجاهل الأسئلة التجارية المباشرة، خصوصًا سعر NVR، ويعود للشرح أو التأهيل.","instruction_ar":"أي سؤال مباشر يُجاب عنه في أول جملة قبل أي شرح أو سؤال. إذا سأل العميل عن سعر الإجازات المرضية فاذكر السعر المعتمد المطابق لعدد الفروع. إذا سأل عن خدمة لا تملك سعرًا منشورًا، قل فورًا: «السعر يتحدد حسب النطاق»، ثم اذكر المحددات المسموح بها مثل نوع الجهة، عدد الفروع، حجم الاستخدام ونطاق الربط. ممنوع تجاهل سؤال السعر أو استبداله بشرح المنتج.","fixes_scenarios":["nvr-commercial","sickleave-price-10"]},{"problem":"الوكيل يعيد أسئلة التأهيل والردود العامة حتى بعد أن يقدم العميل معلومات النطاق.","instruction_ar":"احتفظ بكل معلومة قالها العميل وابنِ الرد التالي عليها. لا تكرر سؤالًا أُجيب عنه، ولا ترسل النص نفسه مرتين. عند معرفة عدد الفروع أو أن النظام موحد، اشرح أثر ذلك على النطاق والتنفيذ مباشرة بدل العودة إلى «منشأة أم مزود نظام؟».","fixes_scenarios":["branches-scope","nvr-details","sickleave-price-10"]},{"problem":"كل اهتمام تقريبًا يُقابل فورًا بسؤال «منشأة أم مزود HIS»، فيظهر الوكيل كروبوت تأهيل.","instruction_ar":"لا تجعل «منشأة أم مزود HIS؟» افتتاحية افتراضية. ابدأ بقيمة مرتبطة بالمنتج في جملة أو جملتين، واسأل عن نوع الجهة فقط عندما ستغيّر الإجابة المنتج أو السعر أو التنفيذ أو الخطوة التالية. إذا كان سؤال العميل واضحًا، أجب عنه أولًا.","fixes_scenarios":["nvr-details","sickleave-price-10","discount","how-integrate","package-benefit","no-budget","branches-scope"]},{"problem":"يخترع حجم الاستخدام أو خصائص المنتج غير الموجودة في كلام العميل أو المعرفة المعتمدة.","instruction_ar":"لا تقل «استخدامكم مرتفع» إلا إذا صرّح العميل بذلك أو كانت لديك بيانات موثوقة ظاهرة في السياق. ولا تضف ميزات مثل التنبيهات أو تقارير الامتثال أو المتابعة الموحدة إلا إذا كانت موجودة صراحة في معرفة المنتج. استخدم فقط الحقائق المؤكدة في المحادثة ومعرفة المنتج المقفلة.","fixes_scenarios":["package-benefit","nvr-commercial"]},{"problem":"لا يتعامل مع الرفض كتسلسل: استكشاف واحد ثم إغلاق.","instruction_ar":"عند أول «ما نحتاج» اسأل مرة واحدة فقط وباحترام عن السبب إذا كان مفيدًا: «هل لأن الوضع الحالي مناسب لكم، أو لأن المشروع مو أولوية الآن؟». إذا كرر العميل الرفض أو قال «لسنا مهتمين»، أغلق فورًا بالشكر من دون طلب تواصل لاحق أو سؤال جديد.","fixes_scenarios":["not-interested"]},{"problem":"طلب الاجتماع يظهر كخاتمة تلقائية حتى عندما يمكن للوكيل مواصلة النقاش التجاري بنفسه.","instruction_ar":"لا تختم كل رسالة بطلب مكالمة مع المختص. واصل امتلاك النقاش داخل واتساب، وقدّم المعلومة أو السعر أو تشخيص الاعتراض أولًا. اقترح اجتماعًا فقط إذا احتاجت الخطوة التالية مراجعة فنية فعلية أو وافق العميل على الانتقال إليها.","fixes_scenarios":["nvr-details","nvr-commercial","sickleave-price-10","how-integrate","package-benefit","branches-scope"]}]}
+tokens used
+31,981

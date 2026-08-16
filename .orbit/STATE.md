@@ -1,3 +1,42 @@
+## 2026-08-16 · [T3] Agent 2.8 → 5.8 by moving decisions into code · NOT deployed, NOT at bar
+
+Founder: close the four open items, get production-ready, «don't end up with something
+statistically not correct or not market ready — this product will be used by eighteen thousand
+potential clients.» And: **«Don't ever send any text to any real numbers»** — the 0559402621
+allowlist is REVOKED in memory, his own line included.
+
+**THE MECHANISM, and it is one cause not six.** With 3 runs per scenario the SAME input scored 1.5
+to 9. Every low run was one where the model called `send_buttons`, which owns the turn and bypassed
+every post-model patch. **Patching after the model can always be skipped by the model; answering
+before it cannot.** `optout` scores 10/10/10 across every variant all day for exactly that reason.
+So the sorter decisions moved to the same pre-model position as the opt-out guard.
+
+**RESULT, 30 conversations, 3 runs each:** MEAN **5.8**, spread 2–8. Everything moved into CODE
+scores 7–10; everything still owned by the MODEL scores 2–6. The price scenario went from **0 in
+seven consecutive earlier runs** — including a round with the exact sentence in the prompt AND a
+mandatory per-turn directive — to a stable 7.0 the moment code emitted it.
+
+| routed in code | mean | left to the model | mean |
+|---|---|---|---|
+| discount · no-budget | 8.0 | nvr-commercial | 4.0 |
+| optout | 7.7 | branches-scope | 3.3 |
+| price · package-benefit | 7.0 | **not-interested** | **2.0** |
+
+**FAILED HONESTLY:** I tried to fix `not-interested` (explore-once-then-close) and it REGRESSED
+2.0 → 1.0, so I reverted. Both shapes read to the judge as pressing someone who already said no. I
+do not yet know the right answer and guessing again would repeat the oscillation I criticised in
+the prompt rounds.
+
+**METHOD GAP I MUST NOT HIDE at 18k scale:** there is ONE judge sample per transcript, so part of
+the "variance" I measured is the JUDGE's, not the agent's. Defending an 8/10 claim needs repeated
+judging as well as repeated runs. My method cannot yet support the claim the founder is asking for.
+
+**NOT DEPLOYED.** Production still runs v216, from before all of today's agent work. Committed at
+e5f5dd4, 21 gates green. Zero sends: 198 intercepted across six benchmark runs, none escaped.
+
+Design items closed and gated (also undeployed): «واتساب ✓» and «أول ظهور» deleted, outcome row now
+has ONE primary action instead of four equal chips.
+
 ## 2026-08-16 · [T2] Morning list + invented deal state scrubbed from the portal (deployed)
 
 Founder picked items 1 and 4 off the open list.

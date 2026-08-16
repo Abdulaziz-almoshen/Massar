@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "R100 'done?' \u2014 third instance this session of him having to ask whether work finished. No new preference; the pattern is already captured. Answered by listing what is NOT done (cached invented deal state still rendering, two Designer deletions, outcome buttons still equal chips, no morning-list screen) rather than confirming the part that shipped. The header redesign IS live and verified at three \u2026",
-  "last_reviewed_at": "2026-08-16T18:21:08Z",
-  "last_reviewed_request": 99,
+  "last_review_summary": "R102 \u2014 TWO HARD RULES + THE PRODUCTION BAR. (1) ZERO SENDS, REINSTATED ABSOLUTELY: 'Don't ever send any text to any real numbers.' This REVOKES the 0559402621 allowlist granted earlier today and every other number. No WhatsApp message to anyone, for any reason, including his own line, until he states a new allowlist. All agent verification is offline via the fetch-shimmed harness. (2) GPT JUDGES T\u2026",
+  "last_reviewed_at": "2026-08-16T18:38:19Z",
+  "last_reviewed_request": 102,
   "pending_event_ids": [],
   "requests_since_review": 1,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 100
+  "total_requests": 103
 }
