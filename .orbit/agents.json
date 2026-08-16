@@ -14,8 +14,8 @@
     "responsibility": "plans + conducts the loop, owns state",
     "task": "kmon two-level redesign",
     "status": "active",
-    "started_at": "2026-08-16T18:19:27Z",
-    "last_event_at": "2026-08-16T18:19:27Z",
+    "started_at": "2026-08-16T18:32:07Z",
+    "last_event_at": "2026-08-16T18:32:07Z",
     "mission": "parallel tool batch complete",
     "last_message": "parallel tool batch complete",
     "seq": 0
@@ -102,7 +102,7 @@
     "task": "",
     "status": "done",
     "started_at": null,
-    "last_event_at": "2026-08-16T18:12:12Z",
+    "last_event_at": "2026-08-16T18:21:19Z",
     "mission": "",
     "last_message": "subagent finished"
   },

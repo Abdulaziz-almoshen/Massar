@@ -937,3 +937,34 @@
 {"schema": 2, "ts": "2026-08-16T18:18:49Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
 {"schema": 2, "ts": "2026-08-16T18:18:49Z", "role": "qa-engineer", "phase": "evaluate", "status": "blocked", "msg": "delivery-quality evidence blocked: delivery evidence is missing or stale for this routed task \u00b7 evidence commit bf944d0a does not match delivered commit f31a7474 \u00b7 overall QA verdict is not PASS"}
 {"schema": 2, "ts": "2026-08-16T18:19:27Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:19:53Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:20:00Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:20:48Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "info", "msg": "routing: question \u2014 done?"}
+{"schema": 2, "ts": "2026-08-16T18:20:57Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:21:03Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T18:21:08Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:21:14Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:21:19Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T18:22:16Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "start", "msg": "routing: task \u2014 fix 1 and 4"}
+{"schema": 2, "ts": "2026-08-16T18:22:25Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:22:38Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:23:00Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:23:11Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:23:16Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:23:47Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "build", "status": "failed", "msg": "Bash failed", "confidence_delta": -10}
+{"schema": 2, "ts": "2026-08-16T18:23:47Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:23:59Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:24:49Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:26:59Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:27:24Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:27:39Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:27:55Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:28:19Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:28:36Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:29:02Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:31:06Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:31:19Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:31:48Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:32:01Z", "role": "orchestrator", "phase": "evaluate", "status": "blocked", "msg": "mandatory capability stages missing: product-discovery, business-analyst, market-researcher, planner, safety-gate, reviewer, qa-engineer, cpo, reporter, designer"}
+{"schema": 2, "ts": "2026-08-16T18:32:01Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:32:07Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}

@@ -1,3 +1,40 @@
+## 2026-08-16 · [T2] Morning list + invented deal state scrubbed from the portal (deployed)
+
+Founder picked items 1 and 4 off the open list.
+
+**#1 — INVENTED DEAL STATE ON HIS SCREEN.** «السعر هو العائق الوحيد المتبقي» was blocked on the
+send path hours earlier but still rendered on the profile, written into a CACHED reading before
+that guard existed. Rule 6 exactly: leak stopped, spill visible. Scrubbed on the way OUT in
+`normalizeCached`, so every rendering surface is covered in one edit.
+
+**HOW IT NEARLY SHIPPED BROKEN — the lesson of the day, twice over.** The first scrub passed SEVEN
+offline tests and changed nothing live: every fixture I wrote was a STRING, and the real
+fabrication was inside `signals[]`, an ARRAY. I wrote the code and the tests from the same wrong
+assumption, so the tests could not catch it. Only loading the live page did. The gate now asserts
+against the verbatim sentence from the ledger rather than anything I authored. Same mistake as the
+`profileCampaign` inert edit earlier — **fixtures I invent cannot falsify assumptions I hold.**
+
+**What deliberately REMAINS:** the transcript still contains the agent's own message where it said
+that sentence to Ibrahim. That is history. Rewriting what was actually said would be a worse
+dishonesty than the reading that repeated it as fact.
+
+**#4 — THE MORNING LIST** (`vMorningList`, above the targeting list). His definition of the
+product: «who is interested, who is not interested, and if interested, when are we going to
+schedule them.» Grouped by outcome, scheduled first, showing the CUSTOMER'S OWN WORDS for the time
+with our parse labelled as ours. Empty groups state they are empty; unsorted contacts are counted.
+
+**ITS FIRST READING IS THE HONEST HEADLINE: «موعد محدد ٠».** Four real contacts, one waiting on a
+specialist, three interested, and NOT ONE recorded time. The sorter as deployed is not yet doing
+the job its whole design exists for — which is exactly what this screen was built to make
+un-ignorable.
+
+Also this increment: the portal outcome buttons and the agent now write ONE vocabulary (they wrote
+a transcript marker and never touched `contact.outcome`), and the current-state highlight matched
+«نتيجة موثقة يدويًا» — a string nothing has ever written, so it had never rendered once.
+
+20 gates green, smoke 7/7. STILL OPEN: agent benchmarks 3.3/10 against his stated bar of 8; two
+Designer deletions (`واتساب ✓`, `أول ظهور`); outcome buttons still four equal chips.
+
 ## 2026-08-16 · [T3] Codex-judged agent eval — 7 variants, none production-ready (NOT deployed)
 
 Founder: «test the agent inputs and outputs with codex … make sure Claude is not the one
