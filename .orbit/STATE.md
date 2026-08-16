@@ -1,3 +1,31 @@
+## 2026-08-16 · [T2] Sandbox activation guard — the turn counter was the bug (deployed)
+
+Founder screenshotted English Gupshup Proxy-bot text and asked why the agent speaks English.
+Two separate things, and only one is ours:
+- NOT OURS: `917834811114` is Gupshup's SHARED sandbox; their Proxy bot intercepts some inbound
+  messages before the engine sees them. His «ماتبي تعرف كم عندنا فرع؟» is absent from the
+  transcript entirely — it never reached us. Ends only with the production WABA migration.
+- OURS: the activation guard fired only when `customer turns <= 1`, on the assumption that a
+  later «proxy …» is the customer talking. FALSE on a shared sandbox — the handshake repeats
+  whenever the session lapses. He returned after ~50h with 30 turns of history, re-typed
+  «Proxy massar», guard sat out, model replied «هل تقصدون أن لديكم Proxy باسم Massar ضمن بيئة
+  الـHIS؟». 966535106365 hit it two minutes earlier. **The turn counter was the defect**, not the
+  regex — the SHAPE is the signal. First turn → real opener; later re-activation → no reply at all.
+- SPILL cleaned at render (round-15's own prescribed remedy, no data deleted): the portal shows
+  the handshake and the Proxy-as-product replies as a muted plumbing note. Both `proxy` AND
+  `massar` tokens required, so a genuine network-proxy question during an HIS integration still
+  renders as conversation.
+
+Verified by MEASUREMENT on 966559402621 (a really-tainted transcript), not by assertion: plumbing
+note renders, «Proxy Massar» absent, the bad reply absent, zero page errors. 12 new assertions in
+check-optout.mjs, four of which must NOT match real customer speech.
+
+PROCESS NOTE — I reverted on a false signal. Smoke FAILed `#customer/966500000850` at 160 chars
+right after deploy; I reverted dashboard.ts and restored production within a minute. Re-testing
+showed the edit was innocent: a cold-machine cache flake against smoke's 4s budget, clean twice
+since. The revert was still the right call under uncertainty — production first, diagnose second —
+but smoke's post-deploy timing is a known flake source and a single FAIL is not proof of causation.
+
 ## 2026-08-14 06:32 · LIVE PROOF — the commercial path holds on v201
 
 Founder ran the full flow on his own number (campaign 26). «العرض التجاري» now returns:

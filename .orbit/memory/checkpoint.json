@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "No new durable preference. Two observations: (1) 'ok' approved the sections 1-9 rewrite - a decision on a fork I named in one line, which is the loop the scope rule asks for and it worked; (2) he asked for the prompt and replied 'ful' when I showed an excerpt - when he asks for an artifact he wants the WHOLE thing, not a summary or the first screen. That is one instance and consistent with existin\u2026",
-  "last_reviewed_at": "2026-08-14T03:06:51Z",
-  "last_reviewed_request": 67,
+  "last_review_summary": "No new durable preference. Observation reinforcing existing Rule 6 (stop the leak AND clean the spill): he sent a screenshot of English Gupshup Proxy-bot text and asked why the agent speaks English. Root cause is outside our code - the shared India sandbox 917834811114 intercepts some inbound messages before the engine sees them (his \u00ab\u0645\u0627\u062a\u0628\u064a \u062a\u0639\u0631\u0641 \u0643\u0645 \u0639\u0646\u062f\u0646\u0627 \u0641\u0631\u0639\u061f\u00bb never reached us). But the SPILL is o\u2026",
+  "last_reviewed_at": "2026-08-16T05:42:43Z",
+  "last_reviewed_request": 70,
   "pending_event_ids": [],
-  "requests_since_review": 2,
+  "requests_since_review": 1,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 69
+  "total_requests": 71
 }
