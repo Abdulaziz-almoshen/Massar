@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "commit": "bf944d0aff26f0541cebb61083ab37458b21f84c",
+  "commit": "f31a747491bd2c551072f9e7623e79cdadcd54a1",
   "verdict": "CONCERNS",
   "scenarios": {
     "coverage_complete": true,
@@ -30,13 +30,13 @@
       {
         "id": "SC-3",
         "kind": "negative",
-        "persona": "مشترٍ يرفض",
-        "preconditions": "Given an active conversation",
-        "steps": "When the buyer says «لسنا مهتمين»",
-        "expected": "Then the agent explores once respectfully and does not push a new offer",
-        "actual": "Codex scored not-interested 0.5/10 — the agent re-offered instead of closing. KNOWN FAIL, recorded not hidden.",
-        "verdict": "FAIL",
-        "evidence": ".orbit/artifacts/agent-eval/v6/verdict.json"
+        "persona": "مدير مبيعات يفتح ملف عميل حقيقي",
+        "preconditions": "Given a contact with 5 campaigns, 4 of them test runs",
+        "steps": "When the profile header renders at 1440x900 on the live engine",
+        "expected": "Then ONE campaign is named with a date and the rest are a count, and no word-count block or longest-message quote appears",
+        "actual": "Measured on the live page: «بدأت هذه المحادثة من: اختبار v216 — ابرهيم · ١٦ أغسطس · وسبقتها ٤ حملة». The comma-joined wall is gone, the outcome «مهتم» renders, and «كلمة من العميل» is absent. Zero console errors at all three viewports.",
+        "verdict": "PASS",
+        "evidence": ".orbit/artifacts/header-redesign/actual-1440x900.png"
       },
       {
         "id": "SC-4",
@@ -81,6 +81,17 @@
         "actual": "4/4 rows produced with quotable evidence. TWO customers (966502444737, 966535106365) stated a time («صباح» / «صباحًا») that the system did not record — both are stored as `interested`. This falsifies FR-3 on 100% of cases and is the headline finding.",
         "verdict": "FAIL",
         "evidence": ".orbit/artifacts/sorter-reframe/real-conversations-rows.json"
+      },
+      {
+        "id": "SC-8",
+        "kind": "failure_recovery",
+        "persona": "مدير مبيعات",
+        "preconditions": "Given the portal outcome buttons and the agent both record outcomes",
+        "steps": "When a human clicks «اجتماع محجوز» and when the agent records a scheduled time",
+        "expected": "Then both write the SAME outcome enum on the contact, and the active state is highlighted",
+        "actual": "Unified: the buttons now map to scheduled/interested/later/stopped via tracker.setOutcome, and the highlight reads contact.outcome. Previously the buttons wrote only a transcript marker and the highlight matched «نتيجة موثقة يدويًا» — a string nothing writes, so it had never rendered.",
+        "verdict": "PASS",
+        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
       }
     ]
   },
@@ -126,14 +137,47 @@
     "verdict": "PASS"
   },
   "visual": {
-    "applicable": false,
-    "reason": "This delivery changes src/agent.ts only — server-side prompt and send-path logic. No route, component or token changed, so a pixel comparison would compare a screen against itself and assert nothing. The portal's own smoke (7 routes, 0 console errors) is recorded above as the render check.",
-    "changed_routes": [],
-    "comparisons": [],
-    "tokens_verdict": "NOT_APPLICABLE",
-    "accessibility_verdict": "NOT_APPLICABLE",
+    "applicable": true,
+    "changed_routes": [
+      "#customer/966535106365"
+    ],
+    "comparisons": [
+      {
+        "route": "#customer/966535106365",
+        "viewport": "375x812",
+        "baseline": ".orbit/artifacts/header-redesign/actual-375x812.png",
+        "actual": ".orbit/artifacts/header-redesign/actual-375x812.png",
+        "diff": null,
+        "mismatch_ratio": null,
+        "verdict": "REBASELINE",
+        "baseline_note": "NO PRIOR BASELINE. The previous header was REJECTED by the CPO, so a diff against it would measure distance from a rejected design and prove nothing. These captures are declared as the NEW baseline, not as a passing comparison. sha256=e971cabb504f0be8"
+      },
+      {
+        "route": "#customer/966535106365",
+        "viewport": "768x1024",
+        "baseline": ".orbit/artifacts/header-redesign/actual-768x1024.png",
+        "actual": ".orbit/artifacts/header-redesign/actual-768x1024.png",
+        "diff": null,
+        "mismatch_ratio": null,
+        "verdict": "REBASELINE",
+        "baseline_note": "NO PRIOR BASELINE. The previous header was REJECTED by the CPO, so a diff against it would measure distance from a rejected design and prove nothing. These captures are declared as the NEW baseline, not as a passing comparison. sha256=accedba3c2d47fde"
+      },
+      {
+        "route": "#customer/966535106365",
+        "viewport": "1440x900",
+        "baseline": ".orbit/artifacts/header-redesign/actual-1440x900.png",
+        "actual": ".orbit/artifacts/header-redesign/actual-1440x900.png",
+        "diff": null,
+        "mismatch_ratio": null,
+        "verdict": "REBASELINE",
+        "baseline_note": "NO PRIOR BASELINE. The previous header was REJECTED by the CPO, so a diff against it would measure distance from a rejected design and prove nothing. These captures are declared as the NEW baseline, not as a passing comparison. sha256=9f3105e24c848713"
+      }
+    ],
+    "tokens_verdict": "PASS",
+    "accessibility_verdict": "NOT_MEASURED",
     "console_errors": [],
-    "verdict": "NOT_APPLICABLE"
+    "verdict": "REBASELINE",
+    "note": "Re-baseline DECLARED, not a passing diff. Accessibility was not measured this round and is recorded as NOT_MEASURED rather than asserted."
   },
-  "notes": "NO CODE SHIPPED IN THIS INCREMENT — research only. The agent's job was re-framed by the founder from closer to SORTER (answer the question, get a scheduled time, accept a no). Three specialists + a Codex classification of his four real conversations. Verdict stays CONCERNS and MUST NOT be forced to PASS: the deployed agent scores 3.3/10 against his stated bar of 8/10, and the outcome he asked for (a scheduled time) has no field to live in. A green delivery gate here would assert quality the evidence does not support."
+  "notes": "VERDICT CONCERNS. The header redesign is deployed and measured live, but two Designer items are not done (the واتساب ✓ chip and أول ظهور still render; the four outcome buttons are still equal-weight instead of one primary action), and a cached AI reading still displays an invented deal state («أكد أن السعر هو العائق الوحيد») that the send-path guard blocks but the portal still shows. Forcing PASS would assert a completeness the evidence does not support."
 }

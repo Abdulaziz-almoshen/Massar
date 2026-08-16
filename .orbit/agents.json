@@ -13,11 +13,11 @@
     "display": "Orchestrator",
     "responsibility": "plans + conducts the loop, owns state",
     "task": "kmon two-level redesign",
-    "status": "done",
-    "started_at": "2026-08-16T16:52:41Z",
-    "last_event_at": "2026-08-16T16:53:42Z",
+    "status": "active",
+    "started_at": "2026-08-16T18:19:27Z",
+    "last_event_at": "2026-08-16T18:19:27Z",
     "mission": "parallel tool batch complete",
-    "last_message": "run complete",
+    "last_message": "parallel tool batch complete",
     "seq": 0
   },
   "backend-engineer": {
@@ -80,8 +80,8 @@
     "responsibility": "distinctive, on-brand UI from picked prototypes",
     "task": "list+detail spec from prototype kmon",
     "status": "done",
-    "started_at": "2026-08-16T08:57:14Z",
-    "last_event_at": "2026-08-16T09:03:30Z",
+    "started_at": "2026-08-16T18:10:06Z",
+    "last_event_at": "2026-08-16T18:12:30Z",
     "mission": "designer started",
     "last_message": "designer finished",
     "seq": 1
@@ -92,7 +92,7 @@
     "task": "",
     "status": "blocked",
     "started_at": "2026-08-12T23:38:50Z",
-    "last_event_at": "2026-08-16T16:48:22Z",
+    "last_event_at": "2026-08-16T18:11:41Z",
     "mission": "Claude Code login successful",
     "last_message": "Claude is waiting for your input"
   },
@@ -102,7 +102,7 @@
     "task": "",
     "status": "done",
     "started_at": null,
-    "last_event_at": "2026-08-16T16:53:26Z",
+    "last_event_at": "2026-08-16T18:12:12Z",
     "mission": "",
     "last_message": "subagent finished"
   },

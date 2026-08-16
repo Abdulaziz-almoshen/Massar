@@ -827,3 +827,113 @@
 {"schema": 2, "ts": "2026-08-16T16:53:42Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
 {"schema": 2, "ts": "2026-08-16T16:53:42Z", "role": "qa-engineer", "phase": "evaluate", "status": "blocked", "msg": "delivery-quality evidence blocked: delivery evidence is missing or stale for this routed task \u00b7 evidence commit b94c8f58 does not match delivered commit bf944d0a \u00b7 overall QA verdict is not PASS"}
 {"schema": 2, "ts": "2026-08-16T16:54:01Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "business-analyst", "phase": "act", "status": "done", "msg": "business-analyst finished"}
+{"schema": 2, "ts": "2026-08-16T16:54:09Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T16:54:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T16:55:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "human", "phase": "decide", "status": "blocked", "msg": "Claude is waiting for your input"}
+{"schema": 2, "ts": "2026-08-16T16:57:26Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T16:59:31Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "info", "msg": "routing: question \u2014 Just say, uh, some noted something like this. We're not contacting anymore, and\u2026"}
+{"schema": 2, "ts": "2026-08-16T16:59:53Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T17:00:07Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:00:14Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T17:01:14Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "human", "phase": "decide", "status": "blocked", "msg": "Claude is waiting for your input"}
+{"schema": 2, "ts": "2026-08-16T17:03:19Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T17:29:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "info", "msg": "routing: question \u2014 done?"}
+{"schema": 2, "ts": "2026-08-16T17:29:36Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T17:29:46Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:29:50Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:02Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "build", "status": "info", "msg": "Edit /Users/abdulaziz/Projects/Massar/massar-engine/src/tracker.\u2026", "files": ["/Users/abdulaziz/Projects/Massar/massar-engine/src/tracker.ts"]}
+{"schema": 2, "ts": "2026-08-16T17:30:02Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:06Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:14Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "build", "status": "info", "msg": "Edit /Users/abdulaziz/Projects/Massar/massar-engine/src/db.ts", "files": ["/Users/abdulaziz/Projects/Massar/massar-engine/src/db.ts"]}
+{"schema": 2, "ts": "2026-08-16T17:30:14Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:19Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:30Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:37Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:46Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:30:53Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:31:00Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:31:19Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:31:25Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:31:44Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:32:04Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:32:09Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:32:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:32:36Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:32:41Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:32:57Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:33:22Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:33:44Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:33:49Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:34:06Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:35:03Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:38:19Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:38:27Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T17:38:38Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T17:39:39Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "human", "phase": "decide", "status": "blocked", "msg": "Claude is waiting for your input"}
+{"schema": 2, "ts": "2026-08-16T17:41:43Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T18:01:38Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "start", "msg": "routing: task \u2014 lets test now"}
+{"schema": 2, "ts": "2026-08-16T18:01:59Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:02:06Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:03:06Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "human", "phase": "decide", "status": "blocked", "msg": "Claude is waiting for your input"}
+{"schema": 2, "ts": "2026-08-16T18:05:48Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T18:07:52Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "start", "msg": "routing: task \u2014 send to this now +966535106365"}
+{"schema": 2, "ts": "2026-08-16T18:08:03Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:08:39Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "start", "msg": "routing: task \u2014 send"}
+{"schema": 2, "ts": "2026-08-16T18:08:50Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:08:57Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:09:33Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "dispatcher", "phase": "route", "status": "start", "msg": "routing: task \u2014 very bad UI and UX here. Im not happy as CPO [Image #9]"}
+{"schema": 2, "ts": "2026-08-16T18:10:06Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "designer", "phase": "act", "status": "start", "msg": "designer started"}
+{"schema": 2, "ts": "2026-08-16T18:10:06Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:10Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:10Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "start", "msg": "watchdog attached to the active role tree"}
+{"schema": 2, "ts": "2026-08-16T18:10:15Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:17Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:23Z", "role": "orchestrator", "phase": "evaluate", "status": "blocked", "msg": "mandatory capability stages missing: product-discovery, business-analyst, market-researcher, planner, safety-gate, reviewer, qa-engineer, cpo, reporter, designer"}
+{"schema": 2, "ts": "2026-08-16T18:10:23Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:23Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "done", "msg": "watchdog completed observation"}
+{"schema": 2, "ts": "2026-08-16T18:10:23Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "start", "msg": "watchdog attached to the active role tree"}
+{"schema": 2, "ts": "2026-08-16T18:10:25Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:31Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:35Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:36Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:36Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "done", "msg": "watchdog completed observation"}
+{"schema": 2, "ts": "2026-08-16T18:10:37Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "start", "msg": "watchdog attached to the active role tree"}
+{"schema": 2, "ts": "2026-08-16T18:10:38Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T18:10:41Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:46Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:10:50Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "done", "msg": "watchdog completed observation"}
+{"schema": 2, "ts": "2026-08-16T18:10:50Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "start", "msg": "watchdog attached to the active role tree"}
+{"schema": 2, "ts": "2026-08-16T18:10:58Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:11:01Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "done", "msg": "watchdog completed observation"}
+{"schema": 2, "ts": "2026-08-16T18:11:02Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "start", "msg": "watchdog attached to the active role tree"}
+{"schema": 2, "ts": "2026-08-16T18:11:03Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:11:08Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:11:10Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T18:11:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "done", "msg": "watchdog completed observation"}
+{"schema": 2, "ts": "2026-08-16T18:11:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "start", "msg": "watchdog attached to the active role tree"}
+{"schema": 2, "ts": "2026-08-16T18:11:36Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "done", "msg": "watchdog completed observation"}
+{"schema": 2, "ts": "2026-08-16T18:11:41Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "human", "phase": "decide", "status": "blocked", "msg": "Claude is waiting for your input"}
+{"schema": 2, "ts": "2026-08-16T18:12:12Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "subagent", "phase": "act", "status": "done", "msg": "subagent finished"}
+{"schema": 2, "ts": "2026-08-16T18:12:30Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "designer", "phase": "act", "status": "done", "msg": "designer finished"}
+{"schema": 2, "ts": "2026-08-16T18:12:30Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "start", "msg": "watchdog attached to the active role tree"}
+{"schema": 2, "ts": "2026-08-16T18:12:45Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "build", "status": "failed", "msg": "Bash failed", "confidence_delta": -10}
+{"schema": 2, "ts": "2026-08-16T18:12:45Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:12:50Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:13:03Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:13:04Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "watchdog", "phase": "observe", "status": "done", "msg": "watchdog completed observation"}
+{"schema": 2, "ts": "2026-08-16T18:13:17Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:13:34Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:13:56Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:14:11Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "build", "status": "failed", "msg": "Bash failed", "confidence_delta": -10}
+{"schema": 2, "ts": "2026-08-16T18:14:12Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:14:21Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:14:51Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:15:09Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:15:43Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:17:56Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:18:14Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:18:36Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
+{"schema": 2, "ts": "2026-08-16T18:18:49Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "report", "status": "done", "msg": "run complete"}
+{"schema": 2, "ts": "2026-08-16T18:18:49Z", "role": "qa-engineer", "phase": "evaluate", "status": "blocked", "msg": "delivery-quality evidence blocked: delivery evidence is missing or stale for this routed task \u00b7 evidence commit bf944d0a does not match delivered commit f31a7474 \u00b7 overall QA verdict is not PASS"}
+{"schema": 2, "ts": "2026-08-16T18:19:27Z", "run_id": "f4b2942bebee4d1dbf3c2df081a977fe", "role": "orchestrator", "phase": "act", "status": "info", "msg": "parallel tool batch complete"}
