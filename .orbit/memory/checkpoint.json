@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "R83 + R84/R85: three signals from one exchange. (1) BUG REPORT: the contact profile hung forever on \u00ab\u062c\u0627\u0631\u064d \u062a\u062c\u0645\u064a\u0639 \u0645\u0644\u0641 \u0627\u0644\u0639\u0645\u064a\u0644\u00bb - measured as a 401 with no error state, not slow loading; every endpoint returned 200 in under 0.75s. (2) THE REAL COMPLAINT, and it is PROVENANCE not analytics: 'I see all campaign details and not sure which one is related to the last one to measure campaign performance.' D\u2026",
-  "last_reviewed_at": "2026-08-16T09:08:31Z",
-  "last_reviewed_request": 83,
+  "last_review_summary": "R86 + R88: two durable items. (1) STANDING TEST CONTRACT, his words: 'test the agent inputs and outputs with codex. make sure Claude is not the one communicating with customers we are using openai key for this project. make sure codex model test our agent and fine tune the agent prompt till it is 100% ready for prod. must be market competitive.' So: the agent runs on HIS OpenAI key (gpt-5.6-terra)\u2026",
+  "last_reviewed_at": "2026-08-16T15:47:01Z",
+  "last_reviewed_request": 87,
   "pending_event_ids": [],
-  "requests_since_review": 0,
+  "requests_since_review": 1,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 83
+  "total_requests": 88
 }

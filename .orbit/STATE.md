@@ -1,3 +1,46 @@
+## 2026-08-16 · [T3] Codex-judged agent eval — 7 variants, none production-ready (NOT deployed)
+
+Founder: «test the agent inputs and outputs with codex … make sure Claude is not the one
+communicating with customers … fine tune the agent prompt till it is 100% ready for prod. must be
+market competitive.» Then: «harness till you get the best sales agent for the market and do a
+benchmark.»
+
+**HARNESS** `scripts/eval-agent.mjs` — drives the REAL agent (production prompt, tools, model)
+through 10 scripted buyer conversations. **ZERO SENDS BY CONSTRUCTION**: `globalThis.fetch` is
+shimmed BEFORE the agent is imported, Gupshup intercepted and recorded, only api.openai.com allowed
+out, run aborts if anything escapes. Refuses to start if `DATABASE_URL` is set or a non-OpenAI model
+resolves — Claude cannot enter the message path even by accident.
+**JUDGE** `scripts/eval-judge.sh` — Codex, deliberately a different model family, scored against the
+founder's AE spec with a fixed schema so runs are comparable.
+
+**RESULT: 2.8 → 1.1 → 2.9 → 1.6 → 2.8 → 3.3 → 2.4. None `prod_ready`.** Committed at cb8dbd7,
+working tree holds v6 (best measured). **NOT DEPLOYED — 3.3/10 does not go in front of hospitals.**
+Benchmark: https://claude.ai/code/artifact/00e274e4-b11c-48df-9fdc-060465bf79a3
+
+**THE FINDING, and it is the important one: what is in CODE holds, what is in the PROMPT does not.**
+- `sickleave-price-10` scored **0 in all seven runs** — with 95,000 in the product table, written
+  verbatim into the prompt (v4), AND injected as a mandatory per-turn directive (v6). The agent has
+  never once said it.
+- `optout` scored **10 in all seven runs** — the one behaviour enforced in code.
+- Every PROMPT addition lowered the score (v2 −1.7, v4 −1.3). Both gains came from code changes.
+
+**BIGGEST SINGLE DEFECT FOUND**: when §١–٢١ were replaced wholesale (earlier today), every per-turn
+directive was **ORPHANED** — `nextObjective`, `sentAssets`, the no-progress nudge — computed every
+turn from the real transcript and injected NOWHERE. The agent has been running without its steering
+since that commit. Restoring them is the single biggest measured gain (2.8 → 3.3). Caveat measured
+both ways: the objective re-imports some old qualifier framing (it opens the price scenario with
+«هل تمثلون منشأة صحية أم مزوّد نظام؟»), but removing it costs more than it saves — v7 fell to 2.4.
+Kept, and recorded as a known open defect rather than a silent one.
+
+**Also fixed**: the menu dodge — the agent answering a direct question with a bare choice between
+«تفاصيل التكامل» and «العرض التجاري». Refused in code with a forced retry. The prompt was TEACHING
+it: the founder's own «don't always close with a question» example is that exact reply, which
+fought his «answer first» rule. Now conditioned on having answered.
+
+**NEXT, and the evidence points at it hard**: emit the deterministic answers from code the way
+opt-out already is — price, integration phases, the discount qualifier. Seven rounds say prompt
+iteration will not get past ~3.
+
 ## 2026-08-16 · [T2] Campaign provenance on the contact profile + the profile hang (deployed)
 
 Founder ran the team on this («please run this with the team and come up with real market

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Massar Agent Eval — Codex verdict",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["overall_score", "prod_ready", "summary", "scenarios", "prompt_fixes"],
+  "properties": {
+    "overall_score": { "type": "number", "minimum": 0, "maximum": 10, "description": "0-10. NOT a percentage." },
+    "prod_ready": { "type": "boolean", "description": "true only if a Saudi healthcare buyer would find every reply competitive with a strong human AE." },
+    "summary": { "type": "string" },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "verdict", "score", "worst_reply", "why", "what_a_good_ae_would_say"],
+        "properties": {
+          "id": { "type": "string" },
+          "verdict": { "type": "string", "enum": ["PASS", "WEAK", "FAIL"] },
+          "score": { "type": "number", "minimum": 0, "maximum": 10 },
+          "worst_reply": { "type": "string", "description": "Verbatim quote of the weakest agent message." },
+          "why": { "type": "string", "description": "Which named rule it breaks." },
+          "what_a_good_ae_would_say": { "type": "string", "description": "Concrete Arabic replacement." }
+        }
+      }
+    },
+    "prompt_fixes": {
+      "type": "array",
+      "description": "Ordered by impact. Each must be an instruction that could be pasted into the system prompt.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["problem", "instruction_ar", "fixes_scenarios"],
+        "properties": {
+          "problem": { "type": "string" },
+          "instruction_ar": { "type": "string" },
+          "fixes_scenarios": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
