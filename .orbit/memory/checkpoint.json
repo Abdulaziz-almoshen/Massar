@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "Operational request to trigger peer session 9fdb10fa, not a preference or correction. Session unreachable in ListAgents; messaged massar-4f to confirm identity before pushing work at the wrong session. Nothing durable.",
-  "last_reviewed_at": "2026-08-16T06:41:42Z",
-  "last_reviewed_request": 78,
+  "last_review_summary": "R79, founder review pass 3 - the sharpest articulation of the acceptance bar so far. CORE BEHAVIOURAL RULE, verbatim: 'Never sound like you are executing a sales process. Sound like you are having a commercial conversation. The CRM/process should happen internally.' Seven specifics: (1) NEVER assume deal status, blockers, buying intent, readiness or commitment - the line about price being the only\u2026",
+  "last_reviewed_at": "2026-08-16T06:51:43Z",
+  "last_reviewed_request": 79,
   "pending_event_ids": [],
   "requests_since_review": 0,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 78
+  "total_requests": 79
 }

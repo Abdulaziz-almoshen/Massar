@@ -1,3 +1,36 @@
+## 2026-08-16 · [T2] Stop inventing deal state; stop narrating the process (deployed)
+
+Founder review pass 3. His core behavioural rule, verbatim: **«Never sound like you are executing
+a sales process. Sound like you are having a commercial conversation.»**
+
+**INVENTED STATE — the serious one, and a genuine EXTENSION of Rule 2.** «بما أن السعر هو النقطة
+الوحيدة المتبقية قبل البدء» when the customer never said it. Rule 2 has always been about numbers;
+this is the same failure applied to INTENT — a fabricated fact about the buyer's own mind. It is
+worse than a fabricated number because he knows what he did not say, so he catches it instantly.
+Asserted readiness, blockers, agreements and commitment are now blocked in code.
+
+**The distinction deliberately preserved**: «هل السعر هو العائق الوحيد؟» stays legal. Asking is how
+the agent is SUPPOSED to establish it — only asserting is banned. Six negative controls pin that
+line, because a guard that also killed the question would have broken the discount play from his
+own earlier spec.
+
+**PROCESS NARRATION** blocked by name: «تم تأهيل الفرصة» · «نكمل المراجعة التجارية» · «الخطوة
+التالية هي إعداد العرض» · «ننتقل للمرحلة التالية» · «رفعت النطاق التجاري».
+
+Guard removes offending SENTENCES, not messages — one bad clause must not cost a good answer;
+falls back only when too little survives.
+
+**Prompt §٧أ–٧د**: the governing rule, the ask-vs-assert distinction («يضع كلامًا في فم عميله»),
+his acknowledge → why-it-matters → reinforce → offer-direction pattern with his worked example
+verbatim, and natural-not-report Arabic (active verbs, «نقدر نخلي…» over «يمكن بناء التكامل بصورة
+مركزية»). His example ends with two directions and NO question — which also triggers buttons.
+
+15 gates green, smoke 7/7.
+
+**Honest limit, printed by the gate itself**: the code matches the assertive SHAPES enumerated,
+not the topic. A novel phrasing of the same idea falls to the prompt, and prompts have now been
+ignored three times this session. New phrasings need new shapes as transcripts arrive.
+
 ## 2026-08-16 · [T2] AE spec v2 adopted verbatim + buttons enforced in code (deployed)
 
 Founder supplied a second, fuller AE spec (supersedes the 2026-08-14 one) plus a new hard rule:

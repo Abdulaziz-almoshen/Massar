@@ -14,8 +14,8 @@
     "responsibility": "plans + conducts the loop, owns state",
     "task": "kmon two-level redesign",
     "status": "active",
-    "started_at": "2026-08-16T06:41:36Z",
-    "last_event_at": "2026-08-16T06:42:02Z",
+    "started_at": "2026-08-16T06:51:32Z",
+    "last_event_at": "2026-08-16T06:52:03Z",
     "mission": "parallel tool batch complete",
     "last_message": "parallel tool batch complete",
     "seq": 0
@@ -92,9 +92,9 @@
     "task": "",
     "status": "blocked",
     "started_at": "2026-08-12T23:38:50Z",
-    "last_event_at": "2026-08-16T06:40:26Z",
+    "last_event_at": "2026-08-16T06:43:42Z",
     "mission": "Claude Code login successful",
-    "last_message": "Claude needs your permission"
+    "last_message": "Claude is waiting for your input"
   },
   "subagent": {
     "display": "Sub-agent",
@@ -102,7 +102,7 @@
     "task": "",
     "status": "done",
     "started_at": null,
-    "last_event_at": "2026-08-16T06:37:13Z",
+    "last_event_at": "2026-08-16T06:42:45Z",
     "mission": "",
     "last_message": "subagent finished"
   },
