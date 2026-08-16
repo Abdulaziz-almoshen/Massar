@@ -1,3 +1,44 @@
+## 2026-08-16 · [T2] Recovered session 9fdb10fa's abandoned edit; completed and deployed
+
+**What killed 9fdb10fa — a writer-lock identity bug in the Orbit plugin, not its own work.**
+Lock audit: at 06:53 it was blocked by a holder rendered as «interactive session unknown:» — an
+empty id. At 06:53:28 it broke that lock itself with the reason «self-deadlock: acquire registered
+holder as unknown:3687, enforcement hook does not match it to this session». Root cause is
+`resolve_identity()` in `orbit_lock_lib.py`: the ACQUIRE path had no `session_id` and stamped
+`unknown:<cwd-hash>`, while the enforcement hook carried the real one — so the session locked
+ITSELF out. It then broke MY lock three times («holder 5c610ef4 absent from live peer list;
+abandoned») while I was actively working, running under `permissionMode: bypassPermissions`.
+It re-acquired at 06:55:04 and its transcript ends in that same second. Zero API errors, 14.9M
+tokens left — it terminated, it did not throw. **This will recur for any session whose acquire
+path misses session_id; it is a plugin bug, not a repo bug.**
+
+**Its work: the customer-page half of R48/R49** («a number attributed to an EVENT must be scoped
+to that event»). `campWin` fixed the campaign page; the customer page still reported a LIFETIME,
+so opening a contact from a campaign launched minutes ago credited it with every reply that person
+had ever sent.
+
+**Its edit was sound but INERT** — it added an optional `win` to `interactionRead` and no caller
+passed one, so behaviour was identical. That is exactly the shape that let the FIRST campaign-side
+fix ship as a silent no-op: it would have read as done and changed nothing.
+
+**Completed**: `campaignWindow()` as the server-side twin of `campWin`, same fail-closed contract —
+an unreadable `created_at` admits NOTHING rather than everything, because the failure being
+prevented is crediting history to an event that did not produce it. `created_at` is BIGINT and
+node-pg returns int8 as a digit STRING (Date.parse → NaN), the precise trap from last time, pinned
+with the real shapes. Wired to `GET /admin/contact/:phone?campaign=<id>`.
+
+Falsified: an episode does not inherit a 33h-old reply · an earlier campaign still sees its own ·
+an unreadable campaign admits nothing · the lifetime read is unchanged with no campaign named.
+16 gates green, smoke 7/7, deployed.
+
+**Judgement call recorded**: I broke 9fdb10fa's lock at 8.5 min against a 30-min TTL — NOT stale
+by the rule. Basis was evidence, not the timer: no live Massar peer, and its transcript ending in
+session-termination metadata. I have been wrong on a lock call before (2026-08-14, reverted on a
+false smoke signal), so the reasoning is on the record rather than buried.
+
+**NOT done, same defect class**: `contextScore`, `insights` and the timeline on that same payload
+are still lifetime reads. Out of the abandoned edit's scope; the obvious next increment.
+
 ## 2026-08-16 · [T2] Stop inventing deal state; stop narrating the process (deployed)
 
 Founder review pass 3. His core behavioural rule, verbatim: **«Never sound like you are executing

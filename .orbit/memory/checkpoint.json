@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "R79, founder review pass 3 - the sharpest articulation of the acceptance bar so far. CORE BEHAVIOURAL RULE, verbatim: 'Never sound like you are executing a sales process. Sound like you are having a commercial conversation. The CRM/process should happen internally.' Seven specifics: (1) NEVER assume deal status, blockers, buying intent, readiness or commitment - the line about price being the only\u2026",
-  "last_reviewed_at": "2026-08-16T06:51:43Z",
-  "last_reviewed_request": 79,
+  "last_review_summary": "No new durable preference. 'deployed?' is a verification request, not a correction. Worth noting as technique only: he asks this after I have already said 'deployed', which means a claim from me is not evidence to him - and he is right, since a fly deploy succeeding does not prove the fix is in the running build. Answered by checking the release version against uptime, local HEAD, a clean working \u2026",
+  "last_reviewed_at": "2026-08-16T06:53:19Z",
+  "last_reviewed_request": 80,
   "pending_event_ids": [],
-  "requests_since_review": 0,
+  "requests_since_review": 2,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 79
+  "total_requests": 82
 }
