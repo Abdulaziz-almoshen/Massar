@@ -1,3 +1,36 @@
+## 2026-08-16 · [T2] Product lock + stop the interview + no fake actions (deployed)
+
+Founder's structured review of a live NVR transcript: «the agent is still behaving like a
+qualification workflow, not a salesperson». His governing principle, verbatim: **«Help the customer
+make the buying decision. Do not force the customer through your CRM fields.»** He diagnosed the
+root cause himself — over-optimised for "always progress the lead", which produces a question after
+every answer.
+
+**PRODUCT LOCK — in code (`src/productlock.ts`), not prose.** The NVR conversation received Sick
+Leave material because `send_asset` resolved the file with `x.product.includes(key)`: a loose
+substring match against whatever string the model passed, with no reference to the conversation.
+Now exact-match first, then a lock check that refuses any cross-product send. The CUSTOMER owns the
+lock — an explicit switch moves it, nothing else does.
+
+**The gate caught a SECOND instance of the same defect while being built**: «تفاصيل التكامل» — one
+of our OWN button titles — classified as the integration PRODUCT and moved the lock off NVR.
+Integration is cross-cutting (we sell it for every product), so it now needs its full catalogue name
+to lock. This is the Rule-6 shape caught before shipping rather than after.
+
+**Prompt §٧ب/٧ج/٧د**: answer → add value → at most ONE necessary question, question-stacking banned;
+a question must change scope/fit/price/implementation/next-step to be asked at all; integration
+answers must name the real phases (review the HIS journey → connect + test on staging → activate on
+production) instead of «we connect the HIS»; known facts are not re-recited; no meeting before value
+is earned; the customer is never asked to design our commercial model; the price qualifier comes
+after understanding; and no claiming «أشعرت المختص / بدأت التنسيق / أكملنا المراجعة» unless the tool
+actually ran that turn.
+
+10 gates green (2 new files, ~30 new assertions), smoke 7/7, deployed.
+
+**NOT COVERED, and the gate prints it itself**: price and feature scoping stay prompt-level. The
+lock enforces ATTACHMENTS in code — a wrong PRICE for the wrong product is still possible. Making
+that structural means routing price through the lock the way sends now are. Next candidate.
+
 ## 2026-08-16 · [T2] Sandbox activation guard — the turn counter was the bug (deployed)
 
 Founder screenshotted English Gupshup Proxy-bot text and asked why the agent speaks English.
