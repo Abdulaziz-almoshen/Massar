@@ -1,5 +1,13 @@
 # CPO acceptance — campaigns-crm
 
+> **ROUND-31 SUPERSEDES THIS PAGE'S VERDICT.** Envelope `.orbit/cpo/round-31.json`,
+> commit `97d0e18` / engine `df380ec`. Round-30's M1 (vocabulary), M2, M3 and M4 are CLOSED and
+> independently verified; M5 (deploy) is RULED — the refusal to deploy a dirty tree is correct and
+> becomes a bound carry-forward (M8). Still ITERATE on one relocated surface: the record's «الأداء»
+> tab prints «٠٪ من جهات الاستهداف» on five cards of a campaign the same page says was never sent
+> (M6), and the regression written for M1 renders only one of the record's three tabs, so it cannot
+> go red where that defect lives (M7). Scores 8 / 7 / 8 / 8 / 7.
+
 **Verdict: ITERATE** · round-30 · envelope `.orbit/cpo/round-30.json`
 **Commit-bound:** parent `f2203dd5b1d7480225771ec908322dd61ad21680` · engine `3273b1e1db8ea812c295dc806008d9f2a4a97070`
 **Gate:** `delivery-quality-gate.py --commit f2203dd5b1d…` → `passed: true`

@@ -118,6 +118,54 @@ copied to other repos or global memory.
 
 ## Signals (dated observations, newest first)
 
+- 2026-08-17 round-31 @97d0e18 / engine df380ec [Rule 6 — SIXTH COROLLARY, and it is the specific
+  failure mode of the single-emitter pattern Rule 8 just promoted]. Round-30 ordered one shared
+  function to learn a new word; it did, perfectly — `campPerfState` gained «بلا جمهور» and «لم تُرسل
+  بعد» and four surfaces (row chip, board column, group header, record header) learned it in a
+  single edit, exactly as BR-2 designed. The rate half of the same order introduced a NEW ACCESSOR,
+  `crmDeliveryRate`, and reached five of seven call sites. The two it missed still call the OLD
+  accessor `crmRate` directly — so the record's «الأداء» tab prints «٠٪ من جهات الاستهداف» on five
+  cards one click below a hero rendering «—» three times. COROLLARY: **a single emitter closes the
+  surfaces that READ it and is blind to the surfaces that compute the same thing themselves. When a
+  fix introduces a new accessor, grep the OLD accessor's surviving call sites before declaring the
+  class closed** — the same discipline as round-21's «grep the VALUE's source, not the string that
+  displayed it», one level up: grep the FUNCTION, not the value.
+
+- 2026-08-17 round-31 @97d0e18 [Rule 7 — the instrument-blindness mechanism gains its SECOND named
+  form: correct assertion, insufficient SCOPE]. Round-26 named «an instrument structurally incapable
+  of the failure it is quoted for» (a file compared with itself). This round's form is subtler and
+  will recur: `m1-unsent-vocabulary` asserts `innerText.indexOf('٠٪') === -1` on the record — which
+  is exactly the right assertion, aimed at exactly the right defect — but `innerText` contains only
+  the RENDERED tab, and the test renders one of three. The assertion is FALSE on the الأداء tab at
+  the same commit, and the test is green. Generalisation: **for any assertion over a rendered
+  surface, the test must enumerate the surface's STATES (tabs, filters, viewports) or it is a
+  measurement of one state wearing the name of the whole.** Same shape as Rule 6's second corollary
+  (enumerate STATES, not just screens) — now proven to apply to the loop's TESTS, not only to its
+  audits.
+
+- 2026-08-17 round-31 @97d0e18 [Rule 8 confirmed one round after promotion, and a correctly escalated
+  safety call — credit]. Four things done right and verified by me. (1) All three code closures were
+  made STRUCTURAL, not instance-wise: `crmHeaderRow` is one boolean-parameterised function shared by
+  the list and group views rather than a second copy of the markup; `campPerfState` gained STATES
+  rather than the call sites gaining conditionals; the empty-group seeding derives its exclusion from
+  `campTab` instead of hardcoding a case. None can drift back independently. (2) M4's descope note
+  gives behavioural RE-TRIGGERS («the first time a real question needs two conditions at once»)
+  rather than the dates I asked for — better than the order. (3) The deploy was REFUSED rather than
+  performed, because `fly deploy` ships the working tree and the tree carried a concurrent session's
+  unreviewed `agent.ts`/`db.ts`/`tracker.ts`; the refusal was escalated to this gate with both
+  options costed instead of decided unilaterally, and recorded as an explicit limit in the evidence
+  file rather than skipped. That is the right instinct on the §8 wall and the right instinct on
+  disclosure. (4) Evidence integrity clean for a THIRD consecutive round — all six pixel ratios
+  reproduce under my own Pillow recomputation to four decimals.
+
+- 2026-08-17 round-31 @97d0e18 [CPO self-correction — I withdrew half of my own order]. Round-30's
+  M1(b) said «and the list row's التقدّم with it». On the delivered screen that is wrong:
+  التقدّم is a PROGRESS meter (how far through the send are we), not a claim about a measured
+  outcome, so «٪٠» with an empty bar on a not-yet-started campaign is defensible where «٠٪ مشاهدة»
+  is not. I waived it on the record with the reason rather than leaving an over-broad order to be
+  silently skipped — which is the failure mode my own model has charged the ORCHESTRATOR with three
+  times. An order I no longer believe must be withdrawn out loud, not quietly dropped.
+
 - 2026-08-17 round-30 @f2203dd / engine 3273b1e [Rule 7 — the EVIDENCE channel is clean for a second
   consecutive round, and the channel MOVED to SCOPE]. Everything this rule has ever caught is clean:
   I recomputed all six pixel ratios in Pillow and every one reproduces exactly, all six

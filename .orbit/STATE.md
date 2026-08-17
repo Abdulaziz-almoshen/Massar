@@ -1,3 +1,37 @@
+## 2026-08-17 · [T3] campaigns-crm — Frappe CRM view layer ported · BUILT, **NOT DEPLOYED**
+
+Founder pasted https://github.com/frappe/crm: «exact design and UX and functionality on top of our
+campaigns module for whatsapp». He chose full RTL mirror + existing engine API.
+
+**Shipped to the repo, live nowhere yet.** Frappe's ViewControls / ListBulkActions / Deal.vue tab
+model re-expressed in Massar navy-teal RTL, none of Frappe's palette or chrome (Rule 3). New file
+`src/campaigns-crm.ts` interpolated into dashboard.ts at two anchors — no range edits (ADR-0001),
+and it reuses campStats/campWin/atOrAfter/seenOf/repliedIn rather than reimplementing any statistic.
+
+Two capabilities that did not exist: retarget now stages an EXPLICIT subset (it consumed the whole
+active filter, so 12-of-40 was impossible by construction), and the record renders `camp.message` —
+the screen reporting on a campaign never showed the text that campaign sent.
+
+Four invented-state defects removed: «مكتملة» as a lifecycle the table has no field for; a confident
+٠٪ on a campaign with no audience; a verdict claiming «أُرسلت» when nothing was sent; and the الأداء
+tab still claiming ٠٪ one click below a hero reading «—».
+
+### DEPLOY CARRY-FORWARD — M8, binding
+- **Deployable engine artifact: `df380ec`+ (see engine git log; final commit this cycle).**
+- **It is NOT live. v220 is live. Do not report campaigns-crm to the founder as live.**
+- **Condition:** `fly deploy` ships the WORKING TREE, and the engine tree carries the concurrent
+  crm-record session's uncommitted `src/agent.ts`, `src/db.ts`, `src/index.ts`, `src/tracker.ts`,
+  `scripts/check-props.mjs`. Deploy only once that session has LANDED or STASHED its work.
+- **First deploy after that** ships a tree containing BOTH cycles and must record: `npm run smoke`
+  7/7, `GET /health` → `ok:true` and `outbound.ok:true`. Not done until those are recorded.
+- **Owner:** the next orchestrator session that holds the writer lock with a clean engine tree.
+- **Attached (S5):** delete the `vKmon`/`vKmonDetail` fallback path once one deploy has smoke green
+  on `#kmon` and `#kmon/<id>`. It exists only because tsc cannot see inside the template literal.
+
+Evidence: `.orbit/qa/delivery-evidence.json` (gate passed), 45 qa-crm assertions incl. 10 falsified
+regressions, six pixel comparisons 0.02–0.15%. Descoped and recorded in the module header: FR-2
+filter condition builder, FR-5 column picker.
+
 ## 2026-08-17 · [T3] DEPLOYED v220 — agent 5.7 ± 0.3, judge variance quantified
 
 Founder: «finish and deploy». Done, with the number stated honestly rather than dressed up.
