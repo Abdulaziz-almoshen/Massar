@@ -1,0 +1,415 @@
+[
+  {
+    "ac": "AC-7",
+    "check": "detail of a 0-target campaign contains no «٠٪»",
+    "ok": true,
+    "inspected": 817,
+    "detail": "«٠٪» count=0; «—» count=4"
+  },
+  {
+    "ac": "AC-7",
+    "check": "detail renders at least one «—» rate placeholder",
+    "ok": true,
+    "inspected": 817,
+    "detail": "«—» count=4"
+  },
+  {
+    "ac": "AC-7",
+    "check": "non-vacuity: page is the zero-target campaign",
+    "ok": true,
+    "inspected": 817,
+    "detail": "campaign name present in body"
+  },
+  {
+    "ac": "AC-7",
+    "check": "list row of a 0-target campaign contains no «٠٪»",
+    "ok": true,
+    "inspected": 700,
+    "detail": "«٠٪» count=0; «لا جهات استهداف»=True"
+  },
+  {
+    "ac": "AC-7",
+    "check": "non-vacuity: rate cells exist to be wrong",
+    "ok": true,
+    "inspected": 1,
+    "detail": ".krow count=1"
+  },
+  {
+    "ac": "AC-5",
+    "check": "LIST_CAP rows render out of 400",
+    "ok": true,
+    "inspected": 60,
+    "detail": ".krow count=60 (expect 60)"
+  },
+  {
+    "ac": "AC-5",
+    "check": "cap footer declares the true total ٤٠٠",
+    "ok": true,
+    "inspected": 4074,
+    "detail": "footer text present=True"
+  },
+  {
+    "ac": "AC-5",
+    "check": "filter matches exactly 137",
+    "ok": true,
+    "inspected": 137,
+    "detail": "crmFiltered().length=137"
+  },
+  {
+    "ac": "AC-5",
+    "check": "still only LIST_CAP rows render",
+    "ok": true,
+    "inspected": 60,
+    "detail": ".krow count=60"
+  },
+  {
+    "ac": "AC-5",
+    "check": "«تحديد المطابقين» control exists (FR-6)",
+    "ok": false,
+    "inspected": null,
+    "detail": "no crmSelectAllMatching fn and no «تحديد المطابقين» string in the DOM"
+  },
+  {
+    "ac": "AC-5",
+    "check": "select-page selects only the rendered rows",
+    "ok": true,
+    "inspected": 60,
+    "detail": "crmSelIds().length=60"
+  },
+  {
+    "ac": "AC-5",
+    "check": "the true match count ١٣٧ is stated to the operator",
+    "ok": true,
+    "inspected": 4179,
+    "detail": "alert text contains ١٣٧=True; body has «غير مشمول»=True"
+  },
+  {
+    "ac": "AC-4",
+    "check": "non-vacuity: التصنيف board rendered columns",
+    "ok": true,
+    "inspected": 2,
+    "detail": ".kcol=2"
+  },
+  {
+    "ac": "AC-4",
+    "check": "cards are draggable on التصنيف",
+    "ok": true,
+    "inspected": 5,
+    "detail": ".kcard[draggable=true]=5"
+  },
+  {
+    "ac": "AC-4",
+    "check": "columns accept a drop on التصنيف",
+    "ok": true,
+    "inspected": 2,
+    "detail": ".kcol[ondrop]=2"
+  },
+  {
+    "ac": "AC-4",
+    "check": "drag onto التصنيف issues exactly one POST /admin/campaign/test",
+    "ok": true,
+    "inspected": 1,
+    "detail": "spy calls=[{\"url\": \"/admin/campaign/test\", \"method\": \"POST\", \"body\": \"{\\\"id\\\":1,\\\"test\\\":true}\"}]"
+  },
+  {
+    "ac": "AC-4",
+    "check": "non-vacuity: product board rendered cards",
+    "ok": true,
+    "inspected": 4,
+    "detail": ".kcol=2 .kcard=4"
+  },
+  {
+    "ac": "AC-4",
+    "check": "product board: zero draggable cards",
+    "ok": true,
+    "inspected": 4,
+    "detail": "draggable=0"
+  },
+  {
+    "ac": "AC-4",
+    "check": "product board: zero drop targets",
+    "ok": true,
+    "inspected": 2,
+    "detail": "[ondrop]=0"
+  },
+  {
+    "ac": "AC-4",
+    "check": "product board: a real drag gesture issues ZERO requests",
+    "ok": true,
+    "inspected": 1,
+    "detail": "spy calls=[]"
+  },
+  {
+    "ac": "AC-4",
+    "check": "perf board is read-only despite a «تجريبية» column",
+    "ok": true,
+    "inspected": 3,
+    "detail": "draggable=0 ondrop=0 cols=[\"بلا ردود بعد\", \"تجريبية\", \"فيها ردود\"]"
+  },
+  {
+    "ac": "AC-4",
+    "check": "DEPTH: crmDrop invoked with a non-التصنيف column name",
+    "ok": true,
+    "inspected": 1,
+    "detail": "handler is not board-guarded internally; calls=[]"
+  },
+  {
+    "ac": "AC-6",
+    "check": "non-vacuity: 5 campaigns were selected",
+    "ok": true,
+    "inspected": 5,
+    "detail": "crmSelIds().length=5"
+  },
+  {
+    "ac": "AC-6",
+    "check": "bulk reclassify of 5 fires exactly 5 calls",
+    "ok": true,
+    "inspected": 5,
+    "detail": "calls=5 urls=[\"/admin/campaign/test\"]"
+  },
+  {
+    "ac": "AC-6",
+    "check": "every call goes to /admin/campaign/test with POST",
+    "ok": true,
+    "inspected": 5,
+    "detail": "[{\"url\": \"/admin/campaign/test\", \"method\": \"POST\", \"body\": \"{\\\"id\\\":1,\\\"test\\\":true}\"}, {\"url\": \"/admin/campaign/test\", \"method\": \"POST\", \"body\": \"{\\\"id\\\":3,\\\"test\\\":true}\"}, {\"url\": \"/admin/campaign/test\", \"method\": \"POST\", \"body\": \"{\\\"id\\\":4,\\\"test\\\":true}\"}, {\"url\": \"/admin/campaign/test\", \"method\": \"POST\", \"body\": \"{\\\"id\\\":5,\\\"test\\\":true}\"}, {\"url\": \"/admin/campaign/test\", \"method\": \"POST\", \""
+  },
+  {
+    "ac": "AC-6",
+    "check": "ZERO client requests to any other path (no send)",
+    "ok": true,
+    "inspected": 5,
+    "detail": "other fetch=[] xhr=[] beacon=[]"
+  },
+  {
+    "ac": "AC-6",
+    "check": "ZERO gupshup/send-shaped paths",
+    "ok": true,
+    "inspected": 5,
+    "detail": "matches=[]"
+  },
+  {
+    "ac": "AC-6",
+    "check": "success line reports the count",
+    "ok": true,
+    "inspected": 665,
+    "detail": "alert present; ٥ in body=True"
+  },
+  {
+    "ac": "AC-6",
+    "check": "forced 500: still exactly 5 calls, no retry storm",
+    "ok": true,
+    "inspected": 5,
+    "detail": "calls=5"
+  },
+  {
+    "ac": "AC-6",
+    "check": "forced 500: failed count surfaced to the operator",
+    "ok": true,
+    "inspected": 960,
+    "detail": "body contains «تعذّر»=True; «٥»=True"
+  },
+  {
+    "ac": "AC-3",
+    "check": "non-vacuity: chips and cards both harvested",
+    "ok": false,
+    "inspected": 34,
+    "detail": "chips=34 cards=34 shared=34"
+  },
+  {
+    "ac": "AC-3",
+    "check": "chip label == board column for every shared campaign",
+    "ok": true,
+    "inspected": 34,
+    "detail": "mismatches={}"
+  },
+  {
+    "ac": "AC-3",
+    "check": "board labels are exactly the BR-2 three",
+    "ok": true,
+    "inspected": 1,
+    "detail": "labels=[\"بلا ردود بعد\"]"
+  },
+  {
+    "ac": "AC-3",
+    "check": "«مكتملة» absent from every campaign surface",
+    "ok": true,
+    "inspected": 2619,
+    "detail": "occurrences on #kmon board=0"
+  },
+  {
+    "ac": "AC-1",
+    "check": "non-vacuity: rows rendered under the filter",
+    "ok": true,
+    "inspected": 60,
+    "detail": "rows=60"
+  },
+  {
+    "ac": "AC-1",
+    "check": "every rendered row matches the filtered product",
+    "ok": true,
+    "inspected": 60,
+    "detail": "off-product rows=0"
+  },
+  {
+    "ac": "AC-1",
+    "check": "sort «الأكثر ردودًا» is non-increasing in replied",
+    "ok": true,
+    "inspected": 137,
+    "detail": "n=137 first5=[0, 0, 0, 0, 0]"
+  },
+  {
+    "ac": "AC-1",
+    "check": "structured FR-2 condition builder present",
+    "ok": false,
+    "inspected": null,
+    "detail": "no «فلترة» condition-builder control in the bar; filtering is free-text search + class tab"
+  },
+  {
+    "ac": "AC-8",
+    "check": "camp.message rendered verbatim as text",
+    "ok": true,
+    "inspected": 966,
+    "detail": "verbatim match=True"
+  },
+  {
+    "ac": "AC-8",
+    "check": "message is escaped, not executed",
+    "ok": true,
+    "inspected": 966,
+    "detail": "window.__pwned=False; injected img nodes=0"
+  },
+  {
+    "ac": "AC-9",
+    "check": "non-vacuity: detail view has controls to inspect",
+    "ok": true,
+    "inspected": 22,
+    "detail": "{\"inputs\": 1, \"textareas\": 0, \"selects\": 0, \"checkboxes\": 7, \"saveish\": 0, \"buttons\": 22, \"classCtl\": 0}"
+  },
+  {
+    "ac": "AC-9",
+    "check": "no free-text input / textarea / save control in detail",
+    "ok": false,
+    "inspected": 22,
+    "detail": "{\"inputs\": 1, \"textareas\": 0, \"selects\": 0, \"checkboxes\": 7, \"saveish\": 0, \"buttons\": 22, \"classCtl\": 0}"
+  },
+  {
+    "ac": "AC-9",
+    "check": "التصنيف is the only mutation control on detail",
+    "ok": false,
+    "inspected": 22,
+    "detail": "setCampClass controls=0"
+  },
+  {
+    "ac": "AC-2",
+    "check": "non-vacuity: header row harvested",
+    "ok": true,
+    "inspected": 9,
+    "detail": "headers=[\"\", \"الحملة\", \"الخدمة\", \"الحالة\", \"الجمهور\", \"مشاهدة\", \"ردود\", \"التقدّم\", \"\"]"
+  },
+  {
+    "ac": "AC-2",
+    "check": "every rendered column ∈ FR-5 closed set",
+    "ok": true,
+    "inspected": 9,
+    "detail": "unexpected=[]"
+  },
+  {
+    "ac": "AC-14",
+    "check": "empty: ViewControls bar hidden",
+    "ok": true,
+    "inspected": 0,
+    "detail": ".crmbar count=0; empty landmark=True"
+  },
+  {
+    "ac": "AC-14",
+    "check": "non-vacuity: empty state actually rendered",
+    "ok": true,
+    "inspected": 499,
+    "detail": "chars=499"
+  },
+  {
+    "ac": "AC-14",
+    "check": "single: exactly one row, no cap footer",
+    "ok": true,
+    "inspected": 1,
+    "detail": "rows=1; cap footer=False"
+  },
+  {
+    "ac": "AC-14",
+    "check": "single: board shows one column, no invented empties",
+    "ok": true,
+    "inspected": 1,
+    "detail": ".kcol=1; degraded-to-list notice=True"
+  },
+  {
+    "ac": "HEALTH",
+    "check": "zero pageerrors across the whole probe",
+    "ok": true,
+    "inspected": 0,
+    "detail": "errors=[]"
+  },
+  {
+    "ac": "AC-12",
+    "check": "list@375x812: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 375,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=3"
+  },
+  {
+    "ac": "AC-12",
+    "check": "group@375x812: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 375,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=4"
+  },
+  {
+    "ac": "AC-12",
+    "check": "kanban@375x812: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 375,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=3"
+  },
+  {
+    "ac": "AC-12",
+    "check": "list@768x1024: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 768,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=3"
+  },
+  {
+    "ac": "AC-12",
+    "check": "group@768x1024: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 768,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=4"
+  },
+  {
+    "ac": "AC-12",
+    "check": "kanban@768x1024: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 768,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=3"
+  },
+  {
+    "ac": "AC-12",
+    "check": "list@1440x900: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 1440,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=3"
+  },
+  {
+    "ac": "AC-12",
+    "check": "group@1440x900: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 1440,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=4"
+  },
+  {
+    "ac": "AC-12",
+    "check": "kanban@1440x900: page does not scroll horizontally",
+    "ok": true,
+    "inspected": 1440,
+    "detail": "scrollWidth-clientWidth=0px body=0px escaping-nodes=0 [] scrollers=3"
+  }
+]

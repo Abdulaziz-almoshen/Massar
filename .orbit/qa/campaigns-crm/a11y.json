@@ -1,0 +1,154 @@
+{
+  "scope": "html lang/dir, duplicate ids, accessible name on every focusable control, aria-label on every checkbox. NOT covered: colour contrast, focus order, screen-reader traversal.",
+  "checks": 21,
+  "failing": 0,
+  "results": [
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "list",
+      "viewport": "375x812",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "group",
+      "viewport": "375x812",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "kanban",
+      "viewport": "375x812",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "list",
+      "viewport": "375x812",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "group",
+      "viewport": "375x812",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "kanban",
+      "viewport": "375x812",
+      "problems": []
+    },
+    {
+      "route": "#kmon/1",
+      "fixture": "default",
+      "view": "list",
+      "viewport": "375x812",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "list",
+      "viewport": "768x1024",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "group",
+      "viewport": "768x1024",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "kanban",
+      "viewport": "768x1024",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "list",
+      "viewport": "768x1024",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "group",
+      "viewport": "768x1024",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "kanban",
+      "viewport": "768x1024",
+      "problems": []
+    },
+    {
+      "route": "#kmon/1",
+      "fixture": "default",
+      "view": "list",
+      "viewport": "768x1024",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "list",
+      "viewport": "1440x900",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "group",
+      "viewport": "1440x900",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "default",
+      "view": "kanban",
+      "viewport": "1440x900",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "list",
+      "viewport": "1440x900",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "group",
+      "viewport": "1440x900",
+      "problems": []
+    },
+    {
+      "route": "#kmon",
+      "fixture": "many",
+      "view": "kanban",
+      "viewport": "1440x900",
+      "problems": []
+    },
+    {
+      "route": "#kmon/1",
+      "fixture": "default",
+      "view": "list",
+      "viewport": "1440x900",
+      "problems": []
+    }
+  ]
+}

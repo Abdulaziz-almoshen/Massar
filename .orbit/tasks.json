@@ -1,354 +1,73 @@
-[
-  {
-    "id": "ux1",
-    "title": "[research+designer] marketing-platform tracker patterns \u2192 spec",
-    "status": "done"
-  },
-  {
-    "id": "ux2",
-    "title": "[frontend] stat-card funnel + table-first layout + filters in table header",
-    "status": "done"
-  },
-  {
-    "id": "ux3",
-    "title": "[frontend] conversation side panel (replaces inline accordion)",
-    "status": "done"
-  },
-  {
-    "id": "ux4",
-    "title": "[qa] deploy + pixels incl. OPEN panel + verdicts",
-    "status": "done"
-  },
-  {
-    "id": "12",
-    "title": "12",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "13",
-    "title": "13",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "14",
-    "title": "14",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "15",
-    "title": "15",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "16",
-    "title": "16",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "17",
-    "title": "17",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "18",
-    "title": "18",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "19",
-    "title": "19",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "20",
-    "title": "20",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "21",
-    "title": "21",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "22",
-    "title": "22",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "23",
-    "title": "23",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "24",
-    "title": "24",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "25",
-    "title": "25",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "26",
-    "title": "26",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "27",
-    "title": "27",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "28",
-    "title": "28",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "29",
-    "title": "29",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "30",
-    "title": "30",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "31",
-    "title": "31",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "32",
-    "title": "32",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "33",
-    "title": "33",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "34",
-    "title": "34",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "35",
-    "title": "35",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "36",
-    "title": "36",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "37",
-    "title": "37",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "38",
-    "title": "38",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "39",
-    "title": "39",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "40",
-    "title": "40",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "41",
-    "title": "41",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "42",
-    "title": "42",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "43",
-    "title": "43",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "44",
-    "title": "44",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "45",
-    "title": "45",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "46",
-    "title": "46",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "47",
-    "title": "47",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "48",
-    "title": "48",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "49",
-    "title": "49",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "50",
-    "title": "50",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": 51,
-    "role": "backend+frontend",
-    "title": "Template registry + picker in the campaign wizard",
-    "status": "completed",
-    "commit": "5f38d56"
-  },
-  {
-    "id": 52,
-    "role": "backend",
-    "title": "Buttons the code emits must be recognised by the intent patterns",
-    "status": "completed",
-    "commit": "5f38d56"
-  },
-  {
-    "id": 53,
-    "role": "gates",
-    "title": "Stage owners on 5f38d56: discovery/BA/market/designer/safety/reviewer/QA/planner \u2192 CPO \u2192 reporter",
-    "status": "in_progress"
-  },
-  {
-    "id": "53",
-    "title": "53",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "54",
-    "title": "54",
-    "owner": "",
-    "status": "pending"
-  },
-  {
-    "id": "1",
-    "title": "1",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "2",
-    "title": "2",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "3",
-    "title": "3",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "4",
-    "title": "4",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "5",
-    "title": "5",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "6",
-    "title": "6",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "7",
-    "title": "7",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "8",
-    "title": "8",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "9",
-    "title": "9",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "10",
-    "title": "10",
-    "owner": "",
-    "status": "done"
-  },
-  {
-    "id": "11",
-    "title": "11",
-    "owner": "",
-    "status": "done"
-  }
-]
+{
+  "schema": 2,
+  "task": "campaigns-crm",
+  "goal": "Port Frappe CRM's list/detail/kanban UX pattern onto Massar's WhatsApp campaigns module, RTL, on the existing massar-engine API",
+  "items": [
+    {
+      "id": "T1",
+      "title": "Product discovery — the bet",
+      "owner": "product-discovery",
+      "status": "done"
+    },
+    {
+      "id": "T2",
+      "title": "Business analysis — requirements + ACs",
+      "owner": "business-analyst",
+      "status": "in_progress"
+    },
+    {
+      "id": "T3",
+      "title": "Prior-art research — Frappe patterns + WhatsApp app",
+      "owner": "market-researcher",
+      "status": "done"
+    },
+    {
+      "id": "T4",
+      "title": "Plan — slices + proof bar",
+      "owner": "planner",
+      "status": "pending"
+    },
+    {
+      "id": "T5",
+      "title": "Design plan — RTL mirror of Frappe patterns",
+      "owner": "designer",
+      "status": "pending"
+    },
+    {
+      "id": "T6",
+      "title": "Build — new module + anchored insertion",
+      "owner": "frontend-engineer",
+      "status": "pending"
+    },
+    {
+      "id": "T7",
+      "title": "Safety gate",
+      "owner": "safety-gate",
+      "status": "pending"
+    },
+    {
+      "id": "T8",
+      "title": "Review",
+      "owner": "reviewer",
+      "status": "pending"
+    },
+    {
+      "id": "T9",
+      "title": "QA + delivery evidence",
+      "owner": "qa-engineer",
+      "status": "pending"
+    },
+    {
+      "id": "T10",
+      "title": "CPO acceptance",
+      "owner": "cpo",
+      "status": "pending"
+    },
+    {
+      "id": "T11",
+      "title": "Report",
+      "owner": "reporter",
+      "status": "pending"
+    }
+  ]
+}
