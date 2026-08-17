@@ -13,7 +13,7 @@
       "id": "T2",
       "title": "Business analysis — requirements + ACs",
       "owner": "business-analyst",
-      "status": "in_progress"
+      "status": "done"
     },
     {
       "id": "T3",
@@ -25,43 +25,43 @@
       "id": "T4",
       "title": "Plan — slices + proof bar",
       "owner": "planner",
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": "T5",
       "title": "Design plan — RTL mirror of Frappe patterns",
       "owner": "designer",
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": "T6",
       "title": "Build — new module + anchored insertion",
       "owner": "frontend-engineer",
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": "T7",
       "title": "Safety gate",
       "owner": "safety-gate",
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": "T8",
       "title": "Review",
       "owner": "reviewer",
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": "T9",
       "title": "QA + delivery evidence",
       "owner": "qa-engineer",
-      "status": "pending"
+      "status": "done"
     },
     {
       "id": "T10",
       "title": "CPO acceptance",
       "owner": "cpo",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "T11",

@@ -101,7 +101,76 @@ copied to other repos or global memory.
    not what carried the evidence. Rule retained; a check that reports its own failure rate cannot
    be quoted upward as proof of a property.)
 
+8. **Data-shaped features — when he asks for one more X, build the PLACE where X lives.** Three
+   consistent signals, promoted at round-30, 2026-08-17. The work he accepts is the work where the
+   next instance is a table entry rather than a code change, and where two surfaces that must agree
+   read the SAME function. (evidence: round-22 «one numeral path, one catalogue» accepted; round-26
+   «a second template» answered with `src/templates.ts` + `GET /admin/templates`, read by both the
+   wizard preview and the launch path so a template cannot preview one way and send another;
+   round-30 campaigns-crm — `CRM_KEYS` makes a fourth board an entry with its own stated
+   justification string, `campPerfState` is the single emitter for the row chip AND the board column
+   AND the group header, and the module deliberately owns no statistic so `campStats`/`campWin`
+   cannot drift in a second implementation.) COROLLARY, learned at round-30 the hard way: building
+   the single emitter is only half — **the emitter must be taught every new distinction the same
+   commit invents**, or the shared function propagates the OLD word to four surfaces at once. In
+   round-30 the shared emitter existed exactly as designed and still shipped a contradiction,
+   because `crmVerdict` learned «never sent» and `campPerfState` did not.
+
 ## Signals (dated observations, newest first)
+
+- 2026-08-17 round-30 @f2203dd / engine 3273b1e [Rule 7 — the EVIDENCE channel is clean for a second
+  consecutive round, and the channel MOVED to SCOPE]. Everything this rule has ever caught is clean:
+  I recomputed all six pixel ratios in Pillow and every one reproduces exactly, all six
+  baseline/actual pairs are distinct sha256 with the baseline older, the first-time baselines declare
+  themselves as proving render stability and NOT design correctness, `check:crm` prints «It does NOT
+  execute the views», and `a11y.json` names contrast and focus-order as uncovered. The instruments
+  still describe themselves. What carried the unbounded claim this round was the loop's prose about
+  its own SCOPE: the «NOT ported» list handed to the CPO named six omissions and omitted two more —
+  FR-2's filter condition builder and FR-5's columns picker, each with its own AC — which the loop's
+  OWN QA had already recorded as RTM AC-1 CONCERNS. NEW COROLLARY: **a summary of what was left out
+  is a measurement, and it must be derived from the requirements list, not typed from memory.** Same
+  failure shape as round-20's third corollary (an audit's scope must come from the router, never from
+  a human's recollection) — a scope typed by hand is a scope that freezes, and it freezes on the
+  flattering subset. Five-for-six across rounds 18-30.
+
+- 2026-08-17 round-30 @f2203dd [Rule 6 — the fifth corollary CONFIRMED at a second occurrence, in its
+  sharpest possible form]. Round-22's corollary: when a fix introduces a NEW DISTINCTION the product
+  had no word for, teach that word to every surface in the same edit. Round-30 is the same shape with
+  the aggravating detail that **the mechanism designed to prevent it was already built and working**.
+  BR-2 mandated one function emitting both the row chip and the board column «so they can never
+  disagree»; `campPerfState` does exactly that. QA then found a campaign with zero targets whose
+  verdict claimed it had been sent, and the fix named the missing concept properly as `crmVerdict()`
+  with four honest states — and taught it to ONE surface. So `detail-zero@1440x900.png` shows a chip
+  reading «بلا ردود بعد» ninety pixels above a hero reading «لا جهات استهداف لهذه الحملة — لم يُرسل
+  شيء.», and the shared emitter faithfully propagates the old word to the row chip, the حالة الأداء
+  column, the group header and the record header at once. LESSON: a single emitter converts a
+  one-surface bug into a four-surface bug just as reliably as it converts a one-surface fix into a
+  four-surface fix. When a fix invents a state, the FIRST place to carry it is the shared emitter.
+
+- 2026-08-17 round-30 @f2203dd [new — credit, recorded so this gate stays a calibrated instrument and
+  not a complaint log]. Four things verified good. (1) The QA→fix loop worked end to end: QA FAILED a
+  hard AC (FR-6 «تحديد المطابقين» never implemented) and found an invented STATE, and both were closed
+  at the root — the second by naming the missing concept as a function rather than patching the
+  string. (2) The reviewer's hidden-selection defect was fixed at the ACCESSOR (`crmSelIds` intersects
+  the selection with what the current filter matches) instead of by adding `clear()` calls to four
+  handlers, with the handler wrappers kept as the second layer — a structural fix with belt and
+  braces, which is the shape ordered repeatedly since round-18. (3) The builder repaired two of its
+  OWN vacuous assertions unprompted (a selector matching nothing; a single-point sample at x=767
+  against an element starting at x=800) and disclosed both in the commit message — the round-26
+  corollary «ask what input would make this red» applied by the loop to itself. (4) The module owns
+  no statistic by explicit design decision, so the event-scoping R49/R50 forced cannot drift into a
+  second implementation; that one decision is why a UI round this large produced ZERO
+  fabricated-number findings.
+
+- 2026-08-17 round-30 @f2203dd [CPO procedure — my own two misreads, recorded because the correction
+  is the transferable part]. Reading the record capture at 1:1, I read the hero's «٠٪» as a tofu box
+  (a missing glyph) and the targets filter's «٦» as «١», and either would have become a false
+  finding. Both were corrected by cropping and upscaling before writing anything down. The
+  Arabic-Indic zero «٠» IS a dot — at 26px it looks exactly like a rendering failure, and at 12px an
+  Arabic-Indic «٦» and «١» are separable only above ~2x. STANDING PROCEDURE for this gate on any
+  Arabic-numeral surface: never state a numeric finding from a 1:1 screenshot; crop and upscale the
+  region first. This is the third consecutive round in which my own measurement needed correcting
+  before the verdict — and the first in which I caught it myself, before writing it.
 
 - 2026-08-16 U102 [stated]: R102 — TWO HARD RULES + THE PRODUCTION BAR. (1) ZERO SENDS, REINSTATED ABSOLUTELY: 'Don't ever send any text to any real numbers.' This REVOKES the 0559402621 allowlist granted earlier today and every other number. No WhatsApp message to anyone, for any reason, including his own line, until he states a new allowlist. All agent verification is offline via the fetch-shimmed harness. (2) GPT JUDGES T…
 - 2026-08-16 U98 [stated]: R98 — CPO REJECTION of the contact profile header: 'very bad UI and UX here. I'm not happy as CPO.' Specific failures, all mine: (a) the campaign provenance line I shipped WITHOUT a Designer renders «وسبقتها» as an unbounded comma-separated wall of 20+ campaign names, no dates, no hierarchy - it grows with every test; (b) the engagement block is decorative - word counts, a progress bar, «العميل ٢٥…

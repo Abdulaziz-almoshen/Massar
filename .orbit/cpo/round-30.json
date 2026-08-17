@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "round": 30,
+  "task": "campaigns-crm",
+  "commit": "f2203dd5b1d7480225771ec908322dd61ad21680",
+  "engine_commit": "3273b1e1db8ea812c295dc806008d9f2a4a97070",
+  "goal": "Give him his campaigns module re-expressed with Frappe CRM's working model — list/group/kanban with real filters, multi-select bulk actions, and a tabbed record — in Massar's RTL Arabic language, so campaign operation stops being a single scrolling table.",
+  "verdict": "ITERATE",
+  "qa_evidence": {
+    "path": ".orbit/qa/delivery-evidence.json",
+    "commit": "f2203dd5b1d7480225771ec908322dd61ad21680",
+    "sha256": "32640e6ca26181fa4e5551069ce819a5958a6c7cac77e36b1ae8973c5b732c9d",
+    "gate": "delivery-quality-gate.py --commit f2203dd5b1d7480225771ec908322dd61ad21680 -> passed:true (note: the gate string-compares the sha, so an abbreviated --commit returns a false 'blocked')"
+  },
+  "user_memory": {
+    "path": ".orbit/memory/checkpoint.json",
+    "last_reviewed_request": 113,
+    "pending_event_ids": [],
+    "sha256": "869fc6795108ad83b2f59bdacfcacc04a0e440657ba05b20e534a8bd6b1d809f"
+  },
+  "basis": {
+    "skills": [
+      "user-model Rule 1 (professional marketing-tool fit is the standing bar) — applied to the تجميع view's unlabelled numeric columns and to the 375 list",
+      "user-model Rule 2 + its R49/R50 corollary (a number attributed to an EVENT must be scoped to that event) — applied to ٠٪ rates on a campaign that was never sent",
+      "user-model Rule 3 (adopt the PATTERN, never the palette) — verified honoured: zero Frappe branding, navy/teal/gold throughout, RTL, Arabic; the WhatsApp bubble is the message's own medium, not a borrowed palette",
+      "user-model Rule 6 fifth corollary, round-22 (a new DISTINCTION must be taught to every surface that speaks about the same objects, in the same edit) — the basis of must M1",
+      "user-model Rule 7 (the loop's claims about itself are subject to Rule 2) — applied to the 'NOT ported' list handed to this gate",
+      "user-model R41a (\"action points\" = what to DO now) — basis of should S4",
+      "MEMORY.md 'Emitted values must be readable' — basis of should S2 (crmDrop keys the write on a rendered Arabic label)",
+      "decisions/0001 + its round-20 amendment (anchored edits are necessary but not sufficient; the edited surface must be executed) — verified honoured via the two-anchor seam + crmBoot()"
+    ],
+    "research": [
+      "Rebuilt the exact commit in a clean worktree: npm ci + npm run build (tsc strict) exit 0, npm run check exit 0, check:crm 21/21 — measured by me, not quoted",
+      "Recomputed all 6 pixel ratios in Pillow: 0.00177 / 0.000632 / 0.000515 / 0.00154 / 0.000692 / 0.000488 reproduce EXACTLY; all 6 baseline/actual pairs are distinct sha256 and every baseline predates its actual",
+      "Opened all 27 captures at 375/768/1440 and read the screens as a founder about to demo; zoomed the hero KPIs and the targets filter row rather than trusting a first read (both first reads were wrong)",
+      "Read src/campaigns-crm.ts end to end at 3273b1e (755 lines) and traced every network call: exactly one, POST /admin/campaign/test",
+      "Read requirements.md AC-1..AC-14 against the shipped control bar: FR-2 (filter condition builder) and FR-5 (columns picker) are absent from crmControlBar",
+      "Read RTM.md: QA had already recorded AC-1 CONCERNS naming both gaps; that finding did not travel into the summary handed to this gate"
+    ],
+    "weights": {"skills": 0.4, "research": 0.6}
+  },
+  "grill": [
+    {
+      "lens": "domain",
+      "verdict": "findings",
+      "evidence": "Earned on the rest: the file owns NO statistic — campStats/campWin/seenOf/repliedIn/interestedOf are called, not reimplemented, so the campaign-window scoping that R49/R50 forced stays intact and cannot drift. «شوهدت» is defined in-page as read-or-replied. Read-only boards state why they are read-only.",
+      "findings": [
+        {"severity": "must", "finding": "A WhatsApp campaign has a real lifecycle (created → sent → delivered → replied). campPerfState (campaigns-crm.ts:113) models only test / replied>0 / else, so a campaign that was NEVER sent is labelled «بلا ردود بعد» — 'no replies yet', which asserts it went out. Visible in detail-zero@1440x900.png: the header chip says «بلا ردود بعد» 90px above a hero that says «لا جهات استهداف لهذه الحملة — لم يُرسل شيء.» One screen, two contradictory claims."}
+      ]
+    },
+    {
+      "lens": "policy",
+      "verdict": "findings",
+      "evidence": "§8 clean and verified, not assumed: the only fetch in the module is POST /admin/campaign/test; check:crm asserts a fetch allow-list of 1, refuses non-literal fetch URLs, and scans for sendBeacon/XHR/WebSocket/EventSource/import(). crmRetargetSel stages a cohort into lastDetailCohort and calls startRetarget() — it halts at the wizard's human gate and sends nothing. No template submission, no deletion, no spend. ADR-0001 honoured better than written: the port is a separate module interpolated at two anchors instead of range-edited into dashboard.ts, and crmBoot() + the layered catch are the runtime assertion the round-20 amendment demanded.",
+      "findings": [
+        {"severity": "should", "finding": "crmDrop (campaigns-crm.ts:748) derives the write from a rendered Arabic label: `want = col === \"تجريبية\"`. The حالة الأداء board emits a column with that identical label (campPerfState line 114). It is unreachable today only because canDrag gates the attributes — the handler itself has no board guard. This is the project's own recorded defect class (MEMORY.md 'Emitted values must be readable'). Key the drop on CRM_KEYS[0][0] === \"class\" plus the column's key, never its display string."}
+      ]
+    },
+    {
+      "lens": "product",
+      "verdict": "findings",
+      "evidence": "Fits the portal: same nav, same card/chip/tblwrap idioms, same fmtN numeral path (check:numerals now covers campaigns-crm.ts), no new endpoint, no schema change. The three decisions taken without asking are ruled on individually in cpo-verdict.md — 1 upheld, 2 upheld, 3 upheld-in-principle, 4 upheld-but-incomplete.",
+      "findings": [
+        {"severity": "must", "finding": "FR-2 (filter condition builder) and FR-5 (columns picker) — two of this cycle's own requirements, each with an AC — were not built, and the 'NOT ported' list handed to this gate names four other things and omits these two. QA had already recorded it (RTM AC-1 CONCERNS). Against an ask whose verbatim words are «exact design and UX and functionality», a silently-dropped requirement costs more trust than the missing feature costs function."},
+        {"severity": "should", "finding": "«الخطوة التالية» — the action-points surface he asked for by name (R41a) — moved from always-visible on the record to a third tab. The count on the tab label mitigates it; a founder scanning the record still no longer sees what to do next without a click. Consider promoting the single top move to a one-line strip under the hero, tab for the rest."}
+      ]
+    },
+    {
+      "lens": "design_ux",
+      "verdict": "findings",
+      "evidence": "Walked all 9 list states and 5 record states at three viewports. Genuinely strong: the bulk bar is Frappe-grade and reads as Massar's own; empty / one-campaign / 400-campaign / zero-target all render deliberately rather than broken; the cap footer names the number it hides; «—» instead of ٠٪ where the denominator is 0; the sparse-degradation notice when grouping adds nothing. a11y.json 21/21 with its uncovered scope declared.",
+      "findings": [
+        {"severity": "must", "finding": "The تجميع view ships WITHOUT column headers. crmGroupView (line 306) emits the group card, then rows, and never the header row that crmListView emits at line 266. At every viewport the operator sees «٦ ٪٠ ٪٠ ▬ ٪٠» — four unlabelled numeric columns, three of them identical-looking. Confirmed in list-group@1440x900.png and list-group@768x1024.png. In قائمة the same columns are labelled الجمهور / مشاهدة / ردود / التقدّم."},
+        {"severity": "must", "finding": "Same-screen contradiction, second instance: on the kanban keyed to التصنيف under the فعلية tab, the board renders «تجريبية ٠» while the pill 200px above reads «تجريبية (١)» (list-kanban@1440x900.png). Both are true under their own scope and that is exactly why it reads as a broken count. When the board key equals the filter dimension, the board should run over «الكل» (or the tab should be suppressed) — a class board inside a class filter is a one-column board by construction."},
+        {"severity": "should", "finding": "At 375 the campaigns list is a 940px-min-width table inside a horizontal scroller: the phone shows the campaign name, the date, and a clipped «الخدم…» — no status, no audience, no rates without swiping inside the card (list-default@375x812.png). This is INHERITED (the old vKmon used min-width:900px), so it is not a regression — but this rebuild touched every pixel of that row and was the moment to give the phone a stacked card. He QAs on his phone (R21, R32)."},
+        {"severity": "should", "finding": "«عرض النص كاملًا» is offered whenever msg.length > 90 (line 401), not when the text actually overflows the 2-line clamp. In detail-targets@1440x900.png the whole message is visible on one line and the link is still offered; clicking it changes nothing. Trigger on scrollHeight > clientHeight."},
+        {"severity": "nice", "finding": "The row-end reclassify control is a bare «⇥» / «↩» glyph in an otherwise iconographic system; and the group «why» caption («تُحدَّد عند الإطلاق ولا تتغيّر») repeats verbatim on every group card when it belongs once, beside the group selector."}
+      ]
+    },
+    {
+      "lens": "system_design",
+      "verdict": "findings",
+      "evidence": "Right shape and I verified the load-bearing parts at the commit: client state only, no endpoint, no migration; bulk reclassify uses bounded concurrency (4 lanes) with a re-entrancy guard, mutates local state only on a confirmed 2xx, and keeps failed ids selected so «تعذّر ٣ — أعد المحاولة» is an instruction that can be followed. The reviewer's hidden-selection defect was closed at the ACCESSOR (crmSelIds/crmSelPhones intersect with what the current filter matches) rather than by adding clear() calls to four handlers — a structural fix, and the belt-and-braces wrappers were kept. Build + all 13 checks green in a clean worktree at 3273b1e.",
+      "findings": [
+        {"severity": "should", "finding": "vKmon/vKmonDetail remain as a live fallback that is dead in the happy case — two full implementations of one screen, which will diverge. It is stated debt and it is well-instrumented (console.error on both levels, a last-resort message instead of a blank page). Give it a removal TRIGGER rather than an open horizon: delete both after the first deploy where smoke 7/7 is green on #kmon and #kmon/<id>."},
+        {"severity": "should", "finding": "The engine repo's working tree is dirty with the concurrent crm-record session (package.json, src/agent.ts, src/db.ts, src/index.ts, src/tracker.ts, scripts/check-props.mjs). `npm run deploy` from that tree would ship unreviewed runtime code — including agent.ts — under this cycle's name. Deploy from the reviewed commit, not from the tree."}
+      ]
+    },
+    {
+      "lens": "slop",
+      "verdict": "findings",
+      "evidence": "Hunted by name and did not find it: no lorem, no placeholder data presented as real, no TODO stub, no dead nav, no purple-gradient genericism (the one gradient is the existing navy verdict hero). The copy is specific and states its own limits — «لا تقديرات», «هذا نصّ ما أُرسل فعليًا. لا يقبل التعديل بعد الإطلاق», «حُدِّدت ٦٠ المعروضة فقط — من ١٣٧، والباقي غير مشمول», «هذه اللوحة للعرض فقط». The instruments describe themselves: check:crm prints «It does NOT execute the views», a11y.json names contrast/focus-order as uncovered, and every visual note declares a FIRST-TIME baseline and says a 0.0 would have meant the files were identical. The tests are not vacuous — the fix commit records two of its own assertions having been vacuous first (a selector matching nothing, a single-point sample at x=767 against an element starting at x=800) and repaired them.",
+      "findings": [
+        {"severity": "should", "finding": "One user-visible no-op: the «عرض النص كاملًا» link in the state where the message is already fully shown (also filed under design_ux). It is a working control on a wrong trigger, not a fake control — which is why it is a should and not a must."}
+      ]
+    }
+  ],
+  "scores": {
+    "intent_fidelity": 7,
+    "completeness": 6,
+    "coherence": 6,
+    "taste": 8,
+    "surprise": 7
+  },
+  "score_evidence": {
+    "intent_fidelity": "The Frappe working model IS here and it is recognisable: view switcher, quick filters, multi-select with a floating bulk bar, a board that drags only where a write exists, a tabbed record. Rule 3 honoured exactly — no Frappe palette, no Latin chrome, navy/teal in RTL Arabic. Held off 8+ by two of its own FRs being unbuilt and undisclosed against an ask whose word was «exact».",
+    "completeness": "Empty / one / 400 / zero-target states are all built and captured — that is real completeness work. Against it: not deployed (he cannot open it; AC-13's smoke half is open by construction), the تجميع view ships without its column labels, and the new state vocabulary has no word for the state the same commit taught the verdict to say.",
+    "coherence": "Fits the portal's language, helpers and numeral path with no bolt-on seams. Two same-screen contradictions (chip vs verdict; board «تجريبية ٠» vs pill «تجريبية (١)») and one view that drops its own labels are what a demo audience notices first.",
+    "taste": "Judged by his model, not mine: honest zeros, «—» for undefined rates, read-only boards that say WHY, disclosed caps, no invented lifecycle, no decorative chips, and the sent message rendered as the WhatsApp bubble he himself photographs (R21). This is his taste applied deliberately rather than guessed.",
+    "surprise": "The launch strip is the aimed surprise — camp.message has been stored and never shown; it now appears in its own medium with «لا يقبل التعديل بعد الإطلاق» stating the constraint instead of hiding it. «تحديد المطابقين» reaching past LIST_CAP with an honest count is the second."
+  },
+  "decisions_ruled": [
+    {"decision": "D1 — Kanban built, keyed on real fields, drag only where a write exists", "ruling": "UPHELD", "reason": "He asked for Frappe's view model; a board is the most legible half of it. Keying it on التصنيف/الخدمة/شهر الإطلاق/حالة الأداء invents no lifecycle, and refusing drag where nothing can be persisted is the honest version. BA was right, discovery was wrong."},
+    {"decision": "D2 — right-hand field rail dropped on a field census", "ruling": "UPHELD, and it was the better call", "reason": "Verified the census: the campaign has 6 fields; the header renders name/product/date/class; exactly one substantive field (message) was unrendered. A rail would have been four read-only repeats of the header around one real value — structure without content, which is the slop pattern. The launch strip exposes the one field that mattered and does it better than a rail would."},
+    {"decision": "D3 — «مكتملة» retired for تجريبية / فيها ردود / بلا ردود بعد", "ruling": "UPHELD IN PRINCIPLE, INCOMPLETE IN EXECUTION", "reason": "«مكتملة» was a claim nothing on the table could back, and retiring it is right even though it changes a label he has seen. But the replacement vocabulary has no word for «never sent», so it now contradicts the verdict the same commit wrote. See must M1."},
+    {"decision": "D4 — Create modal, assignment/@mentions, Tasks/Notes/Email, WhatsAppBox, doc-id row, saved public views not ported", "ruling": "UPHELD for the six named, INCOMPLETE as a list", "reason": "Each of the six is correctly out (no user table, no second entity, and a composer would be a send affordance under the standing zero-send rule). The list omits FR-2 and FR-5, which its own QA had flagged. See must M4."}
+  ],
+  "change_orders": [
+    {"priority": "must", "id": "M1", "order": "Teach campPerfState the distinction crmVerdict already knows. Add a fourth state for a campaign with no send — targeted===0 OR (sent===0 && delivered===0) — with its own label («لم تُرسل بعد» / «بلا جمهور») and its own chip class. Because BR-2's one-function design already exists, this lands on the row chip, the حالة الأداء board column, the group header and the record header in one edit; verify all four rather than crediting them. (b) In the same edit, make the rates honest for that state: when nothing was sent, نسبة المشاهدة / نسبة الردود / جهات مهتمة لكل ١٠٠ are not ٠٪, they are undefined — return null from crmRate so the hero renders «—» exactly as it does for the zero-target case, and the list row's التقدّم with it. Proof: a capture of the never-sent record where the chip, the hero and the three rates all say the same thing."},
+    {"priority": "must", "id": "M2", "order": "Render the column header row inside the تجميع view (or once above the group stack). Today crmGroupView emits rows without the header crmListView emits at line 266, so الجمهور / مشاهدة / ردود / التقدّم are four unlabelled numbers at every viewport. Proof: list-group at 1440 and 768 with every column labelled."},
+    {"priority": "must", "id": "M3", "order": "When the board key is التصنيف and the class tab is not «الكل», the board contradicts the pill («تجريبية ٠» beside «تجريبية (١)»). Resolve it deliberately: either run the board over all campaigns regardless of the class tab (with the tab visibly neutralised) or suppress the class board under a class filter. Also decide and state what the operator sees when a drag moves a card out of the active tab — today it silently vanishes."},
+    {"priority": "must", "id": "M4", "order": "Close the disclosure gap. Write into .orbit/artifacts/campaigns-crm/requirements.md (or an ADR) an explicit dated decision recording that FR-2's filter condition builder and FR-5's columns picker were NOT built, with the reason and the trigger that would build them (my ruling: columns picker stays out — per-browser chrome with no value at this data size; the filter builder is deferred, not cancelled, and its trigger is the first time the campaign count passes ~30 or he asks to slice by a counter or a date range). Then say it to him in ONE line when this is reported — «فلترة الشروط واختيار الأعمدة مؤجّلان» — rather than letting him find it. Do not build either this round."},
+    {"priority": "must", "id": "M5", "order": "Deploy. He cannot see any of this today and AC-13's smoke half is open by construction. Deploy the REVIEWED commit, not the working tree — the engine repo is dirty with the concurrent crm-record session's agent.ts/db.ts/index.ts/tracker.ts changes, which must not ride out under this cycle's name. Then `npm run smoke` 7/7 and GET /health ok:true + outbound.ok:true, recorded."},
+    {"priority": "should", "id": "S1", "order": "Give the phone a real row. At 375 the list shows a name, a date and a clipped service word inside a 940px sideways scroller; collapse the row into a stacked card (name + status chip + الجمهور + the two rates) below ~600px. Inherited debt, but this rebuild owned the row and he demos from his phone."},
+    {"priority": "should", "id": "S2", "order": "crmDrop must not key its write on a rendered Arabic label — «تجريبية» is also emitted as a حالة الأداء column. Pass the column KEY, and assert the active board is \"class\" inside the handler, so the guard survives someone later making another board droppable."},
+    {"priority": "should", "id": "S3", "order": "Trigger «عرض النص كاملًا» on actual overflow (scrollHeight > clientHeight), not on msg.length > 90 — at 1440 it is currently offered on messages that are already fully visible and does nothing when clicked."},
+    {"priority": "should", "id": "S4", "order": "Surface the single top «الخطوة التالية» move as a one-line strip under the verdict hero, keeping the tab for the rest. Action points are what he asked for by name (R41a); a click is a lot of distance for the one thing the screen exists to tell him."},
+    {"priority": "should", "id": "S5", "order": "Put a removal trigger on the vKmon/vKmonDetail fallback: delete both once one deploy has smoke 7/7 green on #kmon and #kmon/<id>. Two implementations of one screen with no expiry date is how the dead one silently becomes the wrong one."},
+    {"priority": "nice", "id": "N1", "order": "Replace the «⇥»/«↩» row-end glyphs with the portal's icon set, and hoist the repeated group «why» caption to sit once beside the group selector."},
+    {"priority": "nice", "id": "N2", "order": "delivery-quality-gate.py string-compares the commit, so an abbreviated --commit sha reports 'blocked' on a passing bundle. Compare on prefix."}
+  ],
+  "user_model_updates": [
+    "Rule 7 — CLEAN on the evidence channel for a second consecutive round (all 6 pixel ratios reproduce under my own Pillow recomputation; first-time baselines declared as proving render stability and not design correctness; check:crm and a11y.json both publish their own uncovered scope). The channel MOVED: the loop's prose about its own SCOPE now carries what its prose about its own EVIDENCE used to. New corollary recorded.",
+    "Rule 6 — fifth corollary confirmed at a second occurrence and promoted from observation to expected practice: a fix that introduces a new distinction must teach the word to every surface in the same edit. Note the sharper form found here — the shared emitter BR-2 designed for exactly this purpose EXISTED and simply was not taught.",
+    "New Rule 8 promoted at 3 consistent signals: DATA-SHAPED FEATURES — when he asks for one more X, build the place where X lives.",
+    "Credit recorded: the QA→fix loop worked as designed this round (a hard AC FAIL and an invented STATE both found by QA and both closed at the root), and the builder repaired two of its own vacuous assertions unprompted."
+  ],
+  "reviewed_at": "2026-08-17T16:05:00Z"
+}
