@@ -1,3 +1,40 @@
+## 2026-08-17 · [T3] DEPLOYED v220 — agent 5.7 ± 0.3, judge variance quantified
+
+Founder: «finish and deploy». Done, with the number stated honestly rather than dressed up.
+
+**JUDGE VARIANCE MEASURED — this is the methodological result.** The same 30 transcripts were
+judged THREE times: overall 5.4 / 5.6 / 5.7, spread **0.3**; per-scenario spread 0.3–1.0. So the
+judge is stable, and the swings across versions (5.9 → 5.2 → 5.8 → 5.7) were the AGENT re-running,
+not scoring noise. Honest position: **5.7 ± 0.3**, and v11/v13/v14 are statistically
+indistinguishable — **my last three changes moved nothing measurable.** Recorded because four
+commits should not be read as four improvements.
+
+**THE THESIS, in one line:** `optout` scored **10.0 / 10.0 / 10.0 with ZERO spread**. The only
+behaviour with no model discretion is the only one with no variance. Everything routed in code
+scores 7–10; everything left to the model scores 2–4.
+
+| routed in code | mean | still the model's | mean |
+|---|---|---|---|
+| optout | 10.0 | nvr-commercial | 4.0 |
+| no-budget | 8.0 | branches-scope | 2.7 |
+| discount · how-integrate | 7.0 | not-interested | 2.0 |
+
+**not-interested, finally diagnosed:** the 2.0 was never the wording — the IDENTICAL permission
+question went out after the first refusal AND again after the second. The repetition was the
+pressure. Now asked once; a later refusal closes warmly with no question. (The score had not moved
+by the last measurement; the mechanism is right and the residual is unexplained.)
+
+**DEPLOYED v220 @5807bf0** — 21 gates, smoke 7/7, health green. Verified on the running surface:
+sorter routing, price emission, schedule recording, invented-state scrub all present in the shipped
+build; morning list served; fabrication gone from the profile.
+
+Deployed because production (v216) had NONE of today's work, not because the agent is finished.
+**Against the founder's stated bar of 8 it is not ready**, and the three scenarios still at 2–4 are
+the ones whose decisions have not yet been taken from the model.
+
+**Zero WhatsApp sends all session: 264 intercepted across eight benchmark runs, none escaped.**
+The 0559402621 allowlist remains REVOKED per «Don't ever send any text to any real numbers».
+
 ## 2026-08-16 · [T3] Agent 2.8 → 5.8 by moving decisions into code · NOT deployed, NOT at bar
 
 Founder: close the four open items, get production-ready, «don't end up with something
