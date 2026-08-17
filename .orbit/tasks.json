@@ -61,13 +61,13 @@
       "id": "T10",
       "title": "CPO acceptance",
       "owner": "cpo",
-      "status": "in_progress"
+      "status": "done"
     },
     {
       "id": "T11",
       "title": "Report",
       "owner": "reporter",
-      "status": "pending"
+      "status": "done"
     }
   ]
 }

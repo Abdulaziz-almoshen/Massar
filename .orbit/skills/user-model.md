@@ -118,6 +118,49 @@ copied to other repos or global memory.
 
 ## Signals (dated observations, newest first)
 
+- 2026-08-17 round-32 @28df149 / engine 6821517 [ACCEPTED — and the round's most valuable artifact is
+  a test the loop found green while wrong, BEFORE this gate did]. Rule 7 has spent fourteen rounds
+  teaching one thing: an instrument that cannot go red is not evidence. This round the loop applied
+  it to a test IT HAD JUST WRITTEN, unprompted. Ordered at round-31: widen the never-sent assertion
+  across the record's three tabs. It did — and then checked whether the widened test could actually
+  fail, discovered it stayed GREEN through a full revert of the defect it was written for (the
+  zerotargets fixture has targeted=0, so crmRate returns null regardless and the assertion could
+  never fire), and fixed the STATE coverage rather than reporting the widening as done. It also
+  refused the blanket «no ٠٪ anywhere» form, which would have wrongly flagged the honest zero I had
+  just authorised, in favour of a per-card assertion against three named labels. Two corrections, both
+  self-found, both reported. This is the first time in this project's record that the loop has closed
+  a Rule 7 gap ahead of the gate instead of behind it. FOURTH consecutive clean evidence round (all
+  six ratios reproduce under my recomputation).
+
+- 2026-08-17 round-32 @28df149 [Rule 6 sixth corollary CONFIRMED one round after it was written].
+  «A single emitter closes the surfaces that READ it and is blind to the surfaces that COMPUTE the
+  same thing themselves — grep the OLD accessor's surviving call sites, never the value or the
+  string.» Written at round-31 from the crmDeliveryRate miss; applied at round-32 unprompted, with
+  the three surviving crmRate call sites enumerated and justified in the report. I re-derived them
+  independently and they hold (definition, wrapper, and the التقدّم meter I had waived). The
+  corollary's practical form is now settled: after introducing an accessor, the fix is not done
+  until the old accessor's call list is read out loud.
+
+- 2026-08-17 round-32 @28df149 [new signal, 1 of 3 toward a rule — ESCALATE THE FORK, DECIDE THE
+  REST]. The deploy question was brought to this gate with both options costed and a stated lean,
+  while the four code items around it were decided and shipped without asking. That is the correct
+  synthesis of R93 («You have to be professional. Why do you ask me the slim question?») and R59
+  («I give you a goal, and you'll give me a deliverable»): the thing to escalate is the one the
+  escalatee alone can decide — here, whether an increment may sit undeployed behind another
+  session's clock — and everything else is the deliverer's job. Two more instances promotes it.
+  Recorded also because the underlying judgment was RIGHT: `fly deploy` ships the working tree, the
+  tree carried a concurrent session's unreviewed agent.ts/db.ts/tracker.ts, and refusing was worth
+  more than shipping.
+
+- 2026-08-17 round-32 @28df149 [accepted pattern — HONEST ABSENCE HAS MORE THAN ONE WORD]. The perf
+  grid ships three distinct absence captions where a lesser fix would have shipped one: «٠٪ من جهات
+  الاستهداف» where the zero is TRUE (أُرسلت/وصلت describe our own action), «لم تُرسل بعد» where the
+  number is undefined because nothing was sent (شوهدت/ردّوا/جهات مهتمة describe the recipients), and
+  «لا جهات استهداف» where there was never an audience — with the asymmetry explained in a source
+  comment for the next reader rather than assumed. This is Rule 2 matured: the goal is not «no
+  zeros», it is «every number scoped to the event it describes», and that requires the product to own
+  more vocabulary than a single «—». Reuse this shape for every absence state in the portal.
+
 - 2026-08-17 round-31 @97d0e18 / engine df380ec [Rule 6 — SIXTH COROLLARY, and it is the specific
   failure mode of the single-emitter pattern Rule 8 just promoted]. Round-30 ordered one shared
   function to learn a new word; it did, perfectly — `campPerfState` gained «بلا جمهور» and «لم تُرسل
