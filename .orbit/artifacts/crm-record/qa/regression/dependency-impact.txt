@@ -1,0 +1,156 @@
+DEPENDENCY-IMPACT REGRESSION · commit 388832fc86f47feebc3cc828ae308761a43aed5a
+
+CHANGED UNIT: tracker.writeProp / tracker.decideProp / db.upsertProps (the single door).
+Every caller below is exercised through its OWN entry point — the webhook + the real agent tool
+loop for the five agent writers, the HTTP routes for the three human writers — not by calling
+writeProp directly. A test that only calls the door proves nothing about who walks through it.
+
+################ 1 · the five AGENT writers, mid-conversation ################
+
+--- agent tool «tag_interest» → props.productInterest
+    {"value": "خدمات التطعيمات:hot", "source": "agent", "by": "agent:tag_interest", "ts": 1787024467854}
+    outcome now: interested
+
+--- agent tool «record_schedule» → props.nextStep
+    {"value": "الثلاثاء الساعة عشر", "source": "agent", "by": "agent:record_schedule", "ts": 1787024473178}
+    outcome now: scheduled
+
+--- agent tool «mark_not_interested» → props.disqualifyReason
+    {"value": "other: ماني مهتم صراحة", "source": "agent", "by": "agent:mark_not_interested", "ts": 1787024478512}
+    outcome now: stopped
+
+--- agent tool «close_conversation» (asked=not_interested → outcome stopped) → props.disqualifyReason
+    {"value": "other: ماني مهتم صراحة", "source": "agent", "by": "agent:mark_not_interested", "ts": 1787024478512}
+
+--- decline TAP (msgType=button, firm «لا») → props.disqualifyReason on a fresh contact
+    {"value": "no_need: ضغط زر «لا»", "source": "agent", "by": "agent:decline_tap", "ts": 1787024490190}
+    outcome: not_interested
+--- soft decline TAP «ليس الآن» must write NOTHING (a timing answer is not a rejection)
+    props: {}
+    outcome: later
+
+################ 2 · the two paths that must NEVER write a property (BR-3 / by design) ################
+--- OPT-OUT «إيقاف» — the customer's RIGHT, never our disqualification judgement
+    props: {} | outcome: opted_out | optedOut: True
+    (props MUST be {} — an opt-out filed as «سبب الاستبعاد» would count people who never
+     rejected the product in the disqualification report.)
+
+################ 3 · AC-3 · the agent cannot write the human-only / import-only keys ################
+`note` (FR-5, human-only) and `orgProfile` (FR-2, import-only) have NO agent-facing tool at all —
+no tool in agent.ts's schema can name them, which is the strongest form of the guarantee. The
+refusal itself lives in decideProp condition 2 and is asserted structurally by check-props.mjs:
+decideProp(note, source=agent) -> {"applied":false,"reason":"not_agent_writable"}
+  decideProp(orgProfile, source=agent) -> {"applied":false,"reason":"not_agent_writable"}
+  decideProp(decisionMaker, source=agent) -> {"applied":false,"reason":"not_agent_writable"}
+  decideProp(productInterest, source=agent) -> applied=true
+  decideProp(nextStep, source=agent) -> applied=true
+  decideProp(disqualifyReason, source=agent) -> applied=true
+
+################ 4 · AC-5 · the upsertContact trap ################
+props before the unrelated events:
+  {"decisionMaker": {"value": "د. سارة العتيبي · مديرة العيادة", "source": "human", "by": "عبدالعزيز", "ts": 1787023510865}, "productInterest": {"value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm", "source": "human", "by": "عبدالعزيز", "ts": 1787023579954, "contested": {"value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold", "by": "agent:tag_interest", "ts": 1787023580167}}}
+props after 4 status events + 1 inbound + a full agent turn:
+  {"decisionMaker": {"value": "د. سارة العتيبي · مديرة العيادة", "source": "human", "by": "عبدالعزيز", "ts": 1787023510865}, "productInterest": {"value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm", "source": "human", "by": "عبدالعزيز", "ts": 1787023579954, "contested": {"value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold", "by": "agent:tag_interest", "ts": 1787023580167}}}
+IDENTICAL: True
+
+props column straight out of Postgres (the upsertContact SQL never names it):
+{
+    "decisionMaker": {
+        "by": "عبدالعزيز",
+        "ts": 1787023510865,
+        "value": "د. سارة العتيبي · مديرة العيادة",
+        "source": "human"
+    },
+    "productInterest": {
+        "by": "عبدالعزيز",
+        "ts": 1787023579954,
+        "value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm",
+        "source": "human",
+        "contested": {
+            "by": "agent:tag_interest",
+            "ts": 1787023580167,
+            "value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold"
+        }
+    }
+}
+upsertContact's column list, from src/db.ts — `props` must not appear:
+  (no line in upsertContact mentions props)
+
+################ 5 · downstream READERS of interest_tags ################
+`upsertProps` is now the only writer of interest_tags. Two readers are downstream of it:
+  a) the customers list's tag column (vCustomers → cache.contacts[].tags)
+  b) any campaign cohort / segment that reads tags
+a) /admin/state contact row tags for 966500000850: [{"product": "الإجازات المرضية", "level": "hot", "ts": 1786900650000}, {"product": "تكامل الأنظمة (HIS/ERP)", "level": "warm", "ts": 1787023579954}]
+   props.productInterest        : "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm"
+   the list column and the panel now read the SAME set — one writer, no divergence.
+b) POST /admin/segments/preview (a cohort read over the ledger) -> HTTP 400
+   {"error":"body: { def: { match, conditions: [...] } }"}
+   Read-only by contract: it never sends and never writes. Ledger unchanged:
+   interest_tags rows for 966500000850: 2
+
+################ 6 · the third route that changed shape ################
+/admin/contact/tags used to return 404/200; it now returns 503 when the ledger is unreachable.
+Proven in SC-6. Here is the healthy contract, unchanged:
+  200 path : HTTP 200 {"status":"ok","tags":2}
+  404 path : HTTP 404 {"error":"unknown phone — curation never creates a contact"}
+
+################ 7 · AC-10 / BR-3 · a human disqualification moves the outcome, never opted_out ################
+before: outcome=interested optedOut=False
+POST disqualifyReason (price) -> HTTP 200 {"ok":true,"persisted":true,"props":{"disqualifyReason":{"value":"price: السعر أعلى من ميزانيتهم","source":"human","by":"عبدالعزيز","ts":1787024516133}}}
+after : outcome=not_interested outcomeReason=price: السعر أعلى من ميزانيتهم optedOut=False
+        («price» is not a customer-stated refusal → outcome=not_interested, NOT stopped)
+POST disqualifyReason (no_need, a customer-stated refusal) -> outcome=stopped optedOut=False
+opted_out stayed FALSE throughout: True
+«غير مناسب» from the outcome button files «other», never «no_need»:
+  POST /admin/contact/outcome not_a_fit -> HTTP 200 {"status":"ok","outcome":"stopped","disqualify":"saved"}
+  -> props.disqualifyReason = {"value": "other: غير مناسب (قرار بشري من اللوحة)", "source": "human", "by": "اللوحة", "ts": 1787024516151, "prior": {"value": "no_need: قال إنه لا يحتاجها", "by": "عبدالعزيز", "ts": 1787024516143}}
+
+################ 8 · AC-12 / BR-5 · every accepted write appears once, naming key + writer ################
+prop:decisionMaker|5|عبدالعزيز · human · بببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببب
+prop:disqualifyReason|6|agent:decline_tap · agent · no_need: ضغط زر «لا»
+prop:nextStep|4|agent:record_schedule · agent · الأحد الصبح بعد الفجر
+prop:productInterest|4|agent:tag_interest · agent · خدمات التطعيمات:hot
+prop_rejected:productInterest|1|human_value_wins · قراءة مختلفة: الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold
+
+################ 9 · §8 · the send spy over this ENTIRE regression run ################
+  ('boot', 'SPY_INSTALLED') 4
+  ('openai', 'STUBBED') 15
+  ('openai-insights', 'STUBBED') 15
+  ZERO calls to api.gupshup.io — not blocked ones, NONE: outboundReady() is false, so
+  baseParams() throws before a URL is ever constructed. Nothing was sent, to any number.
+
+################ ADDENDUM A · close_conversation, on a FRESH contact ################
+In the run above this tool fired on a contact whose outcome was ALREADY `stopped` from
+mark_not_interested, so the write it attempted was an identical re-inference and left the
+existing reading in place — the evidence was ambiguous. Re-run in isolation:
+  props.disqualifyReason = null
+  outcome = closed | optedOut = False
+  («other», never a reason nobody stated — the enum the tool picks is not put in the buyer's mouth.)
+
+A close that is NOT a refusal must write NOTHING:
+  close_conversation(asked=later) -> props = {} | outcome = closed
+  (an open conversation with no next contact scheduled is not a rejection.)
+
+################ ADDENDUM B · the cohort reader, with a valid segment def ################
+interest_tags now has exactly ONE writer (upsertProps). Any campaign cohort that reads a
+`interest` signal is therefore downstream of the property write. Evaluated against the ledger:
+  جهات أبدت اهتمامًا       HTTP 200 -> {"suppressed": [{"phone": "966500000850", "name": "د. سارة العتيبي", "reason": "رُوسلت قبل ٠ ساعة"}], "tooNew": [], "matched": 1}
+  جهات لم تُبدِ اهتمامًا   HTTP 200 -> {"suppressed": [{"phone": "966500000863", "name": "جهة", "reason": "رُوسلت قبل ٠ ساعة"}, {"phone": "966500000864", "name": "جهة", "reason": "رُوسلت قبل ٠ ساعة"}, {"phone": "966500000866", "name": "جهة", "reason": "رُوسلت قبل ٠ ساعة"}, {"phone": "966500000867", "name": "جهة", "reason": "رُوسلت قبل ٠ ساعة"}], "tooNew": [], "matched": 1}
+  ردّوا ولم يُستبعدوا      HTTP 400 -> {}
+  Read-only by contract: it never sends and never writes.
+  interest_tags after the whole regression run (the only writer is upsertProps):
+    966500000850 -> الإجازات المرضية:hot
+    966500000850 -> تكامل الأنظمة (HIS/ERP):warm
+    966500000862 -> خدمات التطعيمات:hot
+
+################ ADDENDUM C · AC-1 · the read contract, and its NAME ################
+  keys returned under `props`: ["decisionMaker", "disqualifyReason", "productInterest"]
+  the contract's six keys      : ["decisionMaker", "orgProfile", "productInterest", "nextStep", "note", "disqualifyReason"]
+  no key outside the six       : True
+  a seventh key in a PATCH     : HTTP 400 {"ok":false,"error":"unknown_property","key":"leadScore","allowed":["decisionMaker","orgProfile","productInterest","nextStep","note","disqualifyReason"]}
+  GET /api/contact/<phone>     : HTTP 404 {"message":"Route GET:/api/contact/966500000850 not found","error":"Not Found","statusCode":404}
+  FINDING QA-4 (P2, documentation): AC-1 names the route `GET /api/contact/<phone>`. No such
+  route exists at this commit and never did; the profile is served by `GET /admin/customer/
+  :phone`. The CAPABILITY the AC asserts holds in full (shown above); the ACCEPTANCE CRITERION
+  as written is unexecutable and should be corrected in requirements.md rather than silently
+  reinterpreted — an AC nobody can run is an AC nobody can fail.

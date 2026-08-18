@@ -1,0 +1,89 @@
+SC-2 · alternate · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: عبدالعزيز, glancing at a record the assistant filled in during a live conversation
+GIVEN  the agent's record_schedule tool wrote الخطوة التالية as a READING (source:'agent',
+       by:'agent:record_schedule') during the real handleInbound loop — see the ledger below
+WHEN   he taps «أكّد» in ملف العميل — one tap, no dialog (design-plan §3)
+THEN   the row flips قراءة → حقيقة, the signature reads «أكّدها عبدالعزيز», and `prior` holds the
+       agent's value/by/ts — which is what makes the confirmation-rate metric computable (FR-7).
+
+=== 0. the reading, as the agent left it ===
+{
+  "value": "الأحد الصبح بعد الفجر",
+  "source": "agent",
+  "by": "agent:record_schedule",
+  "ts": 1787025841670
+}
+
+=== 1. the row BEFORE the tap, as rendered ===
+{
+  "mark": [
+    "pm-a",
+    "pm-h"
+  ],
+  "isReadingRow": true,
+  "rowBg": "rgb(255, 253, 247)",
+  "text": "الخطوة التالية | الأحد الصبح بعد الفجر | قال العميل: «الأحد الصبح بعد الفجر» | قراءتنا لم تُؤكَّد بعد. | قراءة المساعد · ١٨ أغسطس | أكّد | صحّح | ✎",
+  "confirmPill": "أكّد",
+  "correctPill": "صحّح"
+}
+
+=== 2. the row AFTER the tap ===
+{
+  "mark": [
+    "pm-h",
+    "pm-h"
+  ],
+  "isReadingRow": false,
+  "rowBg": "rgba(0, 0, 0, 0)",
+  "text": "الخطوة التالية | الأحد الصبح بعد الفجر | قال العميل: «الأحد الصبح بعد الفجر» | أكّدها عبدالعزيز · ١٨ أغسطس | ✎",
+  "confirmPillGone": true,
+  "toast": "حُفظ في ملف العميل",
+  "valueStyle": {
+    "size": "13.5px",
+    "weight": "700",
+    "color": "rgb(16, 24, 40)"
+  }
+}
+
+console/page errors during the whole interaction: []
+
+=== 3. the stored property — `prior` retains the agent's reading (FR-7 / AC-4) ===
+{
+  "value": "الأحد الصبح بعد الفجر",
+  "source": "human",
+  "by": "عبدالعزيز",
+  "ts": 1787025854822,
+  "prior": {
+    "value": "الأحد الصبح بعد الفجر",
+    "by": "agent:record_schedule",
+    "ts": 1787025841670
+  }
+}
+value unchanged by the confirmation : True
+source قراءة → حقيقة                 : agent -> human
+prior.value == the agent's value     : True
+prior.by == agent:record_schedule    : True
+prior.ts == the agent's ts           : True
+A CONFIRMATION is prior.value == value; a CORRECTION is the same shape with a different value.
+One field serves both, which is why the confirmation rate is computable at all.
+
+=== 4. Postgres ===
+{
+    "by": "عبدالعزيز",
+    "ts": 1787025854822,
+    "prior": {
+        "by": "agent:record_schedule",
+        "ts": 1787025841670,
+        "value": "الأحد الصبح بعد الفجر"
+    },
+    "value": "الأحد الصبح بعد الفجر",
+    "source": "human"
+}
+
+=== 5. BR-5 — the confirmation is its own timeline line ===
+prop:decisionMaker | عبدالعزيز · مسح
+prop:decisionMaker | عبدالعزيز · مسح
+prop:nextStep | agent:record_schedule · agent · الأحد الصبح بعد الفجر
+prop:nextStep | عبدالعزيز · human · الأحد الصبح بعد الفجر
+
+VERDICT: PASS

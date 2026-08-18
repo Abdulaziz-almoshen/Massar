@@ -1,0 +1,54 @@
+DESIGN-PLAN §6 + TOKENS + A11Y · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+source of truth: .orbit/artifacts/crm-record/design-plan.md §§2-6 and DESIGN.md tokens
+
+§6.1 · at 1440 — two columns, the panel rightmost at 372px, marks on one axis, no h-scroll
+  ok   grid is exactly two tracks                                 grid-template-columns = [372, 722]
+  ok   panel width 372px ±2                                       measured 372px
+  ok   gap is 18px                                                gap = 18px
+  ok   panel is the RIGHTMOST block (RTL start side)              panel right=1144 vs [1144, 754]
+  ok   six rail .pm marks share one x-axis within ±1px            6 rail marks, spread 0.0px (+1 inline second mark on field 4, per §3)
+  ok   no horizontal scroll                                       doc 0, #body 0
+
+TOKEN AUDIT · the provenance language (design-plan §4, DESIGN.md)
+  ok   pm-h filled square #1F7A73                                 {"bg": "rgb(31, 122, 115)", "bd": "0px none rgb(152, 162, 179)", "radius": "2px", "op": "1", "w": 8, "h": 8}
+  ok   pm-a hollow 1.5px dashed circle #B54708 (authored rule; Chromium reports the used value .pm-a { border: 1.5px dashed rgb(181, 71, 8); border-radius: 999px; background: transparent; }   [computed border 1px dashed rgb(181, 71, 8) at dpr 1 — browser rounding, not drift]
+  ok   pm-m dashed outline square #D0D5DD                         {"bg": "rgba(0, 0, 0, 0)", "bd": "1px dashed rgb(208, 213, 221)", "radius": "2px", "op": "1", "w": 8, "h": 8}
+  ok   marks are 8x8                                              h=(8, 8) a=(8, 8) m=(8, 8)
+  ok   reading row tint #FFFDF7                                   rgb(255, 253, 247)
+  ok   quote 11.5px #667085                                       {"size": "11.5px", "color": "rgb(102, 112, 133)"}
+  ok   the mark NEVER appears without its word (§4)               []
+
+§5 · what the plan DELETED must be gone from the rendered page
+  ok   the 6-node مسار البيع rail is gone                         {"salesPath": false, "ordinal": false, "mcards": false, "preferredChannel": false, "stageCount": 1, "contextScoreShown": false}
+  ok   the «٣ من ٦» ordinal is gone                               ordinal=False
+  ok   the 2×2 mcards grid is gone                                mcards=False القناة المفضّلة=False
+  ok   the stage name appears exactly once                        count=1
+
+§6.2 · at 900 — one column, and the order the plan specifies
+  ok   one column at 900                                          tracks=1
+  ok   order: ملف العميل → فهم المساعد → سجل التفاعل              ["ملف العميل", "فهم المساعد", "سجل التفاعل"]
+  ok   no stage rail anywhere                                     railPresent=False
+  ok   no horizontal scroll at 900                                overflow=0
+
+§6.3 · at 390 — stacking, LTR-isolated phone, ≥40px hit areas, no h-scroll
+  ok   no horizontal scroll at 390                                overflow=0px
+  ok   phone is LTR-isolated, «+» leftmost                        {"text": "+966500000850", "dir": "ltr", "unicodeBidi": "isolate"}
+  ok   §6.3 · pencil / أكّد / صحّح hit areas ≥40px                all 10 are ≥40px: [["pencil", 40, 40], ["أكّد", 127, 40], ["صحّح", 127, 40]]
+  ok   `.add` miss-CTAs meet DESIGN.md's own 36px pill token      [["أضِف الاسم وال", 128, 36], ["أضِف ملاحظة", 95, 36], ["سجّل سبب الاست", 141, 36]]  [36px is the approved token (DESIGN.md §pills); ≥24px meets WCAG 2.5.8 AA, below the 44px AAA guideline — recorded as an observation, see the report]
+  ok   no Arabic truncation in labels/values                      []
+  ok   every row stacks label above value                         6 rows
+
+ACCESSIBILITY · contrast, focus, body size — numeric, not vibes
+    contrast  4.89:1  flab             10.5px  «الاهتمام»
+    contrast  4.89:1  quote            11.5px  «من قوله: «نبغى نعرف ال»
+    contrast  4.89:1  flab             10.5px  «الخطوة التالية»
+    contrast  4.89:1  quote            11.5px  «قال العميل: «خلّها بكر»
+    contrast  4.97:1  flab             10.5px  «صاحب القرار»
+    contrast  4.97:1  flab             10.5px  «المنشأة»
+  ok   WCAG AA contrast on every panel text                       []
+  ok   focus is visible on the pencil                             {"outline": "2px solid rgb(46, 125, 119)", "shadow": "none"}
+  ok   document is RTL                                            dir=rtl lang=ar
+
+console/page errors across ALL viewports: [] — none
+
+RESULT: 30 checks, 0 failed

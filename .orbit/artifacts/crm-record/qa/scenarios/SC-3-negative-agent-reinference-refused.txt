@@ -1,0 +1,83 @@
+SC-3 · negative · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: the Arabic agent, MID-CONVERSATION, re-inferring over a value the operator typed
+GIVEN  عبدالعزيز has corrected الاهتمام by hand (the tags route: BR-2, one request, DB first)
+WHEN   a customer message arrives and the model calls tag_interest with a DIFFERENT reading
+THEN   the write is REFUSED (BR-1/BR-7): value/source/by/ts unchanged, the disagreement is
+       parked ONCE as contested, one prop_rejected event is logged, the tool result tells the
+       model to stop retrying, interest_tags is untouched, and NOTHING is sent.
+
+NOTE ON REALISM: this is the real handleInbound → execTool → tracker.addTag → writeProp path.
+Only the OpenAI transport is stubbed (offline, deterministic, zero spend). The WhatsApp send
+path is dead twice over: GUPSHUP_* forced empty (outboundReady false → baseParams throws) AND
+a fetch-layer spy that throws on api.gupshup.io. CLAUDE.md §8 — no send, to any number.
+
+=== A. the human correction (BR-2 / AC-7) — POST /admin/contact/tags ===
+interest_tags BEFORE: الإجازات المرضية:hot @1786900650000
+{"status":"ok","tags":2}
+HTTP 200
+interest_tags AFTER : الإجازات المرضية:hot @1786900650000, تكامل الأنظمة (HIS/ERP):warm @1787025796942
+AC-7 unchanged-product ts preservation: الإجازات المرضية kept @1786900650000 (seeded value) — see above.
+props.productInterest = {"value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm", "source": "human", "by": "عبدالعزيز", "ts": 1787025796942}
+
+=== B. the agent's turn. LLM script handed to the stub: ===
+[
+  {"tool_calls":[{"name":"tag_interest","args":{"product":"خدمات التطعيمات","level":"cold"}}]},
+  {"content":"تمام، أرتّب لك عرضًا تعريفيًا صباح الأحد. هل يناسبك؟"}
+]
+
+$ POST /webhooks/gupshup  (inbound customer message, real webhook, real agent loop)
+{"status":"ok"} HTTP 200
+
+=== C1. the tool result the MODEL was handed (captured from the next request body) ===
+  tool_call_id call_1_0 -> الاهتمام مسجّل بخط الفريق ولا يُعدَّل من هنا. لا تُعِد المحاولة، واقترح تنسيق عرض تعريفي.
+
+=== C2. BR-7d — the human facts injected into the system prompt as grounded truth ===
+# حقائق مؤكدة من الفريق — لا تسأل عنها ولا تناقضها
+- صاحب القرار: د. سارة العتيبي · مديرة العيادة
+- الاهتمام: الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm
+هذه أثبتها زميل بشري. اعتمدها كما هي؛ إن ذكر العميل خلافها فانقل كلامه دون تصحيح السجل بنفسك.
+# ١) الدور
+أنت مدير حساب أول (Account Executive) لتنمية الحسابات الصحية القائمة. تبيع خدمات صحية رقمية وتكاملات للمستشفيات والمجموعات الطبية ومز
+  note/disqualifyReason leaked into the prompt: False
+
+=== C3. the record after the refused inference ===
+{
+  "value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm",
+  "source": "human",
+  "by": "عبدالعزيز",
+  "ts": 1787025796942,
+  "contested": {
+    "value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold",
+    "by": "agent:tag_interest",
+    "ts": 1787025797133
+  }
+}
+value unchanged : True
+source==human   : True
+contested set   : {"value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold", "by": "agent:tag_interest", "ts": 1787025797133}
+
+=== C4. Postgres — the ledger agrees, and interest_tags was NOT rewritten by the agent ===
+{
+    "by": "عبدالعزيز",
+    "ts": 1787025796942,
+    "value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm",
+    "source": "human",
+    "contested": {
+        "by": "agent:tag_interest",
+        "ts": 1787025797133,
+        "value": "الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold"
+    }
+}
+interest_tags NOW  : الإجازات المرضية:hot, تكامل الأنظمة (HIS/ERP):warm
+
+=== C5. BR-7c — exactly one prop_rejected event, no alert, no page ===
+prop_rejected:productInterest | human_value_wins · قراءة مختلفة: الإجازات المرضية:hot · تكامل الأنظمة (HIS/ERP):warm · خدمات التطعيمات:cold
+prop_rejected count = 1
+
+=== C6. §8 — the send spy over the WHOLE run ===
+   ('boot', 'SPY_INSTALLED') 1
+   ('openai', 'STUBBED') 2
+   ('openai-insights', 'STUBBED') 2
+  agent replies that DIED at the send boundary (recorded as a system line, never sent): 22
+
+VERDICT: PASS

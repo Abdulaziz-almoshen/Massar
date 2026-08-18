@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>V3 — الحقول المُوقَّعة (shape + colour mark, signature line)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; }
+  body{margin:0;background:#eef0f4;font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;color:#101828}
+  .page{padding:30px 32px 56px;max-width:1180px}
+  .card{background:#fff;border:1px solid #EAECF0;border-radius:16px;padding:24px;margin-bottom:18px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .card h3{margin:0 0 16px;font-size:14px;font-weight:700;color:#475467}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;border-radius:999px;padding:4px 12px;border:1px solid transparent}
+  .c-grey{background:#F2F4F7;color:#475467;border-color:#E4E7EC} .c-blue{background:#EFF4FB;color:#2F5F94;border-color:#D6E2F1}
+  .c-teal{background:#E9F7F6;color:#2E7D77;border-color:#C4E8E5} .c-ok{background:#ECFDF3;color:#027A48;border-color:#C7EED8}
+  .c-warn{background:#FFFAEB;color:#B54708;border-color:#F5E3B7} .c-bad{background:#FEF3F2;color:#B42318;border-color:#F7D4D1}
+  .c-read{background:transparent;border-style:dashed;font-weight:600} .c-read .rd{font-weight:700;opacity:.72;font-size:10px}
+  .btn{font-family:inherit;font-size:13.5px;font-weight:700;border:none;border-radius:12px;padding:12px 20px;cursor:pointer}
+  .btn-teal{color:#fff;background:#1F7A73} .btn-ghost{color:#344054;background:#fff;border:1px solid #D0D5DD}
+  .inp{font-family:inherit;font-size:13px;color:#101828;border:1px solid #E4E7EC;border-radius:12px;padding:11px 14px;background:#fff;outline:none;width:100%}
+  .inp:focus{border-color:#3FB6B0;box-shadow:0 0 0 3px rgba(63,182,176,.15)}
+  :focus-visible{outline:2px solid #2E7D77;outline-offset:2px}
+
+  .crec{display:grid;grid-template-columns:372px minmax(0,1fr);gap:18px;align-items:start}
+  .main{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;align-items:start}
+  @media (max-width:900px){.crec{grid-template-columns:1fr}}
+  @media (max-width:600px){.page{padding:18px 14px 44px}.card{padding:16px}.stat .z{display:block}}
+
+  /* ---- the provenance mark: a 8px SHAPE in a fixed start-side column ---- */
+  .pm{width:8px;height:8px;flex:none;margin-top:7px}
+  .pm-h{background:#1F7A73;border-radius:2px}                         /* human fact: filled square */
+  .pm-a{border:1.5px dashed #B54708;border-radius:999px;background:transparent} /* AI reading: hollow dashed circle */
+  .pm-i{background:#2F5F94;border-radius:2px;opacity:.55}             /* imported: filled square, navy, softer */
+  .pm-m{border:1px dashed #D0D5DD;border-radius:2px;background:transparent}     /* missing: dashed outline square */
+
+  .frow{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid #F2F4F7;position:relative}
+  .frow:last-child{border-bottom:none}
+  .fbody{flex:1;min-width:0}
+  .flab{font-size:10.5px;font-weight:700;color:#667085;letter-spacing:.02em}
+  .fval{font-size:13.5px;font-weight:700;color:#101828;line-height:1.75;margin-top:3px}
+  .fval-a{font-size:13px;font-weight:600;color:#475467}
+  .fval-m{font-size:12.5px;font-weight:500;color:#98A2B3}
+  .sig{font-size:10.5px;color:#98A2B3;margin-top:4px;font-weight:600}
+  .quote{font-size:11.5px;color:#667085;margin-top:4px;line-height:1.8}
+  .pen{position:absolute;inset-inline-end:0;top:10px;border:none;background:transparent;color:#98A2B3;
+       cursor:pointer;font-size:13px;width:34px;height:34px;border-radius:8px;opacity:0}
+  .frow:hover .pen,.frow:focus-within .pen{opacity:1}
+  @media (hover:none){.pen{opacity:1}}
+  .cbar{display:flex;gap:7px;margin-top:9px}
+  .mini{font-size:11.5px;padding:8px 15px;border-radius:999px;min-height:36px}
+  .add{font-size:11.5px;font-weight:700;color:#1F7A73;background:transparent;border:1px dashed #C4E8E5;
+       border-radius:999px;padding:6px 13px;cursor:pointer;margin-top:6px;font-family:inherit}
+
+  /* ---- status strip ---- */
+  .stat{background:#ECFDF3;border:1px solid #EAECF0;border-inline-start:3px solid #027A48;border-radius:12px;padding:15px 17px;margin:2px 0 14px}
+  .stat .z{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .zl{font-size:10.5px;font-weight:700;color:#667085;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div class="page">
+  <div style="font-size:12.5px;font-weight:700;margin-bottom:14px;">← رجوع</div>
+
+  <div class="card">
+    <div style="font-size:18px;font-weight:700;">مجمع الشفاء الطبي</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"><span class="chip c-blue">الرياض</span><span class="chip c-teal">متوسطة</span></div>
+    <div style="font-size:11.5px;color:#98A2B3;margin-top:8px;">&#8207;<span dir="ltr">+966501234567</span></div>
+    <div style="font-size:11px;color:#98A2B3;margin-top:4px;">آخر نشاط: ٩:٤٠ ص · الدور على المساعد</div>
+    <div style="margin-top:10px;font-size:12.5px;color:#475467;line-height:1.7;">بدأت هذه المحادثة من: <a href="#" style="color:#2E7D77;font-weight:700;text-decoration:none;">عيادات الرياض — أشعة</a> <span style="color:#98A2B3;">· ٣ أغسطس</span></div>
+  </div>
+
+  <!-- STATUS: fact first and biggest, reading last and quietest -->
+  <div class="stat">
+    <div class="z">
+      <div style="min-width:210px;flex:1;">
+        <div class="zl">الفرز</div>
+        <div style="font-size:17px;font-weight:700;color:#027A48;margin-top:3px;line-height:1.4;">موعد محدد</div>
+        <div class="quote">لأنه قال: «تمام، ابعث لي الموعد»</div>
+      </div>
+      <div style="min-width:200px;flex:1;">
+        <div class="zl">الاهتمام</div>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="chip c-ok">أشعة الأسنان · نية مرتفعة</span>
+          <span class="chip c-warn">تعقيم · مهتم</span>
+        </div>
+      </div>
+      <div style="min-width:180px;flex:1;">
+        <div class="zl">المرحلة</div>
+        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:7px;">
+          <span class="pm pm-a" style="margin-top:5px;"></span>
+          <div><div style="font-size:12.5px;font-weight:600;color:#475467;">قراءة المساعد: عرض الحل</div>
+          <div class="quote">من قوله: «كم سعر جهاز الأشعة؟»</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;padding-top:13px;border-top:1px solid rgba(2,122,72,.14);">
+      <span style="font-size:11px;color:#667085;font-weight:700;">سجّل النتيجة الفعلية:</span>
+      <button class="btn mini" style="color:#fff;background:#027A48;">اجتماع محجوز</button>
+      <button class="btn mini btn-ghost">عرض مُرسَل</button>
+      <button class="btn mini btn-ghost">مؤجل</button>
+      <button class="btn mini btn-ghost">غير مناسب</button>
+      <span style="flex:1"></span>
+      <button class="btn mini btn-ghost">فتح المحادثة</button>
+    </div>
+  </div>
+
+  <div class="crec">
+    <!-- START RAIL (right in RTL) -->
+    <div class="card" style="margin:0;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <h3 style="margin:0;">ملف العميل</h3><span class="chip c-warn">ناقص ٢</span></div>
+      <div style="font-size:11.5px;color:#667085;margin:6px 0 4px;line-height:1.8;">
+        ما تكتبه هنا لا يستطيع المساعد تغييره.</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:#98A2B3;font-weight:600;margin:8px 0 4px;padding-bottom:10px;border-bottom:1px solid #F2F4F7;">
+        <span style="display:inline-flex;gap:6px;align-items:center;"><span class="pm pm-h" style="margin:0"></span>بخط الفريق</span>
+        <span style="display:inline-flex;gap:6px;align-items:center;"><span class="pm pm-a" style="margin:0"></span>قراءة المساعد</span>
+        <span style="display:inline-flex;gap:6px;align-items:center;"><span class="pm pm-i" style="margin:0"></span>مستورد</span>
+        <span style="display:inline-flex;gap:6px;align-items:center;"><span class="pm pm-m" style="margin:0"></span>ناقص</span>
+      </div>
+
+      <!-- 1 · human fact -->
+      <div class="frow"><span class="pm pm-h"></span><div class="fbody">
+        <div class="flab">صاحب القرار</div>
+        <div class="fval">د. سارة العتيبي · مديرة العيادة</div>
+        <div class="sig">سجّلها عبدالعزيز · ١٢ أغسطس</div></div>
+        <button class="pen" aria-label="تعديل صاحب القرار">✎</button></div>
+
+      <!-- 2 · imported -->
+      <div class="frow"><span class="pm pm-i"></span><div class="fbody">
+        <div class="flab">المنشأة</div>
+        <div class="fval">فرعان · الرياض · متوسطة</div>
+        <div class="sig">من ملف الاستيراد · ٣ أغسطس · يمكنك تصحيحه</div></div>
+        <button class="pen" aria-label="تعديل المنشأة">✎</button></div>
+
+      <!-- 3 · AI reading awaiting confirmation -->
+      <div class="frow" style="background:#FFFDF7;margin:0 -8px;padding:13px 8px;border-radius:10px;">
+        <span class="pm pm-a" style="margin-inline-start:0"></span><div class="fbody">
+        <div class="flab">الاهتمام</div>
+        <div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="chip c-read c-ok"><span class="rd">قراءة</span>أشعة الأسنان · مرتفع</span></div>
+        <div class="quote">من قوله: «كم سعر جهاز الأشعة وهل فيه ضمان؟»</div>
+        <div class="cbar"><button class="btn btn-teal mini">أكّد</button>
+          <button class="btn btn-ghost mini">صحّح</button></div></div></div>
+
+      <!-- 4 · AI reading, two provenances in one row -->
+      <div class="frow" style="background:#FFFDF7;margin:0 -8px;padding:13px 8px;border-radius:10px;">
+        <span class="pm pm-a"></span><div class="fbody">
+        <div class="flab">الخطوة التالية</div>
+        <div class="fval fval-a">زيارة العيادة صباح الأحد</div>
+        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:5px;">
+          <span class="pm pm-h" style="margin-top:5px"></span>
+          <div class="quote" style="margin:0;">قال العميل: «بكرة الصبح»</div></div>
+        <div class="quote" style="color:#B54708;">قراءتنا: الأحد ١٠ صباحًا · لم تُؤكَّد بعد</div>
+        <div class="cbar"><button class="btn btn-teal mini">أكّد</button>
+          <button class="btn btn-ghost mini">صحّح</button></div></div></div>
+
+      <!-- 5 · missing, in the editor (open state) -->
+      <div class="frow"><span class="pm pm-m"></span><div class="fbody">
+        <div class="flab">ملاحظة <span style="color:#98A2B3;font-weight:600;">· بخط الفريق فقط</span></div>
+        <textarea class="inp" rows="2" style="margin-top:6px;" placeholder="ما لا يظهر في المحادثة: من قابلته، ما وعدت به، ما يمنع الشراء."></textarea>
+        <div class="cbar"><button class="btn btn-teal mini">حفظ</button><button class="btn btn-ghost mini">إلغاء</button></div>
+        </div></div>
+
+      <!-- 6 · disqualify, neutral empty -->
+      <div class="frow"><span class="pm pm-m"></span><div class="fbody">
+        <div class="flab">سبب الاستبعاد</div>
+        <div class="fval-m" style="margin-top:3px;">لم يُستبعد.</div>
+        <button class="add">استبعد هذا العميل…</button></div></div>
+    </div>
+
+    <!-- END COLUMNS -->
+    <div class="main">
+      <div class="card" style="margin:0;background:#F2F7FB;border-color:#DCE7F2;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pm pm-a" style="margin:0"></span>
+          <h3 style="margin:0;color:#1F4470;">فهم المساعد</h3></div>
+        <div style="font-size:11px;color:#667085;margin-top:6px;">كل ما في هذه البطاقة قراءة، لا حقيقة مسجّلة.</div>
+        <div style="background:#fff;border:1px solid #E3EBF3;border-radius:13px;padding:15px 16px;margin-top:13px;">
+          <div style="font-size:10.5px;font-weight:700;color:#1F7A73;margin-bottom:7px;">الخلاصة</div>
+          <div style="font-size:14px;font-weight:700;line-height:1.95;">طلب موعدًا لمعاينة جهاز الأشعة، وسأل عن الضمان والتقسيط.</div></div>
+        <div style="margin-top:12px;"><div style="font-size:11px;font-weight:700;color:#667085;margin-bottom:6px;">إشارات الشراء</div>
+          <div style="font-size:12px;color:#344054;line-height:1.9;">« كم سعر جهاز الأشعة؟ »</div>
+          <div style="font-size:12px;color:#344054;line-height:1.9;">« ابعث لي الموعد »</div></div>
+        <div style="margin-top:14px;background:#fff;border:1px solid #B9E4E0;border-inline-start:3px solid #2E7D77;border-radius:11px;padding:13px 15px;">
+          <div style="font-size:11px;font-weight:700;color:#2E7D77;margin-bottom:5px;">اقتراح المساعد للخطوة التالية</div>
+          <div style="font-size:13px;font-weight:700;line-height:1.9;">أرسل موعدين مقترحين صباح الأحد والاثنين.</div></div>
+      </div>
+      <div class="card" style="margin:0;">
+        <h3 style="margin:0 0 4px;">سجل التفاعل</h3>
+        <div style="font-size:11px;color:#98A2B3;margin-bottom:10px;">الأحدث أولًا</div>
+        <div style="font-size:12.5px;line-height:2.1;color:#475467;">
+          · سجّل عبدالعزيز «صاحب القرار» — ١٢ أغسطس<br>
+          · ردّ العميل — ٩:٤٠ ص<br>
+          · أُرسل الملف التعريفي — ٩:٣١ ص<br>
+          · شوهدت — ٩:٢٨ ص</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

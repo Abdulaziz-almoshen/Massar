@@ -1,0 +1,79 @@
+SC-4 · boundary · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: عبدالعزيز, pasting a long note / clearing a field he filled by mistake
+GIVEN  NFR-1 caps short text at 120 chars, note at 2000, disqualify free text at 200, and
+       treats an empty human value as an explicit erase back to «ناقص» — never a stored ''.
+WHEN   he saves 121 chars, then exactly 120, then an empty value, then a whitespace-only value
+THEN   400 {error:too_long} with NO write · 200 at the cap · the key is REMOVED, not blanked.
+
+=== 1. 121 characters → 400 too_long, nothing written (upper bound + 1) ===
+length: 121
+  File "<string>", line 1
+    import json;print(json.dumps('phone':'966500000862',ensure_ascii=False))
+                                        ^
+SyntaxError: invalid syntax
+  File "<string>", line 1
+    import json;print(json.dumps('by':'عبدالعزيز',ensure_ascii=False))
+                                     ^
+SyntaxError: invalid syntax
+  File "<string>", line 1
+    import json;print(json.dumps('props':{'decisionMaker':'ببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببب'},ensure_ascii=False))
+                                        ^
+SyntaxError: invalid syntax
+curl: option : blank argument where content is expected
+curl: try 'curl --help' or 'curl --manual' for more information
+ledger after the refusal (decisionMaker must be ABSENT):
+ABSENT
+
+=== 2. exactly 120 characters → 200 (the boundary itself is legal) ===
+  File "<string>", line 1
+    import json;print(json.dumps('phone':'966500000862',ensure_ascii=False))
+                                        ^
+SyntaxError: invalid syntax
+  File "<string>", line 1
+    import json;print(json.dumps('by':'عبدالعزيز',ensure_ascii=False))
+                                     ^
+SyntaxError: invalid syntax
+  File "<string>", line 1
+    import json;print(json.dumps('props':{'decisionMaker':'بببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببببب'},ensure_ascii=False))
+                                        ^
+SyntaxError: invalid syntax
+curl: option : blank argument where content is expected
+curl: try 'curl --help' or 'curl --manual' for more information
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    import json;d=json.load(open('/tmp/qa120.json'));p=d['props']['decisionMaker']
+                            ~~~~^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/qa120.json'
+
+=== 3. empty value → the key is REMOVED (back to «ناقص»), never an empty string ===
+{"ok":true,"persisted":true,"props":{"decisionMaker":null}}
+HTTP 200
+ledger (must be ABSENT, not ""):
+ABSENT
+the erase is logged, not silent:
+prop:decisionMaker | عبدالعزيز · مسح
+
+=== 4. whitespace-only is the SAME erase, not a stored space ===
+{"ok":true,"persisted":true,"props":{"decisionMaker":null}} HTTP 200
+ABSENT
+
+=== 5. NFR-2 — an unknown seventh key is refused with NO partial write of the legal keys ===
+{"ok":false,"error":"unknown_property","key":"leadScore","allowed":["decisionMaker","orgProfile","productInterest","nextStep","note","disqualifyReason"]}
+HTTP 400
+ledger (note must be ABSENT — the legal key in the same body was NOT written):
+ABSENT
+
+=== 6. FR-6 closed vocabulary — an unrecognised reason is reported, never coerced to «other» ===
+{"ok":false,"error":"unknown_reason","key":"disqualifyReason","allowed":["price","no_need","wrong_contact","competitor","no_response","other"]}
+HTTP 400
+
+=== 7. FR-4 date bound — a due outside [now-1y, now+2y] is refused ===
+{"ok":false,"error":"bad_date","key":"nextStep"}
+HTTP 400
+
+=== 8. unknown phone — a property never manufactures a contact from a typo ===
+{"ok":false,"error":"unknown_phone","phone":"966599999999"}
+HTTP 404
+contacts with that phone: 0
+
+VERDICT: PASS

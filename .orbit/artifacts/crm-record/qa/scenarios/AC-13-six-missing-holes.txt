@@ -1,0 +1,37 @@
+AC-13 · six «ناقص» holes on a record that knows nothing · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: عبدالعزيز opening a contact the campaign just delivered to, before any conversation
+
+=== at 1440x900 ===
+  rows in the panel      : 6
+  rows marked «ناقص»     : 6
+     صاحب القرار      لم يُسجَّل صاحب القرار بعد.                CTA «أضِف الاسم والصفة» [128, 36]  tappable=True
+     المنشأة          غير مستورد في القوائم.                     CTA «→ استورد القائمة» [117, 36]  tappable=True
+     الاهتمام         لم يُسجَّل اهتمام بعد.                     CTA «سجّل الاهتمام» [102, 36]  tappable=True
+     الخطوة التالية   لا خطوة تالية محددة.                       CTA «حدّد الخطوة» [87, 36]  tappable=True
+     ملاحظة · بخط الفريق فقط لا ملاحظات. اكتب ما لا يظهر في المحادثة.   CTA «أضِف ملاحظة» [95, 36]  tappable=True
+     سبب الاستبعاد    لم يُسجَّل سبب استبعاد.                    CTA «سجّل سبب الاستبعاد…» [141, 36]  tappable=True
+  panel header count     : ناقص ٥
+  contextScore rendered  : False   (the invented 0–100 score AC-13 replaces)
+  stage rail rendered    : False
+  console errors         : []
+  screenshot             : visual/extra/ac13-six-missing@1440x900.png
+
+=== at 390x844 ===
+  rows in the panel      : 6
+  rows marked «ناقص»     : 6
+     صاحب القرار      لم يُسجَّل صاحب القرار بعد.                CTA «أضِف الاسم والصفة» [128, 36]  tappable=True
+     المنشأة          غير مستورد في القوائم.                     CTA «→ استورد القائمة» [117, 36]  tappable=True
+     الاهتمام         لم يُسجَّل اهتمام بعد.                     CTA «سجّل الاهتمام» [102, 36]  tappable=True
+     الخطوة التالية   لا خطوة تالية محددة.                       CTA «حدّد الخطوة» [87, 36]  tappable=True
+     ملاحظة · بخط الفريق فقط لا ملاحظات. اكتب ما لا يظهر في المحادثة.   CTA «أضِف ملاحظة» [95, 36]  tappable=True
+     سبب الاستبعاد    لم يُسجَّل سبب استبعاد.                    CTA «سجّل سبب الاستبعاد…» [141, 36]  tappable=True
+  panel header count     : ناقص ٥
+  contextScore rendered  : False   (the invented 0–100 score AC-13 replaces)
+  stage rail rendered    : False
+  console errors         : []
+  screenshot             : visual/extra/ac13-six-missing@390x844.png
+
+Note on «ناقص ٦» vs the header chip: design-plan §3 counts gaps for the header chip but excludes
+سبب الاستبعاد from the count («Field 6 is shown but not counted as a gap»), so a record that knows
+nothing shows SIX ناقص rows and a header count of five. Both numbers are correct and mean
+different things; they are not a contradiction.

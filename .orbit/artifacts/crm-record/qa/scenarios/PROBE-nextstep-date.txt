@@ -1,0 +1,32 @@
+PROBE · the الخطوة التالية date, end to end · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+Raised by SC-8 §5: the editor for الخطوة التالية renders no date control, and propSave() posts
+only `val`. So: can a human ever set or correct a date, and does confirming a reading keep one?
+
+=== 1 · the agent writes the reading through its real tool loop ===
+   props.nextStep        : {"value": "الثلاثاء الساعة عشر", "source": "agent", "by": "agent:record_schedule", "ts": 1787026185381}
+   contact.scheduledAt   : None   scheduledSaid: الثلاثاء الساعة عشر
+   -> the agent's tool does NOT put `due` on the property either; the parsed timestamp lives on
+      contact.scheduledAt, and the row falls back to it (dashboard.ts:2241).
+
+=== 2 · the operator taps «أكّد» (the real pill, the real page) ===
+   row BEFORE «أكّد» : الخطوة التالية | الثلاثاء الساعة عشر | قال العميل: «الثلاثاء الساعة عشر» | قراءتنا لم تُؤكَّد بعد. | قراءة المساعد · ١٨ أغسطس | أكّد | صحّح | ✎
+   row AFTER  «أكّد» : الخطوة التالية | الثلاثاء الساعة عشر | قال العميل: «الثلاثاء الساعة عشر» | أكّدها عبدالعزيز · ١٨ أغسطس | ✎
+   props.nextStep now: {"value": "الثلاثاء الساعة عشر", "source": "human", "by": "عبدالعزيز", "ts": 1787026196067, "prior": {"value": "الثلاثاء الساعة عشر", "by": "agent:record_schedule", "ts": 1787026185381}}
+   scheduledAt still : None
+   console errors    : []
+
+=== 3 · can a human set a date AT ALL from the panel? ===
+   propEditorHtml() renders: a <select> for disqualifyReason, a <textarea> for note, an <input
+   class=inp> for everything else. No date control anywhere. propSave() posts { value } only.
+   The route and decideProp DO accept `due` — reachable by API, and by the agent's tool:
+   API with a valid due  -> HTTP 200 {"ok":true,"persisted":true,"props":{"nextStep":{"value":"اتصال بعد اعتماد الميزانية","source":"human","by":"اللوحة","ts":1787026197601,"due":1787630997600,"prior":{"value":"الثلاثاء الساعة عشر","by":"عبدالعزيز","ts":1787026196067}}}}
+
+FINDING QA-5 (P2, PRE-EXISTING at 388832f, NOT introduced by f54835c).
+FR-4 and design-plan §3 field 4 describe الخطوة التالية as «short text + optional date», and
+NFR-1 bounds that date — but the panel has no date control, so a human can neither set a date
+nor correct a wrong one; only the agent's parse (contact.scheduledAt) is ever displayed.
+Consequence for the QA-3 fix: `bad_date` is correct and proven at the route (SC-8 §2), and the
+panel owns a sentence for it (dashboard.ts:2704), but no operator action can currently produce
+that code. The fix is right; half of it is unreachable until the date control exists.
+No data is lost or misreported — the displayed date falls back to contact.scheduledAt — so this
+is P2, and it belongs in the Planner's backlog, not in this cycle's fix list.

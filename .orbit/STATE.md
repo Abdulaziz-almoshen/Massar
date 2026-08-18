@@ -1,3 +1,121 @@
+## 2026-08-19 · [T3] page-by-page redesign + production-scale simulation · DEPLOYED
+
+Founder, over two messages: «go over page by page on Massar and edit and do changes… act as a
+human, not AI slob» — then, mid-run: «simulate two hundred campaigns… three thousand clients…
+one thousand agreed to be onboarded. Imagine this. Then make the design suitable for that
+situation. Because right now, you're designing the portal as if we have only five campaigns.»
+
+### Part 1 — four screens, read with a human eye rather than a gate
+
+**#home.** It rendered the same four people TWICE — «ما يستحق المتابعة الآن» and «أفضل الفرص الآن»
+900px below it, in two visual languages. Deleted the second; what it had that the queue lacked (the
+avatar, the interest chip, the fresh-opportunity case) moved in. Four pastel row fills → flush rows
+on a hairline with one urgency dot. **The city treemap inverted its own data** — flex-grow measured
+against whatever survived a wrap, so «الجنوب ١» drew larger than «الرياض ٥»; deleted, with colChart
+(which truncated «مجمعات طبية» to «مجمعا…» under a 44px column) and funnelSvgUnused. Four
+distributions, one horizontal-bar idiom. Number cards lost their pastel icon discs and their hover
+lift. Four rate cards in four colours → one card, four rows, one accent, each rate carrying its
+denominator; a rate over zero renders «—».
+
+**#targets.** Carried a THIRD copy of the morning list. The board moved to «فرص البيع», which was a
+«ضمن المرحلة القادمة» placeholder — the founder's three questions ARE the pipeline. The book became
+a real list (header, search, one facet select per imported column, live count); it was the last
+un-migrated table. **Delete now asks first** — it was an always-visible red × that removed a target
+on one click, sixteen of them down a scrolling page.
+
+**#kb.** Eight ~180px cards, five saying «لا معرفة بعد» and nothing else, over 1,000px of white →
+a list carrying the four facts a service has in the ledger. **The service page's readiness ring is
+deleted**: r.sc has been null since round 22, so it resolved to (hub ? 100 : 0) and drew a boolean
+as «١٠٠٪ جاهزية».
+
+**The record** (from the founder's screenshot): «فتح المحادثة» removed — المحادثة is a tab, so the
+slide-over duplicated it AND covered the status region. Status moved beside the name.
+
+### Part 2 — the simulation, and what only 3,000 rows could show
+
+Served a synthetic ledger (200 campaigns / 3,000 targets / 1,700 conversations / 1,000 onboarded)
+to the DEPLOYED portal by request interception. Nothing written to the database or the app.
+
+1. **Truncation is not pagination.** Ten sites sliced to LIST_CAP=60 under «ضيّق بالبحث لرؤية
+   الباقي» — false, because search narrows the same list and slices the same 60. Row 61 was
+   unreachable however you typed. One primitive: per-list page key, shared size (٢٥/٥٠/١٠٠/٢٠٠),
+   and a footer that ALWAYS states «٦١–١٢٠ من ١٬٧٠٠». pageOf CLAMPS rather than writes.
+2. **لوحة الفرز had no cap at all** — 38,250px, 742 rows in one paint. Now one group at a time with
+   every group's count (including the empty ones) permanently on the strip, plus search and, for
+   «موعد محدد», sort by appointment: it is a call list and its order was insertion order.
+3. **«شاهدوا الرسالة دون ردّ — ٣٬٠٢٢ جهة»** with 3,000 people in the whole book. It counted
+   (campaign, target) PAIRS. Invisible at 16 contacts.
+4. **«منذ ٢٬٨٧٩ ساعة»** — true, unreadable. fmtAgo: hours under two days, then days, then months.
+5. **The queue's cap was silent** — «٩ إجراء» above 359 qualified contacts. Says «أهمّ ٩ من ٣٥٤».
+6. **contactByPhone was a linear scan.** #kmon repainted in 110–123ms EVERY paint (≈26M string
+   comparisons) while #customers took 4ms — a visible stutter on every keystroke, growing linearly
+   with the book. Indexed: **110ms → 10ms**.
+
+`npm run qa:scale` — 28 assertions, all three key ones falsified against the pre-fix behaviour
+restored in the live page. An earlier `>=` form of the last-page assertion did NOT catch restored
+truncation and was tightened to exact equality plus a distinct-first-row check.
+
+### KNOWN, NOT FIXED — the next scale bet
+
+`/admin/state` returns every contact with its full transcript on every page load. **Measured 1.14 MB
+at 1,700 contacts × ~2 turns. Projected 2.9 MB at 8 turns each, 5.3 MB at 16, 9.7 MB at 30** — and
+transcripts only grow. The client also holds the whole thing in memory. Fixing it is server-side
+(summary list + per-record transcript fetch) and touches db.ts, index.ts and every client reader:
+a T3 of its own, not a UI change. Named here so its absence is a decision, not an oversight.
+
+Also outstanding: 8 sidebar routes are still «ضمن المرحلة القادمة» (التقارير · المنتجات · شركاء
+المبيعات · الهيكل التنظيمي); saved/pinned views; the settings modal; the WhatsApp merge items
+(per-message id+status tick marks, reply_to_message_id threading, template as a first-class type).
+
+---
+
+## 2026-08-18 · [T2] account graph — the agent now KNOWS the prospect's HIS/ERP · DEPLOYED
+
+Founder: «does the agent know the potential client needs HIS or ERP? and because it asks clients.
+I want the agent knowledge to be powerful and built on a scalable foundation.»
+
+**It did not, and it structurally could not.** The only door for prospect facts was
+`accounts.accountBlock()` ← `cfg.accountsJson` ← `ACCOUNTS_JSON`, and that env var **was never set
+on the deployed app** (`fly secrets list` had no such name). So the block returned `""` for every
+real conversation, §٢ fell to its cold branch and the §٨ discovery ladder fired every time — the
+interview he was reading. Meanwhile the audience import was already writing `entities.attrs` per
+phone and nothing connected the two stores.
+
+**Built — S1 + S2 of the account-graph method.**
+- `src/facts.ts` (new): 17 typed fact keys with provenance. `decideFact()` is PURE — same contract
+  as `tracker.decideProp`: a human fact is never replaced by a machine reading, the disagreement is
+  kept once as `contested`, an unknown key is reported not dropped. **An agent fact must carry the
+  customer's verbatim words** (`said`), or it is refused — the evidence rule `record_schedule`
+  already applies to a booked time, applied to facts because a wrong fact persists into every
+  future campaign.
+- `entities.facts JSONB` is the store. Three producers → one door (`accounts.writeFact`):
+  the import (mapped Arabic/English headers → typed facts, `source:human, by:import`), the operator
+  (`POST /admin/entity/facts`), and the conversation (`record_fact` tool).
+- The prompt gained **§٠ب — the named gap list**, ask-ordered, `systemKind` first. That is the half
+  that stops the interview: the agent is told exactly what it may still ask, and knowing the HIS
+  name answers «HIS or ERP» so neither is ever asked again.
+- Expansion motion re-gated on `isExpansion()` (measured usage), not on «we have a row» — a name
+  and a city are not a licence to assert a customer's own operation back to them.
+- Portal: **ملف الحساب** panel on the client record, provenance-marked, read-only this increment.
+- `ACCOUNTS_JSON` deleted. `/health` now reports `accounts.known` / `withFacts` — and `withFacts`
+  counts TYPED facts, not rendered lines: counting lines made it equal the row count and the first
+  deploy honestly reported 15/15 for a table that knew nothing about 15 of them. Fixed, redeployed.
+
+**Proof.** `npm run check` 15/15 suites green incl. new `check:facts` (falsified: disabling
+`gapBlock` → 3 failures). Integration run on the REAL ledger inside the Fly machine: import → typed
+facts → prompt states them → gap list shrinks after an agent write → an agent write against an
+imported fact is refused with `contested` kept → a human correction wins carrying `prior` → snapshot
+current for the next turn → throwaway entity deleted. Deploy green: smoke 7/7, `/health ok:true`,
+`outbound.ok:true`. Portal panel verified rendering on a live record.
+
+**Live coverage is 1 of 16 accounts (that one was the test row, since deleted) — the graph is
+wired and empty.** The 15 imported entities carry no HIS/ERP columns, so the next real gain is an
+audience re-import with those columns; conversations fill the rest as they happen.
+
+**Not done, named:** inline editing of facts in the portal (write door exists, editor is a slice);
+S3 pre-launch enrichment; S4 HIS/ERP vendor registry with connector status; S5 KB retrieval — the
+hub decks are still concatenated into every prompt at up to 6,000 chars each.
+
 ## 2026-08-17 · [T3] campaigns-crm — Frappe CRM view layer ported · BUILT, **NOT DEPLOYED**
 
 Founder pasted https://github.com/frappe/crm: «exact design and UX and functionality on top of our
@@ -738,6 +856,35 @@ tracker (queue below).
    + dashboard rotation; anytime.
 
 ## Decision log  (append-only, newest first)
+- 2026-08-18 [T3] **Enrichable client record — CRM like HubSpot, deployed v228 @0616f0c.**
+  CPO: «yes CRM like hubspot please redesign it and add better indicators for users to enrich
+  them». Decoded via discovery+market (HubSpot region contract; Attio's per-field provenance is
+  the only shipping prior art; NO CRM distinguishes an AI-written value from a human-written one
+  — genuine whitespace). Six enrichable properties on the contact, each stamped with writer and
+  time; provenance carried by SHAPE (filled square = human, dashed circle = agent reading, dashed
+  outline = missing) so it survives greyscale and colour-blindness. **The invariant is in code,
+  not in a prompt: an agent inference can never overwrite a human value** — one door
+  (tracker.writeProp), Readonly types outside the module, props absent from upsertContact's SQL,
+  and a structural gate; the refused re-inference is parked as `contested`. Deleted from the
+  record: the 6-node stage rail + «N من ٦» ordinal, the 2×2 mcards grid, and the 3rd/4th
+  renderings of interest. One appointment in one place (c.scheduledAt), «مؤكَّد» derived not
+  stored twice, and قائمة الصباح finally learns the operator's date.
+  Gates: reviewer 8/10 (blocked once at 6/10, four musts closed), safety PASS, QA delivery gate
+  PASSED 95/100 / 16 ACs, CPO round-33 ITERATE @2c88b56 → four musts closed @0616f0c.
+  **Defect class this cycle kept surfacing — fabricated facts wearing a human signature:** a
+  select preselecting «السعر» so one click filed a price rejection nobody stated; an outcome
+  button filing «no_need»; a save reporting success on a failed ledger write; «أكّد» DELETING the
+  date it was confirming. Each fixed at the root and pinned by a falsifiable assertion.
+  Technique for the record: **a gate that lifts client code must lift the EVALUATED
+  DASHBOARD_HTML, never raw file text** — a regex written \d collapses to d in the emitted
+  string, so source greps pass while the shipped pattern matches nothing. check-props.mjs is the
+  model (188 assertions, panel executed from dist/). Also: check-outcomes' 5200-char window
+  compared -1 < -1 as PASS — replaced with START/END anchors + an inert guard.
+  Open, ranked: the confirmation-rate number (S1 — every confirm/correction is now a dated label;
+  nothing computes it yet, and it is what makes an 18k send defensible) · stage_reason empty on
+  live data · the §2 status-strip rebuild (now unblocked).
+  NOTE: 0616f0c also carries a concurrent session's palette/typography refresh (Cairo → IBM Plex
+  Sans Arabic) interleaved in dashboard.ts — not authored or reviewed here; passes the suite.
 - 2026-08-11 [cpo] **ACCEPT @5b373ea** — per-product معرفة المنتج (grid → product page,
   scoped upload). Reviewer 8.5/10, zero must-fix. Follow-up logged: wrap the kb-hash
   decodeURIComponent in try/catch (malformed hand-typed hash blanks view until nav).

@@ -1,0 +1,48 @@
+SC-1 · happy · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: عبدالعزيز, the one operator, on a call with مجمع الرعاية الطبية
+GIVEN  contact 966500000850 has props {} (six ناقص holes) and a REAL Postgres ledger behind it
+WHEN   he types صاحب القرار into ملف العميل  →  POST /admin/contact/props (source forced human)
+THEN   200, the value is stored WITH provenance, survives a re-GET, lands in Postgres, and
+       appends exactly one prop:decisionMaker line to the timeline (FR-1, FR-7, BR-5).
+
+=== 0. before ===
+props: {}
+
+=== 1. the write (HTTP status + body) ===
+{"ok":true,"persisted":true,"props":{"decisionMaker":{"value":"د. سارة العتيبي · مديرة العيادة","source":"human","by":"عبدالعزيز","ts":1787025796270}}}
+HTTP 200
+
+=== 2. re-GET — what the record now reads ===
+<string>:5: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+{
+  "value": "د. سارة العتيبي · مديرة العيادة",
+  "source": "human",
+  "by": "عبدالعزيز",
+  "ts": 1787025796270
+}
+ts is now-ish: 2026-08-18T04:03:16.270000Z
+source==human: True | by==عبدالعزيز: True | no prior (was ناقص): True
+
+=== 3. THE LEDGER ITSELF — an APPLIED write against a real Postgres 16 ===
+$ docker exec massar-qa-pg psql -U qa -d massarqa -c "select props from contacts where phone='966500000850'"
+{
+    "decisionMaker": {
+        "by": "عبدالعزيز",
+        "ts": 1787025796270,
+        "value": "د. سارة العتيبي · مديرة العيادة",
+        "source": "human"
+    }
+}
+
+=== 4. BR-5 — the timeline entry, named key + writer, exactly once ===
+prop:decisionMaker | عبدالعزيز · human · د. سارة العتيبي · مديرة العيادة
+count of prop:decisionMaker events:
+1
+
+=== 5. BR-4 — the send spy for this request window ===
+gupshup/openai calls recorded during this scenario:
+0
+0
+(0 = the property route never reached the wire)
+
+VERDICT: PASS

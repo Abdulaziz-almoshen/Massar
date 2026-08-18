@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "campaigns-crm",
+  "goal": "The campaigns module (#kmon) gains Frappe's view model — ViewControls (filter/sort/group/columns), row selection with bulk reclassify, a group/kanban board keyed on stated predicates, and a campaign detail that finally shows the message it sent — with every rendered value backed by a stored field or a campStats derivation, zero new endpoints, zero schema change and zero WhatsApp sends. Contract: .orbit/artifacts/campaigns-crm/requirements.md; plan: .orbit/artifacts/campaigns-crm/plan.md.",
+  "baseline_commit": "35a9e07d0ad94ff93d3fa87662fdb46b8592b73f",
+  "scope": {
+    "include": [
+      "massar-engine/src/dashboard.ts",
+      "massar-engine/src/campaigns-crm.ts",
+      "massar-engine/scripts/check-crm.mjs",
+      "massar-engine/scripts/qa-crm.py",
+      "massar-engine/package.json"
+    ],
+    "exclude": [
+      "massar-engine/.env",
+      "massar-engine/dist/**",
+      "massar-engine/node_modules/**",
+      "massar-engine/.venv/**"
+    ]
+  },
+  "rubric_files": [
+    ".orbit/artifacts/campaigns-crm/requirements.md",
+    ".orbit/artifacts/campaigns-crm/plan.md",
+    ".orbit/artifacts/campaigns-crm/discovery.md",
+    ".orbit/artifacts/campaigns-crm/market.md",
+    ".orbit/decisions/0001-dashboard-no-range-edits.md",
+    ".orbit/skills/technical-review.md",
+    ".orbit/skills/qa-validation.md",
+    ".orbit/skills/massar-design-language.md",
+    "CLAUDE.md"
+  ],
+  "acceptance_criteria": [
+    { "id": "AC-1", "text": "FR-1..3: with filter «الخدمة = X» plus sort «الأكثر ردودًا», #kmon renders only campaigns whose product is X, in descending replied order. Existing tabs (الكل/فعلية/تجريبية) survive as التصنيف shortcut chips; nothing that existed is removed.", "required": true, "evidence": "screenshot + a node assertion over GET /admin/campaigns reproducing the same ordered id list" },
+    { "id": "AC-2", "text": "BR-1: every rendered column key belongs to the FR-5 closed set (name, product, created_at, targeted, sent, delivered, seen, replied, interested, failed, التصنيف, progress). A key outside the set fails the gate.", "required": true, "evidence": "check-crm.mjs enumerating the column definitions against the allowed list" },
+    { "id": "AC-3", "text": "BR-2/R3: the chip-form «مكتملة» is gone from dashboard.ts; the string occurs exactly once in the file and that occurrence is the unrelated جاهزية الخدمة readiness card at ~line 1472. campReplyState is defined once and is the sole source of both the list chip and the kanban column; over 50 fixture campaigns every row's data-state equals its board column.", "required": true, "evidence": "check-crm.mjs (grep + single-definition assertion) + browser harness membership comparison" },
+    { "id": "AC-4", "text": "BR-3: a drag on the product / month / حالة الردود boards is refused and issues zero network requests; a drag on the التصنيف board issues exactly one POST /admin/campaign/test.", "required": true, "evidence": "window.fetch spy transcript from scripts/qa-crm.py" },
+    { "id": "AC-5", "text": "FR-6 + the 400-row edge: with 400 injected campaigns and a filter matching 137, «تحديد المطابقين» reports ١٣٧ while ٦٠ rows render and the cap footer declares the remainder; LIST_CAP applies per kanban column too, each with its own declared remainder.", "required": true, "evidence": "fixture run + screenshot of the counter and the cap footer" },
+    { "id": "AC-6", "text": "FR-7/BR-5: a bulk reclassify of 5 issues exactly 5 POST /admin/campaign/test and zero other client requests; a forced 500 on one id reports the failed count. No list or detail control can enqueue, send or schedule a WhatsApp message. SCOPE LIMIT: outbound absence is proven client-side (fetch spy) and by diff inspection — a server-side send-spy would require a send, which §8 forbids.", "required": true, "evidence": "fetch-spy transcript (stubbed, zero production writes) + grep of the diff for gupshup/send call sites" },
+    { "id": "AC-7", "text": "BR-4: a zero-target campaign renders «—» for every rate on both the list row and the detail verdict card and stat grid; the string ٠٪ appears nowhere for it, and the progress bar reads «لا جهات استهداف».", "required": true, "evidence": "zero-target fixture screenshot of #kmon and #kmon/<id>" },
+    { "id": "AC-8", "text": "R2/FR-8: campaign detail renders camp.message verbatim and escaped in an immutable spec strip, matching the row returned by GET /admin/campaigns. No API or schema change was needed to obtain it.", "required": true, "evidence": "screenshot beside the /admin/campaigns JSON row" },
+    { "id": "AC-9", "text": "R2/FR-9: the spec strip exposes no input, textarea, select or save control; التصنيف remains the only mutation control on the detail screen, and no read-only field is rendered as a disabled input implying a save path that does not exist.", "required": true, "evidence": "DOM assertion over #kmon/<id> in the QA harness" },
+    { "id": "AC-10", "text": "FR-10 contact-stage kanban — N/A this cycle (decision D-2: out).", "required": false, "evidence": "n/a" },
+    { "id": "AC-11", "text": "NFR-1: npm run check:numerals exits 0 — Arabic-Indic numerals in column counts, the selection counter, filter values and board headers.", "required": true, "evidence": "gate output" },
+    { "id": "AC-12", "text": "NFR-2: document.scrollingElement.scrollWidth <= clientWidth at 375, 768 and 1440 on #kmon in list, group and board views; the board is the only horizontal scroller (ms-scroll).", "required": true, "evidence": "9 harness assertions + 3 captures" },
+    { "id": "AC-13", "text": "NFR-4: npm run check (14 checks, including the new check:crm) and npm run build exit 0; npm run smoke reports 7/7 routes with 0 runtime errors after deploy; GET https://massar-engine.fly.dev/health returns ok:true and outbound.ok:true.", "required": true, "evidence": "CI/terminal log, smoke output, health JSON" },
+    { "id": "AC-14", "text": "Edge 0/1: the empty-campaign fixture renders the existing empty state with no ViewControls bar; the single-campaign fixture renders no cap footer, no pager, no «٠ أخرى», and a board with one column only.", "required": true, "evidence": "two fixture screenshots" },
+    { "id": "AC-15", "text": "ADR-0001: every dashboard.ts edit is an anchored string replacement (no line-range rewrite, no cross-file regex); the function-definition count delta equals the number of intended new helpers; no backtick and no stray ${ appears in campaigns-crm.ts; the ${CAMPAIGNS_CRM_JS} insertion is the file's only interpolation; crmBoot throws a visible runtime error if any shared helper (campStats, campWin, atOrAfter, seenOf, repliedIn, interestedOf) is missing.", "required": true, "evidence": "grep -c '^function \\|^  function ' src/dashboard.ts before/after + the diff + a deliberate crmBoot failure run showing smoke FAIL" },
+    { "id": "AC-16", "text": "Single-source: campStats, campWin, atOrAfter, seenOf, repliedIn and interestedOf are each defined exactly once across src/dashboard.ts and src/campaigns-crm.ts; the new module reimplements none of them and no parallel stat computation exists.", "required": true, "evidence": "check-crm.mjs definition-count assertion over both files" },
+    { "id": "AC-17", "text": "Safety: zero WhatsApp messages were sent to any number during the increment; no schema change, no new endpoint, no data deletion; webhook token auth and the «إيقاف»/STOP path are untouched; no secret in the diff.", "required": true, "evidence": "the diff plus the absence of any send in engine logs for the increment window" }
+  ],
+  "armed": { "approved": false, "approved_by": "", "approved_at": "" }
+}

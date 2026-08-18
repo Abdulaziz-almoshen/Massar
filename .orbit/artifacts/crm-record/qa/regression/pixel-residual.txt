@@ -1,0 +1,13 @@
+RENDER-STABILITY RESIDUAL · where the non-zero pixels are (baseline vs actual, both f54835c)
+A residual is only honest if it is located: a 0.0 would mean the two files were identical.
+
+  customer  375x812   changed bbox (l,t,r,b) = None   <- identical files
+  customer  768x1024  changed bbox (l,t,r,b) = None   <- identical files
+  customer  1440x900  changed bbox (l,t,r,b) = None   <- identical files
+  kmon      375x812   changed bbox (l,t,r,b) = (94, 20, 178, 56)   region 84x36 px, at y=20..56 of 1012
+  kmon      768x1024  changed bbox (l,t,r,b) = (82, 20, 181, 56)   region 99x36 px, at y=20..56 of 1024
+  kmon      1440x900  changed bbox (l,t,r,b) = (82, 20, 178, 56)   region 96x36 px, at y=20..56 of 1048
+
+The customer record is byte-identical across two independent captures: it has no live element
+once the clock is masked. The campaigns list keeps a small residual in the header band — the
+«مباشر» clock, which this mask does not reach — which is why its number is not 0.0000%.

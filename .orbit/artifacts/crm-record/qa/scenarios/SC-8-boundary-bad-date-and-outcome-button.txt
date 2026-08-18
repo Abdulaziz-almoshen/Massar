@@ -1,0 +1,41 @@
+SC-8 · boundary/negative · RE-VERIFICATION OF FINDINGS QA-3 and the outcome-button item · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: عبدالعزيز, typing «اتصال بعد العيد» and mistyping the year in the date box
+GIVEN  QA-3 at 388832f: the date rule reused the `too_long` reason, so a 22-character phrase with
+       a bad date told the operator his TEXT was too long. He would shorten a sentence that was
+       never the problem, and the real field — the date — is never named.
+WHEN   a SHORT, valid phrase is saved with a date outside [now-1y, now+2y]
+THEN   400 {error:'bad_date'} — not a length error — and the panel prints a line about the DATE.
+
+=== 1 · the phrase itself is unimpeachable: 15 chars, cap is 120 ===
+   without a date            -> HTTP 200 {"ok":true,"persisted":true,"props":{"nextStep":{"value":"اتصال بعد العيد","source":"human","by":"اللوحة","ts":1787026102223}}}
+
+=== 2 · the SAME short phrase, with an out-of-range date ===
+   3 years out                  -> HTTP 400 {"ok":false,"error":"bad_date","key":"nextStep"}
+   2 years back                 -> HTTP 400 {"ok":false,"error":"bad_date","key":"nextStep"}
+   unreadable (NaN-ish string)  -> HTTP 400 {"ok":false,"error":"bad_date","key":"nextStep"}
+
+=== 3 · the control: an in-range date on the same phrase is ACCEPTED ===
+   next week                    -> HTTP 200 {"ok":true,"persisted":true,"props":{"nextStep":{"value":"اتصال بعد العيد","source":"human","by":"اللوحة","ts":1787026102230,"due":1787630902198,"prior":{"value":"اتصال بعد العيد","by":"اللوحة","ts":1787026102223}}}}
+
+=== 4 · a genuinely long text still says too_long — the two rules did not merge the other way ===
+   121 chars, no date           -> HTTP 400 {"ok":false,"error":"too_long","key":"nextStep"}
+
+=== 5 · what the OPERATOR sees — the real panel, the real save, no stubbed response ===
+   pencil opened            : opened via pen
+   typed                    : {"typed": "اتصال بعد العيد", "date": "(no date input rendered in this row)"}
+   the row after «حفظ»      : {"rowText": "الخطوة التالية | اتصال بعد العيد | قال العميل: «خلّها بكرة الصبح» | أكّدها عبدالعزيز · ١٨ أغسطس | ✎", "errorLine": null, "editorStillOpen": false, "claimsSaved": false}
+   console/page errors      : []
+   screenshot               : visual/extra/qa3-bad-date-panel@1440x900.png
+   the string the panel now owns for this code, from src/dashboard.ts:
+     else if (code === "bad_date") err = "التاريخ خارج المدى المقبول. اكتب موعدًا قريبًا أو اترك التاريخ فارغًا.";
+
+=== 6 · the OUTCOME BUTTON now files «other:», never «no_need:» ===
+   («غير مناسب» is the panel operator's judgement. Filing it as no_need would put a sentence
+    in the customer's mouth — and no_need is the reason that escalates the outcome to stopped.)
+   POST /admin/contact/outcome not_a_fit -> HTTP 200 {"status":"ok","outcome":"stopped","disqualify":"saved"}
+   props.disqualifyReason  : {"value": "other: غير مناسب (قرار بشري من اللوحة)", "source": "human", "by": "اللوحة", "ts": 1787026108096}
+   prefix filed            : other
+
+VERDICT: PASS — the date rule has its own code (`bad_date`), its own 400 and its own panel
+         sentence; a short valid phrase is never again reported as too long; and «غير مناسب»
+         files «other».

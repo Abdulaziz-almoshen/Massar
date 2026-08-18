@@ -1,0 +1,31 @@
+SC-5 · authorization · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: anyone on the internet who found the Fly hostname (assumption A-3: the admin token
+         IS the authorization — there are no per-user permissions in this increment)
+GIVEN  BR-1 says only a request carrying the admin token AND source:'human' may change a fact
+WHEN   the write routes are called with no token, an empty token, a wrong token, and the token
+       in the wrong place (query string / Authorization header instead of x-admin-token)
+THEN   401 every time, with NO write reaching the ledger.
+
+no token at all                    -> {"status":"unauthorized"} HTTP 401
+empty token header                 -> {"status":"unauthorized"} HTTP 401
+wrong token (case flip)            -> {"status":"unauthorized"} HTTP 401
+token in ?token= query             -> {"status":"unauthorized"} HTTP 401
+token as Authorization Bearer      -> {"status":"unauthorized"} HTTP 401
+
+the other routes that reach the same writeProp door, and the two read routes:
+POST /admin/contact/tags           -> {"status":"unauthorized"} HTTP 401
+POST /admin/contact/outcome        -> {"status":"unauthorized"} HTTP 401
+GET /admin/customer/<phone>        -> HTTP 401
+GET /admin/state                   -> HTTP 401
+
+=== the ledger after all of the above: nothing was written ===
+{
+}
+rows written by an unauthorized caller: 0
+
+NOTE, stated rather than hidden: adminName() reads the writer's NAME from the request BODY,
+and the token is the only authorization (documented assumption A-3, one operator). A leaked
+token therefore lets anyone sign a fact as «عبدالعزيز». That is the documented boundary of
+this increment, not a regression — and it is the thing to revisit before a second user exists.
+
+VERDICT: PASS

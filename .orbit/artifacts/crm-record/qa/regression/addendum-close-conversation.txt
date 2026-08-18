@@ -1,0 +1,40 @@
+
+################ ADDENDUM A (CORRECTED) · close_conversation · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7 ################
+Correction: the earlier run passed the argument as `asked`. agent.ts:675 declares the parameter
+`outcome`, and agent.ts:975 reads `args.outcome` — so `asked` was ignored and every case fell to
+the default `closed` branch. That run therefore measured ONE branch three times. Re-run using the
+schema's own name, on FRESH contacts, so each branch is reached on a contact with no prior state.
+
+--- close_conversation(outcome=not_interested, reason=…) on FRESH 966500000871
+    why it matters   : the only close that IS a disqualification — it must file «other:», never a reason nobody stated
+    outcome          : stopped   (expected stopped)  optedOut=False
+    outcomeReason    : "قال إنه أنهى الموضوع"
+    props            : {"disqualifyReason": {"value": "other: قال إنه أنهى الموضوع", "source": "agent", "by": "agent:close_conversation", "ts": 1787026235216}}
+    reason PREFIX    : other   (must be «other» — the enum the tool picks is not put in the buyer's mouth)
+    MATCH            : True
+
+--- close_conversation(outcome=later) on FRESH 966500000872
+    why it matters   : a timing answer is not a rejection — it must write NO property
+    outcome          : later   (expected later)  optedOut=False
+    outcomeReason    : null
+    props            : {}
+    MATCH            : True
+
+--- close_conversation(outcome=interested) on FRESH 966500000873
+    why it matters   : closing a good conversation is not a rejection either — no property
+    outcome          : interested   (expected interested)  optedOut=False
+    outcomeReason    : null
+    props            : {}
+    MATCH            : True
+
+--- close_conversation(outcome=nonsense_value) on FRESH 966500000874
+    why it matters   : an off-enum value falls to the default `closed` branch — and still writes nothing
+    outcome          : closed   (expected closed)  optedOut=False
+    outcomeReason    : null
+    props            : {}
+    MATCH            : True
+
+################ ADDENDUM A2 · the four egress assertions for THIS addendum ################
+    ('boot', 'SPY_INSTALLED') 1
+    ('openai', 'STUBBED') 8
+    calls to api.gupshup.io: 0 — not blocked ones, NONE.

@@ -77,7 +77,12 @@ copied to other repos or global memory.
   exactly and closed all seven surfaces in one edit. Rule retained, not demoted: it bit once more at
   reduced severity, producing the FIFTH COROLLARY — when a fix introduces a NEW DISTINCTION the
   product had no word for, teach that word to every surface that speaks about the same objects in
-  the same edit. A vocabulary that exists on only one screen is a contradiction, not a fix.)
+  the same edit. A vocabulary that exists on only one screen is a contradiction, not a fix.
+  SEVENTH OCCURRENCE at round-34, 2026-08-18, giving the corollary its THIRD FORM: a single READER
+  closes the surfaces that RENDER a datum and is blind to the surfaces that CLASSIFY the object.
+  قائمة الصباح reads appt(c) for the row and c.outcome for the bucket, so «موعد مؤكَّد: الثلاثاء،
+  ٢٥ أغسطس» renders inside a group headed «مهتم بلا موعد». After introducing a shared reader,
+  enumerate who SORTS, GROUPS, FILTERS and COUNTS the object — not only who displays its value.)
 
 7. **The loop's own claims are subject to Rule 2.** Every number, count and property assertion the
    loop makes ABOUT ITSELF — in evidence files, commit messages, check output, and reports to the
@@ -114,10 +119,181 @@ copied to other repos or global memory.
    the single emitter is only half — **the emitter must be taught every new distinction the same
    commit invents**, or the shared function propagates the OLD word to four surfaces at once. In
    round-30 the shared emitter existed exactly as designed and still shipped a contradiction,
-   because `crmVerdict` learned «never sent» and `campPerfState` did not.
+   because `crmVerdict` learned «never sent» and `campPerfState` did not. SECOND COROLLARY, learned at round-33: the
+   rule is violated just as badly by building a NEW place for a datum the system already stores. Before
+   adding a field, grep for the DATUM, not the field name — `props.nextStep.due` duplicated
+   `c.scheduledAt`, and a flawless single-write-door bought nothing because the duplication was in the
+   model rather than in the write path. EXTENDED at round-34: this corollary was followed exactly and
+   the round still shipped two defects, because a fix can be generic on one axis and not the other.
+   Name BOTH axes out loud — generic over WHAT VARIES (the fields of a record: `propCarry` names
+   provenance and preserves everything else, so a seventh property with five unknown keys, falsy
+   ones included, survived a confirm untouched) and generic over WHERE IT LIVES (the sources a
+   datum can occupy: the same function falls back to `c.scheduledSaid` for the VALUE and not to
+   `c.scheduledAt` for the DUE, four lines apart, so «أكّد» still narrows on the branch that has
+   no stored prop).
 
 ## Signals (dated observations, newest first)
 
+- 2026-08-18 round-34 @0616f0c / engine 0616f0c [ITERATE — 8/7/6/8/6]. All four round-33 musts
+  genuinely closed, and verified by execution rather than by reading: a human's confirmed day renders
+  day-only across six fixture states with zero time-of-day strings anywhere under a human signature;
+  «أكّد» carries the whole prop forward — I invented a seventh property with five unknown keys
+  including falsy ones (budget:0, flag:false, empty:'') and all five survived the confirm untouched;
+  and comment-stripped, `c.scheduledAt` appears exactly ONCE in the 260,500-char shipped script,
+  inside appt(). It still iterates on TWO NEW MUSTS, both the same family as the ones it closed, both
+  one level down. The single sentence that explains this round: **the fix was generic over the FIELDS
+  of a record and not over the SOURCES a datum can live in.**
+
+- 2026-08-18 round-34 @0616f0c [Rule 6, fifth corollary — SEVENTH occurrence, and the sharpest
+  statement of the mechanism so far]. Round-31 gave the corollary its second form: «a single emitter
+  closes the surfaces that READ it and is blind to the surfaces that COMPUTE the same thing
+  themselves». Round-34 adds the third: **a single READER closes the surfaces that RENDER the datum
+  and is blind to the surfaces that CLASSIFY the object.** قائمة الصباح calls appt(c) for the row and
+  c.outcome for the bucket, so an interested clinic with a day the operator typed renders «موعد
+  مؤكَّد: الثلاثاء، ٢٥ أغسطس · سجّله عبدالعزيز» inside a group headed «مهتم بلا موعد · أبدوا اهتمامًا
+  ولم يُحدَّد وقت بعد» — the header denying the row, and the clinic he just scheduled missing from
+  «موعد محدد — اتصل بهم اليوم». Identical shape to round-30's chip-above-hero, on the screen whose own
+  source comment quotes his three questions. PRACTICAL FORM: after introducing a shared reader,
+  enumerate not only who DISPLAYS the value but who SORTS, GROUPS, FILTERS or COUNTS the object.
+
+- 2026-08-18 round-34 @0616f0c [Rule 8 second corollary CONFIRMED, and EXTENDED — a generic fix must
+  be generic on BOTH AXES]. The corollary written at round-33 («grep for the DATUM, not the field
+  name») was followed exactly, and I verified it structurally rather than accepting it: one store, one
+  writer, one read site. The new lesson is about the SHAPE of the generalisation. `propCarry` is
+  correctly generic over the FIELDS of a property — PROP_AUDIT names the ledger's provenance and
+  everything else is preserved by default, so a seventh property is safe the day it is added. It is
+  not generic over the SOURCES a datum can live in: when the next step has no stored prop and the
+  appointment lives on the CONTACT, there is nothing to carry and the generic default silently yields
+  nothing. Four lines apart in the same function, propConfirm falls back to `c.scheduledSaid` for the
+  VALUE and does not fall back to `c.scheduledAt` for the DUE — so tapping «أكّد» produces a row
+  reading «أكّدها عبدالعزيز» directly above «قراءتنا … لم تُؤكَّد بعد». **When a fix is described as
+  «generic», name the two axes out loud: generic over WHAT VARIES, and generic over WHERE IT LIVES.**
+
+- 2026-08-18 round-34 @0616f0c [Rule 7 — the FALSIFIABILITY channel survives adversarial test for the
+  first time; the PROSE channel bites for the sixth]. The loop claimed «38 new assertions, each proven
+  falsifiable by reverting the fix and observing red». I did not take it. I wrote SEVEN reverts of my
+  own devising — print the 09:00 back, gut propCarry, add a second c.scheduledAt reader, let a
+  customer's phrase overwrite a human day, stop writing the day onto the contact, restore the
+  dead-button early return, un-read appt() in قائمة الصباح — and all seven produced red output, one to
+  four assertions each. That is the first time in this project's record that a claimed falsifiability
+  property has held under an OUTSIDE attacker's choice of reverts, and it is worth as much as the
+  feature. The loop also repaired, unprompted, an instrument nobody asked about: check-outcomes.mjs
+  bounded its region with a 5200-character window that had drifted past its own assertions, so three
+  indexOf calls returned -1 and it was comparing -1 < -1 as PASS. WHAT STILL BIT: STATE.md's
+  decision-log entry is headed «deployed v228 @0616f0c» and reads «QA delivery gate PASSED 95/100» —
+  the gate passed at f54835c and returns passed:false at 0616f0c. Six for six on the same channel
+  across rounds 18-34: the evidence is bounded, the sentence about the evidence is not. **Write the
+  commit a number belongs to inside the sentence that states the number.**
+
+- 2026-08-18 round-34 @0616f0c [new signal, 2 of 3 toward a rule — THE UNGATED COMMIT IS WHERE THE
+  DEFECT IS]. Instance 1 was round-33: QA passed 16/16 at f54835c, 2c88b56 shipped 44 more lines
+  without re-gating, and both must-findings lived in those 44 lines. Instance 2 is round-34 — the same
+  shape at seventeen times the size. The evidence is STILL bound to f54835c, 0616f0c ships 756 changed
+  lines of dashboard.ts, and both of my new musts live in that delta. Aggravating detail this round:
+  the ungated delta also carries a HEAVY-impact typeface and ink change to the very screen under
+  review, so every baseline/actual pair in the current evidence shows a font and an ink the product no
+  longer renders. One more instance promotes this to a numbered rule.
+
+- 2026-08-18 round-34 @0616f0c [CPO procedure — EXECUTING the bundle and PHOTOGRAPHING the live page
+  find DIFFERENT CLASSES of defect, and this gate must do both, every time]. Executing vFactsPanel,
+  vMorningList and propConfirm against fixtures found both must-findings. It was structurally
+  incapable of finding the two the camera found: (1) every client record page is headed «جهات
+  الاستهداف / استورد جهات الاستهداف وأدرها للحملات» — the import list's title above a client record —
+  because nav() aliases customer→customers to keep the sidebar item highlighted and then feeds the
+  same variable to the page title, leaving TITLES.customer («ملف جهة الاستهداف») as unreachable dead
+  code since ab4b847; and (2) «الدليل: « » »» renders live, because insights.evidence is the single
+  character «»». Neither is reachable from the functions I lifted, and neither is visible to smoke.py,
+  which asserts a caption buried inside the panel rather than the page's own h1. I have judged this
+  screen for several rounds and missed both. STANDING PROCEDURE, added to round-30's crop-and-upscale
+  rule: lift and RUN the bundle AND photograph the live page at two viewports at 2x — and read the
+  page header before reading the content.
+
+- 2026-08-18 round-34 @0616f0c [accepted pattern — «A DRAWN CONTROL IS A PROMISE»]. Unordered by me,
+  the loop found that «أكّد» beside a reading with no backing property was reachable and did nothing —
+  a hydrated contact whose interest lives only in c.tags, or whose next step is only the customer's own
+  sentence — and fixed it to confirm exactly the value on screen, with an honest message when there is
+  genuinely nothing to confirm. The phrase is the loop's own and it generalises: a control that renders
+  has promised an outcome, and «the data shape that would make this button meaningful does not exist
+  here» is a reason to hide it or to answer it, never a reason for silence. (The fix was half-generic —
+  see the Rule 8 entry above — but finding the dead control unprompted is the instinct to keep.)
+
+- 2026-08-18 round-34 @0616f0c [Rule 3 applied to a CONCURRENT workstream, and the honest answer is
+  «no damage»]. 0616f0c interleaves another session's palette/typography refresh (Cairo → IBM Plex
+  Sans Arabic; ink #101828 → #171717, 71 uses; muted #999999, 78 uses) that this cycle neither authored
+  nor reviewed. Judged on the live pixels at 1440 and at 375: the record survives it intact —
+  provenance still carried by SHAPE, legend before marks, density high, no gradient, no glass, no
+  purple, no emoji — and the typography change RESTORES the documented design language, since
+  massar-design-language.md §2 names IBM Plex Sans Arabic as the spec font and the portal had drifted
+  to Cairo. The two things Rule 3 reserves as BRANDING — the navy sidebar and the #2E7D77 teal primary
+  action — are untouched. It even raises muted contrast (#9AA4B4 2.52:1 → #999999 2.85:1, both still
+  under the 4.5:1 floor). WHAT IT COSTS is evidence, not pixels: see the ungated-commit signal above.
+  AND ONE THING TO WATCH — the change's authority is design/approved.json's claim that «he viewed the
+  shipped result twice, twice reported it does not look different, then explicitly overruled Rule 3 and
+  named (B)». That is a claim about HIS OWN WORDS, and it is nowhere in user-events.jsonl, which still
+  ends at U116. Second round running that a product-directing sentence lives only in a cycle's prose.
+  N1 stays open, and it is no longer a «nice».
+
+- 2026-08-18 U~121 [stated — RECORDED LATE, and the lateness is itself the finding]: «the ui inside
+  client page has no indicators of the client stage and level of interest still», then «yes CRM like
+  hubspot please redesign it and add better indicators for users to enrich them». Never captured in
+  user-events.jsonl (newest entry there is U116) even though it spawned five artifacts and three
+  commits. **A sentence that redirects the product is durable whether or not it sounds like a rule.**
+  Three decodings this cycle got RIGHT and that should be reused: (1) «enrich» — users are the actor,
+  clients the object, so it means operator-WRITTEN facts, not a data-vendor pull and not visuals
+  alone; (2) the «still» in his first sentence means the AI's reading was already on screen and did
+  not count as an indicator — a machine's opinion is not an indicator to him, a sourced value is;
+  (3) «like hubspot» = the REGION CONTRACT (a rail of owned, editable, attributed properties + a
+  timeline + gaps collected in one dedicated panel), never the palette. Rule 3 confirmed a fourth time.
+
+- 2026-08-18 round-33 @2c88b56 / engine 2c88b56 [ITERATE — 7/6/6/9/5]. The best-composed surface this
+  project has produced, failing on the third of his own three questions. Taste 9: provenance carried
+  by SHAPE so it survives greyscale, all six marks on one x-axis so provenance is scannable before a
+  label is read, per-field commit rather than Salesforce's whole-form mode, and copy that states what
+  a field does NOT do («لا يوقف إرسال الرسائل — الإيقاف حق العميل وحده») instead of what it
+  flatteringly might. The honesty work is the strongest in the record: four fabricated-facts-wearing-a-
+  human-signature defects found and closed at the root — a pre-answered dropdown that filed «السعر»
+  nobody stated, an outcome button filing «no_need» the customer may never have said, a save reporting
+  success on a failed ledger write, and a half-parsed interest correction rendering the AI's products
+  under a human signature. I checked the one place that would have made it a REDEVELOP —
+  humanFactsBlock — and it pushes p.value only, so the 09:00 default cannot reach the agent's prompt
+  and be spoken to a clinic. Nothing of that class ships.
+  WHY IT STILL ITERATES: he asked for three things and got two. Measured by lifting the SHIPPED
+  bundle and running it: a human-written next-step date renders nowhere (the only consumer of `due`
+  is gated on state==='reading', so the machine's GUESS at the date is displayed and the human's
+  CONFIRMED date is hidden — exactly backwards from the panel's own thesis), and «أكّد» posts the
+  text without the due, so confirming an appointment DELETES its date. The most valuable action in
+  the product is lossy, and it loses precisely the datum question three asks for.
+
+- 2026-08-18 round-33 @2c88b56 [Rule 8 — NEW COROLLARY, promoted into the rule below]. «Build the
+  PLACE the data lives» is not satisfied by building a GOOD place if the system already had one.
+  `props.nextStep.due` is a second representation of an appointment `c.scheduledAt`/`c.scheduledSaid`
+  already own. Every symptom followed from that single decision: the record cannot show a confirmed
+  date, قائمة الصباح — the screen whose own source comment quotes his three questions verbatim —
+  never learns it, and the strip prints «لم تُؤكَّد بعد» forever. The single-door discipline on
+  WRITES was executed perfectly (one writeProp, Readonly types, a structural gate, props kept out of
+  upsertContact's SQL) and it bought nothing here, because the duplication was in the MODEL, not in
+  the write path. **Before adding a field, grep for the datum, not the field name.**
+
+- 2026-08-18 round-33 @2c88b56 [Rule 7 — FIFTH consecutive round in which the loop's PROSE outran its
+  work, and the sharpest instance yet]. The commit subject is «the missing date on الخطوة التالية —
+  record WHEN, not just what». The commit does not record WHEN in any way a human can see. The body
+  is otherwise scrupulous — it discloses two traps it hit, including a `\d` that collapsed to `d` in
+  the template literal, and credits the gate for catching what reading the file could not. That is the
+  lesson: the author knew that only EVALUATING the emitted string proves a property, applied it to the
+  regex, and did not apply it to the feature. A gate proved the date control EXISTS; nobody rendered
+  the row after saving. **An assertion that a control exists is not an assertion that its value
+  appears.** My own procedure held because of this rule — I refused to accept «record WHEN» and
+  executed the panel and propPost myself; both findings are rendered output and a measured request
+  body, not source reading.
+
+- 2026-08-18 round-33 @2c88b56 [new signal, 1 of 3 toward a rule — THE UNGATED COMMIT IS WHERE THE
+  DEFECT IS]. QA passed 16/16 at f54835c; 2c88b56 shipped 44 more lines of dashboard.ts and deployed
+  without re-gating; both must-findings live in those 44 lines. delivery-quality-gate.py caught the
+  mismatch mechanically, but the substantive point is stronger than the procedural one: the «small
+  follow-up fix after the gate went green» is the highest-risk commit in a cycle, because it is the
+  only one nobody adversarially reads. Two more instances promotes it.
+
+- 2026-08-18 U116 [stated]: STANDING INSTRUCTION, absolute: «Deploy it immediately to fly… When I say deploy, you deploy without any hesitation… Remove this lock.» Two parts. (1) «Deploy» is a command to SHIP NOW, not to open a gate chain — run the checks that are already wired into npm run deploy and go; do not serialise reviewer/QA/CPO ahead of the deploy when the gates are green. (2) The Orbit writer lock is friction HE e…
 - 2026-08-17 round-32 @28df149 / engine 6821517 [ACCEPTED — and the round's most valuable artifact is
   a test the loop found green while wrong, BEFORE this gate did]. Rule 7 has spent fourteen rounds
   teaching one thing: an instrument that cannot go red is not evidence. This round the loop applied

@@ -1,0 +1,9 @@
+{"ts":1787026232458,"kind":"boot","verdict":"SPY_INSTALLED","url":"-","method":"-","realFetch":"function"}
+{"ts":1787026235213,"kind":"openai","verdict":"STUBBED","step":1,"tools":["close_conversation"],"system_prompt_chars":20057}
+{"ts":1787026235223,"kind":"openai","verdict":"STUBBED","step":2,"tools":[],"system_prompt_chars":20057}
+{"ts":1787026243829,"kind":"openai","verdict":"STUBBED","step":1,"tools":["close_conversation"],"system_prompt_chars":20057}
+{"ts":1787026243831,"kind":"openai","verdict":"STUBBED","step":2,"tools":[],"system_prompt_chars":20057}
+{"ts":1787026252454,"kind":"openai","verdict":"STUBBED","step":1,"tools":["close_conversation"],"system_prompt_chars":20057}
+{"ts":1787026252455,"kind":"openai","verdict":"STUBBED","step":2,"tools":[],"system_prompt_chars":20057}
+{"ts":1787026261111,"kind":"openai","verdict":"STUBBED","step":1,"tools":["close_conversation"],"system_prompt_chars":20057}
+{"ts":1787026261116,"kind":"openai","verdict":"STUBBED","step":2,"tools":[],"system_prompt_chars":20057}

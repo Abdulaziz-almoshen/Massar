@@ -1,73 +1,15 @@
 {
   "schema": 2,
-  "task": "campaigns-crm",
-  "goal": "Port Frappe CRM's list/detail/kanban UX pattern onto Massar's WhatsApp campaigns module, RTL, on the existing massar-engine API",
+  "task": "frappe-port",
+  "goal": "Page-by-page port of frappe/crm design + functionality into Massar's 12 modules, plus merging frappe_whatsapp with the Massar campaign engine",
   "items": [
-    {
-      "id": "T1",
-      "title": "Product discovery — the bet",
-      "owner": "product-discovery",
-      "status": "done"
-    },
-    {
-      "id": "T2",
-      "title": "Business analysis — requirements + ACs",
-      "owner": "business-analyst",
-      "status": "done"
-    },
-    {
-      "id": "T3",
-      "title": "Prior-art research — Frappe patterns + WhatsApp app",
-      "owner": "market-researcher",
-      "status": "done"
-    },
-    {
-      "id": "T4",
-      "title": "Plan — slices + proof bar",
-      "owner": "planner",
-      "status": "done"
-    },
-    {
-      "id": "T5",
-      "title": "Design plan — RTL mirror of Frappe patterns",
-      "owner": "designer",
-      "status": "done"
-    },
-    {
-      "id": "T6",
-      "title": "Build — new module + anchored insertion",
-      "owner": "frontend-engineer",
-      "status": "done"
-    },
-    {
-      "id": "T7",
-      "title": "Safety gate",
-      "owner": "safety-gate",
-      "status": "done"
-    },
-    {
-      "id": "T8",
-      "title": "Review",
-      "owner": "reviewer",
-      "status": "done"
-    },
-    {
-      "id": "T9",
-      "title": "QA + delivery evidence",
-      "owner": "qa-engineer",
-      "status": "done"
-    },
-    {
-      "id": "T10",
-      "title": "CPO acceptance",
-      "owner": "cpo",
-      "status": "done"
-    },
-    {
-      "id": "T11",
-      "title": "Report",
-      "owner": "reporter",
-      "status": "done"
-    }
+    {"id": "P1", "title": "Inventory: Leads + Deals (list + record)", "owner": "market-researcher", "status": "in_progress"},
+    {"id": "P2", "title": "Inventory: Contacts + Organizations", "owner": "market-researcher", "status": "in_progress"},
+    {"id": "P3", "title": "Inventory: Tasks · Notes · CallLogs · Calendar · Dashboard", "owner": "market-researcher", "status": "in_progress"},
+    {"id": "P4", "title": "WhatsApp merge analysis (frappe_whatsapp vs massar-engine)", "owner": "orchestrator", "status": "in_progress"},
+    {"id": "P5", "title": "Module map: 23 Frappe pages -> 12 Massar modules", "owner": "orchestrator", "status": "pending"},
+    {"id": "P6", "title": "Build: shell (breadcrumb, filter pills, kanban cards)", "owner": "frontend-engineer", "status": "pending"},
+    {"id": "P7", "title": "Build: العملاء (contacts) on the ported pattern", "owner": "frontend-engineer", "status": "pending"},
+    {"id": "P8", "title": "Gates + CPO per module", "owner": "cpo", "status": "pending"}
   ]
 }

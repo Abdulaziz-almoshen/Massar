@@ -1,10 +1,10 @@
 {
-  "last_review_summary": "R102 \u2014 TWO HARD RULES + THE PRODUCTION BAR. (1) ZERO SENDS, REINSTATED ABSOLUTELY: 'Don't ever send any text to any real numbers.' This REVOKES the 0559402621 allowlist granted earlier today and every other number. No WhatsApp message to anyone, for any reason, including his own line, until he states a new allowlist. All agent verification is offline via the fetch-shimmed harness. (2) GPT JUDGES T\u2026",
-  "last_reviewed_at": "2026-08-16T18:38:19Z",
-  "last_reviewed_request": 102,
+  "last_review_summary": "STANDING INSTRUCTION, absolute: \u00abDeploy it immediately to fly\u2026 When I say deploy, you deploy without any hesitation\u2026 Remove this lock.\u00bb Two parts. (1) \u00abDeploy\u00bb is a command to SHIP NOW, not to open a gate chain \u2014 run the checks that are already wired into npm run deploy and go; do not serialise reviewer/QA/CPO ahead of the deploy when the gates are green. (2) The Orbit writer lock is friction HE e\u2026",
+  "last_reviewed_at": "2026-08-18T04:46:37Z",
+  "last_reviewed_request": 120,
   "pending_event_ids": [],
-  "requests_since_review": 2,
+  "requests_since_review": 0,
   "review_required": false,
   "schema_version": 1,
-  "total_requests": 104
+  "total_requests": 120
 }

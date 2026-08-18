@@ -2,8 +2,8 @@
   "schema": 1,
   "enabled": true,
   "observer": "watchdog",
-  "state": "clean",
+  "state": "watching",
   "scope": "full-loop",
-  "message": "Observation completed with no unresolved intervention",
-  "updated_at": "2026-08-16T18:13:04Z"
+  "message": "Supervising the active Orbit role tree",
+  "updated_at": "2026-08-18T04:29:37Z"
 }

@@ -1,0 +1,33 @@
+INTENDED-CHANGE MEASUREMENT · prechange e60c069 vs actual f54835c
+(the gate's own comparison is baseline-vs-actual in pixel-diffs.txt §A; this is the design story)
+
+  customer  375x812   height 2635 -> 3193 (+558px)
+                      common region 375x2635: 308865/988125 px differ = 31.26%
+                      changed bounding box (l,t,r,b) = (12, 115, 345, 2635)
+                      -> .orbit/artifacts/crm-record/qa/visual/diff-intent/customer@375x812.png
+
+  customer  768x1024  height 1754 -> 2346 (+592px)
+                      common region 768x1754: 269399/1347072 px differ = 20.00%
+                      changed bounding box (l,t,r,b) = (31, 115, 737, 1754)
+                      -> .orbit/artifacts/crm-record/qa/visual/diff-intent/customer@768x1024.png
+
+  customer  1440x900  height 1656 -> 1674 (+18px)
+                      common region 1440x1656: 420198/2384640 px differ = 17.62%
+                      changed bounding box (l,t,r,b) = (31, 29, 1440, 1656)
+                      -> .orbit/artifacts/crm-record/qa/visual/diff-intent/customer@1440x900.png
+
+  kmon      375x812   height 1048 -> 1012 (-36px)
+                      common region 375x1012: 20618/379500 px differ = 5.43%
+                      changed bounding box (l,t,r,b) = (31, 20, 344, 976)
+                      -> .orbit/artifacts/crm-record/qa/visual/diff-intent/kmon@375x812.png
+
+  kmon      768x1024  height 1024 -> 1024 (+0px)
+                      common region 768x1024: 78739/786432 px differ = 10.01%
+                      changed bounding box (l,t,r,b) = (31, 20, 737, 728)
+                      -> .orbit/artifacts/crm-record/qa/visual/diff-intent/kmon@768x1024.png
+
+  kmon      1440x900  height 1048 -> 1048 (+0px)
+                      common region 1440x1048: 2906/1509120 px differ = 0.19%
+                      changed bounding box (l,t,r,b) = (82, 20, 525, 463)
+                      -> .orbit/artifacts/crm-record/qa/visual/diff-intent/kmon@1440x900.png
+

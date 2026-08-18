@@ -1,0 +1,51 @@
+SC-7 · failure_recovery · RE-VERIFICATION OF FINDING QA-1 · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: عبدالعزيز, mid-call, typing a fact while the ledger fails over underneath him
+GIVEN  QA found at 388832f that `connected` was latched false by pool.on('error') and nothing
+       ever flipped it back: after Postgres came BACK, three retries still 503'd, so the panel's
+       «أعد المحاولة» was an instruction the system could not honour until a process restart.
+WHEN   Postgres is stopped, a save is attempted, Postgres is started again, and the SAME
+       process (never restarted — PID asserted identical) retries the save.
+THEN   the retry must SUCCEED and the fact must land in Postgres.
+
+engine PIDs before: ['29681', '29682']   (this list must be IDENTICAL at the end — no restart is allowed)
+
+=== 0 · healthy baseline ===
+health.db            : {"enabled": true, "connected": true, "counts": {"contacts": 3, "messages": 8, "events": 0}}
+propsWritable        : True
+a normal save        : HTTP 200 {"ok":true,"persisted":true,"props":{"decisionMaker":{"value":"د. سارة العتيبي · مديرة العيادة","source":"human","by":"اللوحة","ts":1787025764376}}}
+
+=== 1 · Postgres STOPS (docker stop massar-qa-pg) ===
+container state      : exited
+save while it is down: HTTP 503 {"ok":false,"persisted":false,"error":"not_persisted","key":"note"}
+  (503 persisted:false is CORRECT here — NFR-3: never claim a save that did not commit.)
+second attempt down  : HTTP 503 {"ok":false,"persisted":false,"error":"not_persisted","key":"note"}
+health.db now        : {"enabled": true, "connected": false, "counts": null}   <- `connected` is now latched FALSE
+propsWritable now    : True   <- the FIX: enabled() alone, so the panel is not greyed out by a blip
+
+=== 2 · Postgres COMES BACK (docker start) — the process is NOT restarted ===
+pg_isready           : /var/run/postgresql:5432 - accepting connections   (rc=0)
+engine PIDs unchanged: ['29681', '29682'] == ['29681', '29682'] -> True
+health.db BEFORE any write (the latch has not been re-probed yet):
+  {"enabled": true, "connected": false, "counts": null}
+
+=== 3 · THE RETRY — the operator presses «أعد المحاولة» ===
+retry 1              : HTTP 200 {"ok":true,"persisted":true,"props":{"note":{"value":"قال إن الميزانية تُعتمد في الربع القادم","source":"human","by":"اللوحة","ts":1787025766402}}}
+retry 2 (other key)  : HTTP 200 {"ok":true,"persisted":true,"props":{"nextStep":{"value":"اتصال بعد اعتماد الميزانية","source":"human","by":"اللوحة","ts":1787025766434}}}
+health.db after      : {"enabled": true, "connected": true, "counts": {"contacts": 3, "messages": 8, "events": 3}}
+
+=== 4 · did it actually COMMIT? straight out of Postgres, not out of memory ===
+psql row             : قال إن الميزانية تُعتمد في الربع القادم|human|اتصال بعد اعتماد الميزانية
+re-GET contact.props  : {"decisionMaker": {"value": "د. سارة العتيبي · مديرة العيادة", "source": "human", "by": "اللوحة", "ts": 1787025764376}, "note": {"value": "قال إن الميزانية تُعتمد في الربع القادم", "source": "human", "by": "اللوحة", "ts": 1787025766402}, "nextStep": {"value": "اتصال بعد اعتماد الميزانية", "source": "human", "by": "اللوحة", "ts": 1787025766434}}
+
+=== 5 · the reconnect is stated in the log, not silent ===
+  {"at":"db","msg":"pool error — memory-only until recovery","err":"error: terminating connection due to administrator command"}
+  {"at":"db","msg":"pool error — memory-only until recovery","err":"error: terminating connection due to administrator command"}
+  {"at":"db","msg":"pool error — memory-only until recovery","err":"error: terminating connection due to administrator command"}
+  {"at":"db","msg":"pool error — memory-only until recovery","err":"error: terminating connection due to administrator command"}
+  {"at":"db","msg":"reconnected after a pool error"}
+  {"at":"db","msg":"pool error — memory-only until recovery","err":"error: terminating connection due to administrator command"}
+  {"at":"db","msg":"pool error — memory-only until recovery","err":"error: terminating connection due to administrator command"}
+  {"at":"db","msg":"reconnected after a pool error"}
+
+VERDICT: PASS — QA-1 is RESOLVED. Same PID, ledger restored, the retry the panel promises now works.
+engine PIDs after    : ['29681', '29682']

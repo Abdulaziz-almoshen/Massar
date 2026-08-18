@@ -1,0 +1,102 @@
+SC-6 · failure_recovery · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+persona: عبدالعزيز, typing what he just learned on a call while the ledger is not there
+GIVEN  NFR-3: silent failure is NOT acceptable for a typed fact. A lost fact reads «ناقص» after
+       the next hydrate and destroys the trust this panel exists to earn.
+WHEN   (A) the engine boots with no DATABASE_URL, and (B) Postgres dies mid-session
+THEN   (A) editors render DISABLED with the reason stated, and the route 503s;
+       (B) the save 503s {persisted:false}, the editor STAYS OPEN with «لم يُحفظ», nothing is
+       claimed as saved, and the value is NOT half-written into memory.
+
+################ A · booted with NO DATABASE_URL (port 8189) ################
+precondition: the contact reached this DB-less process via a delivered status event
+health: db={"enabled": false, "connected": false, "counts": null}  outbound={"ok": false, "reason": "GUPSHUP_API_KEY missing"}
+GET /admin/customer/966500000850 -> propsWritable = False
+POST /admin/contact/props -> HTTP 503 {"ok":false,"persisted":false,"error":"not_persisted","key":"note"}
+in-memory props after the refused write (must be {} — DB FIRST, memory second):
+  {}
+
+the panel as rendered with no ledger:
+{
+  "rendered": true,
+  "disabledReasonLine": "التعديل معطّل: قاعدة البيانات غير متصلة.",
+  "pencilCount": 6,
+  "pencilsDisabled": 6,
+  "pencilTitles": [
+    "التعديل معطّل: قاعدة البيانات غير متصلة."
+  ],
+  "addAffordancesOffered": 0,
+  "confirmPillsOffered": 0
+}
+console/page errors: []
+
+################ B · the ledger DIES mid-session (Postgres stopped under a live engine) ################
+health before the kill: db={"enabled": true, "connected": true, "counts": {"contacts": 3, "messages": 8, "events": 0}}
+$ docker stop massar-qa-pg
+health right after the kill: db={"enabled": true, "connected": false, "counts": null}
+  (`connected` is still true here — the pool has not errored yet. This is exactly the state in
+   which a naive implementation shows a green save. The write path is what has to catch it.)
+POST /admin/contact/props (API) -> HTTP 503 {"ok":false,"persisted":false,"error":"not_persisted","key":"note"}
+
+OBSERVED: with Postgres stopped the record page still opens; the profile request blocks on
+the pool's 8s connection timeout — measured 0.5s to first row (vs ~1s healthy).
+
+the ملاحظة row as the operator now finds it:
+{
+  "penDisabled": false,
+  "penTitle": "",
+  "addOffered": true,
+  "panelBanner": null
+}
+
+the editor after the save that could not reach the ledger:
+{
+  "editorStillOpen": true,
+  "draftPreserved": "مكالمة الأحد: طلبوا عرضًا مكتوبًا",
+  "errorLine": "لم يُحفظ: قاعدة البيانات غير متصلة. أعد المحاولة.",
+  "rowText": "ملاحظة · بخط الفريق فقط | حفظ | إلغاء | لم يُحفظ: قاعدة البيانات غير متصلة. أعد المحاولة.",
+  "claimsSaved": false
+}
+console/page errors: ["console: Failed to load resource: the server responded with a status of 503 (Service Unavailable)"]
+
+in-memory props after the failed write (the value must NOT be in memory — DB before memory):
+  {}
+
+=== RECOVERY — «أعد المحاولة» is what the UI tells the operator to do. Does it work? ===
+$ docker start massar-qa-pg
+pg_isready: /var/run/postgresql:5432 - accepting connections
+health now: db={"enabled": true, "connected": false, "counts": null}
+retry #1 -> HTTP 200 {"ok":true,"persisted":true,"props":{"note":{"value":"مكالمة الأحد: طلبوا عرضًا مكتوبًا","source":"human","by":"عبدالعزيز","ts":1787026007128}}}
+retry #2 -> HTTP 200 {"ok":true,"persisted":true,"props":{"note":{"value":"مكالمة الأحد: طلبوا عرضًا مكتوبًا","source":"human","by":"عبدالعزيز","ts":1787026009150,"prior":{"value":"مكالمة الأحد: طلبوا عرضًا مكتوبًا","by":"عبدالعزيز","ts":1787026007128}}}}
+retry #3 -> HTTP 200 {"ok":true,"persisted":true,"props":{"note":{"value":"مكالمة الأحد: طلبوا عرضًا مكتوبًا","source":"human","by":"عبدالعزيز","ts":1787026011160,"prior":{"value":"مكالمة الأحد: طلبوا عرضًا مكتوبًا","by":"عبدالعزيز","ts":1787026009150}}}}
+
+FINDING QA-1 (P1) — RAISED at 388832f, RE-VERIFIED RESOLVED at f54835c.
+At 388832f the three retries above were three 503s: `db.connected` was a one-way latch, set
+true only in init() and false by the pool 'error' event, never re-tested — so «أعد المحاولة»
+was an instruction the system could not honour until the PROCESS restarted.
+At this commit `upsertProps` calls `reprobe()`, which re-tests the pool with SELECT 1 before
+refusing a human's typed fact, and `propsWritable` is `db.enabled()` alone so a transient blip
+no longer greys out every editor. The three 200s printed above are the measurement, on the same
+PID; the isolated failover run is SC-7. The engine log states the recovery rather than hiding it:
+  {"at":"db","msg":"reconnected after a pool error"}
+
+VERDICT: PASS — AC-8 holds, and the recovery the panel promises now works (QA-1 resolved).
+
+################ B2 · the UI half of NFR-3, forced deterministically ################
+Case B above could not be observed through the browser: `connected` latches false within ~1s of
+the kill, so by the time a page loads the pencils are ALREADY disabled and the editor cannot be
+opened at all. The remaining branch — a save that 503s while the editor is open — is reached
+here by making the SERVER's own 503 response arrive at a page that is otherwise healthy: the
+test intercepts POST /admin/contact/props and replays the exact body the route returned above.
+Product code is untouched; only the transport is stubbed.
+
+{
+  "editorStillOpen": true,
+  "draftPreserved": "مكالمة الأحد: طلبوا عرضًا مكتوبًا",
+  "errorLine": "لم يُحفظ: قاعدة البيانات غير متصلة. أعد المحاولة.",
+  "rowStillReadsMissing": false,
+  "claimsSaved": false
+}
+console/page errors: ["console: Failed to load resource: the server responded with a status of 503 (Service Unavailable)"]
+
+The typed sentence is still in the box, the field still reads «ناقص» (it was never optimistically
+flipped), the failure is named in place, and no success toast was printed. That is AC-8.

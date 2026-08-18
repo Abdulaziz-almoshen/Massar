@@ -1,54 +1,40 @@
 {
-  "cycle": "journey-scope",
-  "screen": "#customer/<phone> — vCustomer() in massar-engine/src/dashboard.ts (~line 1878)",
+  "cycle": "massar-visual-system V1",
   "impact_level": "HEAVY",
-  "gate": "B — style already approved (massar-design-language.md / _مسار/مسار.dc.html); variants explore layout within it",
-  "variants_shown": 3,
-  "previews": [
-    ".orbit/design/previews/customer-journey-scope/v1-scope-strip.html",
-    ".orbit/design/previews/customer-journey-scope/v2-journey-cards.html",
-    ".orbit/design/previews/customer-journey-scope/v3-ledger-scope.html"
-  ],
-  "chosen": "v3-ledger-scope",
-  "why_chosen": [
-    "Only variant where the boundary is BOTH visible and persistent: the sticky navy scope banner states the window in words and travels with the operator down the page, so no scoped number is ever read without its scope in view.",
-    "The founder's literal question is comparative ('which one relates to the last one'). V3 is the only layout that puts all four per-recipient timestamps for every journey side by side in one scan. V1 hides them behind a tab switch; V2 hides them behind an accordion.",
-    "V2 has no page-level scope, so the lifetime blocks below it stay unscoped with nothing declaring the current scope — it solves the journey list but not the mixed-scope complaint."
-  ],
-  "rejected": {
-    "v1-scope-strip": "Tab strip is a filter, not a ledger — you cannot compare two journeys without losing the first. Mailchimp's date-filter failure mode.",
-    "v2-journey-cards": "Strong per-journey isolation and the best empty/unattributed copy, but no global scope declaration; three stacked cards also push فهم المساعد far below the fold at 375."
+  "surface": "app/dashboard (data-dense list + record)",
+  "style_selection": {
+    "gate": "A",
+    "method": "human-selected between two real, viewed alternatives",
+    "variants_shown": [
+      "A — keep Massar's visual language, port Frappe patterns only (user-model Rule 3, shipped in earlier cycles)",
+      "B — adopt Frappe CRM's actual visual system, translated to RTL/Arabic"
+    ],
+    "chosen": "B",
+    "rationale": "The founder viewed the shipped result of (A) twice and twice reported the port does not look different. He then explicitly overruled Rule 3 for visual-system scope and named (B). A human selection between two implemented, viewed alternatives is stronger evidence than designer-authored prototypes; no additional HTML variants were built, and this is recorded rather than skipped.",
+    "rule_3_status": "still governs BRANDING only — name, logo, navy sidebar, teal primary action"
   },
-  "remix_notes": [
-    "Take V2's unattributed-row copy and its ٤-step wording verbatim into the V3 ledger.",
-    "Take V1's banner label «الأرقام في هذه الصفحة تخصّ» — more explicit than V3's original.",
-    "At 375 reduce ledger side padding 20px → 14px and let the scope <select> go full-width (width:100%) below the label block."
-  ],
   "taste_preflight": {
-    "design_read": "An operator's magnifying glass: the page must say out loud which send it is currently reporting on, and refuse to show a number it cannot prove belongs there.",
-    "dials": { "variance": "low", "motion": "none-to-minimal", "density": "high" },
-    "design_system": "none — bespoke (Massar design language, derived from _مسار/مسار.dc.html)",
-    "surface": "app/dashboard — operational interface",
+    "design_read": "An operations ledger, not a marketing surface: the screen's job is to fit as many campaigns on one page as Arabic legibility allows, and to spend colour only where a decision hangs on it.",
+    "dials": { "variance": "low", "motion": "none", "density": "high" },
+    "design_system": "Frappe UI (frappe-ui token set), translated to RTL/Arabic",
     "taste_skill_scope": "excluded",
-    "taste_skill_exclusion_reason": "Dashboard + data-table surface. TasteSkill v2's own scope excludes these; its marketing-layout and cinematic-motion recipes must not be imported. Only its brief-inference, accessibility floor, dark-mode-neutral, and anti-slop preflight discipline are applied.",
+    "taste_skill_scope_reason": "Dashboard + data-table + record surface. TasteSkill v2 explicitly excludes these; its marketing-layout and cinematic-motion recipes are not imported. Only its foundation, a11y, and anti-slop preflight discipline applied.",
     "checklist_passed": true,
     "checklist_notes": [
-      "No em-dashes in shipped Arabic UI copy (Arabic uses — only inside campaign display names supplied by the operator).",
-      "Focus-visible ring on every interactive element (tabs, rows, select): 2px #2E7D77.",
-      "No motion beyond a 140ms hover tint; nothing animates on load.",
-      "No purple/indigo gradient, no glassmorphism, no emoji, no generic 'Insights' card.",
-      "Colour is never the sole carrier: every state chip pairs a tinted dot with an Arabic word."
+      "no em-dashes in shipped Arabic UI copy (the artifact's prose uses them; the UI does not)",
+      "a11y floor: #7C7C7C is the lightest text token (4.76:1); #999999 restricted to icons/placeholders",
+      "focus-visible specified (2px #1F7A73, offset -2px); hover carries no motion",
+      "no gradient-on-card, no glow, no shadow on list surfaces, no decorative colour"
     ]
   },
+  "plan": ".orbit/artifacts/campaigns-crm/frappe-visual-system.md",
+  "tokens_authority": "DESIGN.md",
+  "previews": null,
+  "previews_note": "No prototype directory: the two compared alternatives are (A) the currently deployed #kmon and (B) Frappe CRM itself, both viewed by the founder.",
   "qa_baseline": {
-    "route": "#customer/<phone>",
-    "states_to_capture": [
-      "scoped-to-campaign (replied, overlapping)",
-      "scoped-to-campaign (empty window)",
-      "unreadable launch timestamp",
-      "lifetime scope"
-    ],
-    "viewports": ["375x812", "768x1024", "1440x900"],
-    "compare_against": ".orbit/design/previews/customer-journey-scope/v3-ledger-scope.html + DESIGN.md token assertions"
-  }
+    "capture_before": "S1 (token swap)",
+    "routes": ["/dashboard#kmon", "/dashboard#kmon/<id>"],
+    "viewports": ["1440x900", "768x1024", "375x812"]
+  },
+  "migration_gates": ["npm run check", "npm run smoke"]
 }

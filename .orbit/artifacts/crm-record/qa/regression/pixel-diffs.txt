@@ -1,0 +1,21 @@
+PIXEL DIFFS · WHOLE-RECORD captures · commit f54835c4262d4263bb3d1bbf25d2447aad9439f7 · 2026-08-18T04:24:50Z
+
+The app shell scrolls inside #body.ms-scroll, so a plain full_page shot is one screenful and
+the delivered panel sits below the fold. Every capture below expands that container first, so
+the comparison covers the WHOLE record. Capture heights are therefore the real page heights.
+
+A · baseline (independent capture, f54835c) vs actual (f54835c) — render stability/determinism
+  customer   375x812   PASS: 0/1197375 pixels differ = 0.0000% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff/customer@375x812.png
+  customer   768x1024  PASS: 0/1801728 pixels differ = 0.0000% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff/customer@768x1024.png
+  customer   1440x900  PASS: 0/2410560 pixels differ = 0.0000% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff/customer@1440x900.png
+  kmon       375x812   PASS: 421/379500 pixels differ = 0.1109% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff/kmon@375x812.png
+  kmon       768x1024  PASS: 868/786432 pixels differ = 0.1104% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff/kmon@768x1024.png
+  kmon       1440x900  PASS: 935/1509120 pixels differ = 0.0620% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff/kmon@1440x900.png
+
+B · prechange (e60c069) vs actual (f54835c) — the INTENDED change
+  customer   375x812   DIMENSION MISMATCH: .orbit/artifacts/crm-record/qa/visual/prechange/customer@375x812.png is 375x2635, .orbit/artifacts/crm-record/qa/visual/actual/customer@375x812.png is 375x3193 — treating as 100% diff
+  customer   768x1024  DIMENSION MISMATCH: .orbit/artifacts/crm-record/qa/visual/prechange/customer@768x1024.png is 768x1754, .orbit/artifacts/crm-record/qa/visual/actual/customer@768x1024.png is 768x2346 — treating as 100% diff
+  customer   1440x900  DIMENSION MISMATCH: .orbit/artifacts/crm-record/qa/visual/prechange/customer@1440x900.png is 1440x1656, .orbit/artifacts/crm-record/qa/visual/actual/customer@1440x900.png is 1440x1674 — treating as 100% diff
+  kmon       375x812   DIMENSION MISMATCH: .orbit/artifacts/crm-record/qa/visual/prechange/kmon@375x812.png is 375x1048, .orbit/artifacts/crm-record/qa/visual/actual/kmon@375x812.png is 375x1012 — treating as 100% diff
+  kmon       768x1024  FAIL: 156344/786432 pixels differ = 19.8802% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff-intent/kmon@768x1024.png
+  kmon       1440x900  PASS: 3095/1509120 pixels differ = 0.2051% (threshold 1.0000%)  → .orbit/artifacts/crm-record/qa/visual/diff-intent/kmon@1440x900.png

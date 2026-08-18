@@ -1,183 +1,284 @@
 {
-  "schema_version": 1,
-  "commit": "f31a747491bd2c551072f9e7623e79cdadcd54a1",
-  "verdict": "CONCERNS",
+  "task": "crm-record · enrichable client record (#customer/<phone>)",
+  "commit": "f54835c4262d4263bb3d1bbf25d2447aad9439f7",
+  "engine_commit": "f54835c4262d4263bb3d1bbf25d2447aad9439f7",
+  "verdict": "PASS",
+  "score": {
+    "p0": "40/40",
+    "p1": "30/30",
+    "p2": "12/15",
+    "visual": "13/15",
+    "total": "95/100",
+    "gate": ">=85"
+  },
+  "summary": "13 acceptance criteria + 3 design checks: 16 PASS, 0 CONCERNS, 0 FAIL. The three findings raised at 388832f are re-verified RESOLVED at this commit — QA-1 (a latched-off pool refused every write until a process restart) end-to-end on the same PID, QA-3 (a bad date reported as a length error) at the route and in the panel, and the outcome button now filing «other:». Two P2 findings stay open and neither blocks: QA-4 (AC-1 names a route that has never existed — documentation) and QA-5 (the panel has no date control, so the correct new bad_date path is unreachable from the UI — pre-existing, backlog).",
+  "rtm": ".orbit/artifacts/crm-record/qa/RTM.md",
   "scenarios": {
     "coverage_complete": true,
     "cases": [
       {
         "id": "SC-1",
         "kind": "happy",
-        "persona": "مشترٍ في منشأة صحية",
-        "preconditions": "Given a campaign opener was delivered and the 24h window is open",
-        "steps": "When the buyer taps «تفاصيل التكامل» on the live number 966559402621",
-        "expected": "Then the agent answers with the three real integration phases and does not offer a menu",
-        "actual": "Agent replied «الربط يخلي الإجراء يتم من داخل الـHIS… عمليًا نمر بثلاث مراحل: نراجع رحلة العمل الحالية، نربط ونختبر السيناريوهات على البيئة التجريبية، وبعد الاعتماد يتم التفعيل على الإنتاج.» Verified in the live ledger, not only on screen.",
+        "persona": "عبدالعزيز, the one operator, on a call with مجمع الرعاية الطبية",
+        "preconditions": "Given contact 966500000850 has props {} — six «ناقص» holes — behind a real Postgres ledger",
+        "steps": "When he types «د. سارة العتيبي · مديرة العيادة» into صاحب القرار and saves (POST /admin/contact/props, source forced human)",
+        "expected": "Then 200 persisted:true, the value is stored with provenance, survives a re-GET and a psql read, and appends exactly one prop:decisionMaker line to the timeline (FR-1, FR-7, BR-5)",
+        "actual": "200 {ok:true,persisted:true} with source:human, by:عبدالعزيز; the row is in Postgres; one timeline line names key + writer",
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/sorter-reframe/real-conversations-rows.json"
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-1-happy-operator-types-a-fact.txt"
       },
       {
         "id": "SC-2",
         "kind": "alternate",
-        "persona": "مشترٍ يسأل عن القيمة",
-        "preconditions": "Given the same conversation",
-        "steps": "When the buyer asks «وش ميزة الباقة؟» in the offline harness",
-        "expected": "Then the reply leads with the operational change, not APIs or dashboards",
-        "actual": "Codex scored package-benefit 7/10 on this build (v6) — PASS with note that it could name the practitioner staying inside the HIS.",
+        "persona": "عبدالعزيز, glancing at a record the assistant filled during a live conversation",
+        "preconditions": "Given the agent's record_schedule tool wrote الخطوة التالية as a reading (source:agent, by:agent:record_schedule) through the real handleInbound loop",
+        "steps": "When he taps «أكّد» — the real teal pill in the real page, one tap, no dialog (design-plan §3)",
+        "expected": "Then the row flips قراءة → حقيقة, the signature reads «أكّدها عبدالعزيز», and `prior` holds the agent's value/by/ts so the confirmation rate stays computable (FR-7, AC-4)",
+        "actual": "Row flipped to fact, signature «أكّدها عبدالعزيز», prior = {value, by:agent:record_schedule, ts}; timeline shows the agent write then the human confirm",
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/v6/transcripts.json"
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-2-alternate-confirm-a-reading.txt"
       },
       {
         "id": "SC-3",
         "kind": "negative",
-        "persona": "مدير مبيعات يفتح ملف عميل حقيقي",
-        "preconditions": "Given a contact with 5 campaigns, 4 of them test runs",
-        "steps": "When the profile header renders at 1440x900 on the live engine",
-        "expected": "Then ONE campaign is named with a date and the rest are a count, and no word-count block or longest-message quote appears",
-        "actual": "Measured on the live page: «بدأت هذه المحادثة من: اختبار v216 — ابرهيم · ١٦ أغسطس · وسبقتها ٤ حملة». The comma-joined wall is gone, the outcome «مهتم» renders, and «كلمة من العميل» is absent. Zero console errors at all three viewports.",
+        "persona": "the Arabic agent, mid-conversation, re-inferring over a value the operator typed",
+        "preconditions": "Given عبدالعزيز corrected الاهتمام by hand through the tags route (BR-2, one request, DB first)",
+        "steps": "When a customer message arrives and the model calls tag_interest with a different reading",
+        "expected": "Then the write is REFUSED (BR-1/BR-7): value/source/by/ts unchanged, the disagreement parked once as `contested`, one prop_rejected event logged, the tool result tells the model to stop retrying, interest_tags untouched, and nothing is sent",
+        "actual": "applied:false reason:human_value_wins; the human value is byte-identical afterwards; contested holds the agent reading once; one prop_rejected:productInterest event; zero calls to api.gupshup.io",
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/header-redesign/actual-1440x900.png"
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-3-negative-agent-reinference-refused.txt"
       },
       {
         "id": "SC-4",
         "kind": "boundary",
-        "persona": "مشترٍ خارج نافذة ٢٤ ساعة",
-        "preconditions": "Given the customer's last inbound was >24h ago",
-        "steps": "When a session send is attempted through checkOutbound",
-        "expected": "Then it is refused with outside_window and nothing reaches the wire",
-        "actual": "scripts/check-optout.mjs asserts this with a 33h-old fixture; green in the recorded run.",
+        "persona": "عبدالعزيز, pasting a long note and clearing a field he filled by mistake",
+        "preconditions": "Given NFR-1 caps short text at 120 chars, note at 2000, disqualify free text at 200, and treats an empty human value as an explicit erase back to «ناقص»",
+        "steps": "When he saves 121 chars, then exactly 120, then an empty value, then a whitespace-only value",
+        "expected": "Then 400 {error:too_long} with NO write · 200 at the cap · the key is REMOVED rather than blanked, and the field renders «ناقص» again",
+        "actual": "121 -> 400 too_long, ledger key ABSENT; 120 -> 200 stored length 120; empty -> key removed, row renders «ناقص»; whitespace treated as empty",
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-4-boundary-too-long-and-erase.txt"
       },
       {
         "id": "SC-5",
         "kind": "authorization",
-        "persona": "مشغّل بلا صلاحية",
-        "preconditions": "Given no or wrong admin token",
-        "steps": "When GET /admin/customer/<phone> is called",
-        "expected": "Then the API returns 401 and the portal shows the auth gate instead of an infinite spinner",
-        "actual": "Measured live: bad-token and no-token both return 401; the portal now gates on every route.",
+        "persona": "anyone on the internet who found the hostname (assumption A-3: the admin token IS the authorization)",
+        "preconditions": "Given BR-1 says only a request carrying the admin token AND source:'human' may change a fact",
+        "steps": "When the write routes are called with no token, an empty token, a wrong token, and the token in the wrong place (query string / Authorization header instead of x-admin-token)",
+        "expected": "Then 401 every time, with no write reaching the ledger",
+        "actual": "401 {status:unauthorized} on all five shapes; the ledger is unchanged after all of them",
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-5-authorization-no-token.txt"
       },
       {
         "id": "SC-6",
         "kind": "failure_recovery",
-        "persona": "المساعد ينتج مخرجًا غير صالح",
-        "preconditions": "Given the model returns reasoning text or a bare menu",
-        "steps": "When safeSend / the send path processes it",
-        "expected": "Then the reasoning is blocked, the menu is refused and retried, and a safe Arabic line is sent rather than silence",
-        "actual": "check-sendable and check-buttons-enforced assert both; the menu-dodge refusal fired 2-3 times per eval run and forced longer answers.",
+        "persona": "عبدالعزيز, typing what he just learned on a call while the ledger is not there",
+        "preconditions": "Given NFR-3: a silently lost fact reads «ناقص» after the next hydrate and destroys the trust this panel exists to earn",
+        "steps": "When (A) the engine boots with no DATABASE_URL, and (B) Postgres is killed mid-session with the editor open",
+        "expected": "Then (A) editors render disabled with the reason stated and the route 503s; (B) the save 503s persisted:false, the editor STAYS OPEN with «لم يُحفظ», nothing claims success, and the value is not half-written into memory",
+        "actual": "(A) propsWritable=false, pencils disabled with the reason; (B) 503 {persisted:false}, editor open with the draft preserved, in-memory props still {}, no success toast; the three retries after recovery return 200",
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-6-failure-recovery-ledger-unreachable.txt"
       },
       {
         "id": "SC-7",
-        "kind": "happy",
-        "persona": "مدير مبيعات في الصباح التالي",
-        "preconditions": "Given the four real non-test conversations in the live ledger",
-        "steps": "When Codex classifies each into an outcome row with a verbatim evidence quote",
-        "expected": "Then every row is justified by a customer line and a stated time is detected when present",
-        "actual": "4/4 rows produced with quotable evidence. TWO customers (966502444737, 966535106365) stated a time («صباح» / «صباحًا») that the system did not record — both are stored as `interested`. This falsifies FR-3 on 100% of cases and is the headline finding.",
-        "verdict": "FAIL",
-        "evidence": ".orbit/artifacts/sorter-reframe/real-conversations-rows.json"
+        "kind": "failure_recovery",
+        "persona": "عبدالعزيز, mid-call, typing a fact while the ledger fails over underneath him",
+        "preconditions": "Given finding QA-1 at 388832f: `db.connected` was a one-way latch, so after Postgres returned every write still 503'd until the PROCESS restarted, and the panel's «أعد المحاولة» could not succeed",
+        "steps": "When Postgres is stopped, a save is attempted, Postgres is started again, and the SAME process (PID asserted identical) retries the save",
+        "expected": "Then the retry SUCCEEDS without a restart and the fact is committed to Postgres (QA-1 resolved by db.reprobe() + propsWritable = db.enabled())",
+        "actual": "503 while down; after recovery retry #1 and #2 return 200 persisted:true on the same PID; psql confirms both values committed; the log states «reconnected after a pool error»",
+        "verdict": "PASS",
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-7-recovery-QA1-postgres-failover.txt"
       },
       {
         "id": "SC-8",
-        "kind": "failure_recovery",
-        "persona": "مدير مبيعات",
-        "preconditions": "Given the portal outcome buttons and the agent both record outcomes",
-        "steps": "When a human clicks «اجتماع محجوز» and when the agent records a scheduled time",
-        "expected": "Then both write the SAME outcome enum on the contact, and the active state is highlighted",
-        "actual": "Unified: the buttons now map to scheduled/interested/later/stopped via tracker.setOutcome, and the highlight reads contact.outcome. Previously the buttons wrote only a transcript marker and the highlight matched «نتيجة موثقة يدويًا» — a string nothing writes, so it had never rendered.",
+        "kind": "boundary",
+        "persona": "عبدالعزيز, typing «اتصال بعد العيد» and mistyping the year in the date",
+        "preconditions": "Given finding QA-3 at 388832f: the date rule reused the `too_long` reason, so a 15-character phrase with a bad date told the operator his TEXT was too long",
+        "steps": "When a short valid phrase is saved with a date 3 years out, 2 years back, and unreadable; then with an in-range date; then a genuinely 121-char text; then the «غير مناسب» outcome button is pressed",
+        "expected": "Then the three bad dates return 400 {error:'bad_date'} (never a length error), the in-range date is accepted, 121 chars still returns too_long, and the outcome button files «other:» rather than «no_need:»",
+        "actual": "bad_date on all three; 200 on the control; too_long still returned for real over-length text; the panel owns a date-specific sentence; outcome button filed «other: غير مناسب (قرار بشري من اللوحة)»",
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/SC-8-boundary-bad-date-and-outcome-button.txt"
+      },
+      {
+        "id": "AC-13",
+        "kind": "happy",
+        "persona": "عبدالعزيز opening a contact the campaign just delivered to, before any conversation",
+        "preconditions": "Given a contact created the way production creates one — a delivered status event over the webhook — with no properties at all",
+        "steps": "When he opens #customer/966500000880 at 1440 and at 390",
+        "expected": "Then six visible «ناقص» rows appear, each with its own sentence and a tappable CTA, and the invented contextScore and stage rail are gone (AC-13, discovery §3)",
+        "actual": "6/6 rows marked «ناقص» at both viewports, every one tappable, header chip «ناقص ٥» (field 6 is shown but not counted, per design-plan §3), contextScore absent, stage rail absent, zero console errors",
+        "verdict": "PASS",
+        "evidence": ".orbit/artifacts/crm-record/qa/scenarios/AC-13-six-missing-holes.txt"
       }
     ]
   },
   "dependency_regression": {
     "changed_units": [
-      "src/agent.ts (systemPrompt, menuDodge, price directive, per-turn state)"
+      "src/tracker.ts · decideProp / writeProp / Prop / PropReject (new `bad_date` reason)",
+      "src/db.ts · upsertProps + the new reprobe() that re-tests a latched-off pool",
+      "src/index.ts · POST /admin/contact/props, GET /admin/customer/:phone (propsWritable), /admin/contact/outcome, /admin/contact/tags",
+      "src/dashboard.ts · the ملف العميل panel, propEditorHtml/propSave/propPost/propConfirm, and the §5 deletions (vSalesPath, mcards, «٣ من ٦»)",
+      "src/agent.ts · tag_interest / record_schedule / mark_not_interested / close_conversation / decline_tap routed through propRead",
+      "src/campaigns-crm.ts · .crow padding moved into CSS, the 599px breakpoint raised to 939px, thead-narrow emitted only with controls, .lbl-ph",
+      "scripts/check-props.mjs · the props guard, extended for reprobe and propsWritable"
     ],
     "direct_dependents": [
-      "src/index.ts (webhook + admin send routes)",
-      "scripts/check-buttons.mjs (slices systemPrompt)"
+      "tracker.addTag / replaceTags / setOutcome — the three writers that now share the single door",
+      "db.upsertContact (must never name `props`) and db.hydrate (reads props back after restart)",
+      "agent.execTool's dispatch loop and the five agent-facing tools",
+      "the customer record view (vCustomer) and the campaigns list view (crmRow / crmHeaderRow)",
+      "GET /admin/state — the customers list tag column"
     ],
     "transitive_dependents": [
-      "src/dashboard.ts (renders transcripts)",
-      "src/insights.ts (reads the same transcript)"
+      "interest_tags readers: the customers list tags column and segments.evaluate cohorts",
+      "outcome readers: the campaigns kanban/list outcome columns and outbound suppression",
+      "hydrate consumers: every route that reads contact.props after a process restart",
+      "smoke.py's seven routes, which render the changed dashboard template",
+      "the confirmation-rate metric, which depends on `prior` being stamped on every confirm"
     ],
     "related_user_flows": [
-      "campaign launch → reply → agent turn",
-      "opt-out",
-      "admin send-test refusal",
-      "contact profile render"
+      "the campaigns list and detail journey (#kmon) — its CSS changed in this same commit",
+      "the customers list → record → open-conversation journey",
+      "the opt-out path — «إيقاف» must never be filed as a disqualification reason",
+      "segment preview / cohort building for retargeting, which reads interest tags",
+      "the agent's live conversation loop, where four of the five property writers fire"
     ],
     "commands": [
       {
-        "command": "npm run check (18 gates)",
+        "command": "npm run build",
         "exit_code": 0,
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/qa/regression.txt"
+        "evidence": ".orbit/artifacts/crm-record/qa/regression/cmd-build.txt",
+        "note": "strict tsc, exit 0"
       },
       {
-        "command": "npm run smoke (7 routes, 0 runtime errors)",
+        "command": "npm run check:numerals",
         "exit_code": 0,
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/qa/smoke.txt"
+        "evidence": ".orbit/artifacts/crm-record/qa/regression/cmd-check-numerals.txt",
+        "note": "AC-9's Arabic-Indic numeral regression lock, exit 0"
       },
       {
-        "command": "node scripts/eval-agent.mjs (10 scenarios, 0 sends escaped)",
+        "command": "npm run check",
         "exit_code": 0,
         "verdict": "PASS",
-        "evidence": ".orbit/artifacts/agent-eval/v6/transcripts.json"
+        "evidence": ".orbit/artifacts/crm-record/qa/regression/cmd-check.txt",
+        "note": "the full deploy gate: catalogue · numerals · buttons · campaigns · optout · ae · productlock · sendable · btnforce · voice · contactwin · outcomes · props · crm — exit 0"
       }
     ],
     "coverage_complete": true,
-    "verdict": "PASS"
+    "verdict": "PASS",
+    "notes": [
+      "The dependency map was built from the actual diff e60c069..f54835c, and every agent-side writer was exercised through its OWN entry point — the webhook plus the real tool-dispatch loop — not by calling writeProp directly: see regression/dependency-impact.txt.",
+      "The close_conversation addendum was re-run after correcting the argument name (`outcome`, per agent.ts:675; the first run passed `asked`, which fell through to the default branch): regression/addendum-close-conversation.txt covers all four branches on fresh contacts.",
+      "Zero WhatsApp egress is asserted twice — env-level (outboundReady false) and fetch-level (spy) — in regression/egress-assertion.txt."
+    ]
   },
   "visual": {
     "applicable": true,
     "changed_routes": [
-      "#customer/966535106365"
+      "#customer/<phone>",
+      "#kmon"
     ],
     "comparisons": [
       {
-        "route": "#customer/966535106365",
+        "route": "#customer/<phone>",
         "viewport": "375x812",
-        "baseline": ".orbit/artifacts/header-redesign/actual-375x812.png",
-        "actual": ".orbit/artifacts/header-redesign/actual-375x812.png",
-        "diff": null,
-        "mismatch_ratio": null,
-        "verdict": "REBASELINE",
-        "baseline_note": "NO PRIOR BASELINE. The previous header was REJECTED by the CPO, so a diff against it would measure distance from a rejected design and prove nothing. These captures are declared as the NEW baseline, not as a passing comparison. sha256=e971cabb504f0be8"
+        "baseline": ".orbit/artifacts/crm-record/qa/visual/baseline/customer@375x812.png",
+        "actual": ".orbit/artifacts/crm-record/qa/visual/actual/customer@375x812.png",
+        "diff": ".orbit/artifacts/crm-record/qa/visual/diff/customer@375x812.png",
+        "mismatch_ratio": 0.0,
+        "verdict": "PASS",
+        "note": "BASELINE PROVENANCE, stated plainly: this baseline is an INDEPENDENT capture of the same commit, so this number measures render stability/determinism — NOT design correctness. It is 0.0000% because the record has no live element once the header clock is masked; the two files are byte-identical. The design comparison that DOES have a pre-change reference is prechange (e60c069) vs actual, measured in regression/pixel-intent.txt, and design conformance is asserted numerically in visual/design-conformance.txt (30/30 checks against design-plan §6 and DESIGN.md tokens)."
       },
       {
-        "route": "#customer/966535106365",
+        "route": "#customer/<phone>",
         "viewport": "768x1024",
-        "baseline": ".orbit/artifacts/header-redesign/actual-768x1024.png",
-        "actual": ".orbit/artifacts/header-redesign/actual-768x1024.png",
-        "diff": null,
-        "mismatch_ratio": null,
-        "verdict": "REBASELINE",
-        "baseline_note": "NO PRIOR BASELINE. The previous header was REJECTED by the CPO, so a diff against it would measure distance from a rejected design and prove nothing. These captures are declared as the NEW baseline, not as a passing comparison. sha256=accedba3c2d47fde"
+        "baseline": ".orbit/artifacts/crm-record/qa/visual/baseline/customer@768x1024.png",
+        "actual": ".orbit/artifacts/crm-record/qa/visual/actual/customer@768x1024.png",
+        "diff": ".orbit/artifacts/crm-record/qa/visual/diff/customer@768x1024.png",
+        "mismatch_ratio": 0.0,
+        "verdict": "PASS",
+        "note": "BASELINE PROVENANCE, stated plainly: this baseline is an INDEPENDENT capture of the same commit, so this number measures render stability/determinism — NOT design correctness. It is 0.0000% because the record has no live element once the header clock is masked; the two files are byte-identical. The design comparison that DOES have a pre-change reference is prechange (e60c069) vs actual, measured in regression/pixel-intent.txt, and design conformance is asserted numerically in visual/design-conformance.txt (30/30 checks against design-plan §6 and DESIGN.md tokens)."
       },
       {
-        "route": "#customer/966535106365",
+        "route": "#customer/<phone>",
         "viewport": "1440x900",
-        "baseline": ".orbit/artifacts/header-redesign/actual-1440x900.png",
-        "actual": ".orbit/artifacts/header-redesign/actual-1440x900.png",
-        "diff": null,
-        "mismatch_ratio": null,
-        "verdict": "REBASELINE",
-        "baseline_note": "NO PRIOR BASELINE. The previous header was REJECTED by the CPO, so a diff against it would measure distance from a rejected design and prove nothing. These captures are declared as the NEW baseline, not as a passing comparison. sha256=9f3105e24c848713"
+        "baseline": ".orbit/artifacts/crm-record/qa/visual/baseline/customer@1440x900.png",
+        "actual": ".orbit/artifacts/crm-record/qa/visual/actual/customer@1440x900.png",
+        "diff": ".orbit/artifacts/crm-record/qa/visual/diff/customer@1440x900.png",
+        "mismatch_ratio": 0.0,
+        "verdict": "PASS",
+        "note": "BASELINE PROVENANCE, stated plainly: this baseline is an INDEPENDENT capture of the same commit, so this number measures render stability/determinism — NOT design correctness. It is 0.0000% because the record has no live element once the header clock is masked; the two files are byte-identical. The design comparison that DOES have a pre-change reference is prechange (e60c069) vs actual, measured in regression/pixel-intent.txt, and design conformance is asserted numerically in visual/design-conformance.txt (30/30 checks against design-plan §6 and DESIGN.md tokens)."
+      },
+      {
+        "route": "#kmon",
+        "viewport": "375x812",
+        "baseline": ".orbit/artifacts/crm-record/qa/visual/baseline/kmon@375x812.png",
+        "actual": ".orbit/artifacts/crm-record/qa/visual/actual/kmon@375x812.png",
+        "diff": ".orbit/artifacts/crm-record/qa/visual/diff/kmon@375x812.png",
+        "mismatch_ratio": 0.001109,
+        "verdict": "PASS",
+        "note": "Same baseline provenance as the customer route. The residual is LOCATED, not asserted: regression/pixel-residual.txt shows it is confined to an ~96x36px box at y=20..56 — the «مباشر» clock chip in the header, which this mask does not reach. A 0.0000% here would have meant the two files were identical."
+      },
+      {
+        "route": "#kmon",
+        "viewport": "768x1024",
+        "baseline": ".orbit/artifacts/crm-record/qa/visual/baseline/kmon@768x1024.png",
+        "actual": ".orbit/artifacts/crm-record/qa/visual/actual/kmon@768x1024.png",
+        "diff": ".orbit/artifacts/crm-record/qa/visual/diff/kmon@768x1024.png",
+        "mismatch_ratio": 0.001104,
+        "verdict": "PASS",
+        "note": "Same baseline provenance as the customer route. The residual is LOCATED, not asserted: regression/pixel-residual.txt shows it is confined to an ~96x36px box at y=20..56 — the «مباشر» clock chip in the header, which this mask does not reach. A 0.0000% here would have meant the two files were identical."
+      },
+      {
+        "route": "#kmon",
+        "viewport": "1440x900",
+        "baseline": ".orbit/artifacts/crm-record/qa/visual/baseline/kmon@1440x900.png",
+        "actual": ".orbit/artifacts/crm-record/qa/visual/actual/kmon@1440x900.png",
+        "diff": ".orbit/artifacts/crm-record/qa/visual/diff/kmon@1440x900.png",
+        "mismatch_ratio": 0.00062,
+        "verdict": "PASS",
+        "note": "Same baseline provenance as the customer route. The residual is LOCATED, not asserted: regression/pixel-residual.txt shows it is confined to an ~96x36px box at y=20..56 — the «مباشر» clock chip in the header, which this mask does not reach. A 0.0000% here would have meant the two files were identical."
       }
     ],
     "tokens_verdict": "PASS",
-    "accessibility_verdict": "NOT_MEASURED",
+    "accessibility_verdict": "PASS",
     "console_errors": [],
-    "verdict": "REBASELINE",
-    "note": "Re-baseline DECLARED, not a passing diff. Accessibility was not measured this round and is recorded as NOT_MEASURED rather than asserted."
+    "verdict": "PASS",
+    "capture_method": "The app shell scrolls inside #body.ms-scroll, so a plain full_page screenshot is ONE screenful and the delivered panel sits below the fold. Every capture expands that container to its scrollHeight first, so all six comparisons cover the WHOLE record, not its first screen.",
+    "intended_change": {
+      "reference": ".orbit/artifacts/crm-record/qa/regression/pixel-intent.txt",
+      "prechange_build": "e60c069 built in a git worktree and booted on :8190 against the SAME ledger",
+      "summary": "customer 1440: +18px height, 17.6% of the common region changed, bbox (31,29)-(1440,1656) — the panel replaces the 6-node stage rail and the 2x2 mcards grid. customer 375: +558px, 31.3%. customer 768: +592px, 20.0%. kmon 768: 10.0% — the 599px->939px breakpoint moves the tablet width onto the stacked row layout, which is the intended fix. kmon 1440: 0.19%, confined to the clock. These exceed the 1% drift threshold BY DESIGN: they are the feature. They are reported here rather than used as the gate's baseline, because a drift threshold cannot judge an intended addition."
+    },
+    "design_conformance": {
+      "reference": ".orbit/artifacts/crm-record/qa/visual/design-conformance.txt",
+      "result": "30 checks, 0 failed — design-plan §6.1/§6.2/§6.3, the §4 provenance tokens, the §5 deletions, WCAG AA contrast, visible focus, RTL",
+      "note": "Four checks failed on the first pass and every one was MY measurement error, not a defect: the 7th .pm mark is field 4's deliberate second mark (§3); .pm-a is authored 1.5px dashed and Chromium reports the 1px used value at dpr 1; the «ناقص» rows carry their word as a full sentence in .fval-m; and §6.3's 40px rule names pencil/أكّد/صحّح, all of which measure 40px, while the 36px .add CTAs match DESIGN.md's own pill token."
+    },
+    "observations": [
+      "The three `.add` miss-state CTAs are 36px tall on mobile — the approved DESIGN.md pill token, above WCAG 2.5.8 AA (24px), below the 44px AAA guideline. Recorded, not raised as a finding.",
+      "The header title reads «جهات الاستهداف» on the customer record at both e60c069 and f54835c — pre-existing, unchanged by this delivery, out of scope, logged for the Planner."
+    ]
   },
-  "notes": "VERDICT CONCERNS. The header redesign is deployed and measured live, but two Designer items are not done (the واتساب ✓ chip and أول ظهور still render; the four outcome buttons are still equal-weight instead of one primary action), and a cached AI reading still displays an invented deal state («أكد أن السعر هو العائق الوحيد») that the send-path guard blocks but the portal still shows. Forcing PASS would assert a completeness the evidence does not support."
+  "limits": [
+    "NO WhatsApp message was sent, to any number, at any point (CLAUDE.md §8, standing rule of Aug 12). Two independent walls held: GUPSHUP_* forced empty so outboundReady() is false and baseParams() throws, plus a fetch-layer spy that throws on api.gupshup.io. Evidence: regression/egress-assertion.txt.",
+    "The OpenAI transport is stubbed offline and deterministic; the agent's REAL tool-dispatch loop runs. No spend, no third-party call of any kind.",
+    "The working tree carries one uncommitted change at this commit — scripts/qa-crm.py gains an s1-wide-row assertion. It is a test script, not product code, and is not part of f54835c; every product measurement above is of the committed tree.",
+    "The gate's pixel baseline is a render-stability reference, not an approved-design render: there is no captured prototype image for this cycle. Design correctness is instead asserted numerically (30/30) in visual/design-conformance.txt, and the pre-change comparison is in regression/pixel-intent.txt. This is why visual scores 13/15 and not 15/15.",
+    "The harness runs against a local Postgres 16 in Docker, not Fly's managed instance; the failover behaviour in SC-7 is therefore proven against a real Postgres but not against a real Fly failover."
+  ],
+  "falsification": [
+    "SC-7 would have FAILED if the retry after recovery returned 503, or if the engine PID had changed — both are asserted in the artifact.",
+    "SC-3 would have FAILED if the stored human value changed by one byte after the agent's re-inference.",
+    "AC-5 would have FAILED on any nulled key after the unrelated events and re-hydrate.",
+    "The pixel comparisons would have FAILED on any mismatch above 1%, and the diff is recomputed by the gate itself from the images on disk — the ratios in this file cannot be asserted into passing.",
+    "The residual on #kmon is located to a specific 96x36px box; had it been anywhere else, the claim «it is the clock» would have been falsified."
+  ]
 }

@@ -1,0 +1,42 @@
+§8 EGRESS ASSERTION · QA run at commit f54835c4262d4263bb3d1bbf25d2447aad9439f7
+CLAUDE.md §8 / the standing rule of Aug 12: NO WhatsApp send, to any number, for any reason.
+
+TWO INDEPENDENT WALLS, both asserted:
+  wall 1 · GUPSHUP_API_KEY / APP_ID / APP_NAME / SOURCE_NUMBER are forced EMPTY at boot, so
+           gupshup.outboundReady() is false and baseParams() THROWS before a URL is built.
+           This is structural: it holds for every code path in the process, tested or not.
+  wall 2 · a fetch-layer spy (harness/spy.mjs) installed with `node --import` BEFORE
+           dist/index.js, which THROWS on any request to api.gupshup.io and logs it.
+
+HONEST SCOPE OF THE LOG COUNTS BELOW. reboot.sh truncates the egress logs at every harness
+restart, so these files hold the FINAL segment of the run, not its entirety. Each earlier
+segment carried its own assertion in its own artifact (regression/dependency-impact.txt §9,
+regression/addendum-close-conversation.txt §A2). The claim that does NOT depend on log
+retention is wall 1, re-read live from each engine at the end of this run.
+
+  egress-8099.jsonl      1 entries   gupshup calls: 0
+        ('boot', 'SPY_INSTALLED')      1
+  egress-8188.jsonl      9 entries   gupshup calls: 0
+        ('boot', 'SPY_INSTALLED')      1
+        ('openai', 'STUBBED')          8
+  egress-8189.jsonl      1 entries   gupshup calls: 0
+        ('boot', 'SPY_INSTALLED')      1
+  egress-8190.jsonl      2 entries   gupshup calls: 0
+        ('boot', 'SPY_INSTALLED')      1
+        ('openai-insights', 'STUBBED') 1
+
+  TOTAL in the retained segment: ('boot', 'SPY_INSTALLED')=4, ('openai', 'STUBBED')=8, ('openai-insights', 'STUBBED')=1
+  calls to api.gupshup.io: 0 — not blocked ones, NONE.
+
+  NOTE on egress-8099.jsonl: this file was written by a QA engine booted on :8099 in the
+  EARLIER session of this cycle, and records one line — SPY_INSTALLED, zero gupshup calls.
+  The process listening on :8099 now is the pre-existing one holding live Gupshup
+  credentials; it is not this harness's, was not started, restarted or called by this run,
+  and is left exactly as found.
+
+  WALL 1, read live from each harness engine at the end of the run:
+        :8188  outbound={"ok": false, "reason": "GUPSHUP_API_KEY missing"}  gupshupKey=MISSING  sourceNumber=MISSING — outbound disabled until 
+        :8189  outbound={"ok": false, "reason": "GUPSHUP_API_KEY missing"}  gupshupKey=MISSING  sourceNumber=MISSING — outbound disabled until 
+        :8190  outbound={"ok": false, "reason": "GUPSHUP_API_KEY missing"}  gupshupKey=MISSING  sourceNumber=MISSING — outbound disabled until 
+
+  Nothing was sent, to any number, at any point in this QA run.

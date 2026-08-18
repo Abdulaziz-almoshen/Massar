@@ -19,12 +19,13 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`.orbit/STATE.md`** (read after this file).
-Last major milestone: **UI-quality increment CPO-ACCEPTED @1936a22 (Aug 13, 2026, round-22,
-9/8/8/8/6, zero musts)** — every invented number removed from the portal (fabricated readiness
-card + six authored knowledge scores), campaigns list rebuilt to read as deliberate, launches
-self-classify, numerals unified portal-wide, and three falsified deploy guards added
-(check:numerals · check:catalogue · smoke). Segmentation benchmark of 11 platforms in
-.orbit/artifacts/segmentation/BENCHMARK.md is the input to the next build.
+Last major milestone: **account graph deployed (Aug 18, 2026)** — the agent no longer interviews
+every prospect. Prospect facts moved from a never-set env blob to `entities.facts` with provenance
+(`src/facts.ts`); imports, operators and the customer's own answers all write through one door; the
+prompt gained a named, ask-ordered gap list so a fact learned once is never asked again. Coverage is
+honest and currently near zero — the next real gain is an audience re-import carrying HIS/ERP
+columns. Next slices: portal fact editing, pre-launch enrichment, HIS/ERP vendor registry, KB
+retrieval (decks are still concatenated into every prompt).
 
 ## 3. Success Criteria & Evaluation Metrics
 - Build: `npm run build` in `massar-engine/` exits 0 (strict TS). After any deploy,

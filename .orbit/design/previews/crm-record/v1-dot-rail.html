@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>V1 — رفّ الحقائق بنقطة الإسناد (Attio mirrored)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#eef0f4; font-family:"IBM Plex Sans Arabic",system-ui,sans-serif; color:#101828; }
+  .page { padding:30px 32px 56px; max-width:1180px; }
+  .card { background:#fff; border:1px solid #EAECF0; border-radius:16px; padding:24px; margin-bottom:18px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
+  .card h3 { margin:0 0 16px; font-size:14px; font-weight:700; color:#475467; }
+  .chip { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; border-radius:999px; padding:4px 12px; white-space:nowrap; border:1px solid transparent; }
+  .c-grey{background:#F2F4F7;color:#475467;border-color:#E4E7EC} .c-blue{background:#EFF4FB;color:#2F5F94;border-color:#D6E2F1}
+  .c-teal{background:#E9F7F6;color:#2E7D77;border-color:#C4E8E5} .c-ok{background:#ECFDF3;color:#027A48;border-color:#C7EED8}
+  .c-warn{background:#FFFAEB;color:#B54708;border-color:#F5E3B7} .c-bad{background:#FEF3F2;color:#B42318;border-color:#F7D4D1}
+  .c-read{background:transparent;border-style:dashed;font-weight:600} .c-read .rd{font-weight:700;opacity:.72;font-size:10px}
+  .btn{font-family:inherit;font-size:13.5px;font-weight:700;border:none;border-radius:12px;padding:12px 20px;cursor:pointer}
+  .btn-teal{color:#fff;background:#1F7A73} .btn-ghost{color:#344054;background:#fff;border:1px solid #D0D5DD}
+  .crec{display:grid;grid-template-columns:372px minmax(0,1fr);gap:18px;align-items:start}
+  .main{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;align-items:start}
+  @media (max-width:900px){ .crec{grid-template-columns:1fr} }
+  /* V1 provenance: a colour dot only (Attio pattern, mirrored to the start side) */
+  .frow{display:flex;gap:10px;padding:13px 0;border-bottom:1px solid #F2F4F7}
+  .frow:last-child{border-bottom:none}
+  .dot{width:9px;height:9px;border-radius:999px;flex:none;margin-top:6px}
+  .d-h{background:#1F7A73} .d-a{background:#B54708} .d-i{background:#2F5F94} .d-m{background:#D0D5DD}
+  .flab{font-size:10.5px;font-weight:700;color:#667085;min-width:86px;padding-top:3px}
+  .fval{flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#101828;line-height:1.7}
+  .fmeta{font-size:11px;color:#98A2B3;margin-top:3px;font-weight:500}
+  .pen{border:none;background:transparent;color:#98A2B3;cursor:pointer;font-size:14px;padding:4px 6px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div style="font-size:12.5px;font-weight:700;margin-bottom:14px;">← رجوع</div>
+
+  <div class="card">
+    <div style="font-size:18px;font-weight:700;">مجمع الشفاء الطبي</div>
+    <div style="display:flex;gap:6px;margin-top:8px;"><span class="chip c-blue">الرياض</span><span class="chip c-teal">متوسطة</span></div>
+    <div style="font-size:11.5px;color:#98A2B3;margin-top:8px;direction:ltr;text-align:right;">&#8207;<span dir="ltr">+966501234567</span></div>
+    <div style="font-size:11px;color:#98A2B3;margin-top:4px;">آخر نشاط: ٩:٤٠ ص</div>
+  </div>
+
+  <div style="background:#ECFDF3;border:1px solid #EAECF0;border-inline-start:3px solid #027A48;border-radius:12px;padding:13px 16px;margin:2px 0 14px;">
+    <div style="display:flex;gap:10px;margin-top:0;"><span style="font-size:11px;font-weight:700;color:#667085;min-width:92px;">الفرز</span>
+      <span style="font-size:13px;font-weight:700;color:#027A48;">موعد محدد</span></div>
+    <div style="display:flex;gap:10px;margin-top:9px;"><span style="font-size:11px;font-weight:700;color:#667085;min-width:92px;">درجة الاهتمام</span>
+      <span><span class="chip c-ok">أشعة الأسنان · نية مرتفعة</span></span></div>
+    <div style="display:flex;gap:10px;margin-top:9px;"><span style="font-size:11px;font-weight:700;color:#667085;min-width:92px;">مرحلة البيع</span>
+      <span><span class="chip c-teal">عرض الحل · ٣ من ٦</span></span></div>
+  </div>
+
+  <div class="crec">
+    <div class="card" style="margin:0;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <h3 style="margin:0;">ملف العميل</h3><span class="chip c-warn">٣ ناقصة</span>
+      </div>
+      <div style="font-size:11px;color:#98A2B3;margin:6px 0 10px;line-height:1.8;">
+        النقطة تدلّ على المصدر: <span class="dot d-h" style="display:inline-block;margin:0 2px"></span> بخط الفريق ·
+        <span class="dot d-a" style="display:inline-block;margin:0 2px"></span> قراءة المساعد ·
+        <span class="dot d-i" style="display:inline-block;margin:0 2px"></span> مستورد
+      </div>
+
+      <div class="frow"><span class="dot d-h"></span><span class="flab">صاحب القرار</span>
+        <span class="fval">د. سارة العتيبي · مديرة العيادة<div class="fmeta">سجّلها عبدالعزيز · ١٢ أغسطس</div></span>
+        <button class="pen">✎</button></div>
+
+      <div class="frow"><span class="dot d-i"></span><span class="flab">المنشأة</span>
+        <span class="fval">فرعان · الرياض<div class="fmeta">من ملف الاستيراد</div></span>
+        <button class="pen">✎</button></div>
+
+      <div class="frow"><span class="dot d-a"></span><span class="flab">الاهتمام</span>
+        <span class="fval"><span class="chip c-read c-ok"><span class="rd">قراءة</span>أشعة الأسنان · مرتفع</span>
+          <div class="fmeta">قراءة المساعد من نص المحادثة</div></span>
+        <button class="pen">✎</button></div>
+
+      <div class="frow"><span class="dot d-a"></span><span class="flab">الخطوة التالية</span>
+        <span class="fval">زيارة العيادة الأحد<div class="fmeta">قراءتنا من قوله: «بكرة الصبح» · لم تُؤكَّد</div></span>
+        <button class="pen">✎</button></div>
+
+      <div class="frow"><span class="dot d-m"></span><span class="flab">ملاحظة</span>
+        <span class="fval" style="color:#98A2B3;font-weight:500;font-size:12.5px;">لا ملاحظات بعد.</span>
+        <button class="pen">✎</button></div>
+
+      <div class="frow"><span class="dot d-m"></span><span class="flab">سبب الاستبعاد</span>
+        <span class="fval" style="color:#98A2B3;font-weight:500;font-size:12.5px;">لم يُستبعد.</span>
+        <button class="pen">✎</button></div>
+    </div>
+
+    <div class="main">
+      <div class="card" style="margin:0;background:#F2F7FB;border-color:#DCE7F2;">
+        <h3 style="margin:0;color:#1F4470;">فهم المساعد</h3>
+        <div style="background:#fff;border:1px solid #E3EBF3;border-radius:13px;padding:15px 16px;margin-top:14px;">
+          <div style="font-size:10.5px;font-weight:700;color:#1F7A73;margin-bottom:7px;">الخلاصة</div>
+          <div style="font-size:14px;font-weight:700;line-height:1.95;">طلب موعدًا لمعاينة جهاز الأشعة، وسأل عن الضمان.</div>
+        </div>
+      </div>
+      <div class="card" style="margin:0;">
+        <h3 style="margin:0 0 4px;">سجل التفاعل</h3>
+        <div style="font-size:11px;color:#98A2B3;margin-bottom:10px;">الأحدث أولًا</div>
+        <div style="font-size:12.5px;line-height:2;color:#475467;">· ردّ العميل — ٩:٤٠ ص<br>· أُرسل الملف التعريفي — ٩:٣١ ص<br>· شوهدت — ٩:٢٨ ص</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
