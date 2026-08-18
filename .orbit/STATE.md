@@ -55,6 +55,28 @@ to the DEPLOYED portal by request interception. Nothing written to the database 
 restored in the live page. An earlier `>=` form of the last-page assertion did NOT catch restored
 truncation and was tightened to exact equality plus a distinct-first-row check.
 
+### Part 3 — «extremely boring, just like the sidebar»
+
+Founder, on the deployed result: «the dashboard, the first page, the graph, the chart… we need a
+complete reimagination.» Correct — Part 1 made #home honest and calm, and calm shaded into flat.
+
+- **A hero instead of five equal boxes.** جهات مهتمة ومؤهلة leads at 44px with its own seven-day
+  movement («+٤٧ خلال ٧ أيام» — a COUNT inside that window, not a percentage against a period
+  nobody chose) and a fourteen-day area behind it; the other four figures support it at 19px.
+- **The funnel is drawn as a funnel.** Each band's top edge is the stage above it, so the slope IS
+  the drop. Equal stages draw a column — the honest picture of a campaign that lost nobody.
+  stageBars deleted with its last caller.
+- **نشاط الرسائل** was 28 grey stubs 30px wide → a stacked area. The shape of a fortnight is the
+  only question that card is asked.
+- **Time runs right to left**, mirrored in the x mapping, not by reversing the array. Both curves
+  had their newest point opposite their own «اليوم» label.
+- **The chart grid has an editorial order**: conversion first and widest (funnel + rates, same
+  question at two resolutions), then activity beside interest-by-service, then composition.
+- **The sidebar.** The active row was a grey fill on a grey rail — the same #EDEDED as the borders.
+  Now white with a teal edge marker and the icon in the accent. And it carries two live counts,
+  both work OWED rather than totals: appointments confirmed TODAY, and overdue tasks (only once the
+  tasks route has loaded them — a badge that guesses «٠» before the fetch lies all session).
+
 ### KNOWN, NOT FIXED — the next scale bet
 
 `/admin/state` returns every contact with its full transcript on every page load. **Measured 1.14 MB
