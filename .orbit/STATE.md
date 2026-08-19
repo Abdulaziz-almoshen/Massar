@@ -1,3 +1,43 @@
+## 2026-08-19 · [T2] الخدمة تصبح فرزًا — segmentation brief step (أ) · DEPLOYED
+
+Founder: «not every client will use every single product… when I create a new campaign and see all
+the clients I have in the system, I need some filter… then segmentation, retargeting.»
+
+**Answered the research half first** (artifact: من يستحق هذه الحملة). Verified Klaviyo, Mailchimp,
+HubSpot and Braze against what we ship. Finding: **the behavioural engine he asked about was already
+built at R49 on an 11-platform benchmark** (`src/segments.ts` — happened/never, withinDays/beforeDays,
+atLeast, all|any, cooldown, tenure guard, 5 market-named presets) and today's review found **nothing
+missing in it**. The real gaps were all in his FIRST question.
+
+**Built step (أ).** `entities.facts.currentProducts` has held product ownership since the
+account-graph cycle — with source, author and date — and the audience picker read `entities.attrs`
+only, so a book whose spreadsheet lacked a «المنتجات» column had no path from 3,000 to the relevant
+ones. Nothing was missing but the read.
+
+- **Three fields, not one tag** — different provenance each, which is why Mailchimp splits Groups
+  from Tags: `يستخدم` (facts, human) · `لا يستخدم` (the negation an expansion campaign wants) ·
+  `أبدى اهتمامًا` (contacts.tags, machine, levelled).
+- **One control carries it:** «استبعد من يستخدم «X» بالفعل», X being the service step 1 already chose.
+- **An absent record is «unknown», not «does not use it».** `لا يستخدم` matches unknowns on purpose
+  and the band states the count in words (1,800 of 3,000 at simulated scale). The real fix is an
+  import carrying the services column.
+- `#targets` gets the same dimension (one select + a column) with **its own state**, so browsing the
+  book cannot silently narrow the next campaign.
+
+`qa:scale` +7, each falsified live: filter made a no-op → 3,000 not 198 (caught); «تحديد المطابقين»
+made to ignore the filter → 3,000 not 2,802, the crmSelD class and the one that would put the wrong
+people in a launch (caught); caveat removed (caught). 35 assertions total. qa-crm 65/65.
+
+**Still open, in order:** (ب) a saved-segment screen — `segDef` is an ephemeral wizard variable, and
+the named live-counting segment is the central object in every platform benchmarked; this is also
+where `Condition.product` finally gets a UI. (ج) a delayed retarget rule that PROPOSES a campaign
+into «انتظار الاعتماد» rather than sending, keeping the no-send rule intact.
+
+Binding constraint on (ج): Meta caps marketing templates at ~2/person/24h **across all businesses**,
+dynamically, error `131049`. Cadence must live in code.
+
+---
+
 ## 2026-08-19 · [T3] page-by-page redesign + production-scale simulation · DEPLOYED
 
 Founder, over two messages: «go over page by page on Massar and edit and do changes… act as a
