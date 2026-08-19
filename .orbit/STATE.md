@@ -1,3 +1,36 @@
+## 2026-08-19 · [T2] «مرشّح لـ» — وسم الحسابات بخدمة · DEPLOYED
+
+Founder: «I want to tag the clients to product so if I have specific clients that I want to target
+for specific product I can easily find them.»
+
+The service filter shipped hours earlier reads two dimensions that already existed — what an account
+BUYS (`facts.currentProducts`) and what the assistant READ (`contacts.tags`). Neither is this.
+Both are records ABOUT the customer; he wants to record a DECISION of his own. Mailchimp's Tag as
+against its Group, and it needed its own store.
+
+- **`entities.product_tags JSONB`** — a third store, because none of the other two can carry an
+  internal label: attrs is spreadsheet residue, facts are typed claims the agent may state back to
+  the customer, contacts.tags is a machine reading.
+- **Applied in bulk from #targets**: selection + floating bar + «وسم كمرشّح» / «إزالة الوسم».
+  Selection is intersected with the visible match on read (the crmSelD rule) and cleared on write.
+- **Read everywhere**: «مرشّح لـ» leads the service band in the wizard; the row shows a ◆ blue chip
+  distinct from the teal ownership chip — a decision and a fact must not look alike.
+- **One string, written and read.** `POST /admin/entities/tag` validates against a closed list the
+  server can enumerate (SERVICE_CATALOGUE ∪ kb products) and stores verbatim; the client mirrors the
+  same string it posted. The emitted-value-must-be-readable defect class, asserted not assumed.
+
+**Verified against production on a «(مثال)» demo row only, fully undone**: unknown product rejected
+with the known list · catalogue name round-trips exactly · a repeat write does not duplicate ·
+removal returns `[]`. Book ends with zero tags, as found.
+
+qa-scale 43 (+8), falsified: a filter reading ownership instead of the tag returns 201 not 54;
+a UI that normalises before posting diverges from what it offered. qa-crm 65/65.
+
+Closes gap 2 of the segmentation brief («مرشّح له — غير موجود»). Still open: (ب) saved segments,
+(ج) the delayed retarget rule.
+
+---
+
 ## 2026-08-19 · [T2] الخدمة تصبح فرزًا — segmentation brief step (أ) · DEPLOYED
 
 Founder: «not every client will use every single product… when I create a new campaign and see all
