@@ -19,13 +19,15 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`.orbit/STATE.md`** (read after this file).
-Last major milestone: **account graph deployed (Aug 18, 2026)** — the agent no longer interviews
-every prospect. Prospect facts moved from a never-set env blob to `entities.facts` with provenance
-(`src/facts.ts`); imports, operators and the customer's own answers all write through one door; the
-prompt gained a named, ask-ordered gap list so a fact learned once is never asked again. Coverage is
-honest and currently near zero — the next real gain is an audience re-import carrying HIS/ERP
-columns. Next slices: portal fact editing, pre-launch enrichment, HIS/ERP vendor registry, KB
-retrieval (decks are still concatenated into every prompt).
+Last major milestone: **the opportunity board deployed (Aug 23, 2026)** — «فرص البيع» is now the
+prototype's own screen: an account card over stored product lines, each carrying WHERE it came from
+(حملة واتساب · مكالمة · زيارة · إحالة · طلب وارد). It is the first surface whose stage is stored
+rather than derived, and `.orbit/STATE.md` says why. Previous: **account graph (Aug 18, 2026)** —
+prospect facts live in `entities.facts` with provenance (`src/facts.ts`), so the agent no longer
+interviews every prospect; coverage is honest and near zero until an audience re-import carries the
+HIS/ERP columns. Next slices: opportunity value on the home board and in reports, portal fact
+editing, pre-launch enrichment, HIS/ERP vendor registry, KB retrieval (decks are still concatenated
+into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
 
 ## 3. Success Criteria & Evaluation Metrics
 - Build: `npm run build` in `massar-engine/` exits 0 (strict TS). After any deploy,

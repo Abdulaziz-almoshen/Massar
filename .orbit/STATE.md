@@ -1,3 +1,50 @@
+## 2026-08-23 · [T3] «فرص البيع» — لوحة الفرص كما في النموذج · DEPLOYED
+
+Founder, pointing at `_مسار/مسار.dc.html` screen «opportunities»: «make the client oppurtiunity page
+like this original page… sometimes the oppurtiunity comes from whatsapp campaign and sometimes we
+call them or visit them and record the client in our massar».
+
+The prototype's model taken whole — **«فرصة = عميل + عدة منتجات»**: one ledger row is ONE PRODUCT
+LINE, the card is the ACCOUNT, and its head (status word · breakdown · total) is computed from the
+lines at render time. Nothing about a group is stored, so a head can never disagree with its rows.
+
+- **`opportunities` table** — the first thing in this codebase whose stage is STORED rather than
+  derived, and the comment says why: a conversation's stage is readable from the ledger (so storing
+  it could only let it drift, which is why `CRM_STAGE` is derived); a deal's stage is readable from
+  nothing we hold. So it is stored with its author and with `stage_at`, which moves only on a REAL
+  stage change — editing a next step must not reset the stall clock «متوقّف» is read from.
+- **`source`** is his own distinction and the reason this is not a view over contacts:
+  حملة واتساب · مكالمة · زيارة · إحالة · طلب وارد. A whatsapp line names its campaign (validated);
+  a visit names nothing, which is honest. The board filters by it.
+- **Two doors, one screen.** «+ إضافة فرصة» (account + N lines, value previewed live from the ONE
+  definition the cards use) — and a band of replies the assistant already read as interested with no
+  line on the board, each one click from a form prefilled with the account, its number, the service
+  heard and the campaign that reached it. It lists what is MISSING, so it empties as the board fills.
+- **«لوحة الفرز» is not deleted and not moved** — it is this route's second tab, because it is this
+  board's feeder.
+- Product names clamp to the SAME registry that validates a tag: the board offers a closed list and
+  stores exactly the string it offered (the emitted-value-must-be-readable rule, again).
+
+**Verified against production on «(مثال)» rows only, fully undone** — the book ends with zero
+opportunities, as found. Falsified: unknown product · discount 900 · years 40 · unknown stage ·
+unknown source · a whatsapp line naming campaign 999999 · empty line list · blank name — each 400
+naming its own field; no token 401. Proven: `stage_at` moves on a real change, does NOT move on a
+re-sent stage, does NOT move when `next_step` is edited; a UI stage click survives a reload; the
+rollup excludes lost lines from the value and counts them in the breakdown.
+
+Two defects the production run found that review had not: an omitted `years` read as 0 and rejected
+— under the WRONG field name, hiding an unknown product behind a complaint about a number nobody
+sent; and «١ منتجات» / «٥ جهة» — Arabic counted nouns written as n+noun, on the two lines the eye
+lands on first. Both fixed; the four-way plural (مفرد · مثنى · جمع القلة · تمييز) is scoped to this
+file, and every other count in the dashboard is still n+noun — an open retrofit.
+
+Not ported, named so the omission is not mistaken for a bug: the «دعم» chip (no escalation record
+exists — its slot carries the SOURCE instead) and the full detail screen (its substance is an inline
+expander on the line). Engine commit `9f83407`. smoke 12/12 · `npm run check` green · the #opps
+landmark repointed to «إضافة فرصة», which renders before any fetch resolves.
+
+---
+
 ## 2026-08-23 · [T1] skill v2.3.1 uploaded · banner rewritten as an AI skill · DEPLOYED
 
 `lean-proposal-deck-v2.3.1-upload.zip` (661,539 bytes) replaced v2.1.3 as the `__skill__` asset;
