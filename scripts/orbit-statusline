@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
-"""
-orbit-statusline — the one-line Claude Code status line for an Orbit run.
+"""orbit-statusline — a persistent live task board plus a truthful Claude → Codex QA handoff.
 
-Claude Code runs this every couple of seconds with its status-line JSON on stdin. We fuse that
-(context %, cost, cache reuse, model) with the project's .orbit/run.json (phase, active role,
-task progress, confidence, blocked state) into a single compact line, e.g.:
+The first line always answers: what task is active, which LLM owns it, how long it has been working,
+what is next, and whether work is stalled. The second line keeps Claude and Codex in fixed positions;
+the parcel crosses once when real control-plane state hands work between them.
 
-  🛰 build · builder · 5/9 · ctx 38% · $0.42 · cache 61% · conf 76%
-  🛰 ⚠ needs input · build · 5/9 · ctx 38% · $0.42            (when a decision is pending)
-
-Design rules: FAST (runs on a 2s refresh) and FAIL-SAFE — any missing/renamed field just drops
-that one segment; a total failure prints an empty line, never a traceback. Cache reuse is labeled
-honestly ("cache") — it's cache_read / total_input, NOT a fabricated "tokens saved".
+  🛰 BUILD · 5/9 · U6 Implement checkout · Builder 42s · $0.42
+     Claude ○  ────📦──  ● Codex QA · 5.6 Sol · REVIEW
+  🛰 ⚠ INPUT · BUILD · 5/9 · $0.42
 
 Install: `.claude/settings.json` → {"statusLine": {"type":"command",
 "command":"python3 \"$CLAUDE_PROJECT_DIR/scripts/orbit-statusline\"", "refreshInterval": 2}}.
@@ -48,29 +44,42 @@ def _find_orbit(start):
     return None
 
 
-def _age_seconds(iso_ts):
-    """Seconds since an ISO 'YYYY-MM-DDTHH:MM:SSZ', or None if unparseable."""
-    try:
-        t = time.strptime(str(iso_ts), "%Y-%m-%dT%H:%M:%SZ")
-        return max(0, int(time.time() - time.mktime(t) + time.timezone))
-    except Exception:
-        return None
-
-
 def _active_agent(agents: dict):
     """The agent working now (first with status active/blocked), or None."""
     if not isinstance(agents, dict):
         return None
     cands = [dict(v, role=k) for k, v in agents.items()
-             if isinstance(v, dict) and v.get("status") in ("active", "blocked")]
+             if k != "human" and isinstance(v, dict) and v.get("status") in ("active", "blocked")]
     cands.sort(key=lambda x: (x.get("seq", 99), x.get("role", "")))
     return cands[0] if cands else None
 
 
-def _dur(secs):
-    if secs is None:
+def _age_seconds(iso_ts):
+    try:
+        stamp = time.strptime(str(iso_ts), "%Y-%m-%dT%H:%M:%SZ")
+        return max(0, int(time.time() - time.mktime(stamp) + time.timezone))
+    except Exception:
+        return None
+
+
+def _dur(seconds):
+    if seconds is None:
         return ""
-    return f"{secs}s" if secs < 60 else f"{secs // 60}m{secs % 60}s" if secs < 3600 else f"{secs // 3600}h"
+    if seconds < 60:
+        return f"{seconds}s"
+    if seconds < 3600:
+        return f"{seconds // 60}m{seconds % 60}s"
+    return f"{seconds // 3600}h{(seconds % 3600) // 60}m"
+
+
+def _next_task(tasks):
+    if not isinstance(tasks, list):
+        return {}
+    for status in ("active", "in_progress", "blocked", "pending", "queued"):
+        for task in tasks:
+            if isinstance(task, dict) and str(task.get("status") or "").lower() == status:
+                return task
+    return {}
 
 
 def _read_json(path, default):
@@ -137,90 +146,295 @@ def _qa_state(orbit: Path) -> dict:
     except Exception:
         control = {}
     exact = bool(head and control.get("target_commit") == head)
+    adapters = pcfg.get("adapters") if isinstance(pcfg.get("adapters"), dict) else {}
+    routed = isinstance(qa.get("codex_model_router"), dict) and qa["codex_model_router"].get("enabled") is True
+
+    def providers_with_models(states):
+        enriched = {}
+        for name, value in states.items():
+            item = dict(value) if isinstance(value, dict) else {"status": "queued"}
+            adapter = adapters.get(name) if isinstance(adapters.get(name), dict) else {}
+            if adapter.get("model") and not item.get("model") and not (routed and name == "codex"):
+                item["model"] = adapter["model"]
+            enriched[name] = item
+        return enriched
+
     if not exact:
         names = ["codex", "claude"] if mode == "both" else [mode]
         return {"status": "awaiting_review", "provider": mode, "head": head,
-                "providers": {name: {"status": "queued"} for name in names}}
+                "providers": providers_with_models({name: {"status": "queued"} for name in names})}
+    states = control.get("providers") if isinstance(control.get("providers"), dict) else {}
+    try:
+        changed_at = (cp / "orbit-independent-qa" / "current.json").stat().st_mtime
+    except Exception:
+        changed_at = 0
     return {"status": control.get("status") or "awaiting_review", "provider": mode, "head": head,
-            "providers": control.get("providers") if isinstance(control.get("providers"), dict) else {},
+            "providers": providers_with_models(states), "_changed_at": changed_at,
             "reason": control.get("reason", ""), "verdict": control.get("verdict")}
 
 
-def build_qa_line(qa: dict) -> str:
-    """A compact two-character QA scene for Claude Code's supported multi-line status area."""
-    if not qa or qa.get("status") in (None, "off", "awaiting_project_approval"):
+def _codex_view(qa: dict) -> tuple[str, str]:
+    """Return the real Codex provider state/model; no Codex configuration means no fake handoff."""
+    mode = str((qa or {}).get("provider") or "")
+    if mode not in ("codex", "both"):
+        return "", ""
+    providers = (qa or {}).get("providers")
+    codex = providers.get("codex") if isinstance(providers, dict) else None
+    if not isinstance(codex, dict):
+        return str((qa or {}).get("status") or ""), ""
+    return str(codex.get("status") or (qa or {}).get("status") or ""), str(codex.get("model") or "")
+
+
+def _model_label(model: str) -> str:
+    return {"gpt-5.6-sol": "5.6 Sol", "gpt-5.6-terra": "5.6 Terra",
+            "gpt-5.6-luna": "5.6 Luna"}.get(model, model[:18])
+
+
+def _parcel_track(status: str, elapsed: float, width: int = 7) -> str:
+    """Animate only a real state transition, then settle. No decorative back-and-forth loop."""
+    last = width - 1
+    step_seconds = .7
+    if status == "reviewing":
+        pos = min(last, int(max(0, elapsed) / step_seconds))
+    elif status == "changes_required":
+        pos = max(0, last - int(max(0, elapsed) / step_seconds))
+    elif status in ("awaiting_review", "queued"):
+        pos = 0
+    else:
+        pos = last
+    return "─" * pos + "📦" + "─" * (last - pos)
+
+
+def build_handoff_line(qa: dict, now: float = None) -> str:
+    """Claude stays left and Codex stays right; the parcel follows actual QA ownership."""
+    status, model = _codex_view(qa)
+    if status in ("", "off", "awaiting_project_approval"):
         return ""
-    providers = qa.get("providers") if isinstance(qa.get("providers"), dict) else {}
-    names = ["codex", "claude"] if qa.get("provider") == "both" else list(providers)
-    if not names:
-        names = [str(qa.get("provider") or "reviewer")]
-    labels = {"queued": "queued", "reviewing": "reviewing", "pass": "PASS ✓",
-              "changes_required": "changes requested 💬", "blocked": "blocked", "error": "error"}
-    actors = []
-    for name in names:
-        state = providers.get(name) if isinstance(providers.get(name), dict) else {}
-        status = str(state.get("status") or "queued")
-        who = "Codex" if name == "codex" else "Claude QA" if name == "claude" else name.title()
-        icon = "🟢" if name == "codex" else "🟠"
-        summary = str(state.get("summary") or "").replace("\n", " ").strip()
-        tail = (" — " + summary[:42] + ("…" if len(summary) > 42 else "")) if summary else ""
-        actors.append(f"{icon} {who}: {labels.get(status, status)}{tail}")
-    moving = any((providers.get(n) or {}).get("status") == "reviewing" for n in names)
-    handoff = "──📦──▶" if int(time.time()) % 2 == 0 else "──💬──◀" if moving else "──📦──▶"
-    return "   🟠 Builder " + handoff + "  " + "  ⚔  ".join(actors)
+    now = time.time() if now is None else now
+    changed_at = float((qa or {}).get("_changed_at") or now)
+    track = _parcel_track(status, now - changed_at)
+    model_bit = f" · {_model_label(model)}" if model else ""
+    if status == "changes_required":
+        return f"   Claude ●  {track}  ● Codex QA{model_bit} · " + _c("33", "FEEDBACK ←")
+    if status == "pass":
+        return f"   Claude ○  {track}  ● Codex QA{model_bit} · " + _c("32", "PASS")
+    if status in ("blocked", "error"):
+        return f"   Claude ●  {track}  ● Codex QA{model_bit} · " + _c("1;31", "BLOCKED")
+    if status == "awaiting_deploy_approval":
+        return f"   Claude ○  {track}  ● Codex QA{model_bit} · " + _c("33", "DEPLOY GATE")
+    if status == "reviewing":
+        return f"   Claude ○  {track}  ● Codex QA{model_bit} · " + _c("36", "REVIEW →")
+    return f"   Claude ●  {track}  ○ Codex QA{model_bit} · " + _c("2", "QUEUED")
 
 
-def build_line(claude: dict, run: dict, agents: dict = None, lock_seg: str = "") -> str:
+def _trim(text: str, limit: int) -> str:
+    """Trim at a word boundary, never mid-word — a goal cut to 'the iso…' reads as a glitch."""
+    text = " ".join(str(text).split())
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    space = cut.rfind(" ")
+    if space > limit - 24:
+        cut = cut[:space]
+    return cut + "…"
+
+
+def _c(code: str, text: str) -> str:
+    """Color a WHOLE token (never split a mark from its label, so plain-text grep still works).
+
+    Claude Code renders ANSI in the status area; NO_COLOR opts out. 2=dim, 32=green, 33=yellow,
+    31=red, 36=cyan, 1;31=bold red. Color is the glance layer: the eye finds the one amber ▸ or
+    the red ⚠ without reading a word.
+    """
+    if os.environ.get("NO_COLOR"):
+        return text
+    return f"\x1b[{code}m{text}\x1b[0m"
+
+
+def _bar(done: int, total: int, cells: int = 8) -> str:
+    filled = max(0, min(cells, round(cells * done / max(1, total))))
+    return _c("32", "▰" * filled) + _c("2", "▱" * (cells - filled))
+
+
+def _budget_percent(budget: dict) -> tuple:
+    """(percent, pressure_hint) from the ledger, or (None, '') when no ledger is open.
+
+    Display-only: sums recorded role spend, the parent session's own usage (cache reads at the
+    configured weight), and outstanding reservations — so this number can never sit at 0% while a
+    task's envelope shows tokens moving, which is exactly the contradiction users reported.
+    """
+    total = (budget or {}).get("total")
+    if not isinstance(total, int) or total <= 0:
+        return None, ""
+    spent = sum(int(v or 0) for v in ((budget or {}).get("spent") or {}).values())
+    parent = (budget or {}).get("parent_usage") or {}
+    spent += sum(int(parent.get(k, 0) or 0) for k in
+                 ("input_tokens", "output_tokens", "cache_creation_input_tokens"))
+    weight = max(0.0, min(1.0, float((budget or {}).get("cache_read_weight", 0.10) or 0.0)))
+    spent += int(round(int(parent.get("cache_read_input_tokens", 0) or 0) * weight))
+    for value in ((budget or {}).get("reservations") or {}).values():
+        if isinstance(value, dict):
+            spent += int(value.get("tokens", 0) or 0)
+        elif isinstance(value, (int, float)):
+            spent += int(value)
+    pct = round(100 * spent / total)
+    gear = str((budget or {}).get("gear") or "")
+    return pct, (" → auto-resize" if pct > 100 and gear != "T4" else "")
+
+
+def build_goal_line(run: dict, active_goal: dict = None, budget: dict = None,
+                    cost=None) -> str:
+    run_goal = str(run.get("goal") or "").strip()
+    budget_goal = str((budget or {}).get("goal") or "").strip()
+    goal = str((active_goal or {}).get("goal") or run_goal or budget_goal).strip()
+    if not goal:
+        return ""
+    gear = str((budget or {}).get("gear") or (active_goal or {}).get("gear") or "").strip()
+    drift = bool(run_goal and budget_goal and " ".join(run_goal.lower().split()) !=
+                 " ".join(budget_goal.lower().split()))
+    tail = (" · " + _c("36", gear) if gear else "")
+    if drift:
+        tail += " · " + _c("1;31", "⚠ ALIGN")
+    if isinstance(cost, (int, float)):
+        tail += " · " + _c("2", f"${cost:.2f}")
+    return f"🛰 GOAL · {_trim(goal, 84)}" + tail
+
+
+def _active_board_task(run: dict, tasks: list):
+    """The board task that matches what's running: id + token envelope come from here.
+
+    Matching by title (or taking the first unfinished item when the run names nothing) is what
+    fixes the 'U9 U9' doubling — the id is only ever prefixed when the label doesn't carry it.
+    """
+    named = " ".join(str(run.get("active_task") or "").split()).lower()
+    board = _next_task(tasks or [])
+    if named and isinstance(board, dict):
+        title = " ".join(str(board.get("title") or board.get("task") or "").split()).lower()
+        if title and title not in named and named not in title:
+            for task in tasks or []:
+                if isinstance(task, dict):
+                    cand = " ".join(str(task.get("title") or task.get("task") or "").split()).lower()
+                    if cand and (cand in named or named in cand):
+                        return task
+            return {}
+    return board if isinstance(board, dict) else {}
+
+
+def build_now_line(claude: dict, run: dict, agents: dict = None, tasks: list = None,
+                   budget: dict = None, minimal: bool = False) -> str:
+    """One line answering: is Orbit waiting on ME — and if not, what is it doing right now.
+
+    When the run is blocked, the QUESTION leads the line. Burying '⚠ INPUT' between counters,
+    with the actual question only findable by scrolling the transcript, was the single worst part
+    of the old surface.
+    """
     seg = []
-    if lock_seg:
-        seg.append(lock_seg)                       # 🔒 read-only — another session holds the writer lock
     blocked = run.get("blocked_question")
     if blocked:
-        seg.append("⚠ needs input")
-
-    # slice/task first, then the human-readable active agent + how long it's been at it
-    slice_ = run.get("active_task")
-    ag = _active_agent(agents or {})
-    if slice_ or (ag and ag.get("task")):
-        seg.append(str(slice_ or ag.get("task")))
-    if ag and not blocked:
-        name = ag.get("display") or ag.get("role") or "agent"
-        el = _dur(_age_seconds(ag.get("started_at")))
-        seg.append(f"{name}{(' ' + el) if el else ''}")
-    elif run.get("active_role") and not blocked:
-        seg.append(str(run["active_role"]))
-    elif run.get("phase") or run.get("mode"):
-        seg.append(str(run.get("phase") or run.get("mode")))
+        seg.append(_c("1;31", "⚠ INPUT") + " · " + _c("33", _trim(str(blocked), 48)))
+    if minimal:
+        phase = str(run.get("phase") or run.get("mode") or "").strip().upper()
+        if phase:
+            seg.append(phase[:10])
 
     total = run.get("tasks_total")
     if isinstance(total, int) and total > 0:
-        seg.append(f"{run.get('tasks_done', 0)}/{total}")
+        done = int(run.get("tasks_done", 0) or 0)
+        seg.append(f"{_bar(done, total)} {done}/{total}")
 
-    # quiet: surface it once it's meaningful (the run may be waiting on the active agent)
+    ag = _active_agent(agents or {})
+    board = _active_board_task(run, tasks or [])
+    task = " ".join(str(run.get("active_task") or (ag or {}).get("task") or
+                        board.get("title") or board.get("task") or "").split())
+    task_id = str(board.get("id") or "").strip()
+    if task:
+        label = task if (not task_id or task.startswith(task_id)) else f"{task_id} {task}"
+        seg.append(_trim(label, 46))
+
+    owner = str((ag or {}).get("display") or (ag or {}).get("role") or
+                run.get("active_role") or board.get("owner") or "").strip()
+    if owner:
+        seconds = _age_seconds((ag or {}).get("started_at") or run.get("last_ts"))
+        # <5s flickers; >24h is a stale record, not a ten-day-running agent — both stay silent
+        elapsed = _dur(seconds) if seconds is not None and 5 <= seconds < 86400 else ""
+        seg.append(_c("36", (owner + (f" {elapsed}" if elapsed else ""))[:24]))
+
+    envelope = board.get("token_budget") if isinstance(board.get("token_budget"), dict) else {}
+    if envelope:
+        used = int(envelope.get("spent", 0) or 0) + int(envelope.get("reserved", 0) or 0)
+        limit = int(envelope.get("limit", 0) or 0)
+        ratio = used / limit if limit else 0
+        token_text = f"tok {used / 1000:.1f}/{limit / 1000:.1f}k"
+        seg.append(_c("31", token_text) if ratio >= 0.9 else
+                   _c("33", token_text) if ratio >= 0.75 else token_text)
+
+    # A blocked run is already alarmed (and its question shown); STALLED on top is a double siren.
     age = _age_seconds(run.get("last_ts"))
-    if age is not None and age >= 60:
-        seg.append(f"quiet {_dur(age)}")
+    if not blocked and age is not None and age >= 60:
+        seg.append(_c("1;31", f"STALLED {_dur(age)}"))
 
-    ctx = _get(claude, "context_window", "used_percentage")
-    if isinstance(ctx, (int, float)):
-        seg.append(f"ctx {int(ctx)}%")
+    open_tasks = [t for t in (tasks or []) if isinstance(t, dict) and
+                  str(t.get("status") or "").lower() not in ("done", "completed", "skipped")]
+    upcoming = [t for t in open_tasks if t is not board and t.get("id") != board.get("id")]
+    if blocked:
+        upcoming = []                  # the alarm line stays about the alarm; the queue can wait
+    if upcoming:
+        head = upcoming[0]
+        nxt = " ".join(str(head.get("title") or head.get("task") or "").split())
+        seg.append(_c("2", _trim(f"next {head.get('id', '')} {nxt}".replace("next  ", "next "), 40)))
+        if len(upcoming) > 1:
+            seg.append(_c("2", f"+{len(upcoming) - 1} queued"))
 
-    cost = _get(claude, "cost", "total_cost_usd")
-    if isinstance(cost, (int, float)):
-        seg.append(f"${cost:.2f}")
+    pct, pressure = _budget_percent(budget)
+    if pct is not None:
+        tone = "31" if pct >= 100 else ("33" if pct >= 75 else "32")
+        seg.append(_c(tone, f"budget {pct}%{pressure}"))
 
-    # cache reuse = cache_read / total_input (honest label — not "tokens saved")
-    cur = _get(claude, "context_window", "current_usage", default={})
-    total_in = _get(claude, "context_window", "total_input_tokens")
-    cache_read = cur.get("cache_read_input_tokens") if isinstance(cur, dict) else None
-    if isinstance(total_in, (int, float)) and total_in and isinstance(cache_read, (int, float)):
-        seg.append(f"cache {int(100 * cache_read / total_in)}%")
+    if minimal:
+        cost = _get(claude, "cost", "total_cost_usd")
+        if isinstance(cost, (int, float)):
+            seg.append(f"${cost:.2f}")
 
-    conf = run.get("confidence")
-    if isinstance(conf, (int, float)):
-        seg.append(f"conf {int(conf)}%")
+    prefix = "🛰 " if minimal else "   "
+    return prefix + " · ".join(seg) if seg else ""
 
-    return "🛰 " + " · ".join(seg) if seg else ""
+
+def build_stage_line(tasks: list, agents: dict = None) -> str:
+    """The single role-state strip. The old surface said the same thing four times — active role
+    in the run line, again in the queue line, a stage strip, then a two-line 15-role bench of
+    mostly idle dots. One strip carries it all; the full bench stays on `orbit-status --team`
+    and the web dashboard, which are the right surfaces for that depth."""
+    stages = [
+        ("Plan", {"product-discovery", "business-analyst", "market-researcher", "planner"}),
+        ("Build", {"designer", "builder", "frontend-engineer", "backend-engineer",
+                   "mobile-developer", "data-engineer", "cli-engineer"}),
+        ("Safe", {"safety-gate"}), ("Review", {"reviewer"}),
+        ("QA", {"qa-engineer"}), ("CPO", {"cpo"}), ("Report", {"reporter"}),
+    ]
+    agents = agents if isinstance(agents, dict) else {}
+    rendered = []
+    for label, owners in stages:
+        states = {str(t.get("status") or "").lower() for t in (tasks or [])
+                  if isinstance(t, dict) and str(t.get("owner") or "") in owners}
+        # live agent truth counts too — a SubagentStart lights the stage before any board write
+        for role in owners:
+            detail = agents.get(role)
+            if isinstance(detail, dict) and detail.get("status"):
+                states.add(str(detail.get("status")).lower())
+        states.discard("available"); states.discard("idle")
+        if not states:
+            mark = "·"
+        elif states & {"active", "in_progress"}:
+            mark = "▸"
+        elif states & {"blocked", "failed"}:
+            mark = "!"
+        elif states <= {"done", "completed", "skipped"}:
+            mark = "✓"
+        else:
+            mark = "○"
+        tone = {"✓": "32", "▸": "33", "!": "1;31", "○": "0", "·": "2"}[mark]
+        rendered.append(_c(tone, f"{mark}{label}") if tone != "0" else f"{mark}{label}")
+    return "   " + "  ".join(rendered)
 
 
 def main():
@@ -251,23 +465,29 @@ def main():
     except Exception:
         agents = {}
     try:
+        tasks = json.loads((orbit / "tasks.json").read_text()) if orbit else []
+        if not isinstance(tasks, list):
+            tasks = []
+    except Exception:
+        tasks = []
+    active_goal = _read_json(orbit / "active-goal.json", {}) if orbit else {}
+    budget = _read_json(orbit / "budget.json", {}) if orbit else {}
+    try:
         _record_session(orbit, claude)
     except Exception:
         pass
-    lock_seg = ""
-    try:                                                    # 🔒 only when ANOTHER session holds the lock
-        lk = json.loads((orbit / "locks" / "active-writer.json").read_text()) if orbit else {}
-        me = (claude.get("session_id") or os.environ.get("ORBIT_SESSION_ID")
-              or os.environ.get("CLAUDE_SESSION_ID") or os.environ.get("TERM_SESSION_ID"))
-        if isinstance(lk, dict) and lk.get("owner_id") and lk.get("owner_id") != me:
-            lock_seg = "🔒 read-only"
-    except Exception:
-        lock_seg = ""
     try:
-        print(build_line(claude, run, agents, lock_seg))
-        qa_line = build_qa_line(_qa_state(orbit))
-        if qa_line:
-            print(qa_line)
+        qa = _qa_state(orbit)
+        goal_line = build_goal_line(run, active_goal, budget,
+                                    cost=_get(claude, "cost", "total_cost_usd"))
+        if goal_line:
+            print(goal_line)
+        print(build_now_line(claude, run, agents, tasks, budget, minimal=not goal_line))
+        if tasks:
+            print(build_stage_line(tasks, agents))
+        handoff = build_handoff_line(qa)
+        if handoff:
+            print(handoff)
     except Exception:
         print("")                                           # never crash the status line
 
