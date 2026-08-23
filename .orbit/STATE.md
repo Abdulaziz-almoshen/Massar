@@ -1,3 +1,12 @@
+## 2026-08-23 · [T1] skill v2.3.1 uploaded · banner rewritten as an AI skill · DEPLOYED
+
+`lean-proposal-deck-v2.3.1-upload.zip` (661,539 bytes) replaced v2.1.3 as the `__skill__` asset;
+download link verified 200/application-zip. The #kb banner now names it «مهارة إنشاء العروض
+بالذكاء الاصطناعي» and states the flow: give it to an AI assistant with the service profile →
+formal proposal PDF → upload on each service page. Engine commit: kb banner. Smoke 12/12 green.
+
+---
+
 ## 2026-08-23 · [T2] INCIDENT: the empty-ledger outage — found, healed, made self-healing · DEPLOYED
 
 Founder: «the skill that the user can download in order to upload a PDF — where is it? It disappeared.»
