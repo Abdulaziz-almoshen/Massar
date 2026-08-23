@@ -1,3 +1,35 @@
+## 2026-08-23 · [T2] INCIDENT: the empty-ledger outage — found, healed, made self-healing · DEPLOYED
+
+Founder: «the skill that the user can download in order to upload a PDF — where is it? It disappeared.»
+
+It hadn't been deleted; **the engine had been serving an empty ledger for 3.7 days**. The Aug 19
+deploy's boot raced a Postgres restart, `db.init()` failed, `connected` latched false — and nothing
+on the read path ever probed again (`reprobe()` ran only on the outbox write path). Every dashboard
+read returned `[]`, `/health` stayed green (`ok:true` with `db.connected:false` in the fine print),
+and the skill card — which renders only `if (skill)` — vanished with the rest. All rows sat intact
+in Postgres the whole time: the `__skill__` zip (`lean-proposal-deck-v2.1.3-upload.zip`), both
+profile PDFs, 21 contacts, 356 messages.
+
+- **Recovered**: machine restart → clean init → everything visible again, verified via
+  `/admin/product-assets` and a 12-route smoke.
+- **Made self-healing** (engine `818ca3e`): a 30s probe loop retries a latched pool (or a failed
+  `init()` whole); boot hydration extracted to `hydrateFromDb()` and re-run on reconnect;
+  `tracker.hydrate()` guarded to once-per-process so a mid-life reconnect never clobbers memory
+  that is ahead of the dropped writes.
+- **Smoke landmark repointed**: fd01976's kb redesign deleted «خدمات المساعد»; the stale assertion
+  meant the Aug 19 deploy shipped red. New landmark is vKb's own tfoot line.
+
+The defect class is the known one — a surface the founder reads that silently reflects an unwired /
+unreachable source ([[wired-but-never-populated]]), plus a green health check that doesn't gate on
+the thing it vouches for. Open follow-up: should `/health.ok` turn false when enabled && !connected?
+
+Also answered (T0): the CRM lead-stage question — the Frappe-style ladder exists (`CRM_STAGE`,
+9 rungs, derived-not-stored, e26b7b7) and «فرص البيع» is the outcome board fed by campaign
+conversation evidence (`interestedOf`: hot/warm tags or interested-outcome-with-reply). His mental
+model is correct with one nuance: nothing is moved by hand; the stage IS the ledger's evidence.
+
+---
+
 ## 2026-08-19 · [T2] «مرشّح لـ» — وسم الحسابات بخدمة · DEPLOYED
 
 Founder: «I want to tag the clients to product so if I have specific clients that I want to target
