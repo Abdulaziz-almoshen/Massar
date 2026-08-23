@@ -1,7 +1,7 @@
 ## 2026-08-23 · [T1] skill v2.3.1 uploaded · banner rewritten as an AI skill · DEPLOYED
 
 `lean-proposal-deck-v2.3.1-upload.zip` (661,539 bytes) replaced v2.1.3 as the `__skill__` asset;
-download link verified 200/application-zip. The #kb banner now names it «مهارة إنشاء العروض
+download link verified 200/application-zip. Then themed (his follow-up «make the banner with the AI theme»): gradient spark tile + teal wash + btn-teal — the brand's own AI accent, screenshot-verified. The #kb banner now names it «مهارة إنشاء العروض
 بالذكاء الاصطناعي» and states the flow: give it to an AI assistant with the service profile →
 formal proposal PDF → upload on each service page. Engine commit: kb banner. Smoke 12/12 green.
 
