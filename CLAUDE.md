@@ -42,6 +42,13 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
 - Completeness: the increment ends with deployed health green and STATE.md updated.
 
 ## 4. Tech Stack & Conventions
+- **Technical Standards apply.** `massar-engine/STANDARDS.md` is the adoption + DEVIATION register
+  (what complies, what does not, why, and the exit for each). Read it before any new module. The
+  binding rules for new work: business rules live in a pure, unit-tested `*-domain.ts` — never in a
+  UI module; `is`/`has`/`can` booleans and verb functions (§2.1); comments say WHY; `npm test` must
+  pass (it is first in `npm run check` and the 60% coverage gate BLOCKS a deploy); new endpoints are
+  designed to the OpenAPI CRITICAL/HIGH rules (201+`Location`, RFC 9457 `problem+json`, documented
+  401/403/429). Open: `openapi.yaml` (D-5) and the Postgres-vs-SQL-Server ruling on §6 (D-6).
 - TypeScript / Node 22, Fastify, npm, ESM (NodeNext). Strict tsc; no `any` unless quoted.
 - LLM: OpenAI via adapter — `OPENAI_MODEL=gpt-5.6-terra` (conversation), auto-pick fallback.
 - WhatsApp: Gupshup BSP. Current app: **sandbox** `Massar`, source `917834811114` (India
