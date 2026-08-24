@@ -55,6 +55,9 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
 - **`src/dashboard.ts`: anchored string replacements only, never range edits** — a deleted
   helper is invisible to `tsc` and `node --check` and ships a blank page.
   See `.orbit/decisions/0001-dashboard-no-range-edits.md`.
+- Git: **two private repos**, not a monorepo — `github.com/Abdulaziz-almoshen/Massar` (this dir)
+  and `.../massar-engine` (nested, gitignored here, own history). Both on `master`, both over
+  **HTTPS** (no SSH key on this machine). Push each from its own directory.
 - Secrets: `massar-engine/.env` (gitignored) + `fly secrets` — OPENAI_API_KEY,
   GUPSHUP_API_KEY, GUPSHUP_APP_ID, GUPSHUP_APP_NAME, GUPSHUP_SOURCE_NUMBER, WEBHOOK_TOKEN,
   ADMIN_TOKEN. Never commit; never echo values into chat/logs.
