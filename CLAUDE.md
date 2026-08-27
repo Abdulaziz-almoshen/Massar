@@ -19,7 +19,11 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`.orbit/STATE.md`** (read after this file).
-Last major milestone: **the opportunity board deployed (Aug 23, 2026)** — «فرص البيع» is now the
+Last major milestone: **«مؤشرات المحادثة» on the client record (Aug 27, 2026)** — the record answers
+«how is this conversation going?» with signals instead of prose: a 0–100 seriousness meter, momentum,
+reply speed, silence, a 21-day activity chart, and one suggested next action. Every number is earned
+from the ledger by `src/signal-domain.ts` (pure, unit-tested) — no model produces a figure on that
+card, and «لماذا هذه القراءة؟» itemises each one with its evidence. Previous: **the opportunity board (Aug 23, 2026)** — «فرص البيع» is now the
 prototype's own screen: an account card over stored product lines, each carrying WHERE it came from
 (حملة واتساب · مكالمة · زيارة · إحالة · طلب وارد). It is the first surface whose stage is stored
 rather than derived, and `.orbit/STATE.md` says why. Previous: **account graph (Aug 18, 2026)** —
