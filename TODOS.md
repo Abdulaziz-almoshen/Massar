@@ -1,5 +1,35 @@
 # TODOS
 
+## Programme scope
+
+### Keep the 12-week vertical slice on the shelf
+
+**What:** A fully specified fallback to the 47-week Massar v2 programme, reaching the founder's core
+outcome in twelve weeks. Weeks 1-2: the thin pilot plus minimal users and products. Weeks 3-4:
+`handoffs` and `handoff_items` referencing today's `entities`, with spreadsheet import. Weeks 5-6:
+sales inbox, assignment, tap-only call and visit outcomes. Weeks 7-9: the product-manager dashboard,
+combining handoffs, manual outcomes, the existing opportunity board and existing WhatsApp history.
+Weeks 10-12: production pilot, reconciliation, permissions, tests, rollout. v1 stays authoritative
+and the slice reads from it; no cutover happens in these twelve weeks.
+
+**Defers:** full account migration, dedup, merge and branches, configurable pipelines and forms,
+voice and transcription, the AI payback loop, reminders, campaign migration, the WhatsApp adapter
+rewrite, automatic claims, change-data-capture, and v1 retirement.
+
+**Why:** the approved programme reached 40.5 weeks of work (47 buffered) after the engineering
+review, a 65% increase driven by choosing the most complete option on eleven of thirteen findings.
+Every addition is defensible alone. If the schedule stops being acceptable, this is the alternative,
+and having it written down means taking it is a decision rather than a scramble.
+
+**Trigger:** the three numbers from the handoff audit. If accounts never touched are few and the
+median days from handoff to first contact is short, the blindness costs less than the programme
+does, and this slice is the right shape. Proposed by Codex during the 2026-09-03 engineering review
+and declined at the time; recorded so it stays available.
+
+**Effort:** L (12 weeks, against 47)
+**Priority:** P3 — an option, not a plan
+**Depends on:** the handoff audit numbers.
+
 ## Design system
 
 ### Amend DESIGN.md with a documented state palette

@@ -537,3 +537,156 @@ justifies 28 weeks, and you got it before writing a line of code.
 - You said *"whether you redesign the whole system or you add a new better UI UX to deliver this
   message, but we need to finish it."* You stated the outcome and left the means open. That is why
   this document could recommend against you twice and still be useful to you.
+
+---
+
+## Engineering review (2026-09-03) — 13 findings, all decided
+
+Reviewed with `/plan-eng-review` after approval. Every decision below is the founder's.
+
+### Scope (Step 0)
+- **A thin handoff pilot ships in week 3**, against today's `entities` table: two tables plus a
+  submitter column, deliberately throwaway, deleted when phase 4 lands. It exists because the
+  approved plan is dark for seven weeks and the founder's own question («what happened to the
+  customers I sent») does not need the identity rebuild to be answerable. It also converts the
+  standing audit assignment from a one-off reconstruction into 21 weeks of real handoff data.
+
+### Architecture
+1. **v1's writes become awaited and retried on the carried tables.** The parallel run rests on
+   "v2 reads the same database", but `fire()` dispatches and forgets: a failed write logs a line,
+   and a disconnected pool returns without writing at all. v2 would have spent 22 weeks reading a
+   lagging, lossy projection. The await is **bounded** — timeout, backoff, then a counter — so a
+   slow database can never stall a live WhatsApp reply.
+2. **Postgres logical replication with real-time diffing** replaces the single cutover
+   reconciliation. Drift found in week 4 is a bug; the same drift found in week 24 is a migration
+   nobody can trust. **Slot lag is monitored and the slot is dropped at cutover as an explicit
+   step**, because an orphaned replication slot fills the disk the product runs on.
+3. **One host, path routing, shared session.** v2 sits behind the same hostname; screens move
+   between systems without anyone learning two URLs. **The proxy never sits in front of the Gupshup
+   webhook** — that path routes straight to v1 — so the number is never behind new infrastructure.
+   Phase 0 also gains the second Fly app, its secret copies, its health endpoint and its smoke test,
+   none of which the approved plan named.
+
+### Code quality
+4/9. **The four pure business-tier files become one shared package**, imported and run in process by
+   both applications. Findings 4 and 8 were answered in ways that contradicted each other (HTTP for
+   one implementation; local computation for speed); the package is the shape that delivers both
+   properties, and it outlives v1 untouched. One definition, one test suite, one coverage gate.
+5. **timestamptz in v2**, with the BIGINT conversion written once in the compatibility views v2
+   already reads through. The reporting this plan exists to deliver is Riyadh-week date arithmetic,
+   which is what the type is for. After cutover no conversion remains.
+6. **A generated `openapi.yaml`, enforced by a build gate**, and one error shape (RFC 9457
+   `problem+json`). Today the engine returns `{status}`, `{error}` and `{ok,error}` across 46, 38
+   and 27 sites. Splitting into an API and a front end turns that into a contract between two
+   codebases. Closes standards deviation **D-5**.
+
+### Tests
+7. **Testcontainers, seeded production-shaped fixtures, and 8 end-to-end flows.** Seven
+   correctness-critical paths are all database behaviour and none is reachable by today's gate,
+   which covers four pure modules and explicitly excludes Postgres: merge and its reversal, phone
+   routing across a merge, the claim collision after many-to-one, the tap transaction, the view
+   conversion, backfill idempotency, and the newly awaited write on the live WhatsApp path. Closes
+   standards deviation **D-4**, which named Testcontainers as its own exit condition.
+
+### Performance
+10. **Reported outcome fields are promoted from JSONB to real columns.** The learning loop
+    aggregates across them and this database has no JSON index of any kind, so there is no precedent
+    to copy. Core reportable fields (outcome, objection category, competitor, budget signal, next
+    step) become indexed columns shared by every product; `form` JSONB keeps only product-specific
+    extras. A btree on `(account_id, occurred_at)` carries the account timeline.
+
+### From the outside voice (Codex), verified in source
+11. **An engagement's product is decided at write time, on per-product threads.** One WhatsApp
+    conversation genuinely spans several products (`interest_tags` is one row per product per
+    phone), and `productlock.ts:52` answers "what is this chat about **now**", which changes with
+    every new message. Attributing history with it would show a product manager another product's
+    conversation as evidence about theirs — silently, and looking correct. Threads are split per
+    product with a human re-attribution tool; nothing is ever guessed.
+12. **Merges are provisional for a reversal window before they become permanent.** The approved rule
+    said post-merge rows stay on the target, which is tidy and wrong: a call logged against a merged
+    identity has no recorded answer to "which clinic did the rep actually speak to". A window means
+    a mistaken merge is caught before history accrues against it.
+13. **A written charter, per-rep visibility defaults, and read auditing.** Every metric here is
+    measured on one salesperson by one founder. Adoption is never an individual performance measure;
+    there is a named owner and a dispute path; metrics require a customer response to move, so they
+    cannot be satisfied by tapping alone; a quarterly sample is checked against real call records.
+    A dashboard the measured people do not trust produces theatre, and theatre is what the learning
+    loop would then be built on. **This review missed it entirely; Codex found it.**
+
+**Recorded and declined.** Codex proposed cutting to a 12-week vertical slice (thin pilot, handoffs
+on today's `entities`, sales inbox, tap-only outcomes, PM dashboard, pilot) deferring account
+migration, dedup, configurable pipelines, voice, AI payback, CDC and cutover. The founder declined a
+scope reduction twice — in office hours and again at this review's Step 0 — so it is recorded, not
+re-argued. It remains the fallback if the handoff audit says the blindness is cheap.
+
+### What this review cost
+
+| | Weeks |
+|---|---|
+| Approved plan | 24.5 (28 buffered) |
+| Review additions | 16.0 |
+| **New total** | **40.5 (47 buffered)** |
+
+**The programme grew 65%.** The founder chose the most complete option on eleven of thirteen
+findings. Every addition is defensible on its own and the total is the honest consequence, stated
+here rather than discovered in month six. The kill criterion at phase 6 and the 12-week fallback
+above are the two levers that exist if 47 weeks is not acceptable.
+
+### Failure modes
+
+| Codepath | Realistic failure | Test | Handling | Who notices |
+|---|---|---|---|---|
+| awaited v1 write | database slow mid-conversation | Testcontainers | bounded timeout → counter | health counter, same day |
+| CDC diff | replication slot lags, disk fills | E2E | slot-lag alarm, drop at cutover | alarm before the disk |
+| merge reversal | rows created during a wrong merge | Testcontainers | provisional window | reviewer, inside the window |
+| claim collision | many-to-one after merge | Testcontainers | earliest wins, losers kept | reconciliation |
+| tap transaction | partial write across three tables | Testcontainers | one transaction, 503 | rep, immediately |
+| thread attribution | conversation spans two products | unit + E2E | split threads, re-attribution tool | PM, on the dashboard |
+| shared package drift | rule changes in one app only | one test suite | impossible by construction | build |
+No failure mode is untested, unhandled and silent: **0 critical gaps**.
+
+### Parallelization
+
+| Lane | Steps | Shared modules |
+|---|---|---|
+| A | shared package → v1 awaited writes → v1 counters → claim switch | `massar-engine/src` |
+| B | v2 skeleton → openapi gate → identity → accounts → tracks | v2 repo |
+| C | CDC + reconciliation + slot monitoring | infrastructure |
+| D | path routing + shared session + surface map | edge |
+Launch A, B and C in parallel after phase 0; D joins once v2 serves a screen. Conflict flag: lanes A
+and B both touch the shared package's published interface, so its version bumps in A only.
+
+### Implementation tasks
+- [ ] **T1 (P1)** — shared package — extract the four pure business-tier files, one test suite, both apps import it
+- [ ] **T2 (P1)** — v1 — awaited + retried writes on carried tables, bounded timeout, failed-write counter on `/health`
+- [ ] **T3 (P1)** — v1 — per-route counters, user-facing routes only, webhook excluded by name
+- [ ] **T4 (P1)** — infra — second Fly app, secret copies, health, smoke; path routing that bypasses the webhook
+- [ ] **T5 (P1)** — infra — logical replication slot, real-time diff, lag alarm, cutover drop step
+- [ ] **T6 (P1)** — v2 — generated `openapi.yaml` + build gate + `problem+json` error shape (closes D-5)
+- [ ] **T7 (P1)** — v2 — Testcontainers harness, seeded production-shaped fixtures, 8 E2E flows (closes D-4)
+- [ ] **T8 (P1)** — v2 — timestamptz throughout; BIGINT conversion isolated in the compatibility views
+- [ ] **T9 (P1)** — v2 — per-product conversation threads + write-time attribution + re-attribution tool
+- [ ] **T10 (P1)** — v2 — provisional merges with a reversal window
+- [ ] **T11 (P2)** — v2 — reported outcome fields as indexed columns; `(account_id, occurred_at)` btree
+- [ ] **T12 (P2)** — pilot — thin handoff at week 3 on today's `entities`, deleted at phase 4
+- [ ] **T13 (P2)** — process — charter, named owner, dispute path, visibility defaults, read audit, quarterly sample
+
+## GSTACK REVIEW REPORT
+
+| Review | Trigger | Why | Runs | Status | Findings |
+|--------|---------|-----|------|--------|----------|
+| CEO Review | `/plan-ceo-review` | Scope & strategy | 0 | — | — |
+| Codex Review | `/codex review` | Independent 2nd opinion | 1 | issues_found | 3 new findings, all folded; 1 scope cut recorded and declined |
+| Eng Review | `/plan-eng-review` | Architecture & tests (required) | 1 | CLEAR (PLAN) | 13 issues, 0 critical gaps, scope extended by founder choice |
+| Design Review | `/plan-design-review` | UI/UX gaps | 0 | — | — |
+| DX Review | `/plan-devex-review` | Developer experience gaps | 0 | — | — |
+
+- **CODEX:** found what four prior passes missed — product attribution across a multi-product
+  conversation, the ambiguity of post-merge rows on reversal, and the absence of any process owner
+  for a dashboard that measures one salesperson. All three folded in.
+- **CROSS-MODEL:** no disagreement between this review and Codex on any finding. Codex's 12-week
+  scope cut is recorded and declined, consistent with two prior founder decisions.
+- **VERDICT:** ENG CLEARED — ready to implement, at 40.5 weeks unbuffered (47 buffered), a 65%
+  increase over the approved plan, from founder-chosen completeness on 11 of 13 findings.
+
+NO UNRESOLVED DECISIONS
