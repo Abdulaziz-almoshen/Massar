@@ -1,5 +1,69 @@
 # TODOS
 
+## Design system
+
+### Amend DESIGN.md with a documented state palette
+
+**What:** Write the semantic state hues into `DESIGN.md` as a named exception to rule 3: which four
+hues exist, what each means, where each may appear, and the contrast floor each must clear.
+
+**Why:** Rule 3 says teal `#1F7A73` is the only accent. The shipped product also uses navy
+`#2F5F94` for «متجاوب» / «مهتم» / «نشطة» / «للتنفيذ», green for won, amber for warning and red for
+lost, across roughly thirty sites in six files. Those hues carry meaning people read every day, so
+the rule as written is the thing that is out of date. Today the token authority is a document the
+code openly contradicts, which means no reviewer can tell a real drift from an accepted one.
+
+**Context:** Found by /design-review on 2026-09-03 (finding 013) and confirmed independently by the
+Codex source audit. Sites are in `dashboard.ts`, `campaigns-crm.ts`, `activity-crm.ts`,
+`customers-crm.ts`, `opps-crm.ts` and `tasks-crm.ts`; grep `#2F5F94` for the full list. The teal
+family (`#2E7D77`, `#3FB6B0` and the tints) is NOT part of this: it is one hue ramp and already
+compliant. Once written, the palette is checkable, so the next drift is catchable.
+
+**Effort:** S
+**Priority:** P2
+**Depends on:** None.
+
+### Give the row checkbox a 44px tap area without growing the row
+
+**What:** On coarse pointers, expand the selection cell's hit area to 44px with padding plus a
+negative margin, leaving the visible checkbox at 20px and the row at 36px.
+
+**Why:** Touch guidance wants 44px; `DESIGN.md` rule 8 fixes list rows at 36px, and that density is
+what the product sells. A 44px control cannot sit inside a 36px row, so today the checkbox ships at
+20px, which is the largest honest size inside the current rule and still under the guidance. Growing
+the hit area satisfies both rules at once and changes nothing about how the list reads on a desktop.
+
+**Context:** Found by /design-review on 2026-09-03 (finding 009 residue); the compromise and its
+reason are already commented in the `@media (pointer: coarse)` block in `src/dashboard.ts`. Care is
+needed so the expanded area does not swallow the row's own click target. Verify on a real touch
+device or with device emulation: `(pointer: coarse)` never matches a headless desktop browser, which
+is what made the first measurement of this fix read as a regression.
+
+**Effort:** S
+**Priority:** P3
+**Depends on:** None.
+
+## Tooling
+
+### Make the smoke gate wait for the record route instead of racing it
+
+**What:** Replace the fixed 4000ms wait in `massar-engine/scripts/smoke.py` with a wait on the
+route's own content, or retry once before failing.
+
+**Why:** The record route (`#customer/<phone>`) does a per-contact fetch after load. On a machine
+that has just restarted, that fetch loses a 4-second race and the gate reports a broken deploy on a
+page that works. It happened on this cycle's first deploy: 160 chars and a missing landmark, then
+24,398 chars and green on a warm re-run, same build. A gate that fails for a reason outside the diff
+teaches its operator to re-run it, which is exactly how the blank-page class it guards comes back.
+
+**Context:** Found by /design-review on 2026-09-03 (finding 014). The script already has a precedent
+for this reasoning in its third-party-CDN filter comment. Prefer waiting on the landmark string with
+a timeout over lengthening the fixed sleep, so the gate stays fast when the machine is warm.
+
+**Effort:** S
+**Priority:** P2
+**Depends on:** None.
+
 ## Work queue (slice A)
 
 ### Fold the customer's own stated time into the queue exit rule
