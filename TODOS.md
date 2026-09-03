@@ -133,3 +133,32 @@ a timeout over lengthening the fixed sleep, so the gate stays fast when the mach
 **Depends on:** slice A shipped.
 
 ## Completed
+
+## From /autoplan, 2026-09-03 (four-phase review of the platform plan)
+
+### Fix the five live production defects
+**What:** Found while verifying claims about the plan, not caused by it.
+1. `index.ts:41` acks the Gupshup webhook before persisting — a crash loses the event, including
+   an inbound «إيقاف», and the number stays sendable.
+2. `gupshup.ts:44` has no `AbortSignal`; `agent.ts:1503-1509` re-sends the same content as text
+   when a quick-reply throws. A provider timeout that actually succeeded messages twice.
+3. `db.ts:321` falls back to memory-only on a failed migration and `/health` still returns `ok:true`.
+4. `index.ts:36` — `if (cfg.webhookToken && ...)` accepts every POST when the token is unset.
+5. `index.ts:428` returns per-recipient launch failures; `dashboard.ts` never reads them.
+**Priority:** P0 for 1 and 2. They are cheap and they are about consent and duplicate sends.
+
+### SSO instead of hand-rolled sessions
+**What:** Phase 2 ships password auth. For an internal Lean tool, SSO is the right answer.
+**Why deferred:** blocked on Lean IT, not on this plan.
+**Priority:** P2 — revisit when a second department joins.
+
+### Arabic transcription for voice-note engagements
+**What:** provider, dialect handling, speaker attribution, correction, consent, data residency.
+**Why deferred:** outside the blast radius; already an open question.
+**Priority:** P2.
+
+### Retire the 12-week vertical slice entry, or take it
+**What:** `TODOS.md` has carried a fully specified 12-week fallback since the v2 review, filed
+"P3 — an option, not a plan", triggered by the handoff audit. The amended plan's Gate A now covers
+the same ground inside the main plan.
+**Priority:** P3 — resolve when The Assignment's three numbers exist.
