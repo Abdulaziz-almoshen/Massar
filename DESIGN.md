@@ -77,3 +77,19 @@ Selection record: `design/approved.json`.
 14. **Every new list design is verified at production scale** (`npm run qa:scale`: 200 campaigns,
     3,000 targets, 1,000 onboarded), not at demo scale. Six defects in this file were invisible at
     16 contacts.
+
+## Motion and the half-second after a click  (added 2026-09-03)
+
+Two external references are consulted on any UI work, alongside the invariants above and never over
+them:
+
+- **transitions.dev** — the named UI transition patterns (card resize, number pop-in, text-state
+  swap, origin-aware dropdown, modal, panel reveal, icon swap, success check, page side-by-side).
+- **interior.dev** — micro-interactions for the half-second after a click: *"the fade a beat too
+  slow, the spinner outliving the request, the row that jumps as it loads."*
+
+They govern TIMING and BEHAVIOUR, never palette, type or spacing — invariants 1 to 9 win on those.
+The engine is server-rendered, so interior.dev's React components are read as a specification of
+behaviour, not installed. Every state a surface can be in (pending, optimistic, settled, failed) is
+designed, because today the dashboard has one `transition: width` and almost no state-change motion
+at all: a tap, a stage move and a list refresh all land instantly and flatly.
