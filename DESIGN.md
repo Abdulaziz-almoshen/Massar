@@ -3,8 +3,8 @@
 **Read this before writing any UI code. These tokens override newly invented values.**
 
 Full spec, with rationale and the RTL translation reasoning:
-`.orbit/artifacts/campaigns-crm/frappe-visual-system.md` (cycle V1) and
-`.orbit/artifacts/campaigns-crm/frappe-shell.md` (cycle V2 — shell, sidebar, kanban).
+`docs/artifacts/campaigns-crm/frappe-visual-system.md` (cycle V1) and
+`docs/artifacts/campaigns-crm/frappe-shell.md` (cycle V2 — shell, sidebar, kanban).
 Selection record: `design/approved.json`.
 
 ## Current visual system

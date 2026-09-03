@@ -1,9 +1,0 @@
-{
-  "schema": 1,
-  "enabled": true,
-  "observer": "watchdog",
-  "state": "watching",
-  "scope": "full-loop",
-  "message": "Supervising the active Orbit role tree",
-  "updated_at": "2026-08-18T04:29:37Z"
-}

@@ -1,0 +1,152 @@
+Round-14 must-closure verification — commit f6ab762, deployed head, 2026-08-12
+Every line below is a command run against the live service, pasted verbatim.
+Screenshots cannot carry these claims; this file is their evidence.
+
+════════════════════════════════════════════════════════════════════════════
+M1 — the fabricated interest, in the store it actually lives in
+════════════════════════════════════════════════════════════════════════════
+Round-13 scrubbed contact.tags. product_interest lives in contact_insights and was
+never touched, so «باقات NVR لتغطية 8 مواقع» was still rendering on #home in the
+DEFAULT real-only view as «1 مكتسبة», and on the campaign row as a green chip
+indistinguishable from a confirmed tag.
+
+CORRECTION TO ROUND-13's RATIONALE (verified, and folded in by round-14):
+NVR is «السجل الوطني للتطعيمات» — an approved Lean service, one of the three allowed
+{{1}} values in the founder's own template (docs/artifacts/copy/VOICE-REFERENCE.md:20-22)
+— not network video recorders. The defect stands on stronger ground: Ibrahim asked
+«وش يصلح لي من باقات ال NVR» and the agent answered «باقات NVR غير متاحة لدي ضمن
+المعلومات المعتمدة، وقد أحلت استفساركم…». A confirmed hot interest was then written
+for precisely what the agent had refused as outside its approved knowledge.
+
+$ curl -s .../admin/insights | count distinct product_interest values
+  BEFORE: 17 distinct free-text names across 14 rows, for a 6-service catalogue:
+    2x الإجازات المرضية · نظام الإجازات المرضية · الإجازات المرضية مع تكامل HIS
+    تكامل خدمة الإجازات المرضية · إجراءات الإجازات المرضية الإلكترونية
+    ربط وإصدار الإجازات المرضية عبر النظام الحالي · الربط مع النظام الحالي
+    مراجعة التكامل مع النظام الحالي · تكامل الأنظمة مع نظام «مسار» عبر واجهات HIS/ERP
+    فحص الموظفين · تكامل سجل التطعيمات الوطني · باقات NVR لتغطية 8 مواقع
+    الربط مع سجل التطعيمات الوطني وخدمات التطعيمات · الربط مع سجل التطعيمات الوطني وتكامل HIS/ERP
+    حلول تسجيل المستفيدين والتحول من النماذج الورقية · خدمات أخرى للمنشآت الصحية
+    خدمات لِين الأخرى
+
+$ node -e "canonicalService(each)"   # unit check before deploying
+  17 raw → 5 canonical:
+    الإجازات المرضية (6) · خدمات التطعيمات (4) · تكامل الأنظمة (HIS/ERP) (3)
+    خدمة أخرى (3) · فحص الموظفين (1)
+
+$ curl -s .../admin/intel/winloss            # real-only — the founder's default view
+  خدمات التطعيمات        → مكتسبة 1 · غير مكتسبة 0 · نشطة 3
+  خدمة أخرى              → مكتسبة 1 · غير مكتسبة 0 · نشطة 0
+  تكامل الأنظمة (HIS/ERP) → مكتسبة 0 · غير مكتسبة 0 · نشطة 1
+  الإجازات المرضية        → مكتسبة 0 · غير مكتسبة 0 · نشطة 1
+  ZERO invented service rows remain.
+
+$ curl -s .../admin/intel/winloss?all=1      # loss causes survive the change
+  loss_causes: الملف غير واضح · التوقيت · طلب التواصل مع مختص · عدم ملاءمة الخدمة
+
+Clamped in THREE places, because normalising only at the aggregate left the raw text
+on screen: on parse (new reads), in winLossBoard (cached rows, no LLM re-run), and at
+the read boundary — /admin/insights and /admin/customer/:phone — which is what the
+chips and filters actually consume.
+
+A reading is now visually incapable of passing as a fact. Computed styles, live at
+#kmon/9 (1440x900):
+  {cls:'chip c-read c-ok',   txt:'قراءة خدمات التطعيمات · نية مرتفعة', border:'dashed', bg:'rgba(0,0,0,0)'}
+  {cls:'chip c-read c-warn', txt:'قراءة خدمة أخرى · مهتم',            border:'dashed', bg:'rgba(0,0,0,0)'}
+  {cls:'chip c-ok',          txt:'تكامل الأنظمة (HIS/ERP) · نية مرتفعة', border:'solid', bg:'rgb(236,253,243)'}
+Hollow + dashed + «قراءة» marker vs solid + filled. The hue still carries the level.
+
+════════════════════════════════════════════════════════════════════════════
+M2 — one definition of «مؤهل» per screen
+════════════════════════════════════════════════════════════════════════════
+hotHere (tags.hot OR insights.intent==='high') is deliberately wider than interestedOf
+(tags hot/warm OR outcome==='interested'). Two numbers that legitimately differ must
+not share a word. Live at #kmon/9:
+  BEFORE: «جهات مهتمة (1)»  … «ابدأ التواصل مع2 فرصة مؤهلة»
+  AFTER:  «جهات مهتمة (١)»  … «ابدأ التواصل مع ٢ جهة تستحق المتابعة»
+          subtitle: «وسوم اهتمام مؤكدة، أو نية مرتفعة قرأها المساعد من نص المحادثة
+                     ولم تُسجَّل وسمًا بعد»
+
+════════════════════════════════════════════════════════════════════════════
+M3 — a correction must not rewrite history
+════════════════════════════════════════════════════════════════════════════
+tracker.replaceTags stamped ts:Date.now() on every tag, so curating four real contacts
+at 11:48:44Z moved their interest timestamps hours past their last message. Unchanged
+products now keep their original ts; buildTimeline anchors a tag to the customer message
+that produced it, so an operator's edit can never move a customer's history forward.
+
+$ curl -s .../admin/customer/966592681957   # ياسمين, chronological
+  05:50:03 | in   | تنسيق عرض موجز                     | واتساب · وارد
+  05:50:03 | tag  | اهتمام: تكامل الأنظمة (HIS/ERP)     | نية مرتفعة · قراءة من هذه الرسالة
+  last customer message 05:50:03 · tag anchored 05:50:03 → not in the future. PASS
+  (was: tag stamped 11:48:44Z, five hours after she last spoke)
+
+Also fixed in the same path: db.replaceTags is now one BEGIN/COMMIT on a single client
+(a throw mid-loop previously left tags deleted and not re-inserted), memory updates only
+after the DB commit resolves, and an unknown phone 404s instead of manufacturing a
+contact — the same class as the six fixture contacts that once counted as real customers.
+
+$ curl -X POST .../admin/contact/tags -d '{"phone":"966500999999","tags":[…]}'
+  HTTP 404 {"error":"unknown phone — curation never creates a contact"}
+  contact count after: 20  (unchanged — no phantom row)
+
+buildTimeline also stopped calling ordinary replies campaign sends: kind «camp» fired on
+any agent message containing «[أزرار:», so a normal button-bearing reply appeared on the
+client profile as «حملة» — on a product whose §8 story is "no outbound without approval".
+Now labelled «المساعد · أزرار». (Keying it to campaign_targets remains queued as S4b.)
+
+════════════════════════════════════════════════════════════════════════════
+M4 — connect the guard, or it is not a guard
+════════════════════════════════════════════════════════════════════════════
+$ npm run deploy        # = fly deploy --ha=false && npm run smoke
+  #home                  30949 chars  ok  «مركز القيادة»
+  #kmon                  21760 chars  ok  «الحملات»
+  #customers             17702 chars  ok  «جهات الاستهداف»
+  #aimkt                 21855 chars  ok  «أي خدمة يبيعها المساعد؟»
+  #kb                     5500 chars  ok  «خدمات المساعد»
+  #customer/966500000850 18531 chars  ok  «مسار البيع مع هذا العميل»   ← added
+  #kmon/11                6376 chars  ok  «حكم الحملة»
+  smoke: 7 routes render, 0 runtime errors
+
+It had no runnable interpreter: system python3 has no playwright, so `npm run smoke`
+would have failed for everyone. A project .venv (gitignored) + `npm run smoke:setup`
+makes the guard actually executable.
+
+FALSIFIED MYSELF — a guard that cannot fail proves nothing:
+$ (point #home at a landmark that cannot exist, then run)
+  SMOKE FAILED — this deploy renders broken:
+    • #home: landmark «LANDMARK_THAT_CANNOT_EXIST_XYZ» missing
+    #home  30949 chars  FAIL   ← per-route line now reports only the failing route
+  EXIT=1
+
+════════════════════════════════════════════════════════════════════════════
+M5 — the pixel gate compares something at last
+════════════════════════════════════════════════════════════════════════════
+Baselines were byte-identical copies of their own actuals for three rounds, so
+mismatch 0.0 was true by construction. Actuals re-captured fresh at f6ab762 and diffed
+against the frozen baselines with the same helper the gate uses:
+
+  salespath 1440x900   PASS   748/1296000  = 0.0577%
+  salespath 768x1024   PASS   746/786432   = 0.0949%
+  salespath 375x812    FAIL  5398/304500   = 1.7727%   ← intentional, see below
+  wizard    1440x900   PASS   569/1296000  = 0.0439%
+  wizard    768x1024   PASS    75/786432   = 0.0095%
+  wizard    375x812    PASS     0/304500   = 0.0000%
+
+Five real non-zero comparisons against genuinely different files: the gate is now
+doing work. The 375 sales-path baseline was REPLACED this round, stated openly:
+the prior baseline was the defective capture the CPO rejected three times — a viewport
+screenshot of a page whose stepper sat below the fold, so it never contained the element
+under test. The capture now scrolls the card into frame before shooting. That pair is
+0.0 by construction for this round only; its first real comparison is next round.
+
+$ measured at three viewports, current stage «معالجة الاعتراض»:
+  1440: node 458..541 in strip 57..1119 · hInside true · vInFrame true
+   768: node 290..374 in strip 57..711  · hInside true · vInFrame true
+   375: node 145..229 in strip 57..318  · hInside true · vInFrame true
+And confirmed BY EYE in v-salespath-375x812.png: the dark ④ «معالجة الاعتراض» is
+visible, centred, with ✓ nodes to its right and «تنسيق العرض التعريفي» to its left.
+
+One console error appeared once on wizard 375x812 during the first capture batch and
+did not reproduce in three subsequent runs (0 errors each, incl. requestfailed
+listeners). Recorded rather than hidden; treated as transient, not proven absent.

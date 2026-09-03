@@ -1,5 +1,0 @@
-{
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_OBSERVER_AGENTS": "1"
-  }
-}

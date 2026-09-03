@@ -1,0 +1,794 @@
+{
+ "schema_version": 1,
+ "commit": "1cf9b6df65cf807392459a433ac07ec2ffac661a",
+ "verdict": "PASS",
+ "gate": "delivery-evidence (qa-engineer)",
+ "commit_binding": {
+  "claim": "the DEPLOYED artifact is this commit",
+  "method": "sha256 of the dashboard HTML served by https://massar-engine.fly.dev compared byte-for-byte with the same route served by a clean worktree built at 1cf9b6d",
+  "measured": {
+   "live_sha256": "026ba672f2c2c2b6eadd8a1267f7700a56b3eccd643792fc7581685ce90661eb",
+   "pinned_1cf9b6d_sha256_prefix": "026ba672f2c2c2b6eadd8a12",
+   "identical": true,
+   "live_bytes": 184724,
+   "f9a51f0_build_bytes": 185788,
+   "5f38d56_build_bytes": 183675,
+   "note": "f9a51f0 and 5f38d56 both DIFFER from what is deployed; only 1cf9b6d matches"
+  },
+  "health": {
+   "ok": true,
+   "outbound_ok": true,
+   "db_connected": true,
+   "model": "gpt-5.6-terra"
+  }
+ },
+ "no_send_attestation": {
+  "rule": "CLAUDE.md §5 — zero WhatsApp messages to any number for any reason",
+  "measured": {
+   "real_gupshup_client_used": false,
+   "method": "every local instance ran with src/gupshup.js replaced by either a poison stub (throws on any send) or a file recorder whose only import is node:fs — greps for fetch/http/https/net/axios over non-comment lines return 0 matches",
+   "browser_egress_guard": "page.route aborted /admin/campaign/launch, /admin/campaign/test, /admin/contact/test, /admin/send-test, /admin/send-template, /webhooks/gupshup for every page in every run",
+   "egress_attempts_recorded": [],
+   "recorder_calls_total": "all sends landed in local .jsonl files; zero left the machine"
+  }
+ },
+ "scenarios": {
+  "coverage_complete": true,
+  "cases": [
+   {
+    "id": "SC-1",
+    "kind": "happy",
+    "persona": "مشغّل الحملات (campaign operator)",
+    "preconditions": "Given the deployed wizard at #aimkt with the approved template registry loaded from /admin/templates",
+    "steps": "When the operator opens step ٣ and clicks each template card in turn",
+    "expected": "Then both templates are listed and picking each swaps BOTH the message body and the preview reply buttons",
+    "actual": "Both cards render as a radiogroup; picking each swapped body and buttons together",
+    "measured": {
+     "cards_rendered": 2,
+     "registry_ids": [
+      "intro_integration",
+      "high_usage_upsell"
+     ],
+     "tpl0_preview_buttons": [
+      "الملف التعريفي",
+      "أرسلوا التفاصيل",
+      "ليس الآن"
+     ],
+     "tpl1_preview_buttons": [
+      "تفاصيل التكامل",
+      "أود مناقشة التكامل",
+      "ليس الآن"
+     ],
+     "body_changed": true,
+     "buttons_changed": true,
+     "aria_checked_follows_selection": [
+      "false",
+      "true"
+     ]
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/browser-ui.json"
+   },
+   {
+    "id": "SC-2",
+    "kind": "happy",
+    "persona": "مشغّل الحملات",
+    "preconditions": "Given a template whose body contains the {{1}} service variable and a selected service",
+    "steps": "When the preview renders and the operator inspects the textarea, then switches the service",
+    "expected": "Then the preview bubble resolves {{1}} to the service name while the textarea intentionally keeps the raw {{1}}",
+    "actual": "Preview resolved to the live service name; textarea and campMsg both still hold the raw token; switching service re-resolved",
+    "measured": {
+     "service": "الإجازات المرضية",
+     "preview_contains_raw_{{1}}": false,
+     "preview_contains_service_name": true,
+     "textarea_keeps_raw_{{1}}": true,
+     "campMsg_keeps_raw_{{1}}": true,
+     "after_service_switch": {
+      "newService": "فحص الموظفين",
+      "preview_has_new": true,
+      "textarea_still_raw": true,
+      "previewHead": "مرحبًا 👋\n\nلاحظنا أن لديكم استخدامًا مرتفعًا لخدمة فحص الموظفين، ونعتقد أن هناك فرصة لتسهيل العمل على فريقكم بشكل أكبر.\n\n"
+     },
+     "resolved_preview_head": "مرحبًا 👋\n\nلاحظنا أن لديكم استخدامًا مرتفعًا لخدمة الإجازات المرضية، ونعتقد أن هناك فرصة لتسهيل العمل على فريقكم بشكل أكب"
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/browser-ui.json"
+   },
+   {
+    "id": "SC-3",
+    "kind": "happy",
+    "persona": "مشغّل الحملات + خادم الإطلاق (launch route)",
+    "preconditions": "Given the wizard posts templateId and the launch route resolves buttons server-side by that id",
+    "steps": "When a launch is executed against a build whose Gupshup client is a pure file recorder (node:fs only, zero network code)",
+    "expected": "Then each templateId yields ITS OWN approved buttons on the wire and {{1}} is resolved server-side",
+    "actual": "intro_integration and high_usage_upsell each produced their own button trio; no raw {{1}} reached the wire",
+    "measured": {
+     "client_payload_source": "body: JSON.stringify({ targets, message: msgOut, name: campName, product: prod, templateId: tplId })",
+     "intro_integration_buttons_on_wire": [
+      "الملف التعريفي",
+      "أرسلوا التفاصيل",
+      "ليس الآن"
+     ],
+     "high_usage_upsell_buttons_on_wire": [
+      "تفاصيل التكامل",
+      "أود مناقشة التكامل",
+      "ليس الآن"
+     ],
+     "intro_body_on_wire": "ارتقِ بكفاءة منشأتكم من خلال التكامل المباشر بين نظام HIS وخدمة الإجازات المرضية.",
+     "raw_variable_on_wire": false,
+     "no_real_launch": "no WhatsApp message sent; the Gupshup client was replaced by a file recorder and every send endpoint was network-blocked in the browser"
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/launch-path.json"
+   },
+   {
+    "id": "SC-4",
+    "kind": "alternate",
+    "persona": "منشأة ذات استخدام مرتفع (high-usage facility)",
+    "preconditions": "Given the conversation was opened by the high_usage_upsell template, recorded as [حملة:high_usage_upsell]",
+    "steps": "When the customer taps «تفاصيل التكامل» and the real webhook -> agent path runs",
+    "expected": "Then turn two must NOT re-ask identity; it qualifies on implementation instead",
+    "actual": "Turn two asked «من يتولى الربط لديكم؟» with implementation buttons; no identity question, no identity buttons",
+    "measured": {
+     "opener_marker": "امل | ليس الآن] [حملة:high_usage_upsell]",
+     "opener_buttons": [
+      "تفاصيل التكامل",
+      "أود مناقشة التكامل",
+      "ليس الآن"
+     ],
+     "turn_two_body": "الربط يتم عبر واجهات برمجية تُنفَّذ الخدمة من خلالها داخل نظامكم مباشرة، فتتوقف إعادة إدخال البيانات ويقل زمن المعاملة.\nنبدأ بمراجعة تقنية قصيرة، ثم اختبار على بيئة تجريبية، ثم التفعيل — وفريقنا يرافق فريقكم في الثلاث.\nلنحدد نقطة البدء: من يتولى الربط لديكم؟",
+     "turn_two_buttons": [
+      "فريقنا التقني",
+      "مزوّد النظام",
+      "العرض التجاري"
+     ],
+     "contains_identity_question": false,
+     "contains_implementation_question": true,
+     "identity_buttons_present": false
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/journeys.json"
+   },
+   {
+    "id": "SC-5",
+    "kind": "alternate",
+    "persona": "المؤسس (the founder's own sequence)",
+    "preconditions": "Given a contact opened by intro_integration",
+    "steps": "When the founder taps «الملف التعريفي», then «العرض التجاري», then types «كم السعر؟»",
+    "expected": "Then each move advances: rung one is delivered once, and moves 2 and 3 both carry the COMMERCIAL objective — never «أي وصف يناسبكم؟» again",
+    "actual": "Move 1 delivered rung one; moves 2 and 3 both produced wantsCommercial=true and the commercial objective",
+    "measured": {
+     "move1_sends": 1,
+     "move1_buttons": [
+      "منشأة صحية",
+      "مزوّد نظام HIS",
+      "العرض التجاري"
+     ],
+     "move2_wantsCommercial": true,
+     "move3_wantsCommercial": true,
+     "move2_objective": "طلب العميل الجانب التجاري. لا تبدأ استجوابًا جديدًا: أعطِ ما تسمح به المعرفة المعتمدة عن التسعير، وإن لم يكن مذكورًا نصًا فقل إن المختص يحدده حسب نطاق التكامل، واعرض الخطوة التجارية مباشرة.",
+     "move3_objective": "طلب العميل الجانب التجاري. لا تبدأ استجوابًا جديدًا: أعطِ ما تسمح به المعرفة المعتمدة عن التسعير، وإن لم يكن مذكورًا نصًا فقل إن المختص يحدده حسب نطاق التكامل، واعرض الخطوة التجارية مباشرة.",
+     "move2_is_identity_reask": false,
+     "move3_is_identity_reask": false,
+     "method_note": "moves 2-3 are model turns; the OBJECTIVE that governs them was computed by executing the real objective block sliced from src/agent.ts against the transcript this run produced (no LLM key locally)"
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/journeys.json"
+   },
+   {
+    "id": "SC-6",
+    "kind": "negative",
+    "persona": "مشغّل الحملات",
+    "preconditions": "Given the launch route validates templateId and the service variable before sending",
+    "steps": "When a launch is posted with an unknown templateId, or with {{1}}/{product} present but no service",
+    "expected": "Then the launch is refused with 400 and NOTHING reaches the wire",
+    "actual": "Unknown templateId → 400 «قالب غير معروف»; {{1}} and legacy {product} without a service → 400; zero recorder calls in every case",
+    "measured": {
+     "unknown_templateId": {
+      "http": 400,
+      "error": "قالب غير معروف: no_such_template",
+      "wire_calls": []
+     },
+     "var_without_service": {
+      "http": 400,
+      "error": "القالب يحتوي {{1}} ولم تُحدَّد الخدمة — اختر الخدمة قبل الإطلاق",
+      "wire_calls": []
+     },
+     "legacy_product_placeholder": {
+      "http": 400,
+      "wire_calls": []
+     },
+     "unmappable_model_button_rejected": {}
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/launch-path.json"
+   },
+   {
+    "id": "SC-7",
+    "kind": "boundary",
+    "persona": "نظام التمهيد (boot) + محرّك التوجيه",
+    "preconditions": "Given assertButtonsHandled() runs as the first statement of main() and counts BOTH UTF-16 units and code points",
+    "steps": "When the process boots with an unhandled button, with a 21-char title, and unmutated (Gupshup poisoned so no send is reachable)",
+    "expected": "Then boot REFUSES with exit 1 in both mutations and reaches 'listening' unmutated; a 20-char title is accepted",
+    "actual": "Unhandled button → exit 1; 21-char title → exit 1 naming UTF-16 units; exactly-20 accepted; control booted and stayed up",
+    "measured": {
+     "unhandled_button_boot_exit": 1,
+     "over_cap_boot_exit": 1,
+     "unmutated_control": "exit 124 (still listening at timeout)",
+     "over_cap_message": "«أرسلوا تفاصيل التكامل» is 21 UTF-16 units / 21 chars — WhatsApp rejects > 20 (131009)",
+     "exactly_20_chars_accepted": true,
+     "every_emitted_title_len_and_intent": [
+      {
+       "title": "الملف التعريفي",
+       "chars": 14,
+       "intent": "info"
+      },
+      {
+       "title": "أرسلوا التفاصيل",
+       "chars": 15,
+       "intent": "info"
+      },
+      {
+       "title": "ليس الآن",
+       "chars": 8,
+       "intent": "decline"
+      },
+      {
+       "title": "تفاصيل التكامل",
+       "chars": 14,
+       "intent": "info"
+      },
+      {
+       "title": "أود مناقشة التكامل",
+       "chars": 18,
+       "intent": "commercial"
+      },
+      {
+       "title": "منشأة صحية",
+       "chars": 10,
+       "intent": "qualify"
+      },
+      {
+       "title": "مزوّد نظام HIS",
+       "chars": 14,
+       "intent": "qualify"
+      },
+      {
+       "title": "العرض التجاري",
+       "chars": 13,
+       "intent": "commercial"
+      },
+      {
+       "title": "فريقنا التقني",
+       "chars": 13,
+       "intent": "qualify"
+      },
+      {
+       "title": "مزوّد النظام",
+       "chars": 12,
+       "intent": "qualify"
+      }
+     ],
+     "launch_cap_51_recipients": {
+      "http": 400,
+      "error": "launch cap: 50 recipients per launch"
+     },
+     "wantsInfo_40char_tail_boundary": "«الملف التعريفي» + 45 Arabic chars → false; + service phrase → true"
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/boot-contract.log"
+   },
+   {
+    "id": "SC-8",
+    "kind": "authorization",
+    "persona": "مهاجم بلا صلاحية (unauthenticated caller)",
+    "preconditions": "Given /admin/* requires x-admin-token and the Gupshup webhook requires its token",
+    "steps": "When /admin/templates is requested without a token and the webhook is posted with a wrong token",
+    "expected": "Then both are refused 401 and no data or send path is reachable",
+    "actual": "/admin/templates without token → 401; webhook with wrong token → 401 (CLAUDE.md §8 webhook auth intact)",
+    "measured": {
+     "admin_templates_no_token": "401 {\"status\":\"unauthorized\"}",
+     "webhook_wrong_token": "401 {\"status\":\"unauthorized\"}",
+     "admin_templates_with_token": "200, 2 templates + fallbackButtons"
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/opt-out.json"
+   },
+   {
+    "id": "SC-9",
+    "kind": "failure_recovery",
+    "persona": "عميل ينسحب (a customer who opts out)",
+    "preconditions": "Given a contact reached by a campaign, and CLAUDE.md §8 forbids weakening the opt-out path",
+    "steps": "When the customer sends «إيقاف», then taps «الملف التعريفي», and a later launch includes them",
+    "expected": "Then they are marked opted out, get exactly one confirmation, are silenced afterwards, and the launch skips them",
+    "actual": "optedOut=true/outcome=opted_out; one confirmation text; 0 sends on the later info tap; launch sent=1 and skipped them",
+    "measured": {
+     "contact_state": {
+      "optedOut": true,
+      "outcome": "opted_out"
+     },
+     "confirmation_reply": [
+      {
+       "fn": "sendText",
+       "text": "تم إيقاف الرسائل. شكرًا لوقتكم، ونعتذر عن الإزعاج."
+      }
+     ],
+     "sends_after_optout_on_info_button": {
+      "sends": 0,
+      "calls": []
+     },
+     "launch_result": {
+      "sent": 1,
+      "requested": 2,
+      "failed": [
+       {
+        "phone": "966500000011",
+        "ok": false,
+        "error": "opted out — skipped"
+       }
+      ],
+      "recipients_on_wire": [
+       "966500000012"
+      ]
+     },
+     "surviving_target_buttons": [
+      "تفاصيل التكامل",
+      "أود مناقشة التكامل",
+      "ليس الآن"
+     ],
+     "opt_out_regex_cases": "22/22 opt-out cases PASS against the real isOptOut sliced from src/agent.ts (15 must-stop, 7 must-not-stop)",
+     "no_emitted_button_reads_as_optout": true
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/opt-out.json"
+   },
+   {
+    "id": "SC-10",
+    "kind": "alternate",
+    "persona": "مشغّل يحرّر نص القالب (operator edits the body)",
+    "preconditions": "Given 1cf9b6d deliberately removed the Meta-approval warning and the tplEdited state behind it",
+    "steps": "When the operator replaces the textarea contents with their own text",
+    "expected": "Then NO warning appears and the string «عدّلت نص القالب» is absent from the emitted page",
+    "actual": "No warning in visible text or page source; tplEdited undefined at runtime; no Meta-approval wording present",
+    "measured": {
+     "warning_string_in_visible_text": false,
+     "warning_string_in_page_source": false,
+     "tplEdited_defined_at_runtime": false,
+     "meta_approval_words_present": false,
+     "campMsgHead_after_edit": "نص كتبه المشغّل بنفسه تمامًا ولا يطابق القالب.",
+     "tplId_after_edit": "high_usage_upsell"
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/browser-ui.json"
+   },
+   {
+    "id": "SC-11",
+    "kind": "failure_recovery",
+    "persona": "عميل يطلب الملف مرتين",
+    "preconditions": "Given rung one records a transcript marker so 'already sent' survives a deploy (it was an in-memory Set)",
+    "steps": "When the customer taps a second info button after rung one was delivered",
+    "expected": "Then rung one is NOT delivered again",
+    "actual": "Second info tap produced 0 sends; the guard reads the transcript, not process memory",
+    "measured": {
+     "sends_on_second_info_tap": 0,
+     "calls": [],
+     "bodies": []
+    },
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/journeys.json"
+   }
+  ]
+ },
+ "dependency_regression": {
+  "changed_units": [
+   "src/templates.ts (registry, BUTTON_INTENT, canonicalTitle, campaignMark/openerOf, LAUNCH_FALLBACK_BUTTONS)",
+   "src/agent.ts (send_buttons canonicalisation, rungOne/rungOneButtons opener-aware, wantsInfo, EMITTED_BUTTONS)",
+   "src/index.ts (launch route templateId resolution + guards, GET /admin/templates, boot assert)",
+   "src/dashboard.ts (template picker, preview buttons, {{1}} resolution, warning removal)",
+   "scripts/check-buttons.mjs (new gate, wired into npm run check)"
+  ],
+  "direct_dependents": [
+   "src/index.ts imports ./templates.js",
+   "src/agent.ts imports ./templates.js",
+   "scripts/check-buttons.mjs imports dist/templates.js and dist/agent.js",
+   "package.json `check` now chains check:buttons"
+  ],
+  "transitive_dependents": [
+   "gupshup.sendQuickReply (button titles on the wire, slice(0,20) truncation)",
+   "tracker.recordAgentReply (campaign marker text read back by systemPrompt/isCampaignTurn)",
+   "insights.buildTimeline (renders transcript lines containing the marker)",
+   "the campaign turn cap and objective ladder, both keyed on the campaign marker"
+  ],
+  "related_user_flows": [
+   "opt-out via webhook (§8 protected path)",
+   "legacy campaign launch with NO templateId",
+   "dashboard routes #kmon, #home, #customer/<phone>, #customers, #kb",
+   "rung-one delivery and its no-repeat guard",
+   "the founder's tap sequence through to a pricing ask"
+  ],
+  "commands": [
+   {
+    "command": "npx tsc  (clean worktree @1cf9b6d)",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/regression/build.log",
+    "measured": "strict TS build exit 0"
+   },
+   {
+    "command": "node scripts/check-catalogue.mjs",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/regression/check-catalogue.log",
+    "measured": "catalogue in step: 6 services, 0 drift"
+   },
+   {
+    "command": "node scripts/check-numerals.mjs",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/regression/check-numerals.log",
+    "measured": "numeral regression-lock clear"
+   },
+   {
+    "command": "node scripts/check-buttons.mjs",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/regression/check-buttons.log",
+    "measured": "82 checks · 0 failures (82 'ok' lines counted by QA, not taken on trust)"
+   },
+   {
+    "command": "npm run smoke  (7 routes in a real browser against the live deploy)",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/regression/smoke.log",
+    "measured": "7 routes render, 0 runtime errors"
+   },
+   {
+    "command": "node routing.mjs  (60 cases against source sliced from the pinned agent.ts)",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/routing-55-cases.log",
+    "measured": "60/60 PASS incl. 22 opt-out cases and the widened wantsInfo tail"
+   },
+   {
+    "command": "node boot-contract.mjs + 3 real boots of the built artifact",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/boot-contract.log",
+    "measured": "6/6 function-level; 2 mutations refuse boot with exit 1; unmutated control reaches 'listening'"
+   },
+   {
+    "command": "python3 launchpath.py  (9 launch-route cases vs a recorder)",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/launch-path.json",
+    "measured": "per-template buttons resolved server-side; 4 guard cases 400 with zero wire calls"
+   },
+   {
+    "command": "python3 optout.py  (6 opt-out/authorization cases through the real webhook)",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/opt-out.json",
+    "measured": "6/6 PASS"
+   },
+   {
+    "command": "python3 journey.py  (the two conversation journeys)",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/scenarios/journeys.json",
+    "measured": "upsell turn two avoids identity; founder sequence advances at every move"
+   },
+   {
+    "command": "node audit-gate.mjs  (QA auditing the new check-buttons gate itself)",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "evidence": "docs/artifacts/qa/1cf9b6d/regression/audit-of-check-buttons.json",
+    "measured": "3 gate-quality defects found and recorded as concerns; no product defect"
+   }
+  ],
+  "coverage_complete": true,
+  "verdict": "PASS"
+ },
+ "visual": {
+  "applicable": true,
+  "changed_routes": [
+   "#aimkt"
+  ],
+  "comparisons": [
+   {
+    "route": "#aimkt",
+    "viewport": "375x812",
+    "baseline": ".orbit/qa/baselines/wizard1cf9b6d-375x812.png",
+    "actual": "docs/artifacts/qa/1cf9b6d/visual/aimkt-375x812.png",
+    "diff": "docs/artifacts/qa/1cf9b6d/visual/aimkt-375x812-diff.png",
+    "mismatch_ratio": 0.0,
+    "verdict": "PASS",
+    "measured": {
+     "picker_cards_rendered": 2,
+     "horizontal_overflow_px": 0,
+     "console_errors": [],
+     "diff_stdout": "PASS: 0/304500 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/docs/artifacts/qa/1cf9b6d/visual/aimkt-375x812-diff.png"
+    }
+   },
+   {
+    "route": "#aimkt",
+    "viewport": "768x1024",
+    "baseline": ".orbit/qa/baselines/wizard1cf9b6d-768x1024.png",
+    "actual": "docs/artifacts/qa/1cf9b6d/visual/aimkt-768x1024.png",
+    "diff": "docs/artifacts/qa/1cf9b6d/visual/aimkt-768x1024-diff.png",
+    "mismatch_ratio": 9e-06,
+    "verdict": "PASS",
+    "measured": {
+     "picker_cards_rendered": 2,
+     "horizontal_overflow_px": 0,
+     "console_errors": [],
+     "diff_stdout": "PASS: 7/786432 pixels differ = 0.0009% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/docs/artifacts/qa/1cf9b6d/visual/aimkt-768x1024-diff.png"
+    }
+   },
+   {
+    "route": "#aimkt",
+    "viewport": "1440x900",
+    "baseline": ".orbit/qa/baselines/wizard1cf9b6d-1440x900.png",
+    "actual": "docs/artifacts/qa/1cf9b6d/visual/aimkt-1440x900.png",
+    "diff": "docs/artifacts/qa/1cf9b6d/visual/aimkt-1440x900-diff.png",
+    "mismatch_ratio": 0.0,
+    "verdict": "PASS",
+    "measured": {
+     "picker_cards_rendered": 2,
+     "horizontal_overflow_px": 0,
+     "console_errors": [],
+     "diff_stdout": "PASS: 0/1296000 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/docs/artifacts/qa/1cf9b6d/visual/aimkt-1440x900-diff.png"
+    }
+   },
+   {
+    "route": "#aimkt",
+    "viewport": "1024x768",
+    "baseline": ".orbit/qa/baselines/wizard1cf9b6d-1024x768.png",
+    "actual": "docs/artifacts/qa/1cf9b6d/visual/aimkt-1024x768.png",
+    "diff": "docs/artifacts/qa/1cf9b6d/visual/aimkt-1024x768-diff.png",
+    "mismatch_ratio": 0.0,
+    "verdict": "PASS",
+    "measured": {
+     "picker_cards_rendered": 2,
+     "horizontal_overflow_px": 0,
+     "console_errors": [],
+     "diff_stdout": "PASS: 0/786432 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/docs/artifacts/qa/1cf9b6d/visual/aimkt-1024x768-diff.png"
+    }
+   },
+   {
+    "route": "#aimkt",
+    "viewport": "390x844",
+    "baseline": ".orbit/qa/baselines/wizard1cf9b6d-390x844.png",
+    "actual": "docs/artifacts/qa/1cf9b6d/visual/aimkt-390x844.png",
+    "diff": "docs/artifacts/qa/1cf9b6d/visual/aimkt-390x844-diff.png",
+    "mismatch_ratio": 0.0,
+    "verdict": "PASS",
+    "measured": {
+     "picker_cards_rendered": 2,
+     "horizontal_overflow_px": 0,
+     "console_errors": [],
+     "diff_stdout": "PASS: 0/329160 pixels differ = 0.0000% (threshold 1.0000%)  → /Users/abdulaziz/Projects/Massar/docs/artifacts/qa/1cf9b6d/visual/aimkt-390x844-diff.png"
+    }
+   }
+  ],
+  "tokens_verdict": "PASS",
+  "accessibility_verdict": "PASS",
+  "console_errors": [],
+  "verdict": "PASS",
+  "measured": {
+   "visual_gate": "exit 0 — pass",
+   "picker_renders_at_every_viewport": {
+    "375x812": 2,
+    "768x1024": 2,
+    "1440x900": 2,
+    "1024x768": 2,
+    "390x844": 2
+   },
+   "horizontal_overflow_px": {
+    "375x812": 0,
+    "768x1024": 0,
+    "1440x900": 0,
+    "1024x768": 0,
+    "390x844": 0
+   },
+   "semantics": {
+    "group_role": "radiogroup",
+    "card_roles": [
+     {
+      "role": "radio",
+      "checked": "true",
+      "tabindex": "0"
+     },
+     {
+      "role": "radio",
+      "checked": "false",
+      "tabindex": "0"
+     }
+    ],
+    "keyboard": {
+     "hasKeyHandler": [
+      "tplKey(event,0)",
+      "tplKey(event,1)"
+     ],
+     "focusable": [
+      "0",
+      "0"
+     ]
+    }
+   },
+   "chip_radius_matches_system_999px": {
+    "1440x900": "999px",
+    "1024x768": "999px",
+    "390x844": "999px"
+   },
+   "intentional_change_vs_pre_change_baseline_cb3fad0": {
+    "method": "the pre-picker commit cb3fad0 and the deployed 1cf9b6d rendered side by side on identical (empty) local data; element-scoped captures",
+    "composer_step_height_px": {
+     "1440x900": {
+      "before": 676,
+      "after": 769,
+      "width_before": 1112,
+      "width_after": 1112
+     },
+     "1024x768": {
+      "before": 771,
+      "after": 916,
+      "width_before": 696,
+      "width_after": 696
+     },
+     "390x844": {
+      "before": 1139,
+      "after": 1480,
+      "width_before": 326,
+      "width_after": 326
+     }
+    },
+    "picker_block_box": {
+     "1440x900": {
+      "w": 1060,
+      "h": 150
+     },
+     "1024x768": {
+      "w": 644,
+      "h": 204
+     },
+     "390x844": {
+      "w": 274,
+      "h": 423
+     }
+    },
+    "change_is_confined": {
+     "1440x900": {
+      "step0": "PASS: 0/409216 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step0-diff-1440x900.png",
+      "step1": "PASS: 0/293568 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step1-diff-1440x900.png"
+     },
+     "1024x768": {
+      "step0": "PASS: 0/256128 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step0-diff-1024x768.png",
+      "step1": "PASS: 0/183744 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step1-diff-1024x768.png"
+     },
+     "390x844": {
+      "step0": "PASS: 0/294378 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step0-diff-390x844.png",
+      "step1": "PASS: 0/127466 pixels differ = 0.0000% (threshold 1.0000%)  → /private/tmp/claude-501/-Users-abdulaziz-Projects-Massar/edca6286-7e1a-47d3-9676-4f5142291c35/scratchpad/qa1cf9b6d/step1-diff-390x844.png"
+     }
+    },
+    "reading": "steps ١ and ٢ are pixel-identical (0.0000%) at all three viewports and the composer step keeps its width — the delta is an additive block in step ٣ only"
+   },
+   "instrument_correction": "the first two pixel runs reported 0.0000% at 1024x768 and 390x844. That was an artifact of QA's own instrument: a blanket page.route interceptor delayed /admin/templates past a fixed wait, and the dashboard scrolls inside an inner container (measured docScrollH == docClientH with 2-3 inner scrollers), so full_page captured only the top region. Re-run with an explicit readiness wait and element-scoped captures; the corrected numbers are the ones recorded here."
+  }
+ },
+ "concerns_non_blocking": [
+  {
+   "id": "C-1",
+   "severity": "P2",
+   "area": "src/templates.ts canonicalTitle()",
+   "finding": "canonicalTitle maps a model-proposed button title by SUBSTRING containment, so a negated proposal is inverted into its opposite intent at the emit site.",
+   "measured": {
+    "لست مهتمًا بالعرض التجاري": {
+     "canonical": "العرض التجاري",
+     "intent": "commercial"
+    },
+    "لا أريد العرض التجاري": {
+     "canonical": "أريد العرض التجاري",
+     "intent": "commercial"
+    },
+    "بدون العرض التجاري": {
+     "canonical": "العرض التجاري",
+     "intent": "commercial"
+    },
+    "ليس الآن شكرًا": {
+     "canonical": "ليس الآن",
+     "intent": "decline"
+    },
+    "لا ترسلوا التفاصيل": {}
+   },
+   "impact": "the label the customer sees is silently rewritten: «لست مهتمًا بالعرض التجاري» and «لا أريد العرض التجاري» both become commercial titles. Reachable only when the model composes a negated title (customer input still matches exactly), so it is a latent risk, not an observed production defect. «ليس الآن شكرًا» → «ليس الآن» resolves correctly.",
+   "suggested_check": "reject a proposal containing a negation particle before the substring match"
+  },
+  {
+   "id": "C-2",
+   "severity": "P2",
+   "area": "scripts/check-buttons.mjs",
+   "finding": "4 of the 82 assertions cannot fail: the 'canonical(«X») is routable' loop derives its EXPECTED value from the ACTUAL (`c ? true : \"rejected\"`).",
+   "measured": {
+    "with_real_canonicalTitle": "4/4 pass",
+    "with_canonicalTitle_broken_to_always_undefined": "4/4 pass",
+    "verdict": "CANNOT FAIL — the expectation is derived from the actual; a total canonicalisation regression still passes"
+   },
+   "impact": "with canonicalTitle mutated to always return undefined, those 4 assertions still report 4/4 pass. The gate would not catch a total canonicalisation regression through those cases (the two explicit cases on lines 126-129 would still catch it)."
+  },
+  {
+   "id": "C-3",
+   "severity": "P3",
+   "area": "scripts/check-buttons.mjs",
+   "finding": "6 assertions named «canonicalises» / «survives emit» only exercise the `if (BUTTON_INTENT[t]) return t` identity fast path, because every title tested is already a table key — the substring-mapping branch is never reached by them.",
+   "measured": {
+    "cases": [
+     {
+      "title": "أريد العرض التجاري",
+      "in_BUTTON_INTENT": true,
+      "canonicalTitle": "أريد العرض التجاري",
+      "reason_it_passes": "returned by the `if (BUTTON_INTENT[t]) return t` fast path — the substring-mapping branch is never reached"
+     },
+     {
+      "title": "منشأة صحية",
+      "in_BUTTON_INTENT": true,
+      "canonicalTitle": "منشأة صحية",
+      "reason_it_passes": "returned by the `if (BUTTON_INTENT[t]) return t` fast path — the substring-mapping branch is never reached"
+     },
+     {
+      "title": "مزوّد نظام HIS",
+      "in_BUTTON_INTENT": true,
+      "canonicalTitle": "مزوّد نظام HIS",
+      "reason_it_passes": "returned by the `if (BUTTON_INTENT[t]) return t` fast path — the substring-mapping branch is never reached"
+     }
+    ],
+    "note": "named «canonicalises»/«survives emit» but proves only that the title is already in the table"
+   },
+   "impact": "the mapping branch is genuinely covered by exactly one positive case («من فضلكم العرض التجاري» → «العرض التجاري») plus one negative («اضغط هنا» → undefined)."
+  },
+  {
+   "id": "C-4",
+   "severity": "P3",
+   "area": "scripts/check-buttons.mjs",
+   "finding": "the gate re-types the agent's emitted button set as a literal `agentButtons` array instead of importing agent.EMITTED_BUTTONS, although it already imports dist/agent.js for rungOne — the same duplication defect the button contract exists to prevent.",
+   "measured": {
+    "gate_hardcoded_list": [
+     "منشأة صحية",
+     "مزوّد نظام HIS",
+     "العرض التجاري",
+     "فريقنا التقني",
+     "مزوّد النظام"
+    ],
+    "agent_EMITTED_BUTTONS": [
+     "منشأة صحية",
+     "مزوّد نظام HIS",
+     "العرض التجاري",
+     "فريقنا التقني",
+     "مزوّد النظام",
+     "العرض التجاري"
+    ],
+    "identical": false,
+    "note": "the gate re-types the emitted set rather than importing agent.EMITTED_BUTTONS (it already imports dist/agent.js)"
+   },
+   "impact": "today the copy happens to cover every rung-one button at every opener (measured: nothing missing), so there is no live gap; it is a drift risk in the gate's own input. Separately, agent.EMITTED_BUTTONS contains «العرض التجاري» twice (harmless — emittedButtons() dedupes)."
+  },
+  {
+   "id": "C-5",
+   "severity": "process",
+   "area": "delivery / commit binding",
+   "finding": "the commit under test moved twice during this gate run: the brief named 5f38d56, then f9a51f0, and the artifact actually deployed is 1cf9b6d.",
+   "measured": {
+    "served_dashboard_matches": "1cf9b6d only",
+    "f9a51f0_differs_from_deploy": true,
+    "5f38d56_differs_from_deploy": true,
+    "detection": "QA detected working-tree drift mid-run (four source files modified between 19:17 and 19:21) and re-pinned to clean worktrees rather than testing the mutable tree"
+   },
+   "impact": "no product impact — f9a51f0 and 1cf9b6d are byte-identical in src/agent.ts, src/templates.ts, src/index.ts, scripts/check-buttons.mjs and package.json, so the contract evidence binds to both; only src/dashboard.ts differs. Recorded so the SHA on this bundle is not read as the SHA that was reviewed."
+  }
+ ],
+ "method_limits": [
+  "Wire behaviour is NOT proven: no message was sent to WhatsApp, so Gupshup's own acceptance of these button titles (including the 20-char rule and Arabic rendering on a device) remains unverified by this gate. The 131009 cap is enforced in code and asserted at boot; that is a code claim, not a wire claim.",
+  "Moves 2 and 3 of the founder sequence are model turns. The LLM was not called (no key on the QA instance); what was measured is the OBJECTIVE the model would be given, executed from the real sliced source. Model output quality is not covered.",
+  "The end-to-end rung-one bodies read «الخدمة» rather than a service name because the QA instance runs memory-only with no product assets; the service-named variant is covered by check-buttons against the compiled rungOne().",
+  "Visual baselines are the reference render recorded for THIS commit (permitted by the playbook when a legacy approval is advanced); the pre-change delta is reported separately with real ratios rather than being forced under the 1% threshold."
+ ]
+}

@@ -1,6 +1,6 @@
-# Massar (مَسار) — Agent System Memory
+# Massar (مَسار) — Project Memory
 
-> Read this file first, every cycle. Working state lives in `.orbit/STATE.md`.
+> Read this file first. Working state lives in `docs/STATE.md`.
 > Update both after significant work (see "Maintenance").
 
 ## 1. Project Overview & Goals
@@ -14,11 +14,13 @@ https://claude.ai/code/artifact/11645969-2dcd-4515-8fba-5f00c3b48abd .
 Goals, in priority order:
 1. Production-ready campaign engine (Postgres ledger → outbox/pacer → campaign wizard API).
 2. Arabic agent quality + safety (grounded on approved KB, opt-out sacred, human handoff).
-3. Massar dashboard (Next.js, RTL) implementing the prototype's marketing screens.
+3. Massar as the commercial platform between product and sales (design record:
+   `docs/designs/massar-commercial-platform.md`, Sep 3 2026). UI stays on `src/dashboard.ts`
+   until rep adoption is proven; the separate Next.js dashboard is retired as a goal.
 4. Protect the WhatsApp number: quality rating, frequency caps, consent — never burn it.
 
 ## 2. Current State — pointer
-Live state: **`.orbit/STATE.md`** (read after this file).
+Live state: **`docs/STATE.md`** (read after this file).
 Last major milestone: **«مؤشرات المحادثة» on the client record (Aug 27, 2026)** — the record answers
 «how is this conversation going?» with signals instead of prose: a 0–100 seriousness meter, momentum,
 reply speed, silence, a 21-day activity chart, and one suggested next action. Every number is earned
@@ -26,7 +28,7 @@ from the ledger by `src/signal-domain.ts` (pure, unit-tested) — no model produ
 card, and «لماذا هذه القراءة؟» itemises each one with its evidence. Previous: **the opportunity board (Aug 23, 2026)** — «فرص البيع» is now the
 prototype's own screen: an account card over stored product lines, each carrying WHERE it came from
 (حملة واتساب · مكالمة · زيارة · إحالة · طلب وارد). It is the first surface whose stage is stored
-rather than derived, and `.orbit/STATE.md` says why. Previous: **account graph (Aug 18, 2026)** —
+rather than derived, and `docs/STATE.md` says why. Previous: **account graph (Aug 18, 2026)** —
 prospect facts live in `entities.facts` with provenance (`src/facts.ts`), so the agent no longer
 interviews every prospect; coverage is honest and near zero until an audience re-import carries the
 HIS/ERP columns. Next slices: opportunity value on the home board and in reports, portal fact
@@ -36,8 +38,8 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
 ## 3. Success Criteria & Evaluation Metrics
 - Build: `npm run build` in `massar-engine/` exits 0 (strict TS). After any deploy,
   `GET https://massar-engine.fly.dev/health` returns `ok: true` and `outbound.ok: true`.
-- Quality: Reviewer rubric ≥ 8/10 on the diff; QA delivery-evidence gate PASS for any UI
-  or user-flow change.
+- Quality: review the diff before calling work done; any UI or user-flow change needs delivery
+  evidence (smoke green, screenshots or a walkthrough of the real route).
 - Safety (booleans, all must hold): no outbound WhatsApp to real customers without a human
   approval; «إيقاف»/STOP path verified when agent code changes; webhook token auth intact;
   no secret in git.
@@ -65,7 +67,7 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
   `fly deploy` and call it finished.
 - **`src/dashboard.ts`: anchored string replacements only, never range edits** — a deleted
   helper is invisible to `tsc` and `node --check` and ships a blank page.
-  See `.orbit/decisions/0001-dashboard-no-range-edits.md`.
+  See `docs/decisions/0001-dashboard-no-range-edits.md`.
 - Git: **two PUBLIC repos**, not a monorepo — `github.com/Abdulaziz-almoshen/Massar` (this dir)
   and `.../massar-engine` (nested, gitignored here, own history). Both on `master`, both over
   **HTTPS** (no SSH key on this machine). Push each from its own directory.
@@ -77,8 +79,8 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
   ADMIN_TOKEN. Never commit; never echo values into chat/logs.
 - Hard rules live in code (opt-out, turn caps, window checks) — never only in prompts.
 
-## 5. Instructions for All Agents
-- Work in small, verifiable steps; read `STATE.md` before acting, write it after.
+## 5. Working Rules
+- Work in small, verifiable steps; read `docs/STATE.md` before acting, write it after.
 - **NO WHATSAPP SEND, TO ANY NUMBER, FOR ANY REASON.** Standing instruction, Aug 12 2026:
   *"Don't ever send a text to the client for any test or anything… I will tell you what number
   you should test with."* This revokes the earlier "sandbox self-tests to the team's own opted-in
@@ -87,86 +89,66 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
   unproven and say so. Lifted only when the user names an explicit allowlist.
 - Treat Gupshup/OpenAI/Fly as reliable tools; don't reinvent; keep the adapter seam clean.
 - Never take an irreversible, financial, or outward-facing action autonomously; propose it.
-- Stay within §8. Announce yourself (`[role] …`), emit to `.orbit/activity.jsonl`, keep the
-  checklist current (TaskCreate/TaskUpdate + `.orbit/tasks.json`).
+- Questions to the user: only critical blockers, one batched question with the recommendation
+  first. Otherwise follow the recommendation and proceed (standing instruction, Aug 10 2026).
 
-## 6. Sub-Agent Roster  (specs in `.orbit/roles/`, adapters in `.claude/agents/`)
-- dispatcher — classifies each message (task/question) per §10; routes.
-- orchestrator — conducts the loop, owns STATE.md.
-- advisor — (on demand) read-only senior judgment for hard forks.
-- product-discovery · business-analyst · market-researcher · planner — the substantial-lane
-  planning chain (convened for real bets, folded into orchestrator for small work).
-- backend-engineer — massar-engine: gateway, agent runtime, tracker, Postgres/queues.
-- frontend-engineer — the Next.js RTL dashboard (prototype screens → real UI).
-- designer — UI surfaces only; guards the Massar design language (see skills).
-- reviewer — technical quality gate on the diff (≥ 8/10 to pass).
-- qa-engineer — scenario/dependency/pixel evidence; runs the delivery-quality gate.
-- safety-gate — veto power; §8 is its charter.
-- cpo — final acceptance against the reviewed evidence.
-- reporter — decision-ready summaries.
-- watchdog — background drift/health checks.
-
-## 7. Skills Index  (`.orbit/skills/`)
-- `whatsapp-campaign-engineering.md` — **the core domain skill**: engine layout, Gupshup
+## 6. Project Docs  (`docs/`)
+- `STATE.md` — working state and the dated log of every increment. Read second, write last.
+- `whatsapp-campaign-engineering.md` — **the core domain doc**: engine layout, Gupshup
   wire shapes (send/webhook v2+v3), WhatsApp platform rules, agent tool contract, ops
   runbook (deploy/secrets/test curls), sandbox specifics. Load for any engine work.
 - `massar-design-language.md` — RTL/Arabic design system from the prototype (palette,
-  type, component idioms, screen map). Load for any dashboard/UI work.
-- Library playbooks (provisioned): `loop-tiers.md` (gearbox), `technical-review.md`,
-  `qa-validation.md`, `safety-rules.md`, `product-discovery.md`,
-  `market-and-competitive-research.md`, `planning-and-decision-briefs.md`,
-  `architecture-decisions.md`, `active-learning.md`, design playbooks (methodology,
-  anti-ai-aesthetics, styles, taste-preflight, design-taste-frontend).
+  type, component idioms, screen map). Load for any dashboard/UI work. Token authority:
+  `DESIGN.md` at the root; selection record: `design/approved.json`.
+- `decisions/` — architecture decision records (ADR-0001 dashboard edits, ADR-0002 attribution).
+- `artifacts/` — plans, reviews, discovery briefs, and agent-eval transcripts per slice
+  (`massar-engine/scripts/eval-agent.mjs` writes `artifacts/agent-eval/<stamp>/`).
+- `qa/` — the agent-eval verdict schema and the campaigns-crm requirements traceability evidence.
+- `design-previews/` — the HTML design variants that were shown before a screen was chosen.
 
-## 8. Stop Conditions & Safety Rules  ← the most important section
-Hard limits (enforced by `.orbit/loop.config.json`):
-- Max iterations per run: 6. Cost budget: $1.00/cycle, $5.00/run. Max runtime: 45 min.
-- Gate-failure streak: 2 consecutive failures → hard stop.
-Eval gates: build green · reviewer ≥ 8/10 · QA evidence PASS (UI/flows) · safety checks pass.
-Human-approval checkpoints (loop pauses):
+## 7. Safety Rules & Human Checkpoints  ← the most important section
+Human approval required before:
 - **Any WhatsApp message to a real customer** (template blast or session send outside
-  team test numbers). Any template submission to Meta. Any data deletion. Any spend > $5.
+  team test numbers) — and, per §5, currently any send at all. Any template submission to Meta.
+  Any data deletion. Any spend > $5.
   (`fly deploy` of massar-engine is pre-authorized by the user's standing instruction of
   Aug 10, 2026 — "once done, just deploy it and fly"; revert to human-gated anytime.)
 - FORBIDDEN outright: moving money; `fly apps destroy`; unsetting secrets; disabling the
   opt-out path or webhook token auth.
-Explicit done: the run goal in STATE.md is met, or a cap trips.
-The system never takes an irreversible, financial, or outward-facing action on its own.
+Work is done when the goal in STATE.md is met with deployed health green; never take an
+irreversible, financial, or outward-facing action alone.
 
-## 9. Loop Structure
-read `CLAUDE.md` + `STATE.md` → plan → act via sub-agent(s) → evaluate vs §3 → update
-STATE.md → decide (continue / spawn / STOP). Runners: `.orbit/loop.py` (portable; dispatch
-seam unwired) or `scripts/ralph_loop.sh` (Claude Code). Config: §8 / `loop.config.json`.
+## 8. Learning
+After any user correction, promote the learning to where it lasts: user-stated rules → this
+file; techniques → the domain doc; dated choices → STATE.md. Surface one quiet `📝 Learned:` line
+when it happens.
 
-## 10. Request Routing — the Gearbox  (read on EVERY user message)
-Pick the **smallest gear that can still PROVE the result** (rubric: `.orbit/skills/loop-tiers.md`;
-scorecard: ambiguity · blast radius · surfaces · research · compliance · reversibility · cost;
-highest trigger wins). Declare the gear before moving. Lite cost-mode: run
-`scripts/orbit-context doctor` before T2+.
-- **T0 · Direct** — question/status ("is the engine live?", "what's the reply rate?") → answer.
-- **T1 · Quick** — small · clear · reversible (a copy tweak, a log line) → just do it well;
-  one STATE.md line. Small UI edits don't wake the Designer.
-- **T2 · Standard** — a real change, one workstream (a new endpoint, a tracker field) →
-  plan/build with one active specialist at a time; tiny packets (≤ 8 files, ≤ 500 words out).
-- **T3 · Deep** — multi-surface / ambiguous / compliance-heavy (the Postgres migration, the
-  campaign wizard, production-number migration) → Map → Research → Plan → Critique → Build,
-  capped by `gears.deep`.
-- **T4 · Mission** — days-long / production migration / real-customer sends at scale → the
-  durable runner with a human gate per irreversible step.
-Massar examples: "أطلق الحملة على 50 عيادة" → T2/T3 **+ mandatory human approval** (outbound).
-"صمّم شاشة المتابعة" → T3 with Designer. "غيّر نبرة المساعد" → T2 + agent spot-check (§3).
-Every gear T1+ runs on the visible board (`set_team` + `set_tasks` + TaskCreate) — never the
-background `Workflow(...)` runner. Guardrails scale with the gear.
-**Router ↔ Dispatcher:** `.orbit/checks/route.py` injects a deterministic lane every message —
-take it unless concretely wrong; override with one stated line. The §8 guard is a hard wall in
-every lane. Questions to the user: only critical blockers, always one batched
-`AskUserQuestion` with the recommendation first.
+## gstack
+Use the `/browse` skill from gstack for **all** web browsing. **Never** use `mcp__claude-in-chrome__*` tools.
+Install once per machine: `git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack && cd ~/.claude/skills/gstack && ./setup`.
 
-## 11. Active learning
-In UPDATE (and after any user correction) run `.orbit/skills/active-learning.md` silently;
-promote only clear-bar learnings (user-stated rules → here; techniques → the domain skill;
-dated choices → STATE.md). Surface one quiet `📝 Learned:` line when it happens.
+Available gstack skills:
+`/office-hours`, `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/design-consultation`, `/design-shotgun`, `/design-html`, `/review`, `/ship`, `/land-and-deploy`, `/canary`, `/benchmark`, `/browse`, `/connect-chrome`, `/qa`, `/qa-only`, `/design-review`, `/setup-browser-cookies`, `/setup-deploy`, `/setup-gbrain`, `/retro`, `/investigate`, `/document-release`, `/document-generate`, `/codex`, `/cso`, `/autoplan`, `/plan-devex-review`, `/devex-review`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, `/gstack-upgrade`, `/learn`
 
 ## Maintenance
-Update §2's milestone line + STATE.md every cycle. §3/§4/§6/§7/§8 only on durable change.
+Update §2's milestone line + STATE.md every cycle. §3/§4/§6/§7 only on durable change.
 Keep this file readable in one glance.
+
+## Skill routing
+
+When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
+
+Key routing rules:
+- Product ideas/brainstorming → invoke /office-hours
+- Strategy/scope → invoke /plan-ceo-review
+- Architecture → invoke /plan-eng-review
+- Design system/plan review → invoke /design-consultation or /plan-design-review
+- Full review pipeline → invoke /autoplan
+- Bugs/errors → invoke /investigate
+- QA/testing site behavior → invoke /qa or /qa-only
+- Code review/diff check → invoke /review
+- Visual polish → invoke /design-review
+- Ship/deploy/PR → invoke /ship or /land-and-deploy
+- Save progress → invoke /context-save
+- Resume context → invoke /context-restore
+- Author a backlog-ready spec/issue → invoke /spec

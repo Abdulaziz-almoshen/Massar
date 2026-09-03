@@ -27,7 +27,7 @@
       "no gradient-on-card, no glow, no shadow on list surfaces, no decorative colour"
     ]
   },
-  "plan": ".orbit/artifacts/campaigns-crm/frappe-visual-system.md",
+  "plan": "docs/artifacts/campaigns-crm/frappe-visual-system.md",
   "tokens_authority": "DESIGN.md",
   "previews": null,
   "previews_note": "No prototype directory: the two compared alternatives are (A) the currently deployed #kmon and (B) Frappe CRM itself, both viewed by the founder.",

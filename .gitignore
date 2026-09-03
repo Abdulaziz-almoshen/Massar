@@ -10,15 +10,12 @@ node_modules/
 dist/
 *.log
 
-# Session-local Orbit state — never shared, and the lock is per-machine
-.orbit/locks/
-.orbit/archive/
 __pycache__/
 *.pyc
 
-# Evidence binaries: 365 PNGs / ~28M, regenerated every round, and the dashboard
+# Evidence binaries: hundreds of PNGs, regenerated on every QA pass, and the dashboard
 # captures contain real customer phone numbers and Arabic transcripts. Markdown and
-# JSON under .orbit/artifacts/ (BENCHMARK.md, VOICE-REFERENCE.md, …) stay tracked.
+# JSON under docs/artifacts/ stay tracked.
 *.png
 *.jpg
 *.jpeg
@@ -31,3 +28,4 @@ __pycache__/
 # only ever be an unresolvable gitlink that churns on every engine commit.
 # Independent QA targets that repo directly.
 massar-engine/
+.gstack/
