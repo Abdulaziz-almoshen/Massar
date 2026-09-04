@@ -188,3 +188,60 @@ a timeout over lengthening the fixed sleep, so the gate stays fast when the mach
 "P3 — an option, not a plan", triggered by the handoff audit. The amended plan's Gate A now covers
 the same ground inside the main plan.
 **Priority:** P3 — resolve when The Assignment's three numbers exist.
+
+## Found while building the sector board (2026-09-04, Lane C)
+
+### Two production products the agent has never heard of
+
+**What:** `/admin/tags` in production returns 8 products. `SERVICE_CATALOGUE` (insights.ts) and
+`PRODUCTS` (agent.ts) both list 6. The extras are **«سجل التطعيمات الوطني»** and
+**«صحة أعمال Plus»**. The agent cannot pitch, price or answer a question about either, and the
+analyst files any mention of them under «خدمة أخرى».
+
+**Why it matters:** they also have no sector, so they land in the «بلا قطاع» bucket on the new
+sector board rather than in a sector total. That is deliberate and visible, not silent, but it is
+a hole in the board until someone says which sector each belongs to.
+
+**Needed:** a founder decision on the sector for each, then one `UPDATE product_meta` per product.
+No deal stores a sector, so nothing else has to change. Adding them to the agent's KB is separate
+and larger.
+
+**Effort:** S for the sector (two UPDATEs) · M for agent KB coverage
+**Priority:** P1 for the sector, P2 for the KB
+
+### The catalogue drift check cannot see the live product list
+
+**What:** `checkCatalogueDrift` (agent.ts:152) compares `PRODUCTS` against `SERVICE_CATALOGUE` —
+two constants in the same repo. It never compares either against the `tags` table, which is what
+deals actually store and what every board groups by. That is why the two products above drifted
+in without a single warning, on a build that prints a drift check on every run.
+
+**Needed:** extend the check to compare against live tags, or a boot-time log naming any tag with
+no catalogue entry. Cannot throw (agent.ts is imported before the server listens; throwing
+crash-loops the engine and takes down the opt-out path).
+
+**Effort:** S
+**Priority:** P2
+
+### Rotate one rep portal token
+
+**What:** on 2026-09-04 a `. ./.env` in this session hit an unquoted value on line 11 and zsh
+echoed the value in its error text, putting one `REP_TOKENS` entry (rep name plus token) into the
+session transcript. Not committed, not pushed, absent from the tracked tree — but printed.
+
+**Needed:** rotate that rep's token in `.env` and `fly secrets`. Quoting the `REP_TOKENS` value in
+`.env` prevents the recurrence.
+
+**Effort:** S
+**Priority:** P1
+
+### Local dev database carries an orphan product tag
+
+**What:** the `massar` dev database has a tag «تكامل الأنظمة» (no `(HIS/ERP)` suffix) holding 4
+opportunities and a 4,000,000 target. It is residue from the incident where the DB test suite
+truncated and re-seeded the dev database; the fixture seeds that exact short name. **Production
+does not have it.** Left in place because deleting data needs approval, and because it is a
+useful live example of the unclassified bucket doing its job.
+
+**Effort:** S
+**Priority:** P3 — local only
