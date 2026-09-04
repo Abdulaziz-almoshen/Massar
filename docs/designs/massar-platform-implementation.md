@@ -269,6 +269,44 @@ template_events   append-only, every state and quality change Meta reports.
              breakers cannot be correct without this.
 circuit_breaker   window, threshold, half-open state, manual reset, owner.
              A breaker nobody can reset at 2am is a new outage mode.
+
+THE CAMPAIGN MODULE ITSELF — 2,311 lines that already exist and that the first
+draft of this plan never mentioned:
+
+  campaigns-crm.ts  1,103  the campaigns module view layer (the monitor)
+  targets-crm.ts      520  «جهات الاستهداف» — the imported book
+  segments.ts         278  behavioural segmentation, «التقسيم وإعادة الاستهداف»
+  audience.ts         157  Excel/CSV import, Arabic+English header auto-map,
+                           KSA phone normalisation, upsert by phone
+  templates.ts        253  templates as constants
+
+None of it is thrown away. What happens to each is stated here because phase 2
+moves the ground under all of it:
+
+  audience.ts   upserts by phone into `entities`. Phase 2 replaces `entities`
+                with `accounts` + `account_contacts` + `phone_routing`, so the
+                importer's upsert target changes and its phone normalisation
+                becomes THE shared normalizePhone the gate also uses. Import
+                gains: dedupe against existing accounts, a per-row skip reason,
+                and partial success (47 in, 3 to fix) instead of all-or-nothing.
+  targets-crm   reads the imported book. After phase 2 an audience is built from
+                PRODUCT TRACKS and account facts, not a flat contact list, which
+                is what makes "fetch every customer onboarded for this product"
+                a query instead of a wish.
+  segments.ts   reads the ledger for behaviour (replied, read, silent). It keeps
+                working; engagements become a richer source than messages alone,
+                so a segment can finally say "visited, no follow-up in 14 days".
+  campaigns-crm the monitor gains what phase 0 produces: per-recipient gate
+                decisions with a reason, send state from the outbox, and delivery
+                attributed to the message. Today it renders «أُرسلت N من M» and
+                DROPS the per-recipient failures the API already returns.
+  templates.ts  constants become records (above). The 3-step wizard keeps its
+                shape; step 2 gains the approved-knowledge check, which stays
+                behind phase 4 so it cannot block a flow that works today.
+
+The wizard, the audience builder, the segments and the monitor are therefore
+phase 6 work with a phase 2 dependency, and the campaign module is migrated,
+not rebuilt.
 ```
 
 ---
@@ -359,7 +397,7 @@ controls.
 | **3** | Surfaces, in three slices: **3a** the rep's day (mobile), **3b** the PM outcome view, **3c** the manager's inbox | A rep logs a call **on a phone** in under 10s and gets a labelled draft; the PM view distinguishes «لم يُتواصل» from «بلا سجل تواصل» | 8 |
 | **4** | Versioned product hub: multi-file upload, extraction to claims with page references, per-claim human approval, expiry, the agent/sales audience split | A PM approves a version and the agent's answers change on the next message; an injected instruction in a source PDF is refused at approval | 3 |
 | **5** | Agent quality: shadow mode, retrieval with citations, regression evals, per-tool authorization | Every agent sentence traces to an approved claim; a retired version stops being quotable within one message | 3 |
-| **6** | WhatsApp control plane: production WABA readiness, template records with separated desired/observed/breaker state, write-time button validation, per-template quality and pacing, breakers | A quality change from Meta pauses only that template; an operator-authored 21-char button title is refused at write and never crashes a boot | 4 |
+| **6** | WhatsApp control plane AND the campaign module migrated onto the spine: production WABA readiness, template records with separated desired/observed/breaker state, write-time button validation, per-template quality and pacing, breakers, the wizard, the audience importer, behavioural segments, and a monitor that shows per-recipient gate decisions | A quality change from Meta pauses only that template; an operator-authored 21-char button title is refused at write and never crashes a boot | 4 |
 | **7** | Profiling filled: enrichment at import, HIS/ERP vendor registry, coverage on the record | Coverage rises from near zero to a stated number; the agent stops asking what it knows | 2 |
 | **8** | Decks from approved claims, with the critic, human review before publish | A deck cites every slide; a slide with no approved claim renders blank rather than invented | 2 |
 | **9** | Progressive send enablement — **only if the zero-send rule lifts** | Delivery, replies, opt-outs and per-template quality observed on a real pilot | 2 |
