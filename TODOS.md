@@ -30,6 +30,32 @@ and declined at the time; recorded so it stays available.
 **Priority:** P3 — an option, not a plan
 **Depends on:** the handoff audit numbers.
 
+## Operations
+
+### Make the in-memory contact ceiling visible before it is reached
+
+**What:** Report `contacts` count and process RSS on `GET /health`, and act when contacts cross
+2,000 or RSS crosses 350MB by capping live transcripts or paging contacts from Postgres instead of
+holding all of them.
+
+**Why:** `tracker.ts` holds every contact in a `Map` and `hydrate()` fills it from Postgres at boot,
+on a single 512MB Fly machine with `min_machines_running = 1`. At today's 21 contacts this is free.
+The rep queue is the first surface that iterates the whole Map, and it arrives in the same quarter
+as WhatsApp campaigns that would multiply contacts by two orders of magnitude. An OOM here is not a
+slow page: it kills the one machine that also holds the webhook, and a dropped webhook can be an
+«إيقاف».
+
+**Related defect found in the same review, and arguably worse:** `db.ts:698` hydrates only the last
+50 messages per contact (`rn <= 50`), so runtime memory grows uncapped but **every restart truncates
+every transcript to 50 turns**. `readSeriousness` and `replyLatencies` therefore return different
+answers before and after a deploy, which means a rep queue's ranking silently reshuffles on every
+deploy. Found by the Codex outside voice; it contradicted this review's own claim that transcripts
+were uncapped, and it was verified in the source.
+
+**Effort:** S for the /health line (1h), M for the fix when the trigger fires
+**Priority:** P2 — the instrumentation now, the fix on trigger
+**Depends on:** nothing. The trigger depends on the campaign engine scaling, which is priority 1.
+
 ## Design system
 
 ### Amend DESIGN.md with a documented state palette
