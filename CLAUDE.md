@@ -21,7 +21,15 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **«مؤشرات المحادثة» on the client record (Aug 27, 2026)** — the record answers
+Last major milestone: **five live send/receive defects fixed (Sep 4, 2026)** — found by verifying
+the platform plan's claims, not by hunting bugs: the webhook accepted every POST when
+`WEBHOOK_TOKEN` was unset, it acked before parsing so one throw silently lost every later event
+(including an inbound «إيقاف»), a provider timeout delivered the same message twice, `/health`
+reported healthy in memory-only mode, and per-recipient launch failures were computed and dropped
+by the UI. One shared three-way send-outcome rule now decides resend-vs-mark-vs-retry, locked by
+`tests/send-outcome.test.ts`. The plan itself was wrong about the biggest thing: `src/outbound.ts`
+IS the send gate, and 13 of 15 call sites bypass it — `scripts/check-optout.mjs` had been printing
+that on every build for three weeks. Previous: **«مؤشرات المحادثة» on the client record (Aug 27, 2026)** — the record answers
 «how is this conversation going?» with signals instead of prose: a 0–100 seriousness meter, momentum,
 reply speed, silence, a 21-day activity chart, and one suggested next action. Every number is earned
 from the ledger by `src/signal-domain.ts` (pure, unit-tested) — no model produces a figure on that
