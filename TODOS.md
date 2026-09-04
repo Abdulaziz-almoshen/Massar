@@ -245,3 +245,36 @@ useful live example of the unclassified bucket doing its job.
 
 **Effort:** S
 **Priority:** P3 — local only
+
+## The redesign eng review — all 19 items closed (2026-09-04)
+
+Five lanes plus the three items that were never assigned to one. Recorded here because the review's
+task list lived only in a conversation, never in `docs/artifacts/`.
+
+| item | what it was | closed by |
+|---|---|---|
+| A | five CRM primitives declared once, not five times | `crm-primitives.ts` |
+| R5 | reference price on the package, not the product | migration 004 + composite FK |
+| R7 | `sectors` had no runtime writer, so the guard would fail by design | boot seed beside `seedDefaultPipeline` |
+| R9 | three market sectors, structure only | migration 005 + `PRODUCT_SECTOR` |
+| R10 | read endpoints for sectors / products / packages | `/admin/sales/sectors`, `/admin/products`, `/admin/sectors` |
+| R12 | rail from fifteen doors to six, nothing orphaned | `NAV`/`SUBS` + gate step `check:nav` |
+| R14 | `#home` off the 5s tick | tick + «مباشر» chip both scoped to الحملات |
+| R19 | the exec dashboard says who it is for | rep-aware unauthorized gate |
+| R16 | smoke + DB suite attached to a gate | `.github/workflows/ci.yml` |
+| R17 | two mandatory regressions | `tests/safety-regressions.test.ts` |
+| R18 | one «قيمة الفرصة» | `OPP_VALUE_SQL` + `tests/value-parity.test.ts` |
+| R8 | product rename cascades all ten tables | migration 006 + gate step `check:rename` |
+| R11 | the four named reports, specified | `src/reports-domain.ts` |
+| R13 | four quarters in one pass, honest money label | `quarterlyPerformance` + `VALUE_BASIS_*` |
+
+**Gate is now 21 steps. 235 unit tests + 47 DB-backed.**
+
+### What this leaves open
+
+- **Nothing is deployed.** Seven commits sit on local `master` in `massar-engine`, unpushed.
+- **Two of the six doors lead to placeholders.** «المنتجات» and «التقارير» have real data and real
+  endpoints behind them and no screen in front. That was never one of the 19 items — the review
+  scoped endpoints — but a door that leads nowhere is visible to the founder in a way an unbuilt
+  endpoint is not.
+- **Sector for the two production-only products** and **rotating one rep token**, both above.
