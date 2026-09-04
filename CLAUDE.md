@@ -21,7 +21,17 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **five live send/receive defects fixed (Sep 4, 2026)** — found by verifying
+Last major milestone: **the commercial engine, and the four reviews that caught what it got wrong
+(Sep 4, 2026)** — «المستهدفات والأداء» ships on eight weighted stages recovered from Lean's own
+archive, over an append-only stage ledger. Four independent reviews followed: security (the first
+dedicated one in this project's history — ten findings, including a stored XSS that stole
+`ADMIN_TOKEN` from an uploaded spreadsheet cell, proven by attack then defeated), technical, design,
+and CEO. The CEO review found the one that mattered: `track_stage_events` **had no writer**, so a
+won deal left the open pipeline and never reached «المحقق» — measured, a 1,440,000 SAR deal
+vanishing — and every figure was frozen at migration-day values. `scripts/check-ledger-writers.mjs`
+is now gate step 18: a table a screen reads must have a writer outside the migrations. Still open
+and stated on the screen itself: the target basis (bookings / ACV / TCV) was never decided, and two
+of the eight stages are unreachable because `opps-domain.ts` still carries six. Previous: **five live send/receive defects fixed (Sep 4, 2026)** — found by verifying
 the platform plan's claims, not by hunting bugs: the webhook accepted every POST when
 `WEBHOOK_TOKEN` was unset, it acked before parsing so one throw silently lost every later event
 (including an inbound «إيقاف»), a provider timeout delivered the same message twice, `/health`

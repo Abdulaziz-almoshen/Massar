@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Cairo', system-ui, 'Segoe UI', Tahoma, sans-serif;
+           font-size: 14px; font-weight: 450; line-height: 1.45; letter-spacing: 0;
+           background: #FFFFFF; color: #171717; }
+    a { color: #1F7A73; text-decoration: none; }
+    a:hover { color: #17635D; }
+    .row { border-top: 1px solid #EDEDED; }
+  </style>
+</helmet>
+
+<div dir="rtl" style="display: flex; width: 1440px; height: 900px; background: #FFFFFF; overflow: hidden;">
+
+  <aside style="width: 250px; flex: none; background: #F8F8F8; border-inline-end: 1px solid #EDEDED; display: flex; flex-direction: column; padding: 8px;">
+    <div style="display: flex; align-items: center; gap: 10px; height: 52px; padding: 10px 12px;">
+      <div style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: #1F7A73; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">م</div>
+      <div style="min-width: 0; flex: 1; text-align: start;">
+        <div style="font-size: 13px; font-weight: 600; color: #171717;">مسار</div>
+        <div style="font-size: 11px; color: #7C7C7C;">نورة القحطاني · مدير المبيعات</div>
+      </div>
+    </div>
+    <div style="font-size: 11px; font-weight: 500; color: #999999; padding: 6px 10px; margin-block-start: 8px;">دورة البيع</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">قائمة اليوم</div>
+    <div style="display: flex; align-items: center; justify-content: space-between; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #171717; background: #EDEDED; font-weight: 500;">
+      <span>وارد المبيعات</span>
+      <span style="font-size: 11px; font-weight: 700; color: #B42318; background: #FEF3F2; border: 1px solid #F3D2CE; border-radius: 999px; padding: 1px 7px;">٤</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">فرص البيع</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">العملاء</div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;">
+    <header style="height: 42px; flex: none; display: flex; align-items: center; gap: 8px; padding-inline: 20px; background: #fff; border-bottom: 1px solid #EDEDED;">
+      <span style="font-size: 14px; font-weight: 500; color: #171717;">وارد المبيعات</span>
+      <span style="font-size: 13px; color: #C7C7C7;">/</span>
+      <span style="font-size: 13px; color: #7C7C7C;">٣ تسليمات مفتوحة</span>
+    </header>
+
+    <div style="flex: 1; overflow: auto; padding: 20px;">
+
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 16px; background: #fff; border: 1px solid #EDEDED; border-radius: 13px; margin-bottom: 14px;">
+        <button style="font-family: inherit; font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 12px; cursor: pointer; color: #1F7A73; background: #DCF1EF; border: 1px solid #B9E4E0;">الكل (٥٠)</button>
+        <button style="font-family: inherit; font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 12px; cursor: pointer; color: #525252; background: #fff; border: 1px solid #EDEDED;">بلا تواصل (١٨)</button>
+        <button style="font-family: inherit; font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 12px; cursor: pointer; color: #B42318; background: #fff; border: 1px solid #F3D2CE;">متأخّرة (٤)</button>
+        <button style="font-family: inherit; font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 12px; cursor: pointer; color: #525252; background: #fff; border: 1px solid #EDEDED;">بلا مالك (٦)</button>
+        <div style="width: 1px; height: 22px; background: #EDEDED; flex: none;"></div>
+        <span style="font-size: 12px; color: #525252;">التسليم: عيادات الرياض · الإجازات المرضية · من رهف العتيبي</span>
+      </div>
+
+      <div style="border: 1px solid #EDEDED; border-radius: 10px; overflow: hidden; background: #fff;">
+        <div style="display: grid; grid-template-columns: 2fr 1.3fr 1.2fr 1fr 1.3fr; gap: 12px; padding: 8px 20px 8px 12px; background: #F8F8F8; border-bottom: 1px solid #EDEDED; font-size: 11.5px; font-weight: 700; color: #7C7C7C;">
+          <div>الجهة</div><div>الخدمة</div><div>المالك</div><div>منذ التسليم</div><div>آخر ما حدث</div>
+        </div>
+
+        <div class="row" style="display: grid; grid-template-columns: 2fr 1.3fr 1.2fr 1fr 1.3fr; gap: 12px; align-items: center; padding: 8px 20px 8px 12px; min-height: 36px;">
+          <div style="font-size: 13px; color: #171717;">مجمع النور الطبي</div>
+          <div style="font-size: 12px; color: #525252;">الإجازات المرضية</div>
+          <div style="font-size: 12px; color: #525252;">سعد الغامدي</div>
+          <div style="font-size: 12px; color: #525252;">٦ أيام</div>
+          <div style="font-size: 12px; color: #525252;">مكالمة · طلب تسعير</div>
+        </div>
+        <div class="row" style="display: grid; grid-template-columns: 2fr 1.3fr 1.2fr 1fr 1.3fr; gap: 12px; align-items: center; padding: 8px 20px 8px 12px; min-height: 36px;">
+          <div style="font-size: 13px; color: #171717;">عيادات الشفاء</div>
+          <div style="font-size: 12px; color: #525252;">الإجازات المرضية</div>
+          <div style="font-size: 12px; color: #525252;">سعد الغامدي</div>
+          <div style="font-size: 12px; color: #525252;">٦ أيام</div>
+          <div style="font-size: 12px; color: #525252;">واتساب · فتح الملف</div>
+        </div>
+        <div class="row" style="display: grid; grid-template-columns: 2fr 1.3fr 1.2fr 1fr 1.3fr; gap: 12px; align-items: center; padding: 8px 20px 8px 12px; min-height: 36px; background: #FEFBFA;">
+          <div style="font-size: 13px; color: #171717; display: flex; align-items: center; gap: 8px;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #B42318; flex: none;"></span>مستشفى السلام</div>
+          <div style="font-size: 12px; color: #525252;">الإجازات المرضية</div>
+          <div style="font-size: 12px; color: #525252;">سعد الغامدي</div>
+          <div style="font-size: 12px; font-weight: 600; color: #B42318;">١٦ يومًا</div>
+          <div style="font-size: 12px; color: #B42318;">لم يُتواصل بعد</div>
+        </div>
+        <div class="row" style="display: grid; grid-template-columns: 2fr 1.3fr 1.2fr 1fr 1.3fr; gap: 12px; align-items: center; padding: 8px 20px 8px 12px; min-height: 36px; background: #FEFBFA;">
+          <div style="font-size: 13px; color: #171717; display: flex; align-items: center; gap: 8px;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #B42318; flex: none;"></span>مركز الابتسامة لطب الأسنان</div>
+          <div style="font-size: 12px; color: #525252;">الإجازات المرضية</div>
+          <div style="font-size: 12px; color: #7C7C7C;">بلا مالك</div>
+          <div style="font-size: 12px; font-weight: 600; color: #B42318;">١٥ يومًا</div>
+          <div style="font-size: 12px; color: #B42318;">لم يُتواصل بعد</div>
+        </div>
+        <div class="row" style="display: grid; grid-template-columns: 2fr 1.3fr 1.2fr 1fr 1.3fr; gap: 12px; align-items: center; padding: 8px 20px 8px 12px; min-height: 36px;">
+          <div style="font-size: 13px; color: #171717;">صيدلية الدواء</div>
+          <div style="font-size: 12px; color: #525252;">الإجازات المرضية</div>
+          <div style="font-size: 12px; color: #525252;">سعد الغامدي</div>
+          <div style="font-size: 12px; color: #525252;">٦ أيام</div>
+          <div style="font-size: 12px; color: #525252;">زيارة · طلب عرض</div>
+        </div>
+        <div class="row" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; font-size: 11px; color: #7C7C7C;">
+          <span>١–٥ من ٥٠ جهة</span>
+          <span>المهلة ١٤ يومًا من تاريخ التسليم</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

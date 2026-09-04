@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Cairo', system-ui, 'Segoe UI', Tahoma, sans-serif;
+           font-size: 14px; font-weight: 450; line-height: 1.45; letter-spacing: 0;
+           background: #FFFFFF; color: #171717; }
+    a { color: #1F7A73; text-decoration: none; }
+    a:hover { color: #17635D; }
+    .row { border-top: 1px solid #EDEDED; }
+    .tapbtn { transition: background-color .14s ease-out, border-color .14s ease-out; }
+    .tapbtn:hover { background: #F3F3F3; }
+    @keyframes riseIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .payback { animation: riseIn .22s cubic-bezier(.22,.9,.32,1) both; }
+  </style>
+</helmet>
+
+<div dir="rtl" style="display: flex; width: 1440px; height: 900px; background: #FFFFFF; overflow: hidden;">
+
+  <aside style="width: 250px; flex: none; background: #F8F8F8; border-inline-end: 1px solid #EDEDED; display: flex; flex-direction: column; padding: 8px;">
+    <div style="display: flex; align-items: center; gap: 10px; height: 52px; padding: 10px 12px;">
+      <div style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: #1F7A73; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">م</div>
+      <div style="min-width: 0; flex: 1; text-align: start;">
+        <div style="font-size: 13px; font-weight: 600; color: #171717;">مسار</div>
+        <div style="font-size: 11px; color: #7C7C7C;">سعد الغامدي · مندوب</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; height: 32px; margin: 4px 0 12px; padding-inline: 10px; background: #fff; border: 1px solid #E2E2E2; border-radius: 6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" style="flex: none;"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <span style="font-size: 12px; color: #999999;">الانتقال السريع…</span>
+    </div>
+    <div style="font-size: 11px; font-weight: 500; color: #999999; padding: 6px 10px; margin-block-start: 4px;">دورة البيع</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #171717; background: #EDEDED; font-weight: 500;">قائمة اليوم</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">وارد المبيعات</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">فرص البيع</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">العملاء</div>
+    <div style="font-size: 11px; font-weight: 500; color: #999999; padding: 6px 10px; margin-block-start: 12px;">التسويق</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">الحملات</div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;">
+    <header style="height: 42px; flex: none; display: flex; align-items: center; gap: 8px; padding-inline: 20px; background: #fff; border-bottom: 1px solid #EDEDED;">
+      <span style="font-size: 14px; font-weight: 500; color: #171717;">قائمة اليوم</span>
+      <span style="font-size: 13px; color: #C7C7C7;">/</span>
+      <span style="font-size: 13px; color: #7C7C7C;">{{ remainingLabel }}</span>
+      <span style="flex: 1;"></span>
+      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #7C7C7C;">
+        <span style="width: 6px; height: 6px; border-radius: 999px; background: #1F7A73;"></span>مباشر
+      </span>
+    </header>
+
+    <div style="flex: 1; overflow: auto; padding: 20px; background: #FFFFFF;">
+
+      <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px;">
+        <h1 style="margin: 0; font-size: 18px; font-weight: 600; color: #171717;">ما يستحق اتصالك اليوم</h1>
+        <span style="font-size: 12px; color: #7C7C7C;">مرتّبة بالأكثر إلحاحًا · كل سطر يذكر سببه</span>
+      </div>
+      <div style="font-size: 12px; color: #7C7C7C; margin-bottom: 16px;">التسليم: «عيادات الرياض · الإجازات المرضية» من رهف العتيبي · قبل ٦ أيام</div>
+
+      <sc-if value="{{ hasPayback }}" hint-placeholder-val="{{ true }}">
+        <div class="payback" style="display: flex; align-items: flex-start; gap: 12px; background: #F4FCFB; border: 1px solid #B9E4E0; border-inline-start: 3px solid #1F7A73; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 11px; font-weight: 700; color: #1F7A73; margin-bottom: 4px;">سُجِّل · والخطوة التالية جاهزة</div>
+            <div style="font-size: 13px; color: #171717; line-height: 1.9;">{{ paybackLine }}</div>
+            <div style="font-size: 12px; color: #525252; margin-top: 8px; background: #fff; border: 1px solid #EDEDED; border-radius: 6px; padding: 8px 10px;">{{ paybackDraft }}</div>
+          </div>
+          <div style="display: flex; gap: 8px; flex: none;">
+            <button style="font-family: inherit; font-size: 13px; font-weight: 500; border: none; border-radius: 6px; padding: 0 12px; height: 32px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; color: #fff; background: #1F7A73; box-shadow: 0 1px 2px rgba(16,24,40,.1);">أرسل</button>
+            <button onClick="{{ dismiss }}" style="font-family: inherit; font-size: 13px; font-weight: 500; border-radius: 6px; padding: 0 12px; height: 32px; display: inline-flex; align-items: center; cursor: pointer; color: #383838; background: #fff; border: 1px solid #E2E2E2;">لاحقًا</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="border: 1px solid #EDEDED; border-radius: 10px; overflow: hidden; background: #fff;">
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr 1fr 1.4fr 300px; gap: 12px; align-items: center; padding: 8px 20px 8px 12px; background: #F8F8F8; border-bottom: 1px solid #EDEDED; font-size: 11.5px; font-weight: 700; color: #7C7C7C;">
+          <div>الجهة</div><div>الخدمة</div><div>الجدية</div><div>لماذا الآن</div><div>سجّل ما حدث</div>
+        </div>
+
+        <sc-for list="{{ rows }}" as="row" hint-placeholder-count="4">
+          <div class="row" style="display: grid; grid-template-columns: 2fr 1.2fr 1fr 1.4fr 300px; gap: 12px; align-items: center; padding: 8px 20px 8px 12px; min-height: 36px;">
+            <div style="min-width: 0;">
+              <div style="font-size: 13px; font-weight: 500; color: #171717;">{{ row.name }}</div>
+              <div style="font-size: 11px; color: #7C7C7C;">{{ row.city }}</div>
+            </div>
+            <div style="font-size: 12px; color: #525252;">{{ row.product }}</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 15px; font-weight: 600; color: #171717; font-variant-numeric: tabular-nums;">{{ row.score }}</span>
+              <span style="display: inline-flex; gap: 2px;">
+                <sc-for list="{{ row.meter }}" as="cell" hint-placeholder-count="10">
+                  <span style="width: 6px; height: 10px; border-radius: 1px; background: {{ cell.fill }};"></span>
+                </sc-for>
+              </span>
+            </div>
+            <div style="font-size: 12px; color: #525252;">{{ row.why }}</div>
+            <div style="display: flex; gap: 6px;">
+              <sc-for list="{{ row.taps }}" as="tap" hint-placeholder-count="4">
+                <button class="tapbtn" onClick="{{ tap.fire }}" style="font-family: inherit; font-size: 12px; font-weight: 500; border-radius: 6px; padding: 0 10px; height: 32px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: {{ tap.color }}; background: {{ tap.bg }}; border: 1px solid {{ tap.border }};">{{ tap.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 40px 20px; text-align: center;">
+            <div style="font-size: 14px; font-weight: 600; color: #171717; margin-bottom: 4px;">لا شيء متبقٍ اليوم</div>
+            <div style="font-size: 12px; color: #7C7C7C;">تعود القائمة غدًا بمن يستحق المتابعة.</div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 11px; color: #7C7C7C;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" style="flex: none;"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16.5v.01"></path></svg>
+        الجدية محسوبة من السجل وحده — رسالة كتبها بنفسه، طلب تجاري بكلماته، سرعة الردّ، والصمت. لا نموذج يُنتج أي رقم هنا.
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: {}, payback: null };
+  }
+  renderVals() {
+    const done = this.state.done || {};
+    const base = [
+      { id: 'r1', name: 'مجمع النور الطبي', city: 'الرياض', product: 'الإجازات المرضية', score: 67,
+        why: 'سأل عن السعر ولم يُردّ عليه · صامت ٣ أيام',
+        draft: 'أهلًا أبا خالد، بخصوص باقة الإجازات المرضية لعشرة فروع — أرسلت لك التسعير التفصيلي. هل أتصل بك غدًا صباحًا؟' },
+      { id: 'r2', name: 'عيادات الشفاء', city: 'جدة', product: 'الإجازات المرضية', score: 45,
+        why: 'فتح الملف التعريفي مرتين · بلا ردّ',
+        draft: 'أهلًا دكتور، لاحظت أنك اطّلعت على ملف الخدمة. أسعد بمكالمة قصيرة أشرح فيها الربط مع نظامكم.' },
+      { id: 'r3', name: 'مركز الأمل التخصصي', city: 'الرياض', product: 'الإجازات المرضية', score: 30,
+        why: 'وعد بالردّ بعد اجتماع الإدارة · مضى ٨ أيام',
+        draft: 'أهلًا أستاذ فهد، هل اتّضحت الصورة بعد اجتماع الإدارة؟ أبقى على استعداد لأي سؤال.' },
+      { id: 'r4', name: 'صيدلية الدواء', city: 'الدمام', product: 'الإجازات المرضية', score: 12,
+        why: 'بلا تاريخ تواصل · من ملف الاستيراد',
+        draft: 'أهلًا، أنا سعد من لين. أتواصل بخصوص خدمة الإجازات المرضية — هل أنتم الجهة المناسبة للحديث؟' },
+    ];
+    const meterFor = (n) => Array.from({ length: 10 }, (_, i) => ({ fill: i < Math.round(n / 10) ? '#1F7A73' : '#E2E2E2' }));
+    const kinds = [
+      { key: 'called',  label: 'تواصلت', color: '#383838', bg: '#fff',     border: '#E2E2E2' },
+      { key: 'later',   label: 'متابعة', color: '#383838', bg: '#fff',     border: '#E2E2E2' },
+      { key: 'qual',    label: 'مؤهّل',  color: '#1F7A73', bg: '#DCF1EF',  border: '#B9E4E0' },
+      { key: 'drop',    label: 'مستبعد', color: '#525252', bg: '#F8F8F8',  border: '#EDEDED' },
+    ];
+    const said = {
+      called: 'سجّلت مكالمة مع', later: 'متابعة بعد ثلاثة أيام مع', qual: 'فتحت فرصة عند «التقييم الفني والمالي» لـ', drop: 'أُغلقت بخسارة —',
+    };
+    const rows = base.filter((r) => !done[r.id]).map((r) => ({
+      ...r, meter: meterFor(r.score),
+      taps: kinds.map((k) => ({
+        ...k,
+        fire: () => this.setState({
+          done: { ...(this.state.done || {}), [r.id]: k.key },
+          payback: k.key === 'drop' ? null : { line: said[k.key] + ' ' + r.name + '.', draft: r.draft },
+        }),
+      })),
+    }));
+    const p = this.state.payback;
+    return {
+      rows, allDone: rows.length === 0,
+      remainingLabel: rows.length + ' جهة تنتظر',
+      hasPayback: Boolean(p),
+      paybackLine: p ? p.line + ' القائمة أُعيد ترتيبها.' : '',
+      paybackDraft: p ? p.draft : '',
+      dismiss: () => this.setState({ payback: null }),
+    };
+  }
+}
+</script>
+</body>
+</html>

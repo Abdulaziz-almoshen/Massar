@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Cairo', system-ui, 'Segoe UI', Tahoma, sans-serif;
+           font-size: 14px; font-weight: 450; line-height: 1.45; letter-spacing: 0;
+           background: #FFFFFF; color: #171717; }
+    a { color: #1F7A73; text-decoration: none; }
+    a:hover { color: #17635D; }
+    .bub-in  { background: #F3F3F3; border-radius: 10px 10px 10px 2px; }
+    .bub-out { background: #E9F7F6; border-radius: 10px 10px 2px 10px; }
+  </style>
+</helmet>
+
+<div dir="rtl" style="display: flex; width: 1440px; height: 900px; background: #FFFFFF; overflow: hidden;">
+
+  <aside style="width: 250px; flex: none; background: #F8F8F8; border-inline-end: 1px solid #EDEDED; display: flex; flex-direction: column; padding: 8px;">
+    <div style="display: flex; align-items: center; gap: 10px; height: 52px; padding: 10px 12px;">
+      <div style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: #1F7A73; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">م</div>
+      <div style="min-width: 0; flex: 1; text-align: start;">
+        <div style="font-size: 13px; font-weight: 600; color: #171717;">مسار</div>
+        <div style="font-size: 11px; color: #7C7C7C;">سعد الغامدي · مندوب</div>
+      </div>
+    </div>
+    <div style="font-size: 11px; font-weight: 500; color: #999999; padding: 6px 10px; margin-block-start: 8px;">دورة البيع</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">قائمة اليوم</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #171717; background: #EDEDED; font-weight: 500;">العملاء</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">فرص البيع</div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;">
+    <header style="height: 42px; flex: none; display: flex; align-items: center; gap: 8px; padding-inline: 20px; background: #fff; border-bottom: 1px solid #EDEDED;">
+      <span style="font-size: 14px; font-weight: 500; color: #171717;">مجمع النور الطبي</span>
+      <span style="font-size: 13px; color: #C7C7C7;">/</span>
+      <span style="font-size: 13px; color: #7C7C7C;">المحادثة · الإجازات المرضية</span>
+      <span style="flex: 1;"></span>
+      <button style="font-family: inherit; font-size: 13px; font-weight: 500; border-radius: 6px; padding: 0 12px; height: 32px; display: inline-flex; align-items: center; cursor: pointer; color: #383838; background: #fff; border: 1px solid #E2E2E2;">تولَّ المحادثة</button>
+    </header>
+
+    <div style="flex: 1; display: grid; grid-template-columns: 1.5fr 1fr; overflow: hidden;">
+
+      <div style="overflow: auto; padding: 20px; border-inline-end: 1px solid #EDEDED;">
+        <div style="text-align: center; font-size: 11px; color: #7C7C7C; margin-bottom: 16px;">١٣ أغسطس · بدأت من حملة «الإجازات المرضية — عيادات الرياض»</div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; max-width: 560px;">
+          <div class="bub-out" style="align-self: flex-start; padding: 10px 14px; max-width: 78%;">
+            <div style="font-size: 13px; color: #171717; line-height: 1.9;">أهلًا مجمع النور الطبي، معك المساعد الرقمي من لين. نوفّر خدمة الإجازات المرضية للمنشآت الصحية بربط مباشر مع أنظمتكم. هل ترغبون بمعرفة التفاصيل؟</div>
+            <div style="font-size: 10.5px; color: #7C7C7C; margin-top: 6px;">١١:٤٩ ص · شوهدت</div>
+          </div>
+          <div class="bub-in" style="align-self: flex-end; padding: 10px 14px; max-width: 78%;">
+            <div style="font-size: 13px; color: #171717; line-height: 1.9;">نعم، أرسل التفاصيل</div>
+            <div style="font-size: 10.5px; color: #7C7C7C; margin-top: 6px;">١١:٥٢ ص · ضغط زرًا</div>
+          </div>
+          <div class="bub-out" style="align-self: flex-start; padding: 10px 14px; max-width: 78%;">
+            <div style="font-size: 13px; color: #171717; line-height: 1.9;">الخدمة تصدر الإجازات المرضية إلكترونيًا وتربطها بمنصة صحة، فتختصر الدورة الورقية بين العيادة والجهات الرسمية. أرسل لك الملف التعريفي؟</div>
+            <div style="font-size: 10.5px; color: #7C7C7C; margin-top: 6px;">١١:٥٢ ص · من معرفة الخدمة المعتمدة</div>
+          </div>
+          <div class="bub-in" style="align-self: flex-end; padding: 10px 14px; max-width: 78%;">
+            <div style="font-size: 13px; color: #171717; line-height: 1.9;">كم السعر لعشرة فروع؟</div>
+            <div style="font-size: 10.5px; color: #7C7C7C; margin-top: 6px;">١٢:٠٤ م · كتبها بنفسه</div>
+          </div>
+          <div class="bub-out" style="align-self: flex-start; padding: 10px 14px; max-width: 78%;">
+            <div style="font-size: 13px; color: #171717; line-height: 1.9;">التسعير لعشرة فروع يحدّده مندوب المبيعات حسب حجم الاستخدام. أحوّلك إليه الآن ويتواصل معك خلال يوم عمل.</div>
+            <div style="font-size: 10.5px; color: #7C7C7C; margin-top: 6px;">١٢:٠٤ م · لم يذكر سعرًا — سياسة الخدمة «التسعير عبر المندوب»</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 20px; max-width: 560px; font-size: 11px; color: #7C7C7C; line-height: 1.8;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" style="flex: none; margin-top: 3px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16.5v.01"></path></svg>
+          <span>المساعد لا يخرج عن ملف الخدمة المعتمد. ما لا يعرفه يحوّله إلى المندوب بدل أن يخمّنه.</span>
+        </div>
+      </div>
+
+      <div style="overflow: auto; padding: 20px; background: #FFFFFF;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+          <span style="font-size: 13px; font-weight: 600; color: #171717;">مؤشرات المحادثة</span>
+          <span style="font-size: 11px; color: #7C7C7C;">محسوبة من السجل — لا من قراءة نموذج</span>
+        </div>
+
+        <div style="display: flex; align-items: flex-end; gap: 12px; margin-bottom: 10px;">
+          <span style="font-size: 44px; font-weight: 600; color: #171717; line-height: 1; font-variant-numeric: tabular-nums;">٦٧</span>
+          <span style="font-size: 12px; font-weight: 500; color: #1F7A73; background: #DCF1EF; border: 1px solid #B9E4E0; border-radius: 999px; padding: 3px 10px; margin-bottom: 6px;">جاد</span>
+        </div>
+        <div style="display: flex; gap: 3px; margin-bottom: 6px;">
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #1F7A73;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #1F7A73;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #1F7A73;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #1F7A73;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #1F7A73;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #1F7A73;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #E2E2E2;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #E2E2E2;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #E2E2E2;"></span>
+          <span style="flex: 1; height: 10px; border-radius: 1px; background: #E2E2E2;"></span>
+        </div>
+        <div style="font-size: 11px; color: #7C7C7C; margin-bottom: 16px;">من ١٠٠</div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <div><div style="font-size: 10.5px; font-weight: 700; color: #7C7C7C;">الزخم</div><div style="font-size: 13px; color: #171717;">صاعد</div></div>
+          <div><div style="font-size: 10.5px; font-weight: 700; color: #7C7C7C;">سرعة ردّه</div><div style="font-size: 13px; color: #171717;">١٢ دقيقة</div></div>
+          <div><div style="font-size: 10.5px; font-weight: 700; color: #7C7C7C;">آخر كلام منه</div><div style="font-size: 13px; color: #171717;">قبل ٣ أيام</div></div>
+          <div><div style="font-size: 10.5px; font-weight: 700; color: #7C7C7C;">كتب بكلماته</div><div style="font-size: 13px; color: #171717;">رسالتان</div></div>
+        </div>
+
+        <div style="border-top: 1px solid #EDEDED; padding-top: 12px; margin-bottom: 16px;">
+          <div style="font-size: 10.5px; font-weight: 700; color: #7C7C7C; margin-bottom: 8px;">لماذا هذه القراءة</div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 4px 0;"><span>طلب تجاري بكلماته «كم السعر»</span><span style="color: #1F7A73; font-weight: 600;">+٢٥</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 4px 0;"><span>حوار مكتمل من الطرفين</span><span style="color: #1F7A73; font-weight: 600;">+٢٥</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 4px 0;"><span>ردّ خلال ربع ساعة</span><span style="color: #1F7A73; font-weight: 600;">+١٠</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 4px 0;"><span>لم يُسجَّل وسم مؤكد بعد</span><span style="color: #7C7C7C; font-weight: 600;">+٧</span></div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #B9E4E0; border-inline-start: 3px solid #1F7A73; border-radius: 10px; padding: 14px;">
+          <div style="font-size: 10.5px; font-weight: 700; color: #1F7A73; margin-bottom: 5px;">اقتراح المساعد للخطوة التالية</div>
+          <div style="font-size: 13px; color: #171717; line-height: 1.9;">اتصل اليوم وأرسل تسعير عشرة فروع. هو من طلبه، ومضى ثلاثة أيام بلا ردّ منّا.</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

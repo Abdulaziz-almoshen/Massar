@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Cairo', system-ui, 'Segoe UI', Tahoma, sans-serif;
+           font-size: 14px; font-weight: 450; line-height: 1.45; letter-spacing: 0;
+           background: #FFFFFF; color: #171717; }
+    a { color: #1F7A73; text-decoration: none; }
+    a:hover { color: #17635D; }
+    .slide { background: #fff; border: 1px solid #EDEDED; border-radius: 6px; aspect-ratio: 16 / 9; padding: 12px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  </style>
+</helmet>
+
+<div dir="rtl" style="display: flex; width: 1440px; height: 900px; background: #FFFFFF; overflow: hidden;">
+
+  <aside style="width: 250px; flex: none; background: #F8F8F8; border-inline-end: 1px solid #EDEDED; display: flex; flex-direction: column; padding: 8px;">
+    <div style="display: flex; align-items: center; gap: 10px; height: 52px; padding: 10px 12px;">
+      <div style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: #1F7A73; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">م</div>
+      <div style="min-width: 0; flex: 1; text-align: start;">
+        <div style="font-size: 13px; font-weight: 600; color: #171717;">مسار</div>
+        <div style="font-size: 11px; color: #7C7C7C;">رهف العتيبي · إدارة المنتج</div>
+      </div>
+    </div>
+    <div style="font-size: 11px; font-weight: 500; color: #999999; padding: 6px 10px; margin-block-start: 8px;">المنتج</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">المنتجات</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #525252;">معرفة الخدمة</div>
+    <div style="display: flex; align-items: center; gap: 10px; height: 32px; padding-inline: 10px; border-radius: 6px; font-size: 13px; color: #171717; background: #EDEDED; font-weight: 500;">عرض المبيعات</div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;">
+    <header style="height: 42px; flex: none; display: flex; align-items: center; gap: 8px; padding-inline: 20px; background: #fff; border-bottom: 1px solid #EDEDED;">
+      <span style="font-size: 14px; font-weight: 500; color: #171717;">عرض المبيعات</span>
+      <span style="font-size: 13px; color: #C7C7C7;">/</span>
+      <span style="font-size: 13px; color: #7C7C7C;">الإجازات المرضية · مسودّة</span>
+      <span style="flex: 1;"></span>
+      <button style="font-family: inherit; font-size: 13px; font-weight: 500; border-radius: 6px; padding: 0 12px; height: 32px; display: inline-flex; align-items: center; cursor: pointer; color: #383838; background: #fff; border: 1px solid #E2E2E2;">نزّل PowerPoint</button>
+      <button style="font-family: inherit; font-size: 13px; font-weight: 500; border: none; border-radius: 6px; padding: 0 12px; height: 32px; display: inline-flex; align-items: center; cursor: pointer; color: #fff; background: #1F7A73; box-shadow: 0 1px 2px rgba(16,24,40,.1);">اعتمد وانشره للمبيعات</button>
+    </header>
+
+    <div style="flex: 1; overflow: auto; padding: 20px;">
+
+      <div style="display: flex; align-items: flex-start; gap: 10px; background: #F8F8F8; border: 1px solid #EDEDED; border-radius: 10px; padding: 12px 14px; margin-bottom: 20px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C7C7C" stroke-width="2" style="flex: none; margin-top: 2px;"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M8 21h8"></path></svg>
+        <div style="font-size: 12px; color: #525252; line-height: 1.9;">مولَّد من كراسة المنتج وأسئلة العملاء المتكررة، ومن ١٢ اعتراضًا سجّلها المندوبون. كل شريحة تشير إلى مصدرها. لا يُنشر للمبيعات قبل اعتمادك.</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start;">
+
+        <div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px;">
+
+            <div class="slide">
+              <div style="font-size: 8px; color: #7C7C7C; margin-bottom: 6px;">١</div>
+              <div style="font-size: 13px; font-weight: 700; color: #171717; line-height: 1.5;">الإجازات المرضية إلكترونيًا</div>
+              <div style="font-size: 9px; color: #7C7C7C; margin-top: 4px;">من العيادة إلى منصة صحة دون ورق</div>
+            </div>
+
+            <div class="slide">
+              <div style="font-size: 8px; color: #7C7C7C; margin-bottom: 6px;">٢</div>
+              <div style="font-size: 11px; font-weight: 700; color: #171717; margin-bottom: 6px;">المشكلة</div>
+              <div style="font-size: 9px; color: #525252; line-height: 1.7;">الموظف يراجع العيادة مرتين لورقة واحدة، والعيادة تحفظ نسخًا ورقية لكل إجازة.</div>
+            </div>
+
+            <div class="slide">
+              <div style="font-size: 8px; color: #7C7C7C; margin-bottom: 6px;">٣</div>
+              <div style="font-size: 11px; font-weight: 700; color: #171717; margin-bottom: 6px;">كيف تعمل</div>
+              <div style="display: flex; gap: 4px; align-items: center;">
+                <span style="flex: 1; height: 14px; background: #F3F3F3; border-radius: 2px;"></span>
+                <span style="font-size: 8px; color: #7C7C7C;">←</span>
+                <span style="flex: 1; height: 14px; background: #DCF1EF; border-radius: 2px;"></span>
+                <span style="font-size: 8px; color: #7C7C7C;">←</span>
+                <span style="flex: 1; height: 14px; background: #F3F3F3; border-radius: 2px;"></span>
+              </div>
+            </div>
+
+            <div class="slide">
+              <div style="font-size: 8px; color: #7C7C7C; margin-bottom: 6px;">٤</div>
+              <div style="font-size: 11px; font-weight: 700; color: #171717; margin-bottom: 6px;">الربط مع نظامكم</div>
+              <div style="font-size: 9px; color: #525252; line-height: 1.7;">واجهة برمجية تعمل مع أنظمة HIS الشائعة دون تغيير النظام الحالي.</div>
+            </div>
+
+            <div class="slide" style="border-color: #F5E6BE; background: #FFFDF7;">
+              <div style="font-size: 8px; color: #B54708; margin-bottom: 6px;">٥ · تحتاج مراجعتك</div>
+              <div style="font-size: 11px; font-weight: 700; color: #171717; margin-bottom: 6px;">الربط مع سيرنر</div>
+              <div style="font-size: 9px; color: #B54708; line-height: 1.7;">لا توجد إجابة معتمدة في الكراسة. الشريحة فارغة عمدًا.</div>
+            </div>
+
+            <div class="slide">
+              <div style="font-size: 8px; color: #7C7C7C; margin-bottom: 6px;">٦</div>
+              <div style="font-size: 11px; font-weight: 700; color: #171717; margin-bottom: 6px;">من يستخدمها</div>
+              <div style="font-size: 9px; color: #525252; line-height: 1.7;">مجمع الحياة ٨ فروع · مستشفى الرحمة ١٤ فرعًا · عيادات الوفاء فرعان</div>
+            </div>
+
+          </div>
+          <div style="font-size: 11px; color: #7C7C7C;">٦ من ١٢ شريحة</div>
+        </div>
+
+        <div>
+          <div style="background: #fff; border: 1px solid #EDEDED; border-radius: 10px; padding: 16px; margin-bottom: 16px;">
+            <h3 style="margin: 0 0 12px; font-size: 14px; font-weight: 700; color: #525252;">نقد المساعد للعرض</h3>
+
+            <div style="border-top: 1px solid #EDEDED; padding: 10px 0;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="width: 6px; height: 6px; border-radius: 999px; background: #B42318; flex: none;"></span>
+                <span style="font-size: 12px; font-weight: 500; color: #171717;">أكثر اعتراض ليس في العرض</span>
+              </div>
+              <div style="font-size: 12px; color: #525252; line-height: 1.9; padding-inline-start: 14px;">التسعير لعدد الفروع ورد في ٥ محادثات، ولا شريحة تتناوله. أضِف شريحة تربط السعر بعدد الإجازات.</div>
+            </div>
+
+            <div style="border-top: 1px solid #EDEDED; padding: 10px 0;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="width: 6px; height: 6px; border-radius: 999px; background: #B54708; flex: none;"></span>
+                <span style="font-size: 12px; font-weight: 500; color: #171717;">شريحة بلا مصدر معتمد</span>
+              </div>
+              <div style="font-size: 12px; color: #525252; line-height: 1.9; padding-inline-start: 14px;">الشريحة ٥ عن سيرنر تركتها فارغة بدل تأليف إجابة. أضِف الإجابة إلى الكراسة أولًا.</div>
+            </div>
+
+            <div style="border-top: 1px solid #EDEDED; padding: 10px 0;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="width: 6px; height: 6px; border-radius: 999px; background: #C7C7C7; flex: none;"></span>
+                <span style="font-size: 12px; font-weight: 500; color: #171717;">العملاء المذكورون</span>
+              </div>
+              <div style="font-size: 12px; color: #525252; line-height: 1.9; padding-inline-start: 14px;">ثلاثة مراجع، جميعها في الرياض. لا مرجع في جدة رغم أن ٩ جهات مستهدفة هناك.</div>
+            </div>
+
+            <div style="border-top: 1px solid #EDEDED; padding: 10px 0;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="width: 6px; height: 6px; border-radius: 999px; background: #1F7A73; flex: none;"></span>
+                <span style="font-size: 12px; font-weight: 500; color: #171717;">ما يعمل جيدًا</span>
+              </div>
+              <div style="font-size: 12px; color: #525252; line-height: 1.9; padding-inline-start: 14px;">الشريحة ٢ تصف الألم بكلمات العميل نفسها كما وردت في المحادثات.</div>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid #EDEDED; border-radius: 10px; padding: 16px;">
+            <h3 style="margin: 0 0 12px; font-size: 14px; font-weight: 700; color: #525252;">من أين جاء المحتوى</h3>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 6px 0; border-top: 1px solid #EDEDED;"><span>كراسة المنتج</span><span style="color: #171717;">٧ شرائح</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 6px 0; border-top: 1px solid #EDEDED;"><span>أسئلة العملاء المتكررة</span><span style="color: #171717;">٣ شرائح</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 6px 0; border-top: 1px solid #EDEDED;"><span>اعتراضات سجّلها المندوبون</span><span style="color: #171717;">شريحتان</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #525252; padding: 6px 0; border-top: 1px solid #EDEDED;"><span>بلا مصدر</span><span style="color: #7C7C7C;">لا شيء</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>
