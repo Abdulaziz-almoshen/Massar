@@ -6,6 +6,14 @@ Branch: master · Repo: Abdulaziz-almoshen/Massar (engine: Abdulaziz-almoshen/ma
 Status: **AMENDED AFTER REVIEW** · Mode: Startup (intrapreneurship)
 Supersedes: `docs/designs/massar-v2-commercial-crm.md` and `docs/designs/massar-commercial-platform.md`
 
+**Reconciled 2026-09-04 against `docs/designs/massar-vision-ux-and-pitch.md`.** That document is
+the source of truth for the **first eight weeks and the pitch**; this one is the architecture those
+weeks build inside. Where they disagree, the vision doc wins on sequencing and on what a user sees;
+this one wins on schema and safety. Three things were folded in from the founder archive
+(`docs/artifacts/masar-archive/`) that this plan had been missing entirely: the **eight weighted
+sales stages**, the **~28-value dependent outcome taxonomy**, and **`الإدارة المسؤولة`** on every
+engagement. A **targets** model was added; the plan previously had no concept of one.
+
 **Autonomous run.** The founder instructed: no confirmation questions, take the most recommended
 and highest-completeness option. Every decision here was auto-taken on that instruction. **One
 decision was not auto-taken** and is recorded at the end under "The one open question", because
@@ -210,16 +218,123 @@ handoff_items       partial failure is first-class: 47 succeed, 3 fail, each fix
 product_tracks      REPLACES `opportunities`. pipeline_id + stage_id now have
                     tables to point at (below), with a composite constraint tying
                     the stage to its pipeline and the pipeline to the product.
-pipelines           per-product stage sets as data (A11). MISSING from the first draft.
-pipeline_stages     MISSING from the first draft.
+pipelines           per-product stage sets as data (A11).
+pipeline_stages     (pipeline_id, key, label_ar, weight_pct, entry_criterion_ar, sort)
+                    SEEDED FROM THE FOUNDER ARCHIVE, not invented. The real Lean
+                    model is EIGHT stages carrying probability weights, recovered
+                    from docs/artifacts/masar-archive/:
+
+                      تواصل أولي            10%   وصلنا لصاحب القرار وأبدى اهتمامًا
+                      اكتشاف الحاجة         25%   تأكدت الحاجة والحجم والميزانية
+                      عرض المنتج            45%   قُدّم المنتج وقبل العميل القيمة
+                      التقييم التقني        65%   اجتاز التكامل مع صحة/صحتي والأمن
+                      عرض السعر             80%   عرض سعر مقبول مبدئيًا
+                      التفاوض والاعتماد     90%   توافق على الشروط ودخول التعاقد
+                      إغلاق – ربح          100%   تم التوقيع
+                      إغلاق – خسارة          0%   اعتذر العميل (سجّل السبب)
+
+                    The engine ships six unweighted stages today
+                    (contact|present|tech|negotiate|won|lost). WITHOUT weights no
+                    weighted forecast is computable, and a forecast is the number a
+                    sales director is measured on.
+
+                    **The mapping is total, and it keeps the existing keys.** Six map
+                    one-to-one and two are genuinely new, so no live row is reclassified:
+
+                      contact   -> contact      (10%)
+                      NEW       -> discover     (25%)   اكتشاف الحاجة
+                      present   -> present      (45%)
+                      tech      -> tech         (65%)
+                      NEW       -> quote        (80%)   عرض السعر
+                      negotiate -> negotiate    (90%)
+                      won       -> won         (100%)
+                      lost      -> lost          (0%)
+
+                    Keeping the keys means `OPP_STALL_STAGES = ["tech","negotiate"]`
+                    (opps-domain.ts:53) and `isWonStage` (opps-domain.ts:90) survive
+                    unchanged. **Audit `negotiate` before backfill**: some live rows in
+                    it may really be the newly separated `quote`.
+
+                    **The enum is duplicated in six places and a `CREATE TABLE IF NOT
+                    EXISTS` alters none of them.** All six move in one compatibility
+                    sequence or the system half-migrates:
+                      db.ts:263   CHECK (stage IN (...)) — must be DROPped and recreated
+                      db.ts:935   OPP_STAGES const
+                      db.ts:952   the line validator
+                      opps-domain.ts:23   the second stage definition
+                      opps-domain.ts:221  **serialised into the browser bundle** — a
+                                          cached old bundle submits six-stage
+                                          assumptions after the server has moved
+                      opps-domain.ts:53,90  stall and won semantics
+                    Constraints on the new tables: UNIQUE (pipeline_id, key) and
+                    `weight_pct BETWEEN 0 AND 100`. Contract the old CHECK only after
+                    stale browser bundles can no longer be in flight.
 engagements         append-only, WITH corrects_engagement_id — a new row cannot
                     correct an old one if it cannot name it — and
                     UNIQUE (source, external_id) so a replayed webhook does not
                     duplicate the transcript. Several agent guards read the
                     transcript to survive restarts, so duplication changes agent
                     behaviour silently.
-outcomes            MISSING from the first draft (engagements.outcome_id).
-form_schemas        MISSING from the first draft (engagements.form_schema_id).
+outcomes            (stage_id, key, label_ar, reason_key, reason_ar, next_action_ar,
+                     kind ∈ advance|needs_action|lost)
+                    DEPENDENT ON STAGE, ~28 values, recovered from the archive. The
+                    outcome list changes with the stage — «يحتاج توضيح تقني» belongs
+                    to عرض المنتج and nowhere else. `next_action_ar` is a TEMPLATE, not
+                    the action; the action itself is a row in `actions` below.
+                    Colour follows kind: advance = green, needs_action = amber,
+                    lost = red, each paired with its label, never colour alone.
+form_schemas        (engagements.form_schema_id).
+
+track_stage_events  THE LEDGER THIS PLAN WAS MISSING. Append-only.
+                    (id, track_id, from_stage_id, to_stage_id, outcome_id,
+                     effective_at TIMESTAMPTZ, recorded_at, actor_id,
+                     engagement_id NULL, corrects_event_id NULL)
+                    CHECK: outcome.stage_id = from_stage_id.
+                    to_stage_id MAY equal from_stage_id — a stage can be assessed
+                    without moving.
+
+                    **Three separate findings collapse into this one table.**
+
+                    (a) The outcome was on `engagements` and does not belong there. An
+                        engagement is EVIDENCE — a call, a visit, a message. A stage
+                        outcome is a DECISION about one product track at one stage. One
+                        call can cover two products; a stage can change with no customer
+                        contact at all (legal signs off, procurement approves); and a
+                        call can produce a stage change days later after internal review.
+
+                    (b) **`achieved` is not computable without it.** Verified in source:
+                        `opportunities.stage_at` (db.ts:286) is the moment the stage LAST
+                        MOVED and is overwritten on every later change (db.ts:1021), and
+                        `close_on` (db.ts:280) is a PLANNED date, not an actual. So the
+                        engine today cannot answer "which deals were won in Q1" — the
+                        single question the whole targets model rests on. Without this
+                        ledger phase 3 is unbuildable.
+
+                    (c) It is where `won_at` lives, as a real TIMESTAMPTZ rather than a
+                        BIGINT that means something different every time it is read.
+
+actions             CURRENT responsibility, which is NOT the same fact as history.
+                    (id, track_id, stage_event_id, responsible_dept, responsible_person,
+                     title_ar, due_at, state ∈ open|done|cancelled, done_at, created_at)
+                    responsible_dept ∈ إدارة المنتج · المبيعات · التقنية · القانونية ·
+                                        المشتريات · أمن المعلومات
+
+                    **The differentiator lives here, and the first draft put it in the
+                    wrong place.** `responsible_dept` on an append-only engagement would
+                    record who handled a HISTORICAL interaction — so «أين تتعثّر الصفقات»
+                    would list every department that ever touched the deal, stale rows
+                    and duplicates included, instead of whose desk it is on NOW.
+
+                    The archive's finding is unchanged and still the reason this product
+                    exists: التقييم التقني and التفاوض والاعتماد stall longest because
+                    responsibility crosses a department boundary. Corroboration from the
+                    engine, found during this review: `OPP_STALL_STAGES` in
+                    `opps-domain.ts:53` is already hardcoded to exactly `["tech",
+                    "negotiate"]` — the same two stages, identified independently by the
+                    prototype months earlier.
+
+                    Handoffs move a book of accounts. An action moves one stalled deal.
+                    Both are needed and they are different tables.
 
   channel: call | visit | whatsapp | email | other
            `campaign` REMOVED — a campaign is a container, WhatsApp is the channel.
@@ -233,6 +348,82 @@ form_schemas        MISSING from the first draft (engagements.form_schema_id).
   live duplicates, inverted under NULL account_id, and forbade renewals, hospital
   branches, competing quotes and reopened deals.
 ```
+
+### Phase 3 — surfaces, including targets and the management view
+
+**Targets are new.** The first draft had no concept of one.
+```
+sectors             (id, name)                      قطاع — the layer ABOVE product
+                    The archive's org model is قطاع ← إدارة ← منتج, and `departments`
+                    from phase 2 sits between them. The first draft had departments
+                    and stopped; an executive dashboard rolls up through SECTORS.
+products            gains sector_id and a product-manager owner.
+
+targets             (product_id, year, quarter ∈ 1..4, amount)
+                    UNIQUE (product_id, year, quarter)
+                    Annual target split quarterly. Entered, not computed.
+
+achieved            NOT A TABLE. Computed from product_tracks won inside the quarter,
+                    so it can never drift from the ledger and no one can type a number
+                    into it. The whole point of the executive view is that every figure
+                    is earned; a stored `achieved` column would be the one hand-entered
+                    number on the screen.
+
+forecast            ALSO computed: sum over open tracks of
+                    sale_price × qty × years × (1 − discount) × stage.weight_pct.
+                    This is why the eight weighted stages are a phase-2 prerequisite
+                    and not a nicety. Six unweighted stages produce no forecast at all.
+
+  TWO NAMED MEASURES, because "%" was ambiguous and every colour on the screen
+  depends on which one is meant:
+    attainment_pct = achieved / target                        <- drives RAG
+    coverage_pct   = (achieved + weighted_open_forecast) / target
+  Aggregate as SUM(numerator) / SUM(target), NEVER the average of product
+  percentages. Define: zero or missing target, currency, rounding, and >100%.
+  RAG compares attainment against the ELAPSED share of the period, not the whole
+  period — otherwise every product is red in the first week of a quarter.
+
+  REPORTING CALENDAR, stated once so three screens cannot disagree:
+    fiscal_year_start_month · timezone Asia/Riyadh · year-label convention
+    Quarter boundaries are HALF-OPEN in Riyadh local time:
+      Q1 2026 = [2026-01-01 00:00 +03, 2026-04-01 00:00 +03)
+    A deal won 2026-03-31 23:30 Riyadh is 20:30Z and belongs to Q1 — reading it
+    in UTC would put it in the wrong quarter and the wrong bonus.
+    Bucket on `track_stage_events.effective_at`, never on `close_on` (a plan).
+
+  WHAT THE TARGET MEASURES is a business fact, not a schema choice, and it is an
+  open question below. `sale_price × qty × years` is TOTAL CONTRACT VALUE; booking
+  all of it into the win quarter is not achieved revenue.
+
+  RAG thresholds, from the archive and fixed here so three screens cannot disagree:
+    ≥ 70% أخضر · 50–69% كهرماني · < 50% أحمر
+  Colour is ALWAYS paired with the percentage as text — status is never encoded by
+  colour alone (accessibility rule, and the archive's badge spec violates it as written).
+
+  Screens, drilling تنفيذي ← قطاع ← منتج ← مندوب:
+    · executive   all sectors: target, achieved, %, open pipeline value
+    · sector      one sector, its products, its reps
+    · product     one product vs its target, by quarter, opportunities by stage
+    · «أين تتعثّر الصفقات»  pending actions grouped by الإدارة المسؤولة
+                  ^ this is the screen no vendor default gives you
+```
+  READ MODEL — "computed" must not mean "recomputed per dashboard tile".
+    · ONE grouped query (or a bounded-interval summary refresh) per reporting
+      period, feeding every tile from ONE snapshot so tiles cannot disagree
+      mid-request.
+    · Indexes: stage events (effective_at, to_stage_id, track_id) · tracks
+      (product_id, stage_id) · products (sector_id) · targets (year, quarter,
+      product_id).
+    · The machine is 512 MB with pool max 5, and `/health` already runs three
+      exact COUNT(*) subqueries every 30s on one connection (db.ts:479). Replace
+      those with a connectivity check or cached approximate counts — table
+      cardinality is not health, and it competes with the dashboard for the pool.
+    · Load-test acceptance: concurrent dashboard users plus the health check.
+
+**Why this is its own phase and not a report.** Targets are what an executive buys. The
+first draft of this plan spent 38 weeks without one, which is why it could describe a
+platform and still not be pitchable. `signal-domain.ts` already demonstrates the house
+pattern for this: earn every number from the ledger, and show its evidence on demand.
 
 ### Phase 4 — versioned product hub
 ```
@@ -388,13 +579,46 @@ controls.
 
 ## Plan
 
+## The first eight weeks (the pitch slice, decided 2026-09-04)
+
+The founder committed to building the spine for real and then pitching, in eight weeks. The phase
+table below does not deliver that: `0a + 0 + 1 + 2` is fifteen weeks and nothing in it is visible
+to a sales director. **The eight weeks are re-cut around the pitch. The architecture is unchanged;
+the order is.**
+
+| Weeks | What | Drawn from |
+|---|---|---|
+| 1 | Migration system only — numbered files, a version table, an advisory lock, a Fly `release_command`, `pg_dump` | phase 0a. **Not optional**: week 2 alters a live CHECK constraint |
+| 2–3 | The eight weighted stages (all six enum sites plus the browser bundle), `track_stage_events`, `actions` with `الإدارة المسؤولة` | phase 2 |
+| 4–5 | Targets, sectors, `attainment_pct` and `coverage_pct` computed from the ledger, one grouped read query | phase 3 |
+| 6–8 | Four screens: the rep's day (phone), the account record, the executive targets view, «أين تتعثّر الصفقات» | phase 3 |
+
+**Deferred until after the pitch, deliberately:** the send gate and outbox (phase 0), sessions,
+roles and SSO (most of phase 2), the product hub, agent quality, the WhatsApp control plane.
+
+### The deferral is a mechanism, not a promise
+
+Deferring phase 0 reverses "safety before features", which eight independent voices agreed on
+yesterday. The defence is narrow and it must stay narrow: **the gate protects production sending,
+and sending is disabled.** "We will do the gate afterwards" is what every team says, so it is
+written as a condition rather than an intention:
+
+> **The zero-send rule does not lift until phase 0 ships.** No production WABA number, no
+> `SEND_ENABLED`, no pilot, no "just one test to my own phone" — until the gate consolidates the
+> 13 bypassing call sites, `check-onedoor.mjs` is in `npm run check`, and the suppression backfill
+> is proven. Phase 9 already depends on the founder lifting that rule; this makes phase 0 the only
+> thing that can lift it.
+
+That is enforceable by a build script rather than by memory, which is the whole lesson of
+`outbound.ts`: a policy everyone must remember is a policy that has already failed here once.
+
 | Phase | What ships | Proof | Weeks |
 |---|---|---|---|
 | **0a** | Foundations: migration system with a release command and `pg_dump`, Testcontainers, CI, coverage glob, SIGTERM handler, fetch timeout, honest `/health` | A deliberately broken migration fails the deploy instead of booting memory-only; a concurrency test can be written at all | 3 |
 | **0** | The one door: gate consolidation, kill switch, suppressions with backfill, outbox with a real dispatcher, durable inbound events, audit with an operator surface. **Sending stays disabled.** | Bypassing call sites **13 -> 0**, asserted by `check-onedoor.mjs`; replaying all history sends nothing and logs a decision per attempt; two concurrent launches produce one outbox row; the gate refuses when Postgres is down | 3 |
 | **1** | Design: role-to-landing map, the five-state matrix per surface, Arabic/RTL rules as DESIGN.md amendments, the phone-first rep flow | Every screen in phases 3-8 has a specified empty state before it is built | 2 |
-| **2** | Identity and the commercial spine, migrated expand-backfill-contract with one writer per table | Four people log in with real sessions; a PM hands 50 accounts and 3 failures are individually fixable; one clinic runs two tracks under two departments with the visibility rule enforced | 6 |
-| **3** | Surfaces, in three slices: **3a** the rep's day (mobile), **3b** the PM outcome view, **3c** the manager's inbox | A rep logs a call **on a phone** in under 10s and gets a labelled draft; the PM view distinguishes «لم يُتواصل» from «بلا سجل تواصل» | 8 |
+| **2** | Identity and the commercial spine, migrated expand-backfill-contract with one writer per table. **Plus the eight weighted stages replacing the six, the ~28-value dependent outcome taxonomy, and `الإدارة المسؤولة` on every engagement** | Four people log in with real sessions; a PM hands 50 accounts and 3 failures are individually fixable; one clinic runs two tracks under two departments with the visibility rule enforced; **a weighted forecast is computable for the first time, and pending actions filter by department** | 7 |
+| **3** | Surfaces, in four slices: **3a** the rep's day (mobile) · **3b** the PM outcome view · **3c** the manager's inbox · **3d** targets and the management view (executive / sector / product, RAG, and «أين تتعثّر الصفقات» by department) | A rep logs a call **on a phone** in under 10s and gets a labelled draft; the PM view distinguishes «لم يُتواصل» from «بلا سجل تواصل»; **an executive sees target vs achieved per sector with every figure earned from the ledger** | 10 |
 | **4** | Versioned product hub: multi-file upload, extraction to claims with page references, per-claim human approval, expiry, the agent/sales audience split | A PM approves a version and the agent's answers change on the next message; an injected instruction in a source PDF is refused at approval | 3 |
 | **5** | Agent quality: shadow mode, retrieval with citations, regression evals, per-tool authorization | Every agent sentence traces to an approved claim; a retired version stops being quotable within one message | 3 |
 | **6** | WhatsApp control plane AND the campaign module migrated onto the spine: production WABA readiness, template records with separated desired/observed/breaker state, write-time button validation, per-template quality and pacing, breakers, the wizard, the audience importer, behavioural segments, and a monitor that shows per-recipient gate decisions | A quality change from Meta pauses only that template; an operator-authored 21-char button title is refused at write and never crashes a boot | 4 |
@@ -402,7 +626,19 @@ controls.
 | **8** | Decks from approved claims, with the critic, human review before publish | A deck cites every slide; a slide with no approved claim renders blank rather than invented | 2 |
 | **9** | Progressive send enablement — **only if the zero-send rule lifts** | Delivery, replies, opt-outs and per-template quality observed on a real pilot | 2 |
 
-**38 weeks of work (3+3+2+6+8+3+3+4+2+2+2). With a 15% buffer, plan on 44 weeks.**
+**41 weeks of work (3+3+2+7+10+3+3+4+2+2+2). With a 15% buffer, plan on 47 weeks.**
+
+**The number moved again, and it is the fourth time.** 29 → 38 → 41. Each move came from
+discovering something real rather than from re-estimating: first the omitted prerequisites
+(migrations, a test harness, CI, file storage), now the founder archive's targets model and stage
+taxonomy. Phase 2 grows 6 → 7 for the stages, the outcome taxonomy and the department field.
+Phase 3 grows 8 → 10 for the management view.
+
+**Do not read 41 as the commitment.** The commitment the founder made on 2026-09-04 is the
+**first eight weeks** — the spine built for real, then the pitch. `docs/designs/massar-vision-ux-and-pitch.md`
+is the source of truth for those eight weeks and for what goes in front of a sales director.
+This document is the architecture the eight weeks build inside, and the map of what comes after
+IF the pitch lands. Phases 4 through 9 are unfunded until then.
 
 The review made this **nine weeks longer**, not shorter. The first estimate omitted a migration
 system, a test harness, CI and the file-storage decision — all gating — and gave four weeks to
@@ -514,74 +750,41 @@ the shorter shape, stopping at Gate A is already the design.
 
 ## GSTACK REVIEW REPORT
 
-Run: `/autoplan` (CEO -> design -> DX -> engineering), 2026-09-03, branch master, commit a441c33.
-Mode: SELECTIVE EXPANSION. All intermediate decisions auto-taken per the founder's instruction.
+| Run | Skill | Date | Status | Findings |
+|---|---|---|---|---|
+| 1 | `/autoplan` (CEO · design · DX · eng) | 2026-09-03 | issues_open | 19 of 19 scored dimensions adverse, zero disagreement across 8 voices |
+| 2 | `/plan-eng-review` | 2026-09-04 | **clean** | 5 findings on today's additions, all folded in; 1 scope decision; 1 open question |
 
-### Voices
+### Run 2 — scope
 
-| Phase | Codex | Claude subagent | Consensus |
+Reviewed the parts added on 2026-09-04 and therefore unreviewed: the eight weighted stages, the
+outcome taxonomy, `الإدارة المسؤولة`, and the targets model. Step 0's complexity check triggered
+(4 new tables, a live CHECK alteration, 86 stage call sites) and stopped for a scope decision.
+
+**Scope decision (founder, 2026-09-04):** re-cut the first eight weeks around the pitch. The
+41-week architecture is unchanged; `0a + 0 + 1 + 2` no longer runs first. The send gate is
+deferred behind an explicit condition rather than an intention.
+
+### Run 2 — findings
+
+| # | Severity | Finding | Resolution |
 |---|---|---|---|
-| CEO | 12 findings | 13 findings | **6 / 6 confirmed adverse, 0 disagreements** |
-| Design | 8 findings | 16 findings | **7 / 7 confirmed adverse, 0 disagreements** |
-| DX | 6 findings | addendum (3 findings) | 6 / 6, recorded **[codex-only]** at close |
-| Engineering | 14 findings | 22 findings, 3 disqualifying | **6 / 6 confirmed adverse, 0 disagreements** |
+| 1 | **Critical** | The 6→8 stage migration was not executable. The enum is duplicated in **six** places including one **serialised into the browser bundle** (`opps-domain.ts:221`), and `CREATE TABLE IF NOT EXISTS` alters none of them; the live `CHECK` (db.ts:263) must be dropped and recreated | Mapping written out — six keys preserved 1:1, `discover` and `quote` new, so no live row is reclassified. All six sites named and sequenced. `negotiate` flagged for audit before backfill |
+| 2 | **Critical** | The stage outcome sat on `engagements`, which is the wrong entity. An engagement is evidence; an outcome is a decision about one track at one stage. And `responsible_dept` on an append-only engagement records who handled a *historical* interaction — so «أين تتعثّر الصفقات» would have listed every department that ever touched the deal | Split into `track_stage_events` (append-only, `outcome.stage_id = from_stage_id`) and `actions` (current responsibility, due date, state) |
+| 3 | **Critical** | **`achieved` was not computable at all.** Verified: `stage_at` (db.ts:286) is the last move and is overwritten (db.ts:1021); `close_on` (db.ts:280) is a *planned* date. The engine cannot answer "which deals were won in Q1" — the question the entire targets model rests on | The same `track_stage_events` ledger. Phase 3 was unbuildable without it |
+| 4 | **High** | "Computed" was specified with no read architecture, on a 512 MB machine with pool max 5 where `/health` already runs three exact `COUNT(*)` every 30s (db.ts:479) | One grouped query per period feeding every tile from one snapshot; four indexes named; health counts replaced with a connectivity check |
+| 5 | **High** | Quarter boundaries and the RAG numerator were both undefined. A win at 23:30 Riyadh on 31 March is 20:30Z and lands in the wrong quarter if read in UTC | Half-open Riyadh-local boundaries; bucket on `effective_at`; `attainment_pct` and `coverage_pct` named separately, RAG driven by attainment against the *elapsed* share of the period |
 
-**19 scored dimensions, 19 adverse, zero disagreement between any two voices.**
+**Corroboration worth recording:** `OPP_STALL_STAGES` (`opps-domain.ts:53`) is already hardcoded to
+`["tech","negotiate"]` — the same two stages the founder archive independently identifies as the
+longest-stalling. The prototype found it months before the requirements document was recovered.
 
-### Verification discipline
+**What the additions get right, per the outside voice:** stages as data, weights making a weighted
+pipeline possible, target facts entered while achieved and forecast stay reproducible derivatives,
+target uniqueness by product and period, and status colour paired with text.
 
-Every claim adopted from a voice was checked against source before it entered this document.
+VERDICT: **CLEAR.** CODEX absorbed — five findings, all folded in; the outside voice and this
+review reached findings 1, 4 and 5 independently.
 
-- **Confirmed: 24 of 25 checked claims**, including all five live production defects.
-- **Withdrawn: 1.** A claim that `toLocaleDateString("ar-SA")` renders Hijri did not reproduce —
-  `Intl.DateTimeFormat("ar-SA").resolvedOptions().calendar` returns `gregory` on this runtime. The
-  narrower residual (calendar resolution is environment-dependent, the code runs in a browser, and
-  one line already pins `ar-SA-u-ca-gregory`) was kept and the rest discarded.
-- **Severity adjusted: 2.** The dashboard shell is unauthenticated but the data behind it is
-  token-gated, so that is a shared-credential problem, not an open door. The campaign
-  approved-knowledge gate is prototype-only, so it is a regression *risk*, not a current bug.
-
-This is the third false positive of the session, all the same class: rendering behaviour asserted
-from reading source rather than running it. Logged as a learning.
-
-### Auto-decisions
-
-| # | Decision | Phase | Principle |
-|---|---|---|---|
-| 1 | Reuse `outbound.ts`; do not build a second gate | eng | P4 DRY |
-| 2 | Make the seam structural (`check-onedoor.mjs`), not conventional | eng | P5 explicit |
-| 3 | Gate fails CLOSED, stated and tested | eng | P1 completeness |
-| 4 | Suppression backfill is the first migration; dual-read until proven | eng | P1 |
-| 5 | Idempotency key formula written down; campaign creation made idempotent | eng | P1 |
-| 6 | Dispatcher carved out of A10's deferral | eng | P1 |
-| 7 | Durable inbound events before the webhook acks | eng | P1 |
-| 8 | Phase 0a added: migrations, Testcontainers, CI, coverage glob, SIGTERM, fetch timeout | eng | P2 blast radius |
-| 9 | Quality breaker moved to phase 6 where its input exists | eng | P5 |
-| 10 | Partial unique index replaced by a domain rule | eng | P5 |
-| 11 | Four undefined tables defined; `version_assets` renamed; `campaign` removed from `channel` | eng/DX | P1 |
-| 12 | Role-to-landing map, five-state matrix, phone-first rep flow | design | P1 |
-| 13 | Artboards bound to phases; DESIGN.md wins on conflict | design | P5 |
-| 14 | Arabic rules as acceptance criteria; registry keyed by (column, value) | design/DX | P1 |
-| 15 | Stop rule restored (Gate A) | CEO | P1 |
-| 16 | Economics stated; a number per phase from 3 onward | CEO | P1 |
-| 17 | Sheet write-back from phase 3a | CEO | P2 |
-| 18 | Public-repo PII added to the risk table with an owner | CEO | P2 |
-| 19 | Operating model named before phase 9 | CEO | P1 |
-| 20 | Consent provenance added to `suppressions` | CEO | P1 |
-
-Deferred to TODOS.md: SSO, voice-note transcription. Rejected: visual pipeline builder.
-
-### User Challenge (not auto-decided)
-
-All eight voices recommend an eight-week evidence wedge over the full 44-week programme. The
-founder asked for the full platform in his own words and reaffirmed it. **His direction stands.**
-The plan keeps full scope and adds Gate A at about week 16, so the wedge is the first sixteen
-weeks of this plan rather than a competing one. Stopping at Gate A is already the design.
-
-### Schedule
-
-29 weeks claimed before review -> **38 raw, 44 buffered**. The review lengthened it because the
-first estimate omitted a migration system, a database test harness, CI, and the file-storage
-decision, and gave four weeks to rewriting every screen in a 4,127-line template literal.
-
-NO UNRESOLVED DECISIONS
+**UNRESOLVED DECISIONS:**
+- Fiscal calendar and target basis: does Lean's fiscal year start in January or another month, is a year labelled by its start or its end, and does a target measure **bookings**, **annual contract value**, or **total contract value**? `sale_price × qty × years` is TCV, and booking all of it into the win quarter is not achieved revenue. This is a business fact, it changes every number on the executive screen, and it cannot be resolved from the codebase.
