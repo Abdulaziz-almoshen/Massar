@@ -278,3 +278,48 @@ task list lived only in a conversation, never in `docs/artifacts/`.
   scoped endpoints — but a door that leads nowhere is visible to the founder in a way an unbuilt
   endpoint is not.
 - **Sector for the two production-only products** and **rotating one rep token**, both above.
+
+## Design-system debt, ratcheted by gate step 22 (2026-09-06)
+
+`scripts/check-design.mjs` records a baseline and fails the build on any INCREASE. These four are
+the recorded baseline — each may only shrink. Contrast and token categories are already at **0**.
+
+### Migrate 413 off-ladder font sizes
+**What:** `src/` uses 26 distinct font sizes; the DESIGN.md §2 ladder has 8. 11.5px appears 103
+times, 12.5px 88, 10.5px 33 — none on the ladder.
+**Why:** a type scale nobody follows is not a scale, and Arabic leading is currently per-author
+(seven different line-heights).
+**Context:** DESIGN.md §2 carries the migration map (`11.5 → --t-xs`, `13 → --t-sm`, etc). Purely
+mechanical, but 413 edits across 14 modules, so it wants its own commit and a visual pass.
+**Effort:** M · **Priority:** P2
+
+### Retire `font-weight:700` — 129 uses
+**What:** the pre-rebrand doc retired 700 from list rows; the rebrand dropped the rule and it is
+now restored in DESIGN.md §2 (700 survives only on `--t-num` and `--t-3xl`).
+**Why:** three weights is the ladder. 129 uses means the rule is losing.
+**Depends on:** the ladder migration above. **Effort:** S · **Priority:** P3
+
+### Move 13 integer z-index values onto the scale
+**What:** 1, 5, 20, 30, 60, 69, 70, 99, 120, 140, 200 exist in `src/`. DESIGN.md §2 now defines
+`--z-base` through `--z-tooltip`.
+**Why:** the product has drawers, toasts, a tab strip and a new-items pill. A drawer opening behind
+the sticky header is a certainty, not a risk, and the fix would be another arbitrary number.
+**Effort:** S · **Priority:** P2
+
+### Four KPI tiles are 73.7px wide on a phone
+**What:** `.crm-kpis` is `repeat(4,1fr)` with no breakpoint. Measured at 390px: tiles 73.7px,
+labels wrapping to four lines. `.pc-q` (the four quarters) is 84px each.
+**Why:** DESIGN.md now defines `--bp-sm/md/lg`; nothing uses them. `/rep` is the phone surface but
+the admin screens are reachable on a phone too.
+**Effort:** S · **Priority:** P2
+
+### Subnav tab is 43px under a coarse pointer
+**What:** measured 43px; DESIGN.md §3.10 requires 44. The strip is 44px but carries a 1px border.
+**Effort:** XS · **Priority:** P2
+
+### Delete the dead `.userbox` CSS
+**What:** `.userbox` is not in the DOM — a leftover of the retired navy sidebar. `.userbox .n` still
+sets `color:#fff`, which would be invisible on today's light rail.
+**Why:** dead CSS that fails a contrast reading and confuses the next reader. Not deleted in this
+pass because ADR-0001 limits `dashboard.ts` to anchored single-property edits.
+**Effort:** XS · **Priority:** P3
