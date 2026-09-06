@@ -279,10 +279,28 @@ task list lived only in a conversation, never in `docs/artifacts/`.
   endpoint is not.
 - **Sector for the two production-only products** and **rotating one rep token**, both above.
 
-## Design-system debt, ratcheted by gate step 22 (2026-09-06)
+## Design-system debt — CLEARED (2026-09-06)
 
-`scripts/check-design.mjs` records a baseline and fails the build on any INCREASE. These four are
-the recorded baseline — each may only shrink. Contrast and token categories are already at **0**.
+All six items below are **done**. `scripts/check-design.mjs` (gate step 22) now records a baseline
+of **zero in every category**, so nothing is grandfathered: the next off-ladder font size, integer
+z-index, forbidden text token or untokenised colour fails the build outright.
+
+| item | before | after |
+|---|---|---|
+| off-ladder font sizes | 413 (26 distinct sizes) | **0** (8 ladder values) |
+| `font-weight:700` | 129 | **0** outside `--t-num` / `--t-3xl` |
+| integer `z-index` | 13 (11 distinct) | **0** — all on `--z-*` |
+| KPI tile width @390px | 73.7px | **158px** |
+| subnav tab @coarse pointer | 43px | **44px** |
+| dead `.userbox` CSS | present, `color:#fff` on a light rail | **deleted** |
+
+Two things found while doing them. `rep-page.ts` carried its **own** `:root` with pre-rebrand names
+(`--teal`, `--strip`, `--line2`) pointing at post-rebrand values — a second token vocabulary for the
+same product, now aligned to DESIGN.md §2 with the old names kept as aliases. And a media query
+cannot read a custom property, so `@media (max-width:560px)` is written literally; DESIGN.md §2
+remains the source of the number and that is its only legal transcription.
+
+The original entries follow for the record.
 
 ### Migrate 413 off-ladder font sizes
 **What:** `src/` uses 26 distinct font sizes; the DESIGN.md §2 ladder has 8. 11.5px appears 103
