@@ -436,6 +436,41 @@ interior.dev's framing, which is the useful one: not by widget, but by the situa
 
 ### 8.5 The named patterns Massar actually uses
 
+**They live in one place: `src/motion.ts`.** By founder instruction (2026-09-06), any motion in
+Massar with an equivalent in the transitions.dev catalogue comes from that vocabulary rather than
+being invented per screen — implemented against the tokens in §2 and named after the catalogue, so
+any animation on any screen traces back to a named pattern.
+
+**Half the catalogue is deliberately absent.** Confetti bursts, gooey menus, 3D pointer tilt,
+like-button particles, smoky delete, card-stack fans: those are marketing-surface patterns, and
+§Pass-4's classifier puts Massar in APP UI, whose rules are calm surfaces and no decoration that
+carries no data. The absence is the decision, not an oversight.
+
+| pattern | class / helper | where it is used |
+|---|---|---|
+| number-pop-in | `moNumber()` | every KPI value and quarter figure, on CHANGE only |
+| value-flash | `moFlash(el, dir)` | a figure that moved, holding its `-soft` ground for `--flash` |
+| texts-reveal | `.mo-stagger` | ranked lists: «أين المفتوح الآن», the dept rollup |
+| skeleton-swap | `moSkeleton(n, widths)` | products, product drill, sector drill, reports |
+| accordion | `.mo-acc` + `moAcc()` | collapsibles, on `grid-template-rows` |
+| toast | `moToast(msg)` | package retire, and any outcome that must be SAID |
+| panel-reveal | `.mo-panel` + `.mo-scrim` | the conversation drawer |
+| modal | `.mo-modal` | dialogs |
+| icon-swap | `.mo-swap` | two glyphs in one grid cell, so the control never resizes |
+| success-check | `.mo-check` | draws on; it does not fade in |
+| error-shake | `moShake()` | one shake, never a loop, never the only signal |
+| tooltip | `.mo-tipwrap` | appear-only delay (400ms), instant exit |
+| text-states-swap | `moReserve()` / `moBusy()` / `moIdle()` | «حفظ» → «جارٍ الحفظ» at a reserved width |
+| learn-more-hover | `.mo-more .mo-arrow` | back links; the chevron shifts toward the inline-end |
+| tabs-sliding | `moveInd()` | the door tab strip and the report tabs |
+| new-items-pill | `.mo-nip` | rows arriving during a read are announced, not injected |
+
+Every one obeys four rules: `transform`/`opacity` only; RTL-correct, authored for the document's own
+direction and mirrored under `[dir="ltr"]` where CSS has no logical form; exit faster than entry;
+and reduced motion removes the trip, never the destination.
+
+#### The original catalogue notes
+
 From the approved system's own nine moments and transitions.dev's catalogue. **Adopt these by
 name**; do not invent a tenth without a reason written down.
 
