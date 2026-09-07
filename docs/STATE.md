@@ -43,6 +43,33 @@ is still undecided and the redesign makes that number the largest element on the
 still polls every 5 seconds, which a DB-backed work queue would turn into 48 queries a minute per
 open tab. Full review and the remaining tasks: `docs/designs/massar-ui-transformation.md`.
 
+### Same day — V3 reaches `/rep`
+
+The revamp had left the rep page behind, so Massar was shipping two visual languages: the manager
+saw V3 and the rep — who opens this standing in a clinic corridor — saw the panel it replaced.
+`/rep` is a separate document with its own `:root`, which is exactly why the 1,164-site remap did
+not reach it.
+
+It now carries the full token set, with phone-native decisions rather than a narrowed desktop:
+cards on a canvas (§3.6 as amended puts a short queue under the 12-row ceiling, and at 375px a
+table is not an option anyway), a gradient lead strip whose leading figure is **how many calls are
+owed** rather than money, 48px pill actions, and a sheet with a grabber. Silence became a pill —
+colour + dot + word, banded «تواصل حديث / يفتر / صامت / لم يُسجَّل» — instead of grey prose.
+
+Four real defects fell out of the work:
+
+- **Safe area.** `viewport-fit=cover` had been set since the page shipped and nothing consumed the
+  insets, so on a notched iPhone the pending bar sat under the home indicator.
+- **Numerals.** This page's `fmtN` did the digit swap and stopped, so money read «٦٠٠٠٠» here and
+  «٦٠٬٠٠٠» on `/dashboard` — one product, two ways of writing a number.
+- **Counted nouns.** «٤ جهات» needs the four-way rule, and the dual is the case a split KPI cannot
+  render: «٢ جهتان» duplicates the count, so at two the numeral is dropped.
+- **Focus and disabled.** The focus ring was the accent on an accent button — **1.00:1**, the exact
+  invisible-ring failure §3.8 exists to prevent, shipped on this page. A disabled control signalled
+  only by dimming violated §3.0b; it now says why through its ground.
+
+Verified at 375/768/1280 through the page's own `paint()`. U-6 is closed.
+
 **Security note:** `ADMIN_TOKEN` was echoed into a session transcript by a browser tool that prints
 the URL it navigated to. Nothing reached git — verified absent from the staged diff and from HEAD in
 both repos — but the value should be rotated.
