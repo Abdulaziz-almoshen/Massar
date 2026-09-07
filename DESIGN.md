@@ -2,7 +2,29 @@
 
 **Read this before writing any UI code. These tokens override newly invented values.**
 
-> **REBRAND, 2026-09-04.** This file previously specified a teal accent (`#1F7A73`) over a
+> **REBRAND V3 — THE VIOLET SYSTEM, 2026-09-07.** By founder instruction, Massar adopts the
+> visual language of two chosen references: the **Pillio** healthcare dashboard for the overview
+> surfaces (a floating rail, one accent-gradient hero tile, cards on a tinted canvas) and an
+> **AI-Manager leads dashboard** for the list surfaces (a real table, outlined status pills,
+> per-row quick actions, KPI cards with a delta chip). Both are re-authored for RTL, for Cairo, and
+> for ledger density — the references are LTR consumer surfaces and Massar is an Arabic sales
+> ledger, so the grammar transferred and the density did not.
+>
+> **What changed:** the accent moved from Seha blue `#306DB5` to violet `#6C5CE7`, across 1,164
+> value sites in `src/`. Radii grew (8/10/16 → 10/14/20, plus a new `--r-xl:26`). Shadows were
+> retuned to a violet-grey and gained a near-flat `--sh-0`. A `--canvas` token was added: the page
+> ground is `#F7F6FC` and `--paper` is now the CARD, not the page. `--accent*` aliases were added
+> as the forward names; `--blue*` survive as migration aliases so a value remap did not also have
+> to be a rename.
+>
+> **What did NOT change, deliberately:** §3.0 (the measured contrast floor), §3.0b (colour is never
+> the only channel), the four-value status contract, §4 in full, and §7. Every pair below was
+> re-measured, and `scripts/check-design.mjs` re-derives 17 of them on every build.
+>
+> **Selection record:** `~/.gstack/projects/Abdulaziz-almoshen-Massar/designs/massar-pillio-20260907/approved.json`.
+> **Plan and review:** `docs/designs/massar-ui-transformation.md`.
+
+> **REBRAND, 2026-09-04 (superseded by the above).** This file previously specified a teal accent (`#1F7A73`) over a
 > pure-neutral grey ramp with no shadows. It no longer does. By founder instruction, Massar adopts
 > the approved Seha design system at
 > `~/.gstack/projects/combinedservices/designs/design-system-20260903/preview-v2.html`
@@ -35,25 +57,39 @@ hook, Massar reads it as a specification and writes the equivalent in plain DOM.
 ### Colour
 
 ```
---blue:        #306DB5   primary. The one saturated hue on a surface.
---blue-deep:   #416CAD   pressed / heavier weight
---blue-light:  #629CCD   secondary data, scheduled state
---blue-tint:   #EAF1F8   selected row, quiet fill
---blue-wash:   #DDEAF3   hover border, gradient stop
---grad:        linear-gradient(270deg,#306DB5,#629CCD)   RTL default: deep at the inline-start
---wash:        linear-gradient(180deg,#DDEAF3,#FFFFFF)
+--accent:      #6C5CE7   primary. The one saturated hue on a surface.   4.86:1 on paper, and
+                         white on it is 4.86:1 — legal in BOTH directions.
+--accent-press:#5A4BD6   pressed / heavier weight                        5.36:1 on --surface
+--accent-deep: #4B3FBF   gradient dark stop; badge text on --accent-tint 6.44:1
+--accent-mark: #7A6BEE   THE DOT TOKEN                        3.54:1 on --surface, 4.07:1 on paper
+--accent-tint: #EDEAFD   selected row, quiet fill
+--accent-wash: #F4F2FD   row hover
+(aliases, one migration cycle: --blue = --accent, --blue-deep = --accent-press,
+ --blue-light = #8B7BF5, --blue-tint = --accent-tint, --blue-wash = #DDD6F7)
 
---paper:       #FFFFFF   the canvas
---surface:     #F4F6F9   strips, quiet tiles
---surface-2:   #EDF1F7   nested strip
---line:        #CBD7E4   a real border
---line-soft:   #E3E9F1   a hairline between rows
---ink:         #212529   headings, primary text
---ink-2:       #3A3A3A   body
---muted:       #536170   labels, secondary — the LIGHTEST text token
+--grad:        linear-gradient(270deg,#4B3FBF,#6C5CE7)
+--wash:        linear-gradient(180deg,#EDEAFD,#FFFFFF)
+
+--canvas:      #F7F6FC   THE PAGE GROUND. Cards sit on this.
+--paper:       #FFFFFF   the CARD, not the page
+--surface:     #F0EEF9   strips, quiet tiles, nested row grounds
+--surface-2:   #E9E6F4   nested strip
+--line:        #D6D1E8   a decorative hairline (1.48:1) — never a control's only affordance
+--line-soft:   #EFEDF7   a hairline between rows (1.16:1)
+--ink:         #16151F   headings, primary text        18.09:1
+--ink-2:       #35333F   body                          12.38:1
+--muted:       #6B6880   labels, secondary — the LIGHTEST text token
+                         5.36:1 on --paper, 4.67:1 on --surface
 ```
 
-**The greys are deliberately blue-tinted now.** The previous invariant banned exactly this. It is
+**`--grad` is a legal white-text ground at BOTH stops** — 7.60:1 and 4.86:1. This is the one place
+the references were not followed: Pillio's own gradient runs to a light violet where white measures
+**3.36:1**, which cannot legally carry the small labels the reference puts on it. `#8B7BF5` survives
+only as a decorative stop and as `--blue-light`; it is **never a text ground and never a mark on a
+tinted row** (2.93:1 on `--surface` — the identical failure this file already retired as
+`--s-sched`). That is what `--accent-mark` exists for.
+
+**The greys are deliberately violet-tinted now.** The previous invariant banned exactly this. It is
 reversed: `#F4F6F9`, `#CBD7E4`, `#536170` are the system, and a pure-neutral `#EDEDED` line is now
 the thing that looks foreign.
 
@@ -128,7 +164,7 @@ uses of `font-weight:700`. Restored and made enforceable:
 
 ```
 --s1:4  --s2:8  --s3:16  --s4:24  --s5:32  --s6:48  --s7:64      (px)
---r-none:0  --r-sm:8  --r-md:10  --r-lg:16  --r-pill:999
+--r-none:0  --r-sm:10  --r-md:14  --r-lg:20  --r-xl:26  --r-pill:999
 
 --z-base:0  --z-sticky:100  --z-dropdown:200  --z-overlay:300
 --z-modal:310  --z-toast:400  --z-tooltip:500
@@ -140,11 +176,12 @@ uses of `font-weight:700`. Restored and made enforceable:
 
 --i-sm:16px  --i-md:20px  --i-lg:24px    icon stroke 1.5px, currentColor
 --skeleton:#EDF1F7   --skeleton-hi:#F4F6F9
---sh-1: 0 0 4px rgba(83,97,112,.08)                       resting card
---sh-2: 0 4px 8px rgba(83,97,112,.16)                     raised control
---sh-3: 0 3px 6px -4px rgba(0,0,0,.12),
-        0 6px 16px rgba(0,0,0,.08),
-        0 9px 28px 8px rgba(0,0,0,.05)                    hover / floating
+--sh-0: 0 1px 2px rgba(41,35,80,.05)                      a card on the tinted canvas
+--sh-1: 0 2px 8px rgba(41,35,80,.06)                      resting card on white
+--sh-2: 0 8px 24px rgba(41,35,80,.08)                     the hero tile, floating controls
+--sh-3: 0 3px 6px -4px rgba(41,35,80,.10),
+        0 8px 20px rgba(41,35,80,.10),
+        0 12px 32px 8px rgba(41,35,80,.06)                hover / floating
 ```
 
 `--r-none` exists because §3.5 forbids off-scale radii and §3.6 requires a flush list — zero was
@@ -216,10 +253,16 @@ and this file's own Maintenance rule says a needed value not in §2 means the to
 3. **Type is Cairo, ladder as in §2, `letter-spacing:0` on Arabic.**
 4. **`--muted` is the lightest text.** Never `--s-off` or `--line` for a word a person must read.
 5. **Radii come from the four-value scale.** No `4px`, no `12px`, no `20px`.
-6. **A row is not a card.** List rows stay flush on `--line-soft`, block padding `--s2`, gutters
-   `--s4`/`--s3`, min-height 36px, no shadow. **Row state is a dot plus a label, never a filled
-   chip.** A *card* (`--r-md`, `--sh-1`) is a different object and is used where a thing is
-   genuinely separable.
+6. **A row is a card only under 12 rows.** *(Amended 2026-09-07. Both V3 references make every row
+   a soft card; at ledger scale that is a stack of cards pretending to be a table, which is the
+   design review's hard-rejection #7.)* A row may carry a `--surface` ground and `--r-md` **only on
+   a surface that shows at most 12 rows at once** — the home work queue, the alerts card, the
+   appointments card. Any surface that can exceed 12 — the leads list, the campaign list, the
+   opportunity list, everything `qa:scale` touches — stays a **flush table**: a header row,
+   `--line-soft` dividers, no per-row radius, no per-row shadow, hover as a ground change
+   (`--accent-wash`) and never a lift. **The radius belongs to the panel, never to the row.**
+   **Row state is a dot plus a label, or an outlined pill (colour + dot + word) — never a filled
+   chip.** A *card* (`--r-lg`, `--sh-0`) is a different object, used where a thing is separable.
 7. **One primary button per screen.** Everything else is ghost or text.
 8. **Focus is visible, and it is measured.** Default `outline:2px solid var(--blue);
    outline-offset:2px`, on `:focus-visible` only — a mouse click must not draw a ring. **On any
@@ -242,6 +285,20 @@ and this file's own Maintenance rule says a needed value not in §2 means the to
 11. **There is no dark mode.** Massar renders on `--paper` only. `prefers-color-scheme` is not
    consulted, no token has a dark counterpart, and the shadows are a blue-grey tuned for a light
    ground. If dark mode is ever adopted it is a rebrand of this file, not a per-screen media query.
+12. **Hatch means NOT YET, and nothing else.** `repeating-linear-gradient` at 115deg is a TEXTURE
+   channel layered on colour, so an unfilled remainder still reads in greyscale and under a colour
+   deficiency. It marks the empty part of a bar, a stage not reached, and a period with no target.
+   It is never decoration and never encodes a second meaning. Adopted from both V3 references,
+   which is the only reason a texture is in this file at all.
+
+13. **A destructive action is a HOLD, not a second click.** «حذف» arms nothing; the operator presses
+   and holds for 900ms while a fill grows, and releasing early cancels. Arm-then-confirm put the
+   second click exactly where the first one was, which is how a row gets deleted by a fast double
+   click. **The fill is a transitioned `transform`, never a keyframe**, so an interrupted hold
+   resumes from where the element actually is (§8.1 failure 2). **Keyboard never holds** — Enter or
+   Space arms, a second press commits — and `prefers-reduced-motion` falls back to the same two-step
+   path, because a hold whose only feedback is an invisible timer is §8.1 failure 3.
+
 9. **Illustration is drawn flat, in brand colour.** No generated imagery, no stock, no 3D render,
    no pastel icon discs.
 

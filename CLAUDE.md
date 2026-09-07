@@ -21,7 +21,17 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **the commercial engine, and the four reviews that caught what it got wrong
+Last major milestone: **V3 — the violet revamp, and two guards that could not fail (Sep 7, 2026)**
+— the founder chose two references (Pillio for the overview surfaces, an AI-Manager leads dashboard
+for the lists) and the accent moved from Seha blue to violet across **1,164 value sites**, with new
+radii, violet-grey shadows and a tinted `--canvas`. Three contrast failures were caught by measuring
+before drawing, one of them byte-identical to a failure DESIGN.md had already retired. Delete became
+a **hold**, the gesture §8.5 named and nothing implemented. But the finding that mattered was the
+guards: `dashboard.ts` returned early without touching `#body`, so `#home` and `#kmon` painted an
+empty white page for ~5s; and `smoke.py` asserted landmarks against the whole page, so **six** routes
+were matching a string in the nav rail or breadcrumb and were green on a screen that rendered
+nothing. Scoping the assertion to `#body` exposed all six in one run. Review and remaining tasks:
+`docs/designs/massar-ui-transformation.md`. Previous: **the commercial engine, and the four reviews that caught what it got wrong
 (Sep 4, 2026)** — «المستهدفات والأداء» ships on eight weighted stages recovered from Lean's own
 archive, over an append-only stage ledger. Four independent reviews followed: security (the first
 dedicated one in this project's history — ten findings, including a stored XSS that stole

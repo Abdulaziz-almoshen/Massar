@@ -1,3 +1,52 @@
+## 2026-09-07 — V3: the violet revamp, and two guards that could not fail
+
+**Goal:** the founder asked for a whole-UI transformation against two references he chose — the
+Pillio healthcare dashboard for the overview surfaces, and an AI-Manager leads dashboard for the
+lists. Both are LTR consumer surfaces. Massar is an Arabic sales ledger, so the grammar transferred
+and the density did not.
+
+**Shipped, deployed, health green, smoke green on 15 routes.**
+
+- **The accent moved from Seha blue to violet across 1,164 value sites** in `src/`. A value remap,
+  not a rename: `--blue*` survive as aliases beside new `--accent*` names. Radii grew, shadows were
+  retuned violet-grey with a new near-flat `--sh-0`, and `--canvas:#F7F6FC` was added — the page
+  ground is tinted now and `--paper` is the CARD, not the page.
+- **Three contrast failures were caught by measuring before drawing**, all in the new palette's own
+  first draft: a green badge text at 3.86:1, the light violet as a status DOT at 2.93:1 on
+  `--surface` (byte-identical to the retired `--s-sched`, which is why `--accent-mark` now exists),
+  and a ghost button whose only affordance was a 1.29:1 hairline. `check-design.mjs` re-derives 17
+  pairs per build, up from 10.
+- **`src/revamp.ts`** carries the new shell and component language, injected last so it wins on
+  cascade order rather than rewriting hundreds of rules inside a 4,400-line template literal under
+  ADR-0001. `.sh-tile.lead` already meant "the tile carrying the leading figure", so it became the
+  one gradient surface per screen with no new marker invented.
+- **Delete is a hold now.** DESIGN.md §8.5 has named hold-to-confirm since the rebrand and nothing
+  implemented it; arm-then-confirm put the second click exactly where the first one was. Driven at
+  runtime to prove it: «حذف» → «استمر…», fill at `scaleX(0.213)` mid-transition, clean reset on
+  early release, nothing deleted.
+
+**The two guards that could not fail — the real finding of this cycle:**
+
+1. `dashboard.ts` returned early **without touching `#body`** while the first fetch was in flight,
+   so `#home` and `#kmon` rendered an empty white page. Measured at ~5s against production:
+   `bodyLen` 0 at 1.5s, 781 at 6s, zero console errors. `vPending()` now paints five skeleton rows.
+2. `smoke.py` asserted landmarks against the **whole page**, so **six** routes were matching a
+   string that also lives in the nav rail or the breadcrumb — `#kmon`, `#customers`, `#targets`,
+   `#pipeline`, `#tasks`, `#notes`. Every one was green on a screen that rendered nothing. Scoping
+   the assertion to `#body` exposed all six in one run; all were repointed at strings the body
+   actually renders. **This matters more now, not less:** a skeleton clears the character
+   threshold, so the landmark is the only thing left between a stuck fetch and a green deploy.
+
+**Still open, and stated on the plan rather than hidden:** the target basis (bookings / ACV / TCV)
+is still undecided and the redesign makes that number the largest element on the home screen;
+`opps-domain.ts` still carries six stages against the eight «المستهدفات والأداء» ships; and `#home`
+still polls every 5 seconds, which a DB-backed work queue would turn into 48 queries a minute per
+open tab. Full review and the remaining tasks: `docs/designs/massar-ui-transformation.md`.
+
+**Security note:** `ADMIN_TOKEN` was echoed into a session transcript by a browser tool that prints
+the URL it navigated to. Nothing reached git — verified absent from the staged diff and from HEAD in
+both repos — but the value should be rotated.
+
 ## 2026-09-04 · [T5] إعادة بناء الـCRM — المسارات الخمسة · NOT DEPLOYED
 
 خمسة مسارات من المراجعة الهندسية، منجزة محليًا وغير منشورة بعد. البوابة صارت عشرين خطوة،
