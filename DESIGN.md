@@ -102,8 +102,16 @@ did not also have to be a rename:
 --line-soft:   #ECEEF2   a hairline between rows (1.16:1)
 --ink:         #14161A   headings, primary text        18.09:1
 --ink-2:       #33373E   body                          12.38:1
---muted:       #656B76   labels, secondary — the LIGHTEST text token
-                         5.36:1 on --paper, 4.67:1 on --surface
+--muted:       #656B76   labels, secondary — the lightest ink on paper/canvas/surface
+                         5.36 on --paper · 5.00 on --canvas · 4.74 on --surface
+                         **4.37 on --surface-2 — FAILS.** Use --muted-2 there.
+--muted-2:     #545A66   the same role on --surface-2, the darkest grey ground. 5.64:1.
+                         Exists for the reason the -mark tokens do: one value for the harder
+                         ground, rather than lightening the ground to suit the ink.
+                         --surface-2 is a CONTROL TRACK — the view toggle sits on it — so this
+                         was not a corner case. It was sixteen inactive segment labels across
+                         six screens, found by measuring every rendered node against its real
+                         painted ground instead of an assumed one.
 ```
 
 **`--grad` is a legal white-text ground at BOTH stops** — 7.60:1 and 4.86:1. This is the one place
