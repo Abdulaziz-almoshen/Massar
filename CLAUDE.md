@@ -21,7 +21,12 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **V3 — the violet revamp, and two guards that could not fail (Sep 7, 2026)**
+Last major milestone: **V4 — the Tonomo blue (Sep 8, 2026)** — a third founder-chosen reference
+moved the accent to `#2563EB`, but the hue was the smallest part: radii halved, shadows retired for
+a hairline, accent surfaces solid rather than gradient, controls compacted. 1,186 value sites, every
+ratio measured first. The day's real lesson: the doc-vs-code drift gate built that morning caught
+its own author twice, and the second catch exposed a hole in it — a check that compares only shared
+keys cannot see a token the doc never mentions. Previous: **V3 — the violet revamp, and two guards that could not fail (Sep 7, 2026)**
 — the founder chose two references (Pillio for the overview surfaces, an AI-Manager leads dashboard
 for the lists) and the accent moved from Seha blue to violet across **1,164 value sites**, with new
 radii, violet-grey shadows and a tinted `--canvas`. Three contrast failures were caught by measuring

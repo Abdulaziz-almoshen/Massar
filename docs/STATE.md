@@ -1,3 +1,27 @@
+## 2026-09-08 — V4: the Tonomo blue, and the gate that caught its own author
+
+**Goal:** a third reference, chosen by the founder: the Tonomo scheduling app. "Instead of purple
+make it look and feel like this."
+
+**Shipped, deployed, health green, smoke green on 15 routes.**
+
+The hue is the smallest part of it. Tonomo is a **flat, bordered, tight-radius** product, so V4 is:
+radii halved (10/14/20/26 → 6/8/12/16), shadows retired in favour of a `--line` hairline on every
+card and panel, accent surfaces **solid rather than gradient** (Tonomo has no gradients anywhere),
+controls compacted to 38px with the 44px floor moved to the coarse-pointer query where §3.10
+actually requires it, and the lavender canvas replaced by a neutral `#F6F7F9`. 1,186 value sites
+remapped, every ratio measured first, zero failures.
+
+Two components came from the reference: the **action row** (a full-width `--accent-bar` control
+between a primary button and a text link, its label 6.88:1 on its own bar) and the **collapsible
+section header** (the chevron rotates rather than swapping glyphs, so the control never resizes).
+
+**The drift gate earned itself on its first day.** Built an hour earlier, it caught this very
+change twice — once when `src/` moved ahead of DESIGN.md, and again when `--accent-bar` shipped
+undocumented. The second catch exposed a hole in the check itself: it compared only keys present on
+BOTH sides, so a token the doc never mentions was invisible to it. It now fails on undocumented
+tokens too. A guard that can only see disagreement, never absence, is half a guard.
+
 ## 2026-09-07 — V3: the violet revamp, and two guards that could not fail
 
 **Goal:** the founder asked for a whole-UI transformation against two references he chose — the

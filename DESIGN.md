@@ -2,7 +2,21 @@
 
 **Read this before writing any UI code. These tokens override newly invented values.**
 
-> **REBRAND V3 — THE VIOLET SYSTEM, 2026-09-07.** By founder instruction, Massar adopts the
+> **REBRAND V4 — THE TONOMO BLUE, 2026-09-08.** By founder instruction, the accent moves from the
+> V3 violet to a saturated blue (`#2563EB`) on a third chosen reference: the **Tonomo** scheduling
+> app. Tonomo is a flat, bordered, tight-radius product, and that is the substance of the change,
+> not just the hue: **radii halved** (10/14/20/26 → 6/8/12/16), **shadows retired in favour of a
+> `--line` hairline** on every card and panel, **controls compacted** (38px, with the 44px floor
+> moved to the coarse-pointer query where §3.10 actually requires it), and the accent surfaces are
+> **solid rather than gradient** — Tonomo has no gradients anywhere. Two components came with it:
+> the **action row** (a full-width `--accent-bar` control that sits between a primary button and a
+> text link) and the **collapsible section header**. Grounds went cooler: the lavender canvas is
+> now a neutral `#F6F7F9`.
+>
+> **1,186 value sites** were remapped. Everything in §3, §4, §6, §7 and §8 is unchanged — this is a
+> palette and a geometry, not a new set of rules.
+>
+> **REBRAND V3 — THE VIOLET SYSTEM, 2026-09-07 (superseded).** By founder instruction, Massar adopts the
 > visual language of two chosen references: the **Pillio** healthcare dashboard for the overview
 > surfaces (a floating rail, one accent-gradient hero tile, cards on a tinted canvas) and an
 > **AI-Manager leads dashboard** for the list surfaces (a real table, outlined status pills,
@@ -10,10 +24,10 @@
 > for ledger density — the references are LTR consumer surfaces and Massar is an Arabic sales
 > ledger, so the grammar transferred and the density did not.
 >
-> **What changed:** the accent moved from Seha blue `#306DB5` to violet `#6C5CE7`, across 1,164
+> **What changed:** the accent moved from Seha blue `#306DB5` to violet `#2563EB`, across 1,164
 > value sites in `src/`. Radii grew (8/10/16 → 10/14/20, plus a new `--r-xl:26`). Shadows were
 > retuned to a violet-grey and gained a near-flat `--sh-0`. A `--canvas` token was added: the page
-> ground is `#F7F6FC` and `--paper` is now the CARD, not the page. `--accent*` aliases were added
+> ground is `#F6F7F9` and `--paper` is now the CARD, not the page. `--accent*` aliases were added
 > as the forward names; `--blue*` survive as migration aliases so a value remap did not also have
 > to be a rename.
 >
@@ -57,34 +71,44 @@ hook, Massar reads it as a specification and writes the equivalent in plain DOM.
 ### Colour
 
 ```
---accent:      #6C5CE7   primary. The one saturated hue on a surface.   4.86:1 on paper, and
+--accent:      #2563EB   primary. The one saturated hue on a surface.   4.86:1 on paper, and
                          white on it is 4.86:1 — legal in BOTH directions.
---accent-press:#5A4BD6   pressed / heavier weight                        5.36:1 on --surface
---accent-deep: #4B3FBF   gradient dark stop; badge text on --accent-tint 6.44:1
---accent-mark: #7A6BEE   THE DOT TOKEN                        3.54:1 on --surface, 4.07:1 on paper
---accent-tint: #EDEAFD   selected row, quiet fill
---accent-wash: #F4F2FD   row hover
-(aliases, one migration cycle: --blue = --accent, --blue-deep = --accent-press,
- --blue-light = #8B7BF5, --blue-tint = --accent-tint, --blue-wash = #DDD6F7)
+--accent-press:#1E5FCC   pressed / heavier weight                        5.36:1 on --surface
+--accent-deep: #1A47BE   gradient dark stop; badge text on --accent-tint 6.44:1
+--accent-mark: #4A7BE8   THE DOT TOKEN                        3.54:1 on --surface, 4.07:1 on paper
+--accent-tint: #EAF1FE   selected row, quiet fill
+--accent-wash: #F2F6FE   row hover
+--accent-bar:      #EAF1FE   the ACTION ROW ground (see §5). Same value as --accent-tint, named
+                             separately because the tint is a state and the bar is a control.
+--accent-bar-hover:#DCE8FC   the action row, hovered
 
---grad:        linear-gradient(270deg,#4B3FBF,#6C5CE7)
---wash:        linear-gradient(180deg,#EDEAFD,#FFFFFF)
+Migration aliases, one cycle. New code uses --accent*; these exist so a 1,186-site value remap
+did not also have to be a rename:
+--blue:            #2563EB
+--blue-deep:       #1E5FCC
+--blue-light:      #5B8DEF   decorative ONLY — white on it is 3.23:1, and as a mark on --surface
+                             it is 2.86:1. Never a text ground, never a dot.
+--blue-tint:       #EAF1FE
+--blue-wash:       #DCE8FC
 
---canvas:      #F7F6FC   THE PAGE GROUND. Cards sit on this.
+--grad:        linear-gradient(270deg,#1A47BE,#2563EB)
+--wash:        linear-gradient(180deg,#EAF1FE,#FFFFFF)
+
+--canvas:      #F6F7F9   THE PAGE GROUND. Cards sit on this.
 --paper:       #FFFFFF   the CARD, not the page
---surface:     #F0EEF9   strips, quiet tiles, nested row grounds
---surface-2:   #E9E6F4   nested strip
---line:        #D6D1E8   a decorative hairline (1.48:1) — never a control's only affordance
---line-soft:   #EFEDF7   a hairline between rows (1.16:1)
---ink:         #16151F   headings, primary text        18.09:1
---ink-2:       #35333F   body                          12.38:1
---muted:       #6B6880   labels, secondary — the LIGHTEST text token
+--surface:     #EFF1F5   strips, quiet tiles, nested row grounds
+--surface-2:   #E5E8EE   nested strip
+--line:        #D8DCE3   a decorative hairline (1.48:1) — never a control's only affordance
+--line-soft:   #ECEEF2   a hairline between rows (1.16:1)
+--ink:         #14161A   headings, primary text        18.09:1
+--ink-2:       #33373E   body                          12.38:1
+--muted:       #656B76   labels, secondary — the LIGHTEST text token
                          5.36:1 on --paper, 4.67:1 on --surface
 ```
 
 **`--grad` is a legal white-text ground at BOTH stops** — 7.60:1 and 4.86:1. This is the one place
 the references were not followed: Pillio's own gradient runs to a light violet where white measures
-**3.36:1**, which cannot legally carry the small labels the reference puts on it. `#8B7BF5` survives
+**3.36:1**, which cannot legally carry the small labels the reference puts on it. `#5B8DEF` survives
 only as a decorative stop and as `--blue-light`; it is **never a text ground and never a mark on a
 tinted row** (2.93:1 on `--surface` — the identical failure this file already retired as
 `--s-sched`). That is what `--accent-mark` exists for.
@@ -109,17 +133,17 @@ the blue family and may never be substituted for the accent, nor the accent for 
 issued / good      --s-issued:#1E9E63      (same)         --s-issued-soft:#E4F5EC  --s-issued-text:#12633F
 failed / bad       --s-fail:#D9534F        (same)         --s-fail-soft:#FBE7E6    --s-fail-text:#8E2A27
 attention / warn   --s-attn-mark:#B37F00   --s-attn:#D99A00  --s-attn-soft:#FFF5D6 --s-attn-text:#7A5600
-scheduled          --s-sched-mark:#7A6BEE  --s-sched:#8B7BF5 --s-sched-soft:#E9E6F9 --s-sched-text:#4B3FBF
-under review       --s-review:#5A4BD6      (same)         --s-review-soft:#EAE7F7  --s-review-text:#453A9E
-attending          --s-attend:#6C5CE7      (same)         --s-attend-soft:#EDEAFD  --s-attend-text:#4B3FBF
-off / inactive     --s-off-mark:#7F8595    --s-off:#A9AEBE   --s-off-soft:#EFEEF5  --s-off-text:#4A5560
+scheduled          --s-sched-mark:#4A7BE8  --s-sched:#5B8DEF --s-sched-soft:#E9F0FE --s-sched-text:#1A47BE
+under review       --s-review:#1E5FCC      (same)         --s-review-soft:#E7EEFB  --s-review-text:#173FA8
+attending          --s-attend:#2563EB      (same)         --s-attend-soft:#EAF1FE  --s-attend-text:#1A47BE
+off / inactive     --s-off-mark:#767D89    --s-off:#A2A9B4   --s-off-soft:#EEF0F3  --s-off-text:#464C56
 --s-attn-deep:#B37F00   (retained alias of --s-attn-mark)
 ```
 
 **MARK vs FILL is the whole point, and the V3 rebrand changed WHERE it bites.** `--s-attn`
 (2.45:1) and `--s-off` (2.21:1) are still below the 3:1 non-text floor on `--paper`, so as a status
 DOT they are invisible to a low-vision reader. `--s-sched` is the one that moved: at the old blue it
-measured 2.93:1 on paper and failed there, and at `#8B7BF5` it measures **3.36:1 on `--paper` and
+measured 2.93:1 on paper and failed there, and at `#5B8DEF` it measures **3.36:1 on `--paper` and
 passes** — but **2.93:1 on `--surface`**, which is the ground a status dot actually sits on inside a
 tinted row. **Do not read that as the mark token being redundant.** A mark must clear 3:1 against
 *every* ground it can land on, and the tinted row is the one that fails. The `-mark` values exist
@@ -168,7 +192,7 @@ uses of `font-weight:700`. Restored and made enforceable:
 
 ```
 --s1:4  --s2:8  --s3:16  --s4:24  --s5:32  --s6:48  --s7:64      (px)
---r-none:0  --r-sm:10  --r-md:14  --r-lg:20  --r-xl:26  --r-pill:999
+--r-none:0  --r-sm:6  --r-md:8  --r-lg:12  --r-xl:16  --r-pill:999
 
 --z-base:0  --z-sticky:100  --z-dropdown:200  --z-overlay:300
 --z-modal:310  --z-toast:400  --z-tooltip:500
@@ -179,13 +203,17 @@ uses of `font-weight:700`. Restored and made enforceable:
 --content-max:1180px
 
 --i-sm:16px  --i-md:20px  --i-lg:24px    icon stroke 1.5px, currentColor
---skeleton:#E9E6F4   --skeleton-hi:#F0EEF9
---sh-0: 0 1px 2px rgba(41,35,80,.05)                      a card on the tinted canvas
---sh-1: 0 2px 8px rgba(41,35,80,.06)                      resting card on white
---sh-2: 0 8px 24px rgba(41,35,80,.08)                     the hero tile, floating controls
---sh-3: 0 3px 6px -4px rgba(41,35,80,.10),
-        0 8px 20px rgba(41,35,80,.10),
-        0 12px 32px 8px rgba(41,35,80,.06)                hover / floating
+--skeleton:#E5E8EE   --skeleton-hi:#EFF1F5
+--sh-0: 0 1px 2px rgba(16,24,40,.04)                      barely there; most surfaces use --line
+--sh-1: 0 1px 3px rgba(16,24,40,.08)                      a raised control
+--sh-2: 0 6px 20px rgba(16,24,40,.10)                     a floating surface: menu, sheet, toast
+
+**Shadows are nearly retired.** V4 separates with a `--line` hairline, the way the reference does.
+A card is `1px solid --line` with NO shadow; `--sh-2` is for things that genuinely float above the
+page. A shadow used where a border would do is the V3 look, not this one.
+--sh-3: 0 3px 6px -4px rgba(16,24,40,.10),
+        0 8px 20px rgba(16,24,40,.10),
+        0 12px 32px 8px rgba(16,24,40,.06)                hover / floating
 ```
 
 `--r-none` exists because §3.5 forbids off-scale radii and §3.6 requires a flush list — zero was
@@ -229,34 +257,34 @@ and this file's own Maintenance rule says a needed value not in §2 means the to
 
    | pair | ratio | verdict |
    |---|---|---|
-   | `--ink` on `--paper` | 18.09 | pass |
-   | `--ink-2` on `--paper` | 12.38 | pass |
+   | `--ink` on `--paper` | 18.11 | pass |
+   | `--ink-2` on `--paper` | 11.95 | pass |
    | `--muted` on `--paper` | 5.36 | pass |
-   | `--muted` on `--surface` | 4.67 | pass |
-   | `--muted` on `--canvas` | 4.99 | pass |
-   | `--accent` on `--paper` | 4.86 | pass |
-   | white on `--accent` | 4.86 | pass |
-   | white on `--accent-deep` | 7.60 | pass — so **both `--grad` stops are legal text grounds** |
-   | **white on `--accent-mark`** | **4.07** | large text only; not a body-text ground |
-   | **white on `--blue-light`** | **3.36** | **never a text ground** |
+   | `--muted` on `--surface` | 4.74 | pass |
+   | `--muted` on `--canvas` | 5.00 | pass |
+   | `--accent` on `--paper` | 5.17 | pass |
+   | white on `--accent` | 5.17 | pass |
+   | white on `--accent-deep` | 7.81 | pass — so **both `--grad` stops are legal text grounds** |
+   | `--accent-deep` on `--accent-tint` | 6.88 | pass — the action-row label on its bar |
+   | **white on `--blue-light`** | 3.23 | **never a text ground** |
    | `--s-issued-text` on `-soft` | 6.44 | pass |
    | `--s-attn-text` on `-soft` | 6.11 | pass |
    | `--s-fail-text` on `-soft` | 7.04 | pass |
-   | `--s-sched-text` on `-soft` | 6.21 | pass |
-   | `--s-review-text` on `-soft` | 7.34 | pass |
-   | `--s-attend-text` on `-soft` | 6.44 | pass |
-   | `--s-off-text` on `-soft` | 6.60 | pass |
+   | `--s-sched-text` on `-soft` | 6.83 | pass |
+   | `--s-review-text` on `-soft` | 7.79 | pass |
+   | `--s-attend-text` on `-soft` | 6.88 | pass |
+   | `--s-off-text` on `-soft` | 7.57 | pass |
    | `--s-issued` as a mark | 3.43 | pass |
    | `--s-fail` as a mark | 3.96 | pass |
    | `--s-attn-mark` as a mark | 3.53 | pass |
-   | `--s-sched-mark` as a mark | 4.07 | pass |
-   | `--s-off-mark` as a mark | 3.69 | pass |
-   | `--accent-mark` on `--surface` | 3.54 | pass — the dot token, on the tinted row |
-   | `--s-off-mark` as a FIELD ring | 3.69 | pass — see §5, Field |
-   | **`--s-attn` as a mark** | **2.45** | **fails — use `--s-attn-mark`** |
-   | **`--s-sched` as a mark, on `--surface`** | **2.93** | **fails — use `--s-sched-mark`** |
-   | **`--s-off` as a mark** | **2.21** | **fails — use `--s-off-mark`** |
-   | `--line` on `--paper` | 1.48 | decorative hairline only |
+   | `--s-sched-mark` as a mark | 3.97 | pass |
+   | `--s-off-mark` as a mark | 4.15 | pass |
+   | `--accent-mark` on `--surface` | 3.51 | pass — the dot token, on the tinted row |
+   | `--s-off-mark` as a FIELD ring | 4.15 | pass — see §5, Field |
+   | **`--s-attn` as a mark** | 2.45 | **fails — use `--s-attn-mark`** |
+   | **`--s-sched` as a mark, on `--surface`** | 2.86 | **fails — use `--s-sched-mark`** |
+   | **`--s-off` as a mark** | 2.37 | **fails — use `--s-off-mark`** |
+   | `--line` on `--paper` | 1.38 | decorative hairline only — a card edge, never a control boundary |
    | `--line-soft` on `--paper` | 1.16 | decorative hairline only |
 
 0b. **Colour is never the only channel.** Any state distinguished by colour is also distinguished by
@@ -271,7 +299,7 @@ and this file's own Maintenance rule says a needed value not in §2 means the to
    separate channel and do not count against this.
 2. **The page is `--canvas`. `--paper` is the CARD, not the page.** *(Changed by V3. Before the
    rebrand the page was white and this rule read "canvas is `--paper`" — which now contradicts §2,
-   where `--canvas:#F7F6FC` is the ground cards sit on.)* `--surface` marks strips, tiles and nested
+   where `--canvas:#F6F7F9` is the ground cards sit on.)* `--surface` marks strips, tiles and nested
    row grounds; it is never the page and never a card.
 3. **Type is Cairo, ladder as in §2, `letter-spacing:0` on Arabic.**
 4. **`--muted` is the lightest text.** Never `--s-off` or `--line` for a word a person must read.
