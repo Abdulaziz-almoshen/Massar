@@ -109,18 +109,22 @@ the blue family and may never be substituted for the accent, nor the accent for 
 issued / good      --s-issued:#1E9E63      (same)         --s-issued-soft:#E4F5EC  --s-issued-text:#12633F
 failed / bad       --s-fail:#D9534F        (same)         --s-fail-soft:#FBE7E6    --s-fail-text:#8E2A27
 attention / warn   --s-attn-mark:#B37F00   --s-attn:#D99A00  --s-attn-soft:#FFF5D6 --s-attn-text:#7A5600
-scheduled          --s-sched-mark:#4A7FB0  --s-sched:#629CCD --s-sched-soft:#E8F0F8 --s-sched-text:#2A5988
-under review       --s-review:#416CAD      (same)         --s-review-soft:#E9EEF7  --s-review-text:#2C4A78
-attending          --s-attend:#306DB5      (same)         --s-attend-soft:#EAF1F8  --s-attend-text:#255490
-off / inactive     --s-off-mark:#8C959F    --s-off:#A9B4C0   --s-off-soft:#EEF1F4  --s-off-text:#4A5560
+scheduled          --s-sched-mark:#7A6BEE  --s-sched:#8B7BF5 --s-sched-soft:#E9E6F9 --s-sched-text:#4B3FBF
+under review       --s-review:#5A4BD6      (same)         --s-review-soft:#EAE7F7  --s-review-text:#453A9E
+attending          --s-attend:#6C5CE7      (same)         --s-attend-soft:#EDEAFD  --s-attend-text:#4B3FBF
+off / inactive     --s-off-mark:#7F8595    --s-off:#A9AEBE   --s-off-soft:#EFEEF5  --s-off-text:#4A5560
 --s-attn-deep:#B37F00   (retained alias of --s-attn-mark)
 ```
 
-**MARK vs FILL is the whole point.** `--s-attn` (2.45:1), `--s-sched` (2.93:1) and `--s-off`
-(2.10:1) are below the 3:1 non-text floor on `--paper`, so as a status DOT they are invisible to a
-low-vision reader — and §5 mandates state as a dot plus a label. The `-mark` values exist for dots,
-bars and chart marks; the base values remain the founder-approved fills and are used where the area
-is large. No approved colour was changed to fix this.
+**MARK vs FILL is the whole point, and the V3 rebrand changed WHERE it bites.** `--s-attn`
+(2.45:1) and `--s-off` (2.21:1) are still below the 3:1 non-text floor on `--paper`, so as a status
+DOT they are invisible to a low-vision reader. `--s-sched` is the one that moved: at the old blue it
+measured 2.93:1 on paper and failed there, and at `#8B7BF5` it measures **3.36:1 on `--paper` and
+passes** — but **2.93:1 on `--surface`**, which is the ground a status dot actually sits on inside a
+tinted row. **Do not read that as the mark token being redundant.** A mark must clear 3:1 against
+*every* ground it can land on, and the tinted row is the one that fails. The `-mark` values exist
+for dots, bars and chart marks; the base values remain the founder-approved fills, used where the
+area is large. No approved colour was changed to fix this.
 
 The `-soft` fill is a **badge ground**; the `-text` is the only legal label on it. Never put a base
 `--s-*` on its own `-soft` — the off badge at `--s-off` on `--s-off-soft` is 1.86:1.
@@ -175,7 +179,7 @@ uses of `font-weight:700`. Restored and made enforceable:
 --content-max:1180px
 
 --i-sm:16px  --i-md:20px  --i-lg:24px    icon stroke 1.5px, currentColor
---skeleton:#EDF1F7   --skeleton-hi:#F4F6F9
+--skeleton:#E9E6F4   --skeleton-hi:#F0EEF9
 --sh-0: 0 1px 2px rgba(41,35,80,.05)                      a card on the tinted canvas
 --sh-1: 0 2px 8px rgba(41,35,80,.06)                      resting card on white
 --sh-2: 0 8px 24px rgba(41,35,80,.08)                     the hero tile, floating controls
@@ -225,19 +229,35 @@ and this file's own Maintenance rule says a needed value not in §2 means the to
 
    | pair | ratio | verdict |
    |---|---|---|
-   | `--ink` on `--paper` | 15.43 | pass |
-   | `--ink-2` on `--paper` | 11.37 | pass |
-   | `--muted` on `--paper` | 6.34 | pass |
-   | `--muted` on `--surface` | 5.86 | pass |
-   | `--blue` on `--paper` | 5.28 | pass |
-   | white on `--blue` | 5.28 | pass |
-   | **white on `--blue-light`** | **2.93** | **never a text ground** |
-   | `--s-issued-text` / `-attn-text` / `-fail-text` on their `-soft` | 6.44 / 6.11 / 7.04 | pass |
+   | `--ink` on `--paper` | 18.09 | pass |
+   | `--ink-2` on `--paper` | 12.38 | pass |
+   | `--muted` on `--paper` | 5.36 | pass |
+   | `--muted` on `--surface` | 4.67 | pass |
+   | `--muted` on `--canvas` | 4.99 | pass |
+   | `--accent` on `--paper` | 4.86 | pass |
+   | white on `--accent` | 4.86 | pass |
+   | white on `--accent-deep` | 7.60 | pass — so **both `--grad` stops are legal text grounds** |
+   | **white on `--accent-mark`** | **4.07** | large text only; not a body-text ground |
+   | **white on `--blue-light`** | **3.36** | **never a text ground** |
+   | `--s-issued-text` on `-soft` | 6.44 | pass |
+   | `--s-attn-text` on `-soft` | 6.11 | pass |
+   | `--s-fail-text` on `-soft` | 7.04 | pass |
+   | `--s-sched-text` on `-soft` | 6.21 | pass |
+   | `--s-review-text` on `-soft` | 7.34 | pass |
+   | `--s-attend-text` on `-soft` | 6.44 | pass |
+   | `--s-off-text` on `-soft` | 6.60 | pass |
    | `--s-issued` as a mark | 3.43 | pass |
    | `--s-fail` as a mark | 3.96 | pass |
+   | `--s-attn-mark` as a mark | 3.53 | pass |
+   | `--s-sched-mark` as a mark | 4.07 | pass |
+   | `--s-off-mark` as a mark | 3.69 | pass |
+   | `--accent-mark` on `--surface` | 3.54 | pass — the dot token, on the tinted row |
+   | `--s-off-mark` as a FIELD ring | 3.69 | pass — see §5, Field |
    | **`--s-attn` as a mark** | **2.45** | **fails — use `--s-attn-mark`** |
-   | **`--s-sched` as a mark** | **2.93** | **fails — use `--s-sched-mark`** |
-   | **`--s-off` as a mark** | **2.10** | **fails — use `--s-off-mark`** |
+   | **`--s-sched` as a mark, on `--surface`** | **2.93** | **fails — use `--s-sched-mark`** |
+   | **`--s-off` as a mark** | **2.21** | **fails — use `--s-off-mark`** |
+   | `--line` on `--paper` | 1.48 | decorative hairline only |
+   | `--line-soft` on `--paper` | 1.16 | decorative hairline only |
 
 0b. **Colour is never the only channel.** Any state distinguished by colour is also distinguished by
    at least one of: a text label, a glyph, a shape, or a position. This binds badges (colour + word),
@@ -249,7 +269,10 @@ and this file's own Maintenance rule says a needed value not in §2 means the to
 1. **`--blue` is the only saturated hue on a surface** — primary button, focus ring, selected-row
    border, progress fill, the sidebar mark, and the one leading figure. Status hues (§2) are a
    separate channel and do not count against this.
-2. **Canvas is `--paper`. `--surface` marks strips and tiles, never a page.**
+2. **The page is `--canvas`. `--paper` is the CARD, not the page.** *(Changed by V3. Before the
+   rebrand the page was white and this rule read "canvas is `--paper`" — which now contradicts §2,
+   where `--canvas:#F7F6FC` is the ground cards sit on.)* `--surface` marks strips, tiles and nested
+   row grounds; it is never the page and never a card.
 3. **Type is Cairo, ladder as in §2, `letter-spacing:0` on Arabic.**
 4. **`--muted` is the lightest text.** Never `--s-off` or `--line` for a word a person must read.
 5. **Radii come from the four-value scale.** No `4px`, no `12px`, no `20px`.
@@ -371,6 +394,40 @@ one**, in `--s-fail-text` at `--t-xs`, prefixed by a glyph (§3.0b). The field c
 `aria-invalid="true"` and `aria-describedby` pointing at the message. A form-level error sits above
 the submit control, never only in a toast — a toast expires and an error must not. On submit
 failure, focus moves to the first invalid field. The shake is decorative and never the only signal.
+
+**Table.** The list surface for anything that can exceed 12 rows (§3.6). A `--surface` header row
+at `--t-xs`/600 `--muted`, `--line-soft` dividers, `--r-none` on the row, and the radius on the
+PANEL. Hover is a ground change to `--accent-wash`, never a lift. The panel carries `--r-lg` and
+`--sh-0`; its header holds the title and a right-aligned cluster of `--r-pill` icon buttons.
+
+**Field.** `--paper` ground with **its own ring**: `inset 0 0 0 1px --s-off-mark` (3.69:1, clearing
+the 3:1 floor a control boundary must meet). Focus deepens to a 2px `--accent` ring plus a 3px
+`--accent-tint` halo. **A field must never rely on the page for its visibility.** This rule exists
+because the first V3 pass made the field a filled `--surface` box with no border, which reads on
+white and *vanishes* on a tinted panel — on the opportunity editor, whose ground is also
+`--surface`, four price inputs rendered as bare numbers floating with no affordance at all.
+`--line` (1.48:1) is why the ring is not drawn in it. **Every field carries a real `<label for>`;
+a placeholder is not a label** — it disappears the moment someone types.
+
+**Outlined status pill.** `inset 0 0 0 1.5px <status -mark>` on `--paper`, the `-text` value as the
+label, a 7px dot of the same `-mark`, `--r-pill`. Three channels — colour, shape, word — so §3.0b
+holds without the reader seeing colour. **`white-space: nowrap`**: a pill that wraps to two lines
+moves every row beneath it, which is §8.1 failure 1.
+
+**Meter.** Ten cells at `--r-sm`, `--surface-2` track, `--accent-mark` fill (`--accent-deep` above
+the top band). For an EARNED 0-100 score only — never a percentage of something the system made up.
+The number and the band label sit beside it, so the reading survives at rest under reduced motion:
+a meter that only reads after animating is a meter that never reads.
+
+**Delta chip.** `-soft` ground, `-text` label, `--r-pill`, and an arrow glyph **plus** a word.
+Colour is the third channel, never the first. «— بلا تغيّر» is a real state and gets `--s-off-soft`.
+
+**Filter chip.** `--surface` ground, `--r-pill`, `--accent-tint` + `--accent-deep` when active.
+Each carries a COUNT, and per §7.10 that count is work OWED, never a total.
+
+**Hold-to-confirm.** See §3.13. `--s-fail-soft` ground at rest inside a row of actions, height
+matched to the buttons beside it, and quiet until hovered — a destructive control does not
+advertise itself in a resting row.
 
 **Icon.** `--i-sm`/`--i-md`/`--i-lg`, stroke 1.5px, `currentColor`. An icon that carries meaning on
 its own clears the 3:1 non-text floor and has an accessible name. An icon that merely repeats a
