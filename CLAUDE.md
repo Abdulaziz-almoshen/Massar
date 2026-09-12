@@ -21,7 +21,12 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **V4 — the Tonomo blue (Sep 8, 2026)** — a third founder-chosen reference
+Last major milestone: **V5 — «فرص البيع» rebuilt to one grammar (Sep 12, 2026)** — the founder rejected the
+opportunities page; it was redesigned from Dribbble/Pinterest references and three design voices, and shipped only
+after Claude AND GPT (codex, gpt-6-astra) both approved every criterion against production screenshots and 114
+executed browser checks. The reviews caught a global checkbox that drew an X, a toolbar that clipped, and a
+selection bar that moved the table; capture caught `/admin/opps` rendering «لا فرص مسجّلة بعد» during a database
+blip. Open: massar-db (256MB) keeps failing health checks, and OpenAI credits are exhausted. Previous: **V4 — the Tonomo blue (Sep 8, 2026)** — a third founder-chosen reference
 moved the accent to `#2563EB`, but the hue was the smallest part: radii halved, shadows retired for
 a hairline, accent surfaces solid rather than gradient, controls compacted. 1,186 value sites, every
 ratio measured first. The day's real lesson: the doc-vs-code drift gate built that morning caught

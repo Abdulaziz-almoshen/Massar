@@ -1,3 +1,44 @@
+## 2026-09-12 — V5: «فرص البيع» rebuilt to one grammar, signed off by Claude and GPT together
+
+**Goal:** the founder rejected the opportunities page: "not professional, not enterprise-level, not
+modern and minimalist, not very connected". His bar: redesign from Dribbble/Pinterest references,
+consult gstack design-consultation and GPT, and do not come back until Claude AND GPT approve every
+criterion.
+
+**Shipped, deployed, health green, smoke green.** Engine commits a944f06 → latest (9, local, NOT pushed).
+
+- **Process.** Dribbble/Pinterest references (Nozti, Closr, Nexus, LeadPilot) → three design voices
+  (Claude, an independent Claude designer, GPT via `codex exec` on gpt-6-astra — the CLI had to be
+  upgraded 0.144.4 → 0.154.0 to reach that model) → a spec GPT approved after three rounds
+  (`docs/designs/opps-v5-spec.md`) → build → five review rounds against PRODUCTION screenshots plus
+  executed browser tests (114 checks on the final build). Final: **CLAUDE VERDICT: APPROVED ·
+  GPT VERDICT: APPROVED**, all four criteria and all 15 checklist items PASS.
+- **The page.** One tab row (فرز الردود is now its own route, #triage). The nine stage cards are one
+  summary: a leading figure, a bar whose geometry is priced open value, a legend that filters, three
+  shortcut metrics. One ledger panel: toolbar, the WhatsApp band as an action row, a flush 56px table
+  with full SAR figures, source as a link to the conversation. Detail AND create are one drawer with
+  per-field autosave (pending / saved / failed + retry + discard). Cards view removed; kanban shares
+  the grammar. #opps/<id> is a shareable record URL.
+- **What the reviews caught that I would have shipped:** the global checkbox tick was two crossing
+  gradients and drew an X on every selected row in the product; the drawer used aside/header/footer and
+  inherited the shell's phone styles (216px header in a 390px drawer); a failed load re-fetched on every
+  paint; the scrolling filter strip clipped «الأعلى قيمة»; selecting a row jumped the table 34px because
+  the selection bar was shorter than the wrapped resting bar.
+- **Found during capture, fixed:** during a massar-db health-check failure `/admin/opps` returned []
+  and the board said «لا فرص مسجّلة بعد» over six real deals. The read now answers 503 and the board
+  says «تعذّر تحميل الفرص» with retry. The pg pool also keeps idle clients 10s max with keepAlive.
+- **Smoke caught** `opNOpp` removed but still read by «المستهدفات والأداء» (#perf blank on the first
+  V5 deploy) — restored within minutes.
+
+**Open, and the founder's call:**
+- **massar-db is unstable.** The 256MB shared-cpu Postgres fails its own health checks for a few
+  seconds, repeatedly (20:35, 21:25, 21:27 UTC). Every 500 seen today traces to it. Fix is a bigger
+  VM — a spend decision.
+- **OpenAI is out of credits** on production: `429 You have no credits remaining` in engine logs. The
+  WhatsApp agent's LLM calls fail until billing is topped up.
+- Nice-to-haves left: a shorter phone search placeholder, an edge fade on the phone filter strip, a
+  stronger pressed state on the icon view switch, Latin digits inside native number inputs.
+
 ## 2026-09-08 — V4: the Tonomo blue, and the gate that caught its own author
 
 **Goal:** a third reference, chosen by the founder: the Tonomo scheduling app. "Instead of purple
