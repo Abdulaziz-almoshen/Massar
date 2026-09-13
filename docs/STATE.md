@@ -59,6 +59,25 @@ Both reviewers returned CHANGES REQUIRED on the V5 build. What they found, and w
   screen; and a DELETE carrying a JSON content-type with no body is refused by Fastify, so the UI
   reported failure and did nothing.
 
+### 3. Four review rounds, and what each one caught (engine e5cb1c1, c34bae2)
+The two reviewers ran again on the deployed build and rejected it twice more. Worth recording,
+because the pattern is the lesson: **each round's finding was smaller and later than the last, and
+every one of them was a claim the code made and did not keep.**
+- Round 2 caught a bug the numeral sweep had SHIPPED: `[^0-9٠-٩]` became `[^0-90-9]`, so a phone
+  pasted in Arabic-Indic digits was refused. No test covered it; a reviewer read the diff.
+- Round 2 also caught that the new stage settings were editable but not yet consulted — the board
+  read the compiled ladder on a cold entry, a paused rung was still offered AND accepted, the SLA
+  drove nothing, and deleting a seeded rung «worked» until the next boot recreated it.
+- Round 3 caught that the wizard's «cleared selection» lasted exactly one render: the clear was a
+  local, so the next paint fell into the «nothing chosen yet» branch and silently selected the first
+  eligible product — the same substitution the previous commit claimed to have fixed, one
+  interaction later, under a message promising otherwise.
+- Round 3 also caught the last «(٩–١١ص)», an `opStage()` fallback that labelled an unknown rung
+  «تواصل أولي», and a full-table read I had just introduced in the opportunity PATCH.
+Evidence for each round lives in the session scratchpad (`review4/`, `review5/`), and every round's
+checks were executed against the build being judged rather than copied forward — which is itself a
+thing a reviewer caught.
+
 **Open, and the founder's call:**
 - **A mail sender.** Escalations and support requests are recorded and queued in intent only. Nothing
   is sent until a provider is chosen (Resend key, or Microsoft 365 / Gmail SMTP).
