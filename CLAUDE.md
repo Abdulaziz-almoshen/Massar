@@ -21,7 +21,17 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **V5 — «فرص البيع» rebuilt to one grammar (Sep 12, 2026)** — the founder rejected the
+Last major milestone: **the admin layer, and the review round that found a function shadowing another (Sep 13, 2026)** —
+two reviewers rejected the products build and the finding that mattered was a class no gate could see: `coveragePct`
+was declared by both `product-domain` and `sales-domain`, and the page ran whichever was concatenated last, so every
+coverage figure read «—» while the unit test passed. `scripts/check-browser-globals.mjs` is now gate step 24: no
+top-level name in the page script may be declared twice. The same round fixed a wizard that silently fell back to the
+embedded six products, a phone summary broken by a container query written against another container's name, and an
+open-line count that disagreed with its own link. Then the founder's admin layer: «إعدادات النظام» (sales stages the
+admin may add/rename/reweight/pause with an SLA — code owns the stage KEY, the admin owns everything else — plus
+divisions and a team directory), «تصعيد»/«طلب دعم» on every opportunity (recorded, never sent: no mail sender is
+configured), the product record led by the assistant-readiness band, and western numerals everywhere the dashboard
+prints a number. Previous: **V5 — «فرص البيع» rebuilt to one grammar (Sep 12, 2026)** — the founder rejected the
 opportunities page; it was redesigned from Dribbble/Pinterest references and three design voices, and shipped only
 after Claude AND GPT (codex, gpt-6-astra) both approved every criterion against production screenshots and 114
 executed browser checks. The reviews caught a global checkbox that drew an X, a toolbar that clipped, and a

@@ -1,3 +1,72 @@
+## 2026-09-13 — «المنتجات» V5 review round, then the admin layer the founder asked for
+
+**Two pieces of work in one day.** The first closed the products cycle; the second answered six
+requests the founder sent while it was closing.
+
+### 1. The products review round (engine 733fc85, 4ec9d55)
+Both reviewers returned CHANGES REQUIRED on the V5 build. What they found, and what it cost:
+
+- **Two functions named `coveragePct`.** `product-domain`'s (achieved, target) was silently replaced
+  in the browser by `sales-domain`'s (achieved, weightedOpen, target) — `SALES_DOMAIN_JS` is
+  concatenated after `PRODUCT_DOMAIN_JS` — so every coverage figure on the products screens printed
+  «—» while `#perf` showed a percentage for the same rows. The unit test proved the two-argument rule
+  in Node; the page ran the three-argument one. **No gate could see this class**, so one exists now:
+  `scripts/check-browser-globals.mjs` (gate step 24) parses every inline script in `DASHBOARD_HTML`
+  and fails on any top-level name declared twice, or on a script that does not parse. Proven against
+  the bug: with the rename stashed it reports «coveragePct declared 2×».
+- **The campaign wizard fell back to the embedded six** while the catalogue loaded, and silently
+  forever when the read failed — production showed 6 cards instead of 10, omitting the two products
+  the assistant cannot sell. Now: a loading line, a failed line with retry, never a fallback list;
+  blocked products are hatched with their reason and cannot be selected; the selection is held by
+  NAME, so a refresh cannot swap the product under the operator.
+- **The phone summary was broken** because the shared `.ox-sum` narrow rules are written for the
+  opportunities container (`oxw`) and this section is its own container (`pxw`) — a container query
+  that silently applies to nothing. Restated under `.px` (OPPS_CRM_CSS is injected later, so
+  specificity, not order, has to win it).
+- `openLines` counted PRICED lines only, so the record read «بند واحد · 1 بلا تسعير» beside a link
+  labelled «الفرص المفتوحة 2». Archived products were still offered in the opps drawer. Eight
+  counted-noun sites. Accessibility: modal focus return, `aria-describedby` on autosave status,
+  labels on the hidden file inputs.
+- **Reliability:** a transient GET is retried (700ms, 2s) before the screen says it failed;
+  `DB_POOL_MAX` defaults to 3, not 5 — massar-db is a 256MB machine with ~40MB free and it spent
+  2–3s of every 10 waiting on memory under a dashboard burst; a pool error answers 503, not 500.
+- Verified by execution, not inspection: **157 local browser checks** (states, accessibility,
+  uploads, ledger reconciliation, targets both ways, archive against the assistant's live knowledge,
+  rename → restart → the old name gone everywhere, unmatched reconciliation by both actions) and
+  **43 production checks** at 1440/1280/390 plus 24 consecutive reads with zero failures.
+
+### 2. The admin layer (engine fa97395, f51707c, 6f01c02)
+- **The product record leads with readiness.** «الهيكل التنظيمي» is gone from a record's strip; in
+  its place the assistant-readiness band — four cells, the word, each item's state, and «أكمله» /
+  «أضف سعرًا» jumping to the section that fixes it. The side no longer repeats it.
+- **«إعدادات النظام» is a new door.** Sales stages are the admin's: add, rename, reweight, reorder,
+  set an SLA in days, pause. The ownership line is stated and enforced — **code owns
+  key/dot/terminal, the admin owns label/weight/position/SLA/active** — and the boot seed stopped
+  dragging the table back to `SALES_STAGES` on every deploy, which would have undone every edit.
+  `opportunities_stage_check` is dropped with it (a CHECK cannot know about a rung added at runtime)
+  and `validateOppLine` now takes the live ladder. Divisions («القسم» — the company unit, NOT
+  «القطاع», the market) own products and people; the team directory carries name, email, role and
+  division.
+- **Every opportunity can be escalated or ask for support.** Recipient by role from the directory,
+  enforced on the server as well as in the picker. Delivery is **recorded, never sent**: the founder
+  chose «record now, email later», so the row says «مسجّل — لم يُرسل بريد بعد» and nothing claims an
+  email left the building. No new control can message a customer.
+- **All numerals are western** (`ar-SA-u-nu-latn` + a 122-line literal sweep + migration 010 for the
+  one seeded string carrying digits as data). The WhatsApp text the agent composes is deliberately
+  unchanged — customer-facing Arabic is a different decision.
+- Three defects came out of RUNNING it: an Arabic stage label ending in digits produced an invalid
+  key; a forced reload requested while another was in flight was dropped, so a deleted row stayed on
+  screen; and a DELETE carrying a JSON content-type with no body is refused by Fastify, so the UI
+  reported failure and did nothing.
+
+**Open, and the founder's call:**
+- **A mail sender.** Escalations and support requests are recorded and queued in intent only. Nothing
+  is sent until a provider is chosen (Resend key, or Microsoft 365 / Gmail SMTP).
+- **massar-db is still 256MB** and still the source of every production 500. The pool cut to 3 and
+  the client retry hide the short stalls; they do not fix the machine.
+- **OpenAI credits are still exhausted** on production (429), so the agent's LLM calls fail.
+- Two legacy knowledge products stay paused until someone presses «اعتماد النص الحالي».
+
 ## 2026-09-12 — V5: «فرص البيع» rebuilt to one grammar, signed off by Claude and GPT together
 
 **Goal:** the founder rejected the opportunities page: "not professional, not enterprise-level, not
