@@ -1,3 +1,34 @@
+## 2026-09-15 — client A's BRD, slice 4: what a campaign led to, and the BRD's KPIs (engine ef9ffde, deployed)
+
+**Shipped** (`src/campaign-results-domain.ts` 17 tests, `src/campaign-results-crm.ts`, no migration):
+- **«سلسلة التحويل»** on a campaign's «الأداء» tab (BR-MON-004/006, BR-RPT-002): أُرسلت → شوهدت → ردّوا →
+  مهتمون → مؤهلون → فرص → اجتماعات → عروض مُرسلة → مبيعات, the six BRD rates and campaign revenue, and the
+  attributed lines linking to their opportunity. The top four come from `campStats`, the same reading as the
+  campaign's own cards, so one number never has two sources.
+- **«مؤشرات الأداء»** under التقارير (§23, `GET /admin/kpis`): read, reply, interest, qualification, opportunity
+  conversion, win rate, campaign revenue, indicator yield, recommendation adoption, target achievement, handoff
+  rate, median reply time, knowledge readiness, and a per-campaign table. **Answer confidence is printed as not
+  measured** — the assistant emits none, and a made-up figure is worse than «—».
+- **Attribution rule (DEC-11):** only WhatsApp lines; only targets the message reached (a refused send earns
+  nothing); `source_ref` is a hint checked against product, launch and a 30-day window; each hot reading
+  belongs to one campaign. `autoOppFromHot` now writes the campaign that could have produced the reading.
+- **Scheduling (BR-CAM-004) deferred, DEC-10:** needs approved templates on the production WABA, a send queue
+  the engine does not have, and a test send the no-send rule forbids.
+
+**Review** (Claude; GPT out of quota): three P1s, all fixed — the auto-writer's `source_ref` named the phone's
+newest campaign of any product (or a rehearsal) and attribution trusted it; refused targets were credited with
+deals; one hot tag qualified a customer in every overlapping campaign. P2s fixed: rates silently capped at 100٪
+beside «5 من 3» (now «—»), rejected quotes not counted as sent, an adoption denominator that mixed periods (now
+launched ÷ decided), labels that contradicted their maths, a reply-time median that timed from an old unanswered
+message, a silent 200,000-row cap, results frozen for the life of the page (now refetched after a minute).
+Evidence: S4 API 20/20, browser 31/31 (desktop + 390px, failure + retry states); S2/S3 regressions 158/158;
+gate green; smoke 18/18; live page byte-compared to b9bb73d before deploying (no parallel work overwritten).
+Production: 6 live campaigns, 2 qualified, 2 opportunities, handoff 20٪ (1 of 5).
+
+**Not done:** handoff rate is today's state, not a history of handoffs; reply time counts any message from
+Massar (a campaign opener included); report cards on «نظرة تنفيذية»/«تقارير التعثّر» are still not drillable.
+**Next:** S5 — partners.
+
 ## 2026-09-15 — client A's BRD, slice 3: the work on an opportunity (engine b9bb73d, deployed)
 
 **Shipped** (migration `013-opportunity-work`, `src/opp-work-domain.ts` 13 tests, `src/opp-work-crm.ts`):
