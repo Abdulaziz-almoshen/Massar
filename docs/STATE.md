@@ -1,3 +1,35 @@
+## 2026-09-15 — client A's BRD, slice 7: roles, one permission gate, and an audit log (engine 1e396b3, deployed)
+
+**Shipped** (migration `016-users-audit`, `src/rbac-domain.ts` 9 tests, `src/users-crm.ts`, gate `check:rbac`):
+- **Roles** (§22, NFR-001): users with one of the BRD's five roles — تنفيذي، مدير منتج، مبيعات، شريك، مدير نظام — each with
+  a sign-in token shown once (192 bits, stored as SHA-256). `ADMIN_TOKEN` is untouched and keeps full access.
+- **One gate**: an onRequest hook checks every `/admin` route against `ROUTE_PERMISSIONS`; unlisted routes are the
+  administrator's only, and `scripts/check-rbac-routes.mjs` (gate step) fails the build when a registered route is not
+  listed (124 today). The 118 `adminOk()` call sites read the gate's decision, so they cannot drift from it.
+- **Data scope** (NFR-007): a partner sees and records for its own company only and is not shown deals it did not bring;
+  roles without conversation access boot with no conversations. The page hides doors, tabs and screens a role cannot open
+  and says why on a direct link; the server refuses regardless.
+- **Audit** (NFR-002): every successful labelled write → `audit_log` (user id, name, role, action, record, summarised
+  values — arrays as counts, never tokens). «سجل التدقيق» filters by user and action.
+- **DEC-14:** `campaigns.launch` (a WhatsApp send to real customers) stays administrator-only; the matrix's «إنشاء/إطلاق
+  حملة» ✓ for the product manager is granted as create, pending the founder's decision (CLAUDE.md §7).
+
+**Security review** (Claude; GPT out of quota): P1 fixed — any user token reached `/rep` (read the whole unowned pipeline
+with phones and values, move stages to won/lost, unaudited), and `REP_TOKENS` is set in production. P2s fixed — a
+disable/rotation/demotion could silently not apply when the credential reload failed (now applied in memory at once, plus
+a timer and the reconnect path), wrong tokens could stack credential queries, a partner could probe any phone's deal
+stage, audit identity by a free-text name (now user id, unique non-reserved names), sign-in did not reload the role and a
+partner's poll fired six 403s every 5s. Evidence: S7 API 57/57, browser 17/17 (per role); S2–S6 regressions 359/359; gate
+green; smoke 21/21; live byte-compared to 24f8c72 before deploy; production `/admin/me` with ADMIN_TOKEN → admin.
+
+**Not done:** write buttons on screens other than partners/users are not hidden for view-only roles (the server refuses
+with «لا تملك صلاحية هذه العملية»); refused attempts are not audited; agent/webhook actions are outside `/admin` and not in
+the audit log (the stage ledger and events tables keep them). No users exist in production yet — none were created.
+
+**Client A BRD status:** all seven slices shipped. Open: BR-CAM-004 scheduling (DEC-10), BR-CAM-002 region/type/sector
+as structured filters, BR-RPT-004 drill-down on the executive/stuck cards, runtime observation of the S6 answer tool,
+GPT sign-off on all seven slices (Codex quota returns Sep 19).
+
 ## 2026-09-15 — client A's BRD, slice 6: knowledge by section, and answers the code acts on (engine 24f8c72, deployed)
 
 **Shipped** (migration `015-answer-quality`, `src/knowledge-domain.ts` 12 tests, `src/knowledge-crm.ts`):
