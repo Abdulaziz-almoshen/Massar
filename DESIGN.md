@@ -481,6 +481,27 @@ no third case.
 3. **Time runs right to left**, like the language. Mirror the x mapping; do not reverse the array.
 4. **One accent per surface.** `--blue` is the only saturated hue in a chart. Status hues may
    appear where the chart is *about* status.
+   **Exception, by founder instruction (2026-09-15): the STAGE channel.** A sales stage has its own
+   hue wherever it is drawn — the board summary bar and stage ribbon, the row badge, the kanban
+   column cap, the drawer stepper, and «نظرة تنفيذية». V5's single blue ramp made six stages
+   indistinguishable, which is what was rejected. The palette is NOT a set of `:root` tokens; it lives
+   in `massar-engine/src/stage-tone-domain.ts`, where each tone is three values (solid, soft, text)
+   and `tests/stage-tone-domain.test.ts` re-measures every one: white on solid ≥ 4.5:1, text on soft
+   ≥ 4.5:1, solid as a mark on `--surface-2` ≥ 3:1, and no two stages share a hue.
+
+   | stage | solid | soft | text |
+   | --- | --- | --- | --- |
+   | تواصل أولي | #475569 | #EEF1F5 | #334155 |
+   | اكتشاف الحاجة | #0F766E | #E3F4F1 | #115E59 |
+   | عرض المنتج | #2563EB | #EAF1FE | #1A47BE |
+   | التقييم التقني | #7C3AED | #F1EAFD | #5B21B6 |
+   | عرض السعر | #A21CAF | #FAE8FB | #86198F |
+   | التفاوض والاعتماد | #C2410C | #FDEDE3 | #9A3412 |
+   | إغلاق – ربح | #15803D | #E4F5EC | #12633F |
+   | إغلاق – خسارة | #B91C1C | #FBE7E6 | #8E2A27 |
+
+   A rung an admin adds takes the next hue from a four-tone cycle (indigo, sky, amber, pink). §3.0b
+   still holds without exception: every stage colour is drawn beside the stage's printed label.
 5. **A label you truncate is a label you did not draw.** No `text-overflow` on an axis: if the
    category name does not fit horizontally, the chart is the wrong orientation.
 6. **Zero denominators render «—», never «٠٪».**

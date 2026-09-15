@@ -47,8 +47,7 @@ a coloured THINK — PLAN — REVIEW stepper), then «enhance it, im cpo, give m
 stage track was six unlabelled 6px `aria-hidden` bars named only in a tooltip; and a stage change
 rebuilt the DOM, so no transition could ever play.
 
-**Shipped** (engine branch `cpo-reports`, worktree `/Users/abdulaziz/Projects/massar-engine-cpo`,
-deployed 40cf93e; health green, smoke 15/15):
+**Shipped** (engine `79507d8` on master, pushed; deployed with massar-69's indicators merged in; health green, smoke 17/17):
 - **Stage identity.** `src/stage-tone-domain.ts`: a solid/soft/text tone per stage, contrast re-measured
   by test (white on solid ≥ 4.5, text on soft ≥ 4.5, mark on `--surface-2` ≥ 3, no shared hue), custom
   rungs cycled among custom rungs. Used by the summary bar, a stage **ribbon** of connected chips
@@ -73,11 +72,22 @@ deal's value counted twice; reports stale after edits; drill-downs keeping stray
 channels ranked «best»; `constructor` as a stage key resolving to no colour; focus lost on a keyboard
 stage move; sub-44px touch targets; a priced 0 SAR line called unpriced; «منذ يومان» / «بندان مفتوحة».
 
+**Then an independent Claude reviewer, two rounds** (8eb06c4, 79507d8): the stepper STOLE focus from a
+field tabbed to within 1.6s, and later dropped it to <body> when «حُفظ» cleared; the funnel said «لا
+تسرّب ١٠٠٪» beside three backfilled losses it could not place (now `lostUnplaced`, named on the card); a
+tie was ranked «best»; a failed background refresh replaced good figures with an error screen; «مهلة
+يومان». All fixed and verified in a browser.
+
+**The deploy race.** massar-69 deployed its merge of an OLDER cpo-reports 14 seconds after mine, and
+production silently lost 8eb06c4 while both sessions' smoke went green. Caught by grepping the live
+page for a string only the newer commit carries; fixed by merging master in and redeploying the
+combined tree. Lesson in memory: two sessions on one Fly app must hand over a SHA, and «smoke green»
+does not say WHICH build is live.
+
 **Open:**
-- **GPT round 2 did not run** — codex usage limit, resets Sep 19 2026. The two-model sign-off bar is
-  therefore NOT met; Claude-side review status is recorded below when it lands.
-- **Branch not merged to master.** massar-69 holds uncommitted db.ts/index.ts edits in the main
-  checkout; it has been told to merge `cpo-reports` before its next deploy, or that deploy erases this.
+- **The GPT sign-off is not met.** Round 1 was CHANGES REQUIRED (all 12 fixed); round 2 hit the codex
+  usage limit mid-run and returned no verdict. Resets Sep 19 2026, or more credits (founder's spend call).
+  The Claude review's round-2 findings are fixed; no third Claude round was run.
 - Smoke no longer asserts «تقارير التعثّر» (the landmark moved to the new default face).
 - Production data is 6 open lines, 5 unpriced, none closed: most rates honestly print «—».
 
