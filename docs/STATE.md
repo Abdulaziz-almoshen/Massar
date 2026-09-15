@@ -1,3 +1,32 @@
+## 2026-09-15 — client A's BRD, slice 6: knowledge by section, and answers the code acts on (engine 24f8c72, deployed)
+
+**Shipped** (migration `015-answer-quality`, `src/knowledge-domain.ts` 12 tests, `src/knowledge-crm.ts`):
+- **Weighted sections** (BR-KB-001..003): the stored document is read as the BRD's eight sections (weights 10/15/10/15/
+  10/15/15/10), scored, with each section's state, the gaps that cost most first, and a warning when a document is
+  longer than the 6,000 characters the prompt carries. Embedded products are scored from their catalogue entry.
+  Advisory line 60٪ (DEC-13) — eligibility stays the approval rule.
+- **Section editor**: writes a DRAFT (hash-guarded, rebases on conflict), approved through «اعتماد المعرفة» like an
+  uploaded deck. Nothing in a document is dropped: prefaces and first-level blocks land in «معلومات إضافية».
+- **Answer basis** (BR-KB-004/005): tool `record_answer_basis{basis, confidence, product_question}` once per turn; a
+  product question answered from nothing or with low confidence is handed to a person IN CODE — never over a
+  stop/decline/close/booking, never for a test contact or one already with a person.
+- **Measured** (BR-MON-005): «الثقة في الإجابات» (the assistant's self-rating, stated as such), «دقة الإجابات»
+  (reviewers' «صحيحة/خاطئة» on each reply in the conversation panel), and average knowledge score.
+- Approved knowledge in the prompt is narrowed to the locked product (it carried every product's document).
+
+**Review** (Claude; GPT out of quota): P1s fixed — an automatic handoff overwrote «stopped»/«scheduled» and would page
+a rep about someone who said stop; an answer written alongside a tool call was replaced by the canned opener. P2s
+fixed — double signals per turn and dodge refusals eaten by the extra round (rounds 4→5, refusals kept at 3), low
+confidence on small talk paging the team, the editor dropping content and refusing ###, the cross-product prompt
+leak, a first-save race, one reply with two verdicts, copy claiming behaviour that did not exist.
+Evidence: S6 API 30/30, browser 19/19; S2–S5 regressions 310/310; gate (incl. opt-out, voice, prompt checks) green;
+smoke 19/19; live byte-compared to bf856aa before deploy.
+
+**Unproven, stated:** the tool's runtime behaviour was not observed — no sends allowed and OpenAI credits exhausted.
+Spot-check one transcript when credits return (does the model call record_answer_basis, and does the reply still go
+out). For embedded products the first price line still comes from the code catalogue; the editor says so.
+**Next:** S7 — roles and permissions (§22), audit log (NFR-002).
+
 ## 2026-09-15 — client A's BRD, slice 5: «شركاء المبيعات» (engine bf856aa, deployed)
 
 **Shipped** (migration `014-partners`, `src/partner-domain.ts` 15 tests, `src/partners-crm.ts`):

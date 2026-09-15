@@ -21,7 +21,9 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **client A's BRD, slice 5 of 7 (Sep 15, 2026)** — «شركاء المبيعات»: weekly contact targets per
+Last major milestone: **client A's BRD, slice 6 of 7 (Sep 15, 2026)** — knowledge scored by eight weighted sections with an
+editor that writes drafts; the assistant reports each answer's basis and code hands uncertain product answers to a person
+(never over a stop or a booking); confidence and reviewer-marked accuracy are measured. Previous: **client A's BRD, slice 5 of 7 (Sep 15, 2026)** — «شركاء المبيعات»: weekly contact targets per
 partner and product, recorded results, and every «مهتم» handed to sales as a partner opportunity the partner can no longer
 change. Previous: **client A's BRD, slice 4 of 7 (Sep 15, 2026)** — each campaign shows what it led to past «مهتم»
 (qualified → opportunities → meetings → sent quotes → won, revenue) and «مؤشرات الأداء» prints the BRD's §23 KPIs; answer
