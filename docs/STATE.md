@@ -1,3 +1,39 @@
+## 2026-09-15 — client A's BRD, slice 2: customers as accounts (engine ac3adcc, deployed)
+
+**Built to the prototype's own screens** (decoded from the client's export): «الحسابات» under العملاء with
+الكل / معتمدون / مقترحون / مرفوضون, the «إضافة عميل جديد» sheet with repeatable contacts, and the
+account record `#account/<id>` — which, unlike `#customer/<phone>`, opens for a customer who has never
+written to us.
+- Migration `012-customer-accounts`: `entities` gains sector, importance, owner (a `team_members` row),
+  approval (existing rows backfilled «معتمد», new ones «مقترح»), source and author; `entity_contacts` (one
+  primary, kept by id across edits); `account_events` (created by every path, edited with the fields that
+  changed, approved/rejected/re-proposed).
+- `src/account-domain.ts` (22 tests): the add/edit rule shared by page and server, Saudi phone lengths,
+  filters (product, sector, city, owner, status, importance, indicator), product status from opportunity
+  lines, the customer-sheet column mapping (القطاع · الأهمية · جهة الاتصال · المنصب · البريد).
+- Approval GATES something: a rejected account leaves campaign audiences and suggestions. Proposed accounts
+  stay campaignable (imports land proposed; blocking them would stop every campaign after an upload) — a
+  decision to revisit with the client.
+- Naming: the conversations tab is now «المحادثات»; the door still lands there, so no link moved.
+- A phone is required on an account (the prototype makes it optional): it is the key every conversation,
+  campaign and opportunity joins on.
+
+**Review** (GPT could not run — Codex quota exhausted until Sep 19; Claude review executed probes): no XSS
+across seven surfaces, authz and concurrency held. Fixed what it confirmed: approval that blocked nothing,
+re-imports silently overwriting a corrected name/city, an edit conflict that could never be saved, a list
+that never refreshed, 500s from non-text JSON, «055000900» accepted as a second customer, owners deletable
+from the team, empty-list-on-outage (now 503), focus lost in four places, a modal that came back after
+navigation. Evidence: API 48/48, browser 37/37 + 15/15 probes, indicator regression 56/57 (known test bug),
+gate green, smoke 18/18.
+
+**Production:** 16 accounts, all «معتمد», source «غير مسجّل»; the team directory is empty, so no owner can be
+assigned until members are added in «الفريق».
+
+**Not done:** the per-account «مدراء المنتجات» list from the prototype; product-manager ownership is free
+text on products. The GPT half of the sign-off is owed when quota returns.
+**Next:** S3 opportunities — required lost reason (all four stage-change paths), activities (meetings, calls,
+next actions), quotes, partner source.
+
 ## 2026-09-15 — client A's BRD, slice 1: «مؤشرات استخدام العملاء» and explainable suggestions
 
 **Asked:** client A's first feedback — a BRD (`BRD_منصة_مسار_إدارة_التسويق_والمبيعات.docx`) and a

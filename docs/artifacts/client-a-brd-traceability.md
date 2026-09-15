@@ -21,10 +21,10 @@ Baseline measured against `massar-engine` HEAD 4e26c1f by reading code (not name
 | Campaigns | BR-CAM-006 | PARTIAL | confirm modal shows count only; needs audience+message+timing+channel summary | S4 |
 | Monitoring | BR-MON-004/006, BR-RPT-002 | PARTIAL/MISSING | campaign stops at «interested»; no qualified/meetings/opps/won/revenue chain | S4 |
 | Monitoring | BR-MON-005 | MISSING | no response-time / handoff-rate / confidence metrics | S4 |
-| Customers | BR-CUS-001/005 | PARTIAL | no importance, owner, source, created_by on entities | S2 |
-| Customers | BR-CUS-002 | MISSING | one phone per account; no contacts table (role, email, primary) | S2 |
-| Customers | BR-CUS-003 | PARTIAL | no city/sector/owner/indicator filters on the customers list | S2 |
-| Customers | BR-CUS-004 | PARTIAL | indicators block added (S1); opportunities section missing; 404 without a conversation | S1 / S2 |
+| Customers | BR-CUS-001/005 | DONE | add sheet (name, city, sector, importance, owner, ≥1 contact); approval مقترح→معتمد/مرفوض; source + author + events (migration 012) | S2 |
+| Customers | BR-CUS-002 | DONE | `entity_contacts` (name, role, phone, email, one primary), kept by id | S2 |
+| Customers | BR-CUS-003 | DONE | «الحسابات» filters: product, sector, city, owner, status, importance, indicator; search reaches contacts | S2 |
+| Customers | BR-CUS-004 | DONE | `#account/<id>`: data, contacts, owner, products with status, opportunities, campaigns, indicators, activity; opens without a conversation. Product-manager list not built | S2 |
 | Knowledge | BR-KB-001/002/003 | PARTIAL | 4-cell readiness, no weighted per-section score, no guardrails/competitors sections | S6 |
 | Knowledge | BR-KB-004/005 | PARTIAL | prompt-enforced only; no confidence signal | S6 |
 | Opportunities | BR-OPP-003/004/006/007 | PARTIAL | no meeting type, no quotes writer, lost reason not required, no partner/direct source | S3 (after massar-b0's opps work lands) |
@@ -43,6 +43,8 @@ Baseline measured against `massar-engine` HEAD 4e26c1f by reading code (not name
 - DEC-04 minimum knowledge score: existing eligibility rule (approved or embedded knowledge) gates launch.
 - DEC-06 channels: WhatsApp only.
 - DEC-07 opportunity creation: existing `AUTO_OPP` flag behaviour unchanged.
+- DEC-08 approval: new accounts (form, import, paste, WhatsApp) arrive «مقترح»; a «مرفوض» account is left out of campaign audiences and suggestions; «مقترح» is not blocked (to confirm with client A).
+- DEC-09 account phone: required (the join key for conversations, campaigns, opportunities); Saudi mobile lengths enforced.
 
 ## Slices
 S1 indicators + suggestions + objective + repeat warning (this cycle) · S2 customer accounts (contacts,

@@ -21,7 +21,9 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **client A's BRD, slice 1 of 7 (Sep 15, 2026)** — «مؤشرات استخدام العملاء»: indicators typed by
+Last major milestone: **client A's BRD, slice 2 of 7 (Sep 15, 2026)** — customers are accounts: contacts, owner,
+approval (a rejected account leaves audiences), source and audit, and a record that opens without a conversation.
+Previous: **client A's BRD, slice 1 of 7 (Sep 15, 2026)** — «مؤشرات استخدام العملاء»: indicators typed by
 a signal, members matched phone → code → name with human review, and campaign suggestions that are rules with
 printed reasons and exclusions, never a model score. Objective is now a wizard step and launches record their origin.
 Six reviews found a zip bomb, silent row truncation and an O(n·m) engine; all fixed. Traceability:
