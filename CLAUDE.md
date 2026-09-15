@@ -21,7 +21,9 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **client A's BRD, slice 2 of 7 (Sep 15, 2026)** — customers are accounts: contacts, owner,
+Last major milestone: **client A's BRD, slice 3 of 7 (Sep 15, 2026)** — no opportunity closes lost without a reason on any path
+(decided on the locked row), activities with next steps, quotes that can price a line, partner source. Previous:
+**client A's BRD, slice 2 of 7 (Sep 15, 2026)** — customers are accounts: contacts, owner,
 approval (a rejected account leaves audiences), source and audit, and a record that opens without a conversation.
 Previous: **client A's BRD, slice 1 of 7 (Sep 15, 2026)** — «مؤشرات استخدام العملاء»: indicators typed by
 a signal, members matched phone → code → name with human review, and campaign suggestions that are rules with

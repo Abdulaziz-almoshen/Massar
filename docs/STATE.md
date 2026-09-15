@@ -1,3 +1,30 @@
+## 2026-09-15 — client A's BRD, slice 3: the work on an opportunity (engine b9bb73d, deployed)
+
+**Shipped** (migration `013-opportunity-work`, `src/opp-work-domain.ts` 13 tests, `src/opp-work-crm.ts`):
+- **No lost close without a reason** (BRULE-009). One dialog behind every path — drawer button, stage select,
+  bulk, kanban drop — and the rule itself runs on the locked row in `db.updateOpp`, because the route's
+  pre-read raced a reopen (8 of 40 closes had landed lost with no reason). A line cannot be born lost.
+  The reasons ARE the ladder's lost outcomes: the BRD's four causes (إلغاء الاحتياج، عدم التوافق، الميزانية،
+  سبب آخر with a sentence) were added to `STAGE_OUTCOMES`, so the board, the rep's sheet and «الخسائر حسب
+  السبب» share one vocabulary. Before this, a deal closed from the board reached that report with no reason.
+- **«الأنشطة»** (BR-OPP-003): meetings, calls, presentations, emails, notes with a dated next step that
+  becomes the line's «الخطوة التالية» (open lines only); shown on the account record's timeline too.
+- **«عروض الأسعار»** (BR-OPP-004): every offer kept draft → sent → accepted/rejected; accepting can set the
+  line's price (never on a closed line — it would move «المحقق» after the fact).
+- **Partner source** (BR-OPP-007): «شريك مبيعات» with the partner's name in `source_ref` until S5.
+
+**Review** (Claude; GPT still out of quota): no P0; confirmed P1s fixed — three API/race paths to a
+reasonless lost, a loss report that ignored edited reasons (it now prefers the line's current reason), a
+retry/queue that dropped the reason and 400'd forever, a bulk close overwriting reasons already recorded,
+a 500 on 12.5% discounts (quotes now keep the line's integer bounds), a re-checking «apply» box. Evidence:
+S3 API 33/33, drawer browser 25/25; S2 48 + 37 + 15; indicators 56/57 (known test bug); gate green;
+smoke 18/18.
+
+**Not done:** a lost reason is not asked on /rep's own outcome sheet beyond the outcome itself; quotes have
+no PDF or send — they are records, and sending a quote to a customer stays a human act outside Massar.
+**Next:** S4 — the campaign chain past «مهتم» (qualified, meetings, opportunities, won, revenue) and the
+§23 KPIs; scheduling (BR-CAM-004) needs approved templates and stays a written decision.
+
 ## 2026-09-15 — client A's BRD, slice 2: customers as accounts (engine ac3adcc, deployed)
 
 **Built to the prototype's own screens** (decoded from the client's export): «الحسابات» under العملاء with
