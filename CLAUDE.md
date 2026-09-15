@@ -21,7 +21,11 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **the admin layer, and the review round that found a function shadowing another (Sep 13, 2026)** —
+Last major milestone: **client A's BRD, slice 1 of 7 (Sep 15, 2026)** — «مؤشرات استخدام العملاء»: indicators typed by
+a signal, members matched phone → code → name with human review, and campaign suggestions that are rules with
+printed reasons and exclusions, never a model score. Objective is now a wizard step and launches record their origin.
+Six reviews found a zip bomb, silent row truncation and an O(n·m) engine; all fixed. Traceability:
+`docs/artifacts/client-a-brd-traceability.md`. Previous: **the admin layer, and the review round that found a function shadowing another (Sep 13, 2026)** —
 two reviewers rejected the products build and the finding that mattered was a class no gate could see: `coveragePct`
 was declared by both `product-domain` and `sales-domain`, and the page ran whichever was concatenated last, so every
 coverage figure read «—» while the unit test passed. `scripts/check-browser-globals.mjs` is now gate step 24: no
@@ -126,6 +130,15 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
   GUPSHUP_API_KEY, GUPSHUP_APP_ID, GUPSHUP_APP_NAME, GUPSHUP_SOURCE_NUMBER, WEBHOOK_TOKEN,
   ADMIN_TOKEN. Never commit; never echo values into chat/logs.
 - Hard rules live in code (opt-out, turn caps, window checks) — never only in prompts.
+- **`emil-design-eng` is mandatory on every design run** (carried over from Marhela, Sep 15 2026).
+  Any design work — every gstack design command (`/design-consultation`, `/design-shotgun`,
+  `/design-html`, `/design-review`, `/plan-design-review`, `/autoplan`'s design phase) plus
+  `/design`, `frontend-design`, `better-ui`, `transitions-dev`/`transitions-polish` — loads
+  `Skill("emil-design-eng")` alongside it, with the concrete task as args (bare, it only prints a
+  greeting). Massar rules (RTL, `DESIGN.md` tokens, western numerals) win on conflict. Enforced
+  by `.claude/hooks/require-emil-design-eng.sh`. Project skills live in `.agents/skills/`
+  (symlinked into `.claude/skills/`, pinned in `skills-lock.json`): `emil-design-eng`,
+  `better-ui`, `transitions-dev`, `transitions-polish`, `create-github-action-workflow-specification`.
 
 ## 5. Working Rules
 - Work in small, verifiable steps; read `docs/STATE.md` before acting, write it after.
@@ -196,6 +209,7 @@ Key routing rules:
 - QA/testing site behavior → invoke /qa or /qa-only
 - Code review/diff check → invoke /review
 - Visual polish → invoke /design-review
+- ANY design skill above → ALSO invoke emil-design-eng (mandatory, §4)
 - Ship/deploy/PR → invoke /ship or /land-and-deploy
 - Save progress → invoke /context-save
 - Resume context → invoke /context-restore

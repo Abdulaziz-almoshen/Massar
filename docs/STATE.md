@@ -1,3 +1,86 @@
+## 2026-09-15 — client A's BRD, slice 1: «مؤشرات استخدام العملاء» and explainable suggestions
+
+**Asked:** client A's first feedback — a BRD (`BRD_منصة_مسار_إدارة_التسويق_والمبيعات.docx`) and a
+standalone prototype export — «do your job to achieve it», then «not only the ui also the BRD must be
+implemented», then heavy QA with every gstack design/eng/qa/security voice.
+
+**Scope decision:** the prototype differs from `_مسار/مسار.dc.html` in one module (usage indicators);
+the BRD specifies the whole platform. Measured against engine 4e26c1f: ~20 IDs done, ~30 partial, ~15
+missing. Delivered in seven slices; the matrix is `docs/artifacts/client-a-brd-traceability.md`.
+
+**Shipped (engine 3836428 = client-a-indicators cd68587 merged with massar-b0's `cpo-reports`):**
+- Migration `011-usage-indicators`: `usage_indicators` (typed by SIGNAL), members, `indicator_events`
+  audit, `suggestion_dismissals`; `campaigns.origin/objective`; `campaign_targets.outcome`.
+- `src/indicator-domain.ts` (pure, 24 tests): validation, matching phone → customer code → folded
+  Arabic name (ambiguous/duplicate code → human review), five rule-based suggestion rules with
+  reasons, exclusions (opted-out, same product within `SUPPRESSION_DAYS`=30, open opportunity),
+  repeat-targeting warning. No model scores anything (DEC-02).
+- `#indicators`, `#indicator/new|<id>|<id>/data`, drawer; file/paste import with preview; indicator
+  filter in the wizard and the customer book; block on the customer record; suggestions panel on
+  `#kmon` and in `#aimkt`; campaign objective is wizard step 2; confirm modal is a review summary.
+- Import hardening from the CSO review: zip central-directory size cap (40MB), row caps, 5MB upload,
+  content sniffing, CSV BOM/Windows-1256, SheetJS 0.20.3 (npm `xlsx` carried advisories).
+
+**QA:** six report-only reviews (codex gpt-6-astra, eng, CSO, UX, design, QA 78/100) → every
+confirmed defect fixed: zero-member commits, silent 5000-row truncation, save during a pending
+preview, suggestion engine O(n·m) at 3.4s → <400ms for 5000×5000, dismissals resurrecting, rename
+not moving dismissal keys, zip bomb, concurrent-tab overwrite (`ifUpdatedAt` → 409), plus grammar,
+contrast and a11y. Browser regression 56/57 on the merged build (the one red is the test renaming an
+embedded product, which is refused by design; the cascade was proven on a plain tag). Gate green,
+deploy smoke 17/17, `/health` ok with outbound ok. No WhatsApp was sent.
+
+**Also fixed on the way:** `vAimkt` cleared a named product selection while the catalogue was still
+loading, so any deep link into the wizard lost its product.
+
+**Not done, stated:** reload loses a wizard prefill; no unsaved-form warning; «نوع العملاء» only labels
+a card; production has zero indicators, so the panel is empty until the client loads data.
+**Next:** S2 customer accounts (contacts, importance/owner/source, filters, record for never-messaged
+customers), then S3 opportunities once massar-b0 releases `opps-crm.ts`.
+
+## 2026-09-15 — stages in colour, and «نظرة تنفيذية» for the CPO
+
+**Asked:** «why our board is not colorful … stages not visible and not dynamic?» (with a screenshot of
+a coloured THINK — PLAN — REVIEW stepper), then «enhance it, im cpo, give me more reports».
+
+**Why it was grey, measured in code:** V5 deliberately retired the eight domain hues for one blue ramp
+(`OPP_RAMP`, DESIGN.md §6 rule 4), so six open stages were six indistinguishable blues; the drawer's
+stage track was six unlabelled 6px `aria-hidden` bars named only in a tooltip; and a stage change
+rebuilt the DOM, so no transition could ever play.
+
+**Shipped** (engine branch `cpo-reports`, worktree `/Users/abdulaziz/Projects/massar-engine-cpo`,
+deployed 40cf93e; health green, smoke 15/15):
+- **Stage identity.** `src/stage-tone-domain.ts`: a solid/soft/text tone per stage, contrast re-measured
+  by test (white on solid ≥ 4.5, text on soft ≥ 4.5, mark on `--surface-2` ≥ 3, no shared hue), custom
+  rungs cycled among custom rungs. Used by the summary bar, a stage **ribbon** of connected chips
+  (connector hidden where a row wraps), the row badge, the kanban column cap, and a vertical **drawer
+  stepper**: passed rungs checked in their tone, the current rung on a pill with its age and exit
+  criterion, paused rungs inert. A move slides the pill (WAAPI, 240ms ease-in-out, reduced-motion
+  honoured) and the slide is **resumed** across the pending/saved repaints that first cut it to a jump
+  (sampled frame by frame: 160→120px continuous). DESIGN.md §6 rule 4 records the exception.
+- **«نظرة تنفيذية»** is now the default face of «التقارير» (the original four under «تقارير التعثّر»):
+  KPI strip, stage funnel, time in stage vs SLA, product pipeline by stage, source effectiveness,
+  30/90-day movement — each one signal, one chart, one next action that opens the board on exactly
+  that population. Rules are pure and tested (`src/pipeline-report-domain.ts`), computed on read from
+  `opportunities` + `track_stage_events` (`GET /admin/reports/pipeline`, 503 on a db blip, 3 client
+  attempts then retry).
+
+**What the reviews caught.** Production, first deploy: the funnel named «0٪ انتقلت» from «عرض السعر»
+the biggest leak — over ONE open deal seven days in. Conversion is now per deal over the decided
+population (moved past the rung, or lost on it). GPT (codex, gpt-6-astra) round 1: CHANGES REQUIRED,
+12 findings, all fixed in 40cf93e — conversion reaching 200٪ after a regression; a dead endpoint
+retried in a tight loop by its own failed render; a deal created won counted as «opened»; a re-won
+deal's value counted twice; reports stale after edits; drill-downs keeping stray filters; one-line
+channels ranked «best»; `constructor` as a stage key resolving to no colour; focus lost on a keyboard
+stage move; sub-44px touch targets; a priced 0 SAR line called unpriced; «منذ يومان» / «بندان مفتوحة».
+
+**Open:**
+- **GPT round 2 did not run** — codex usage limit, resets Sep 19 2026. The two-model sign-off bar is
+  therefore NOT met; Claude-side review status is recorded below when it lands.
+- **Branch not merged to master.** massar-69 holds uncommitted db.ts/index.ts edits in the main
+  checkout; it has been told to merge `cpo-reports` before its next deploy, or that deploy erases this.
+- Smoke no longer asserts «تقارير التعثّر» (the landmark moved to the new default face).
+- Production data is 6 open lines, 5 unpriced, none closed: most rates honestly print «—».
+
 ## 2026-09-13 — «المنتجات» V5 review round, then the admin layer the founder asked for
 
 **Two pieces of work in one day.** The first closed the products cycle; the second answered six
