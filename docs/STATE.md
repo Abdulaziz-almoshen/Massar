@@ -1,3 +1,31 @@
+## 2026-09-15 — client A's BRD, slice 5: «شركاء المبيعات» (engine bf856aa, deployed)
+
+**Shipped** (migration `014-partners`, `src/partner-domain.ts` 15 tests, `src/partners-crm.ts`):
+- **Partners** (BR-PRT-004): the contracted company — name, sales/marketing, contact, active/paused. `#partners`
+  is a real screen now: week navigator (Sunday–Saturday, Riyadh), product filter, «الإجمالي» + one tab per partner,
+  the prototype's five tiles, achievement per product and per partner, and the partner's deals.
+- **Weekly targets** per partner × product (BR-PRT-001), with «انسخ مستهدف الأسبوع السابق».
+- **Contact results** (BR-PRT-002): مهتم / غير مهتم / لم يرد, one by one or a pasted list (tabs from a sheet,
+  commas when typed) with a line-by-line preview; all-or-nothing on the server.
+- **Handover** (BR-PRT-003): «مهتم» creates a proposed account (source partner) and a partner opportunity (or
+  links the open one), and the partner's record of it is closed — that day and any later day while the deal is
+  open. Changing a result to «مهتم» asks once more. The account record shows «تواصل الشركاء».
+- A rep's partner-sourced line whose typed name matches a partner links to it (`opportunities.partner_id`).
+
+**Review** (Claude; GPT out of quota): P1 fixed — a later-day «غير مهتم» erased a handed-over interest from the
+week. P2s fixed — opposite-order batches deadlocked into a 500 (per-customer advisory locks taken together in
+sorted order, plus deadlock retry); archived products skewed the tiles and could not be cleared. P3s fixed:
+achievement counted untargeted products, paste header/tab/«؛»/duplicates, 10-digit «5…» phones, paused partners
+could delete, renames left the old name on deals, counted-noun grammar, week double-click, change-on-arrow writes.
+The gate's rename-cascade check caught the new product-keyed tables before review did.
+Evidence: S5 API 56/56, browser 45/45 (desktop + 390px); S2–S4 regressions 209/209; gate green; smoke 19/19;
+live page byte-compared to ef9ffde before deploying.
+
+**Not done / decided:** partner users do not log in — results are recorded by Lean staff for them until S7 roles;
+a partner-handed account is «مقترح» and (per DEC-08) not blocked from audiences, but the 24h-window rule still
+refuses a send to anyone who never wrote. Deleting an opportunity unlocks its partner result.
+**Next:** S6 — knowledge base weighted sections and answer confidence.
+
 ## 2026-09-15 — client A's BRD, slice 4: what a campaign led to, and the BRD's KPIs (engine ef9ffde, deployed)
 
 **Shipped** (`src/campaign-results-domain.ts` 17 tests, `src/campaign-results-crm.ts`, no migration):

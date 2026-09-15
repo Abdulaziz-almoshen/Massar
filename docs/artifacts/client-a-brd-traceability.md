@@ -30,7 +30,11 @@ Baseline measured against `massar-engine` HEAD 4e26c1f by reading code (not name
 | Opportunities | BR-OPP-003/004/006/007 | DONE | `opp_activities` (meeting/call/presentation/email/note + next step), `opp_quotes` (draft→sent→accepted/rejected, apply to line), required lost reason on every path (locked-row rule), `partner` source (migration 013) | S3 |
 | Reports | BR-RPT-003 | DONE | «الخسائر حسب السبب» counts board closes; reasons = ladder lost outcomes + price/competitor/cancel/fit/budget/other | S3 |
 | Reports | BR-RPT-004 | PARTIAL | KPI table → campaign → attributed lines → opportunity drawer; the executive and stuck report cards are still not drillable | S4 |
-| Partners | BR-PRT-001..004 | MISSING | `#partners` is a placeholder | S5 |
+| Partners | BR-PRT-001 | DONE | weekly target per partner × product (`partner_targets`), targets sheet with copy-previous-week | S5 |
+| Partners | BR-PRT-002 | DONE | results مهتم/غير مهتم/لم يرد (`partner_results`), five tiles + achievement per product and partner (`summarizeWeek`) | S5 |
+| Partners | BR-PRT-003 | DONE | «مهتم» → proposed account + partner opportunity (or the open one); result locked while the deal is open | S5 |
+| Partners | BR-PRT-004 | DONE | per-partner follow-up with product and customer detail; «تواصل الشركاء» on the account record | S5 |
+| Partners | partner login | DEFERRED | partners do not sign in; staff record for them until S7 roles | S7 |
 | Org/RBAC | BR-014, NFR-001 | PARTIAL | one admin token + rep tokens; roles never authorize | S7 |
 | Audit | NFR-002 | PARTIAL | indicator audit done (S1); launches/opp edits/KB changes have no audit table | S7 |
 | AI labels | NFR-009 | DONE for suggestions | «توصية النظام» label, reason, dismiss/restore, modify tracked in `origin.modified` | S1 |
@@ -48,6 +52,7 @@ Baseline measured against `massar-engine` HEAD 4e26c1f by reading code (not name
 - DEC-08 approval: new accounts (form, import, paste, WhatsApp) arrive «مقترح»; a «مرفوض» account is left out of campaign audiences and suggestions; «مقترح» is not blocked (to confirm with client A).
 - DEC-09 account phone: required (the join key for conversations, campaigns, opportunities); Saudi mobile lengths enforced.
 - DEC-10 campaign scheduling (BR-CAM-004): not built this release. A launch stays immediate and human-pressed. A scheduled start or a daily cap needs (1) approved Meta templates on the production WABA — the current sender is the Gupshup sandbox and a session message outside the 24h window fails; (2) a durable send queue with a pacer, which the engine does not have (a launch sends in-request); (3) a test send to verify it, which the standing no-send rule forbids. Revisit with the WABA migration.
+- DEC-12 partner week: Sunday–Saturday in Riyadh time; achievement = contacts for targeted products ÷ target (may pass 100٪); a customer is counted once per partner and product, latest result wins unless an interest was already handed over.
 - DEC-11 campaign attribution: a line belongs to the campaign its source names; otherwise a WhatsApp line belongs to the latest live campaign that targeted that phone for that product, launched before the line, within 30 days. Calls, visits, referrals and partners are never credited to a campaign. Rehearsals receive nothing. A sent quote counts; a draft does not.
 
 ## Slices

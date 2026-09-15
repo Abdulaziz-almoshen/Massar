@@ -21,7 +21,9 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **client A's BRD, slice 4 of 7 (Sep 15, 2026)** — each campaign shows what it led to past «مهتم»
+Last major milestone: **client A's BRD, slice 5 of 7 (Sep 15, 2026)** — «شركاء المبيعات»: weekly contact targets per
+partner and product, recorded results, and every «مهتم» handed to sales as a partner opportunity the partner can no longer
+change. Previous: **client A's BRD, slice 4 of 7 (Sep 15, 2026)** — each campaign shows what it led to past «مهتم»
 (qualified → opportunities → meetings → sent quotes → won, revenue) and «مؤشرات الأداء» prints the BRD's §23 KPIs; answer
 confidence is stated as unmeasured, and scheduling is a written deferral (DEC-10). Previous: **client A's BRD, slice 3 of 7 (Sep 15, 2026)** — no opportunity closes lost without a reason on any path
 (decided on the locked row), activities with next steps, quotes that can price a line, partner source. Previous:
