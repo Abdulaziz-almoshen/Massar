@@ -21,7 +21,16 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **the founder's prototype, screen by screen (Sep 16, 2026)** — «الرئيسية» opens on the
+Last major milestone: **the product record, and the reference design pass (Sep 16, 2026)** — `#product/<name>`
+was a form with three bare selects where a title belongs; it is now a record header plus a sticky tab rail with a
+gliding indicator, and **«معرفة المنتج» is a tab INSIDE the record**, led by the readiness score. Then four
+component/motion sites (beautifului.dev, 21st.dev, transitions.dev, interior.dev) were read with
+`getComputedStyle` rather than from memory: `DESIGN.md §2` gained three named easing curves, an
+enter-slower-than-exit pair, and a **Material** section (`--specular`, `--well`, `--fill-face`, `--lift`), and
+`revamp.ts §7` applies them to every screen — a woven page ground, pressed primary buttons, bar tracks drawn as
+grooves with faced fills, multi-stop card shadows, press feedback, an inset focus ring, tabular figures.
+«الرئيسية» was rebuilt around one leading figure.
+Previous: **the founder's prototype, screen by screen (Sep 16, 2026)** — «الرئيسية» opens on the
 executive figures and «صحة خط البيع» (four states, each one a door into its own deals); «العملاء» lands on the
 customer list; «لوحة المتابعة» is the deal board and the event ledger is «سجل الأحداث»; «الهيكل التنظيمي» is a real
 screen; «قبول المنتجات» and the year's «المستهدفات» are new; the opportunity record shows «نتائج المراحل» from the

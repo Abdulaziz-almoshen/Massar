@@ -1,3 +1,57 @@
+## 2026-09-16 — the product record, and the reference design pass (engine deployed, smoke 21/21)
+
+Two founder corrections drove this, both fair. «product details page still has not been touched», then
+«the dashboard especially is lame and not beautiful».
+
+**The product record was a form.** `#product/<name>` opened with three bare selects for القطاع/القسم/المسؤول
+sitting where a title belongs, then five sections stacked in one column — so «معرفة المنتج», the thing that
+decides whether the assistant can sell the product at all, was the fourth scroll down. The founder read that as
+knowledge living OUTSIDE the record, and he was right. Now: a record header (name, facts as read-only chips,
+one primary action — each chip opens the tab that owns that write), then a sticky tab rail with a gliding
+indicator over **نظرة عامة · معرفة المنتج · الأسعار والباقات · المستهدفات · البيانات والإدارة**. The knowledge tab
+leads with the readiness score and the eight weighted sections; the two files come after the answer, not before
+it. `#product/<name>/knowledge` still deep-links straight to it. Arrow keys walk the rail, RTL-aware, with
+Home/End and a roving tabindex. Product-meta writes are now gated on `knowledge.edit`, the permission the
+routes already enforced.
+
+The indicator glides across a full repaint, which is the part that is not obvious: `#body` is rewritten on every
+render, so the indicator element is new every time and a naive measure would make it jump. It is placed on the
+PREVIOUS tab with no transition, then moved on the next frame.
+
+**The reference pass.** Four sites were read end to end — beautifului.dev, 21st.dev, transitions.dev,
+interior.dev — with every value taken from `getComputedStyle` or shipped source, never from memory. The
+findings landed in `DESIGN.md §2` as tokens and in `revamp.ts §7` as rules that reach every screen at once:
+
+- **Three named curves.** `--ease` stays the default; `--ease-out` for something arriving or leaving,
+  `--ease-io` for something moving between two places it already occupies, `--ease-drawer` for a surface
+  travelling its own height. ease-IN is named in the file as deliberately absent — it delays the first frame,
+  which is the frame the reader watches hardest.
+- **`--d-in:250ms` / `--d-out:150ms`.** Enter is slower than exit: arriving is information, leaving is only
+  getting out of the way.
+- **Material.** `--specular` (one pixel of light on a top edge), `--well` (a recessed track), `--fill-face`
+  (the face of a bar's fill), `--lift`. Edges drawn as rings inside a shadow occupy no layout, so nothing moves
+  a pixel when a state changes — interior.dev's single most portable idea.
+- **The page is woven, not painted:** one hairline every 8px at 45° at 4% ink, `background-attachment: fixed`.
+  White cards now sit ON something instead of floating on flat grey.
+- **The primary button is a pressed object:** a sub-pixel dark rim plus a complete inner white ring.
+- **Bar tracks are grooves and fills have faces.** The bar is the most-drawn object in Massar — coverage,
+  attainment, readiness, quarters, partner weeks, pipeline share — and every one of them was a flat rectangle
+  inside another flat rectangle.
+- Six near-invisible shadow layers instead of one; press feedback on everything pressable; hover moved behind
+  `(hover:hover)` so a tap no longer leaves a phone button stuck in its hover state; an inset focus ring that
+  changes no boxes; menus that pop from their trigger's corner; tabular figures wherever a figure is drawn.
+
+**الرئيسية had no point of view** — four identical boxes, one number each. «نسبة الإنجاز» now leads at `--t-num`
+on the accent ground, carrying the meter it is a percentage OF. The health cards wash in their own state colour,
+carry their share of the whole pipeline, and lift on hover because each one really does open the deals it
+counted. The partners' week became one stacked bar in the order a conversation goes, instead of five columns
+the reader had to compare by arithmetic. The bands enter once per page load, staggered by `--stagger` — once,
+because `#body` is rewritten on every data load and a replayed entrance is the jump §8.6 forbids.
+
+**Off the home screen by founder instruction:** the accounting-basis caveat («قيمة العقد الكاملة… الأساس
+المحاسبي لم يُحسم بعد»). Not deleted — «التقارير» and the executive report still print it, where someone is
+acting on the figure rather than reading position.
+
 ## 2026-09-16 — the founder's prototype, screen by screen (engine 533bdb9, deployed)
 
 The instruction was «make the user experience close to the HTML, or better — every single thing in it must be in
