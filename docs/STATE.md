@@ -1,3 +1,47 @@
+## 2026-09-16 — client A's BRD, the last three items: audience by account, report drill-down, view-only screens (engine 53cea7f, deployed)
+
+**Shipped** (migration `017-importance-backfill`, `account-domain` +5 tests, `pipeline-report-domain`, six CRM modules):
+- **BR-CAM-002 — «حسب بيانات الحساب»**: the campaign audience is narrowed by the account's OWN columns
+  (القطاع · المدينة · الأهمية), not only by the columns the imported spreadsheet happened to carry. An account added
+  by hand through «الحسابات» has no attrs at all and was invisible to every chip on that step. Counts are **faceted**
+  (each column counted against every other filter), so a chip says what choosing it leaves; «بدون» is a real choice,
+  because the accounts missing a column are the ones worth fixing. The file's own columns stay below, now labelled
+  «حسب أعمدة الملف المستورد», and a header the account column already owns («الشريحة», «city»…) is not drawn twice.
+  A column with no values is not drawn at all. The rule is pure: `audienceMatches` / `audienceGroups`.
+- **BR-RPT-004 — the cards open their records**: every figure on an executive card drills, not just the card's next
+  action — a funnel rung, a stage, a product, a channel. Where no board filter can express the population
+  («الراكدة» is read from the stage ledger, not from anything a line carries) the report hands the board **the exact
+  ids it counted** (`quietIds` → `opSetIds`), with a chip «من التقرير» and, when capped at 300, «أول 300» in the chip
+  itself. The stuck-deals rows are links to `#opps/<id>`, the record's own URL.
+- **View-only screens** (BR-014): a role that may read but not write now gets a screen without the write controls
+  instead of buttons that 403 — opportunities (add, inline fields, stage, drag, close/reopen, delete, escalation,
+  bulk move and assign, and the selection that only exists to drive them), accounts (add, edit, approve, reject,
+  re-propose, owner, contacts), the audience book (import, tag, delete, selection), indicators (add, edit, toggle,
+  suggestions, and the editor route itself, which `indicators.view` could still open), product knowledge (upload,
+  approve, discard, sections) and the campaign launch (DEC-14, administrator only).
+
+**Review** (Claude; GPT still out of quota until Sep 19): fifteen findings, every one invisible to the gates. Three
+HIGH were the same class — a control hidden in one place and left live in another: «اعتماد المعرفة» sat three lines
+under the KB editor that had just been hidden, the opportunities **bulk** stage-move and owner-assign were untouched
+while the drawer's stepper was gated, and the WhatsApp band's «فتح فرصة» still opened the whole create drawer. Also
+fixed: the targets bulk «افتح فرصة» was gated on `customers.edit` when it writes an opportunity (a product manager
+has the first and not the second), «إعادة إلى مقترح» on a rejected account, a facet click resolving its index against
+a list recomputed after the search box had already changed (chips now resolve against what was PAINTED), two CSS
+specificity defects from turning report rows into buttons (product-row separators lost, and the 44px touch floor
+outranked by the funnel's own 28px), and `aria-label` on those buttons replacing the row's own figures instead of
+adding to them (the sentence is now an appended visually-hidden span). Migration 017 exists because the review
+noticed `importance` was never backfilled the way `sector` and `city` were in 009 — production's sheets carry no
+«الأهمية» column, so it moved nothing there and the column is simply not drawn.
+
+**Evidence:** gate green (1,246 checks); 55 browser assertions across five roles (exec / product manager / sales /
+partner / admin) and 6 on the exact-records drill, all green; live byte-compared to `1e396b3` before deploy
+(IDENTICAL); smoke 21/21 on both deploys; production health and the backfill verified.
+
+**Client A BRD status:** every business requirement in the BRD is now DONE except BR-CAM-004 scheduling, deferred by
+DEC-10 (it needs approved templates, a send queue and a test send the no-send rule forbids). Still open and unchanged:
+refused attempts are not audited, agent/webhook actions are outside `/admin` and so outside the audit log, runtime
+observation of the S6 answer tool (OpenAI credits), and GPT sign-off on all eight slices (Codex quota returns Sep 19).
+
 ## 2026-09-15 — client A's BRD, slice 7: roles, one permission gate, and an audit log (engine 1e396b3, deployed)
 
 **Shipped** (migration `016-users-audit`, `src/rbac-domain.ts` 9 tests, `src/users-crm.ts`, gate `check:rbac`):

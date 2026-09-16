@@ -14,7 +14,7 @@ Baseline measured against `massar-engine` HEAD 4e26c1f by reading code (not name
 | Indicators | BR-IND-003, NFR-006 | DONE | `/admin/indicators/preview`: matched / review / unmatched, candidates, duplicates | S1 |
 | Indicators | BR-IND-007/008, AC-004 | DONE | `suggestOpportunities` (5 rules, reasons, source indicators, count after exclusions) | S1 |
 | Campaigns | BR-CAM-001 | DONE | objective required in wizard; `campaigns.objective` | S1 |
-| Campaigns | BR-CAM-002 | PARTIAL | indicator added as audience filter; region/type/sector still only spreadsheet columns | S1 / S2 |
+| Campaigns | BR-CAM-002 | DONE | audience filtered by the ACCOUNT columns — «حسب بيانات الحساب»: القطاع · المدينة · الأهمية, faceted counts and «بدون» (`audienceMatches`/`audienceGroups`); the imported file's own columns stay below, labelled | S1 / S2 / S8 |
 | Campaigns | BR-CAM-003, BR-MON-002/003, AC-005/006 | DONE | suggestions panel on `#kmon` and in `#aimkt`; «إنشاء حملة» prefills product+audience+objective | S1 |
 | Campaigns | BR-CAM-007, BRULE-011 | DONE | `checkRepeatTargeting` warning in wizard (30-day window, `SUPPRESSION_DAYS`) | S1 |
 | Campaigns | BR-CAM-004 | DEFERRED (DEC-10) | channel fixed to WhatsApp (DEC-06); start date/time and daily cap not built — see DEC-10 | S4 (decision) |
@@ -29,13 +29,14 @@ Baseline measured against `massar-engine` HEAD 4e26c1f by reading code (not name
 | Knowledge | BR-KB-004/005 | DONE (runtime unobserved) | `record_answer_basis` + `handoffForAnswer` in code; approved knowledge narrowed to the locked product | S6 |
 | Opportunities | BR-OPP-003/004/006/007 | DONE | `opp_activities` (meeting/call/presentation/email/note + next step), `opp_quotes` (draft→sent→accepted/rejected, apply to line), required lost reason on every path (locked-row rule), `partner` source (migration 013) | S3 |
 | Reports | BR-RPT-003 | DONE | «الخسائر حسب السبب» counts board closes; reasons = ladder lost outcomes + price/competitor/cancel/fit/budget/other | S3 |
-| Reports | BR-RPT-004 | PARTIAL | KPI table → campaign → attributed lines → opportunity drawer; the executive and stuck report cards are still not drillable | S4 |
+| Reports | BR-RPT-004 | DONE | every executive card row opens its records (`rxRow` → board filters), the stuck-deals rows are links to `#opps/<id>`, and «حرّك الراكد» hands the board the exact ids it counted (`quietIds` → `opSetIds`, chip «من التقرير») | S4 / S8 |
 | Partners | BR-PRT-001 | DONE | weekly target per partner × product (`partner_targets`), targets sheet with copy-previous-week | S5 |
 | Partners | BR-PRT-002 | DONE | results مهتم/غير مهتم/لم يرد (`partner_results`), five tiles + achievement per product and partner (`summarizeWeek`) | S5 |
 | Partners | BR-PRT-003 | DONE | «مهتم» → proposed account + partner opportunity (or the open one); result locked while the deal is open | S5 |
 | Partners | BR-PRT-004 | DONE | per-partner follow-up with product and customer detail; «تواصل الشركاء» on the account record | S5 |
 | Partners | partner login | DEFERRED | partners do not sign in; staff record for them until S7 roles | S7 |
 | Org/RBAC | BR-014, NFR-001, NFR-007 | DONE | five roles (`rbac-domain`), one gate over all /admin routes, partner scope, «المستخدمون والصلاحيات» | S7 |
+| Org/RBAC | BR-014 (view-only) | DONE | write controls are hidden where the role lacks the permission: opportunities (add, inline fields, stage, drag, close/reopen, delete, escalation), accounts (add, edit, approve/reject, contacts, owner), audience book (import, tag, delete), indicators (add, edit, toggle, suggestions), knowledge (write/edit), campaign launch (DEC-14) | S8 |
 | Audit | NFR-002 | DONE | `audit_log` on every successful labelled /admin write, «سجل التدقيق»; agent/webhook actions stay in the stage ledger and events | S7 |
 | AI labels | NFR-009 | DONE for suggestions | «توصية النظام» label, reason, dismiss/restore, modify tracked in `origin.modified` | S1 |
 | KPIs §23 | adoption | DONE | Recommendation Adoption on the suggestions panel | S1 |
