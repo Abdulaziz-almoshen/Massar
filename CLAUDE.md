@@ -21,7 +21,14 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **client A's BRD, slice 7 of 7 (Sep 15, 2026)** — the BRD's five roles on users beside ADMIN_TOKEN, one
+Last major milestone: **client A's BRD complete — the last three items (Sep 16, 2026)** — the campaign audience is
+filtered by the account's own columns (القطاع · المدينة · الأهمية, faceted counts, «بدون» a real choice, and the
+imported file's columns kept below and labelled); every executive report card opens the records behind its figures,
+and «الراكدة» hands the board the exact ids it counted because no board filter can express that population; a role
+that may only read gets screens without write controls instead of buttons that 403. The review round found the class
+that matters again — a control hidden in one place and left live in another: «اعتماد المعرفة» sat under a hidden
+editor, and the bulk stage-move beside a gated stepper. Every BRD requirement is DONE except BR-CAM-004 scheduling
+(DEC-10). Previous: **client A's BRD, slice 7 of 7 (Sep 15, 2026)** — the BRD's five roles on users beside ADMIN_TOKEN, one
 permission gate over every /admin route (unlisted = admin only, gate-checked), partner data scope, and an audit log of
 every write. A security review found user tokens reaching /rep; fixed before deploy. Campaign launch stays admin-only (DEC-14).
 Previous: **client A's BRD, slice 6 of 7 (Sep 15, 2026)** — knowledge scored by eight weighted sections with an
