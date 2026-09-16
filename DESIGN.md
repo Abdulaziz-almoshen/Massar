@@ -244,7 +244,51 @@ A *list row* still has no shadow — see §5.
 --flash:900ms          a value-flash holds its status ground this long
 --spinner-delay:300ms  below this, show nothing rather than a spinner
 --stagger:24ms         per item, capped at 8 items / 200ms total
+
+THREE NAMED CURVES (added 2026-09-16, after reading transitions.dev and interior.dev end to end).
+--ease stays the default; these exist because one curve cannot answer three different questions.
+--ease-out:   cubic-bezier(.22,1,.36,1)    something ARRIVING or LEAVING. Fast first, so the eye
+                                           is paid on the frame it is watching hardest.
+--ease-io:    cubic-bezier(.77,0,.175,1)   something MOVING between two places it already
+                                           occupies: a tab indicator, a segmented thumb.
+--ease-drawer:cubic-bezier(.32,.72,0,1)    Ionic's sheet curve, for a surface travelling its own
+                                           height.
+ease-IN is deliberately absent from this file. It delays the first frame, which is the frame the
+reader is watching hardest, so a 300ms ease-in FEELS slower than a 300ms ease-out.
+
+--d-in:250ms  --d-out:150ms   ENTER IS SLOWER THAN EXIT. Arriving is information; leaving is only
+                              getting out of the way. Write them as two rules on one class: the
+                              rest state carries the exit clock, the .is-open state the entry one.
+--dist-1:4px  --dist-2:8px  --dist-3:12px   the only travel distances. A longer trip reads as lag.
+--blur-1:2px  --blur-2:3px   blur travels WITH opacity on an enter or exit, and bridges a crossfade
+                             so two states never sit visibly on top of each other. 2px is the
+                             default, 3px for text. **Always write `filter: blur(0)` explicitly** —
+                             `blur(2px) → none` does not interpolate and the transition snaps.
 ```
+
+### Material
+
+Five shadows are a palette of surfaces, not decoration. The V4 rule stands — a card separates with
+a `--line` hairline, not a drop shadow — and these add the part a hairline cannot draw: which side
+of the page a thing is on.
+
+```
+--specular: inset 0 1px 0 rgba(255,255,255,.9)
+            One pixel of light along the top edge. A hairline draws a RECTANGLE; a hairline plus
+            this reads as paper lying ON the page. Free: no layout, no colour token.
+            Never on a solid accent surface — there it is a seam, not a light.
+--well:     inset 0 1px 2px rgba(20,22,26,.06), inset 0 0 0 1px rgba(20,22,26,.08)
+            A RECESSED track: the ground under a progress bar, inside a field, behind a thumb.
+--fill-face:inset 0 1px 0 rgba(255,255,255,.34), inset 0 -1px 0 rgba(20,22,26,.14)
+            The FACE of a bar's fill, so the fill sits in the groove instead of being printed on it.
+--lift:     0 1px 2px rgba(16,24,40,.06), 0 8px 18px -12px rgba(16,24,40,.5)
+            Hover on something clickable. A long, tight second layer — not a bigger ambient shadow.
+```
+
+**Draw an edge as a ring inside a shadow, not as a `border`, on anything whose state changes.**
+`inset 0 0 0 1px` occupies no layout, so a row that gains a focus ring or a selected border does
+not move its neighbours by a pixel. This is interior.dev's single most portable idea and the reason
+nothing on that site shifts between states.
 
 Three durations, one easing, and three named constants. The first version of §8 used `~900ms`,
 `~300ms` and `18–30ms` inline — approximate numbers in a token authority are not a specification,
