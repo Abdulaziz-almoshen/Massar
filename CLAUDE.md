@@ -21,7 +21,12 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **client A's BRD complete — the last three items (Sep 16, 2026)** — the campaign audience is
+Last major milestone: **the founder's prototype, screen by screen (Sep 16, 2026)** — «الرئيسية» opens on the
+executive figures and «صحة خط البيع» (four states, each one a door into its own deals); «العملاء» lands on the
+customer list; «لوحة المتابعة» is the deal board and the event ledger is «سجل الأحداث»; «الهيكل التنظيمي» is a real
+screen; «قبول المنتجات» and the year's «المستهدفات» are new; the opportunity record shows «نتائج المراحل» from the
+stage ledger; «معرفة المنتج» has its own screen and the wizard picks by the score. Parity map:
+`docs/artifacts/prototype-parity/gap-matrix.md`. Previous: **client A's BRD complete — the last three items (Sep 16, 2026)** — the campaign audience is
 filtered by the account's own columns (القطاع · المدينة · الأهمية, faceted counts, «بدون» a real choice, and the
 imported file's columns kept below and labelled); every executive report card opens the records behind its figures,
 and «الراكدة» hands the board the exact ids it counted because no board filter can express that population; a role

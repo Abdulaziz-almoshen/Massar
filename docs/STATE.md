@@ -1,3 +1,55 @@
+## 2026-09-16 — the founder's prototype, screen by screen (engine 533bdb9, deployed)
+
+The instruction was «make the user experience close to the HTML, or better — every single thing in it must be in
+Massar». The prototype (`مسار - نظام إدارة المبيعات (نسخة مستقلة)`, 969 KB) was walked screen by screen in a
+browser and inventoried against Massar's own IA; the map and its status table are in
+`docs/artifacts/prototype-parity/gap-matrix.md`. Five deploys, each gated and smoke-green.
+
+**الرئيسية** opens on the executive figures: المستهدف الإجمالي · المحقق · نسبة الإنجاز · الفرص المفتوحة، then
+**صحة خط البيع** and the partners' week, above the sector/product/quarter bands. The health states are a tested
+classification (`home-domain.ts`): every deal in exactly one of على المسار · متأخرة · بانتظار الدعم · مرفوضة, in a
+stated precedence — a closed deal is never «late», a blocked deal never hides inside «متأخرة» — and the four
+counts reconcile to the open book. Where the prototype prints four static cards, each card here OPENS the deals
+it counted.
+
+**Navigation** now matches the founder's model: «العملاء» lands on the customer list (it was opening the WhatsApp
+conversation log), **«لوحة المتابعة»** is the deal board people drag cards on (`#board`; the chronological message
+ledger is «سجل الأحداث»), and **«الهيكل التنظيمي»** is a real screen instead of a «قريبًا» placeholder — sectors with
+their departments derived through each sector's products, then الإدارات and الموظفون. It reads only; every write
+hands back to «الأقسام»/«الفريق», and its permission is `settings.view`, because the company's own shape should
+not be hidden from the executive asked about it. Nothing in the rail is «قريبًا» now.
+
+**Two screens Massar could not produce before.** «قبول المنتجات» (a fourth mode in التقارير) classifies every
+product by how the market received it — مقبولة · متعثّرة · غير مقبولة · لم تُبع بعد — with مبيعة/خاسرة/مفتوحة, its
+attainment and the reason customers gave most often (`acceptance-domain.ts`, 9 tests). Two rules make it
+honest: a product with nothing decided is «لم تُبع بعد» however many open lines it carries (an open deal is a
+question, not an answer), and the bar is the win rate among DECIDED deals with its denominator printed — one
+decided deal reads «قليلة البيانات», not a verdict. And **«المستهدفات»** now opens on the year: total target,
+achieved, remaining, attainment, then one card per sector listing each product with its annual target and the
+four quarters as bars against their own targets.
+
+**On the records.** The opportunity drawer gained **«نتائج المراحل»** — what each rung came to, its reason and the
+action it calls for, with a «نسبة الإنجاز في الدورة» bar (`stageJourney`/`journeyPct`, 4 tests). Massar had written
+every transition to `track_stage_events` since the stage ledger shipped and showed none of it; only «خسارة» ever
+surfaced. A skipped rung says «لم تمرّ بها» rather than being marked done, the current rung carries no verdict,
+and a stage no longer on the administrator's ladder returns null rather than an invented position. The customer
+record gained **«مدراء المنتجات المعنيون»**: the account manager owns the relationship, but each targeted product
+has its own manager, derived from the catalogue.
+
+**Knowledge.** «معرفة المنتج» is a screen of its own (`#knowledge`), ranking every product LEAST ready first with
+the sections still missing named as chips — the score existed since S6 but only inside one product's record. Step 1
+of «إنشاء حملة» now prints «N٪ معرفة» per product, the way the prototype picks one; the old chip said a file
+exists, not whether it answers what a buyer asks.
+
+**Not copied, and why:** the prototype's navy-and-green palette (Massar keeps `#2563EB` and the `DESIGN.md`
+tokens); campaign states مجدولة/مسودة (scheduling is deferred by DEC-10, so inventing the states would be a
+claim); and the «ردّة الفعل» filter on the board, per-account grouping on «فرص البيع» and the product switcher on
+the product record — all three still open, listed in the matrix.
+
+**Evidence:** gate green on every deploy (including two catches: `check-browser-globals` refused a second copy of
+`attainmentPct`, and `check-design` refused three font sizes off the ladder); browser QA per screen; live
+byte-compared to the previous deploy each time; smoke 21/21 ×5; production health green.
+
 ## 2026-09-16 — client A's BRD, the last three items: audience by account, report drill-down, view-only screens (engine 53cea7f, deployed)
 
 **Shipped** (migration `017-importance-backfill`, `account-domain` +5 tests, `pipeline-report-domain`, six CRM modules):
