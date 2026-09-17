@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f8fa">
+  <meta name="color-scheme" content="light">
+  <title>مسار | الرئيسية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #245BD6;
+      --accent-soft: #eef3ff;
+      --ink: #20242c;
+      --muted: #626974;
+      --quiet: #868d98;
+      --line: #e5e7eb;
+      --canvas: #f7f8fa;
+      --surface: #fff;
+      --fill: #717b8b;
+      --track: #edf0f4;
+      --curve: cubic-bezier(.2, 0, 0, 1);
+      --enter: 180ms;
+      --exit: 120ms;
+      --press: 100ms;
+      font-family: "IBM Plex Sans Arabic", Tahoma, Arial, sans-serif;
+      color: var(--ink);
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; background: var(--canvas); font-size: 14px; line-height: 1.65; }
+    button, input { font: inherit; }
+    button, a { touch-action: manipulation; }
+    button { cursor: pointer; }
+    button, [role="button"] { -webkit-user-select: none; user-select: none; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; }
+    h1, h2, h3, p, figure, dl, dd { margin: 0; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    .m-n { display: inline-block; direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; font-family: Arial, sans-serif; }
+    .icon { inline-size: 18px; block-size: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .sr-only { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    .skip { position: fixed; inset-block-start: 8px; inset-inline-start: 12px; padding-block: 8px; padding-inline: 16px; background: var(--surface); z-index: 10; transform: translateY(-160%); }
+    .skip:focus { transform: none; }
+    .topbar { border-block-end: 1px solid var(--line); background: var(--surface); }
+    .topbar-inner { max-inline-size: 1480px; min-block-size: 66px; margin-inline: auto; padding-inline: 32px; display: flex; align-items: center; gap: 44px; }
+    .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .brand-mark { inline-size: 29px; block-size: 29px; color: var(--ink); }
+    .brand-name { font-size: 27px; font-weight: 700; line-height: 1; letter-spacing: -.8px; }
+    .brand-by { border-inline-start: 1px solid var(--line); padding-inline-start: 11px; margin-inline-start: 3px; font-size: 10px; color: var(--muted); line-height: 1.4; }
+    .brand-by b { display: block; font: 600 15px Arial, sans-serif; color: var(--ink); letter-spacing: -.7px; }
+    .nav { display: flex; align-self: stretch; gap: 26px; font-size: 13px; color: var(--muted); }
+    .nav a { display: flex; align-items: center; gap: 7px; border-block-end: 2px solid transparent; padding-block: 14px; }
+    .nav .is-current { color: var(--accent); border-block-end-color: var(--accent); font-weight: 600; }
+    .workspace { display: flex; align-items: center; gap: 9px; margin-inline-start: auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .workspace-mark { display: grid; place-items: center; inline-size: 30px; block-size: 30px; border-radius: 50%; background: var(--canvas); border: 1px solid var(--line); color: var(--ink); font-weight: 600; }
+    main { max-inline-size: 1480px; margin-inline: auto; padding-inline: 32px; padding-block: 22px 12px; }
+    .page-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-block-end: 18px; }
+    h1 { font-size: 26px; line-height: 1.4; font-weight: 600; letter-spacing: -.6px; }
+    .heading-copy { display: flex; align-items: baseline; gap: 15px; }
+    .muted { color: var(--muted); }
+    .small { font-size: 12px; }
+    .text-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-block-size: 36px; padding-block: 5px; padding-inline: 10px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); font-size: 12px; white-space: nowrap; }
+    .text-button .icon { inline-size: 15px; block-size: 15px; }
+    .hero { display: grid; grid-template-columns: 1fr 1fr 1.1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .hero-col { padding-block: 21px; padding-inline: 25px; }
+    .hero-col + .hero-col { border-inline-start: 1px solid var(--line); }
+    .eyebrow { color: var(--muted); font-size: 12px; font-weight: 500; }
+    .revenue { font-size: 58px; line-height: 1.12; letter-spacing: -2px; font-weight: 500; margin-block: 10px 8px; }
+    .revenue .currency { font-size: 22px; letter-spacing: 0; font-weight: 400; }
+    .subline { color: var(--muted); font-size: 12px; }
+    .target-value { font-size: 30px; line-height: 1.4; letter-spacing: -.9px; margin-block: 9px 1px; font-weight: 500; }
+    .target-value .currency { font-size: 17px; letter-spacing: 0; }
+    .target-context { font-size: 13px; }
+    .target-scope { display: inline-flex; gap: 5px; align-items: center; font-size: 11px; color: var(--muted); margin-block-start: 7px; }
+    .target-scope .icon { inline-size: 13px; block-size: 13px; }
+    .verdict { background: #fafbfe; display: flex; flex-direction: column; justify-content: center; }
+    .verdict-label { display: flex; align-items: center; gap: 7px; color: var(--accent); font-size: 12px; font-weight: 500; }
+    .status-dot { inline-size: 6px; block-size: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+    .verdict h2 { font-size: 21px; line-height: 1.55; font-weight: 600; margin-block: 5px; letter-spacing: -.35px; }
+    .verdict p { color: var(--muted); font-size: 12px; max-inline-size: 350px; }
+    .inline-link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 12px; font-weight: 500; }
+    .verdict .inline-link { align-self: flex-start; margin-block-start: 10px; }
+    .arrow { font: 18px Arial, sans-serif; }
+    .grid-label { display: flex; align-items: center; justify-content: space-between; margin-block: 19px 10px; gap: 12px; }
+    .grid-label h2 { font-size: 13px; font-weight: 500; }
+    .grid-label p { font-size: 11px; color: var(--muted); }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+    .card { min-inline-size: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding-block: 17px 12px; padding-inline: 20px; display: flex; flex-direction: column; scroll-margin-block-start: 20px; }
+    .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-block-end: 13px; }
+    .card-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+    .card-title > .icon { color: var(--muted); inline-size: 17px; block-size: 17px; }
+    .tag { border: 1px solid var(--line); background: var(--canvas); border-radius: 5px; padding-block: 1px; padding-inline: 6px; font-size: 10px; color: var(--muted); white-space: nowrap; }
+    .metric-row { display: flex; align-items: baseline; gap: 7px; }
+    .metric { font-size: 30px; line-height: 1.2; font-weight: 500; letter-spacing: -.8px; }
+    .metric-label { color: var(--muted); font-size: 12px; }
+    .metric-context { font-size: 11px; color: var(--muted); margin-block-start: 4px; }
+    .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-block-start: 1px solid var(--line); margin-block-start: auto; padding-block-start: 9px; font-size: 11px; color: var(--muted); }
+    .source-button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-block-size: 28px; flex-shrink: 0; border: 0; background: none; padding-block: 2px; padding-inline: 3px; font-size: 11px; color: var(--muted); }
+    .source-button .icon { inline-size: 13px; block-size: 13px; }
+    .m-nil { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; line-height: 1.65; }
+    .m-nil--owed { color: var(--accent); background: var(--accent-soft); padding-block: 2px; padding-inline: 7px; border-radius: 4px; }
+    .m-nil--unset { color: #606875; border: 1px dotted #9aa2ae; padding-block: 1px; padding-inline: 7px; border-radius: 4px; }
+    .m-nil--none { color: var(--muted); }
+    .m-nil--none::before { content: ""; display: inline-block; inline-size: 5px; block-size: 5px; border: 1px solid #8c95a2; border-radius: 50%; flex-shrink: 0; }
+    .stage-chart { margin-block: 17px 0; }
+    .stage-row { display: grid; grid-template-columns: 107px minmax(0, 1fr) 20px; gap: 10px; align-items: center; margin-block-end: 12px; }
+    .stage-label { font-size: 11px; }
+    .stage-track { block-size: 13px; background: var(--track); border-radius: 3px; overflow: hidden; }
+    .stage-fill { display: block; block-size: 100%; inline-size: var(--value); background: var(--fill); border-radius: 3px; }
+    .stage-count { font-size: 12px; color: var(--ink); text-align: end; }
+    .empty-stages { display: flex; align-items: center; gap: 13px; padding-block: 8px 13px; }
+    .empty-rungs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; flex: 1; }
+    .empty-rung { block-size: 25px; border: 1px solid var(--line); border-radius: 3px; display: grid; place-items: center; background: #fafbfc; font-size: 10px; color: var(--muted); }
+    .empty-rung-copy { font-size: 10px; line-height: 1.5; }
+    .empty-rung-copy .m-nil { font-size: 10px; }
+    .plot { position: relative; margin-block: 22px 0; }
+    .bar-columns { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; block-size: 132px; align-items: end; position: relative; z-index: 1; }
+    .bar-column { position: relative; block-size: var(--height); min-block-size: 0; display: flex; align-items: flex-start; justify-content: center; }
+    .bar-shape { position: absolute; inset-block: 0; inset-inline: 3px; background: #9da6b4; border-start-start-radius: 3px; border-start-end-radius: 3px; }
+    .bar-column.is-maximum .bar-shape { background: var(--accent); }
+    .bar-number { position: absolute; inset-block-end: calc(100% + 4px); font-size: 11px; color: var(--ink); }
+    .bar-column.is-maximum .bar-number { color: var(--accent); font-weight: 600; }
+    .plot-guides { position: absolute; inset-block: 0; inset-inline: 0; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+    .plot-guides i { display: block; border-block-start: 1px solid #edf0f3; inline-size: 100%; }
+    .age-plot { padding-inline-start: 21px; }
+    .age-plot .plot-guides { inset-inline-start: 21px; }
+    .axis-label { position: absolute; inset-inline-start: 0; font-size: 9px; color: var(--quiet); line-height: 1; }
+    .axis-label.at-max { inset-block-start: -4px; }
+    .axis-label.at-mid { inset-block-start: calc(50% - 4px); }
+    .axis-label.at-min { inset-block-end: -4px; }
+    .plot-caption { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 10px; color: var(--muted); margin-block: 9px 11px; }
+    .legend { display: inline-flex; align-items: center; gap: 5px; }
+    .legend-swatch { inline-size: 6px; block-size: 6px; border-radius: 1px; background: var(--accent); }
+    .campaign-plot .bar-columns { gap: 13px; }
+    .campaign-plot .bar-shape { background: #727e90; }
+    .bar-column.is-zero .bar-shape { block-size: 1px; background: #929aa6; border-radius: 0; }
+    .bar-column.is-zero::after { content: ""; position: absolute; inset-block-end: -3px; inline-size: 7px; block-size: 7px; border-radius: 50%; border: 1.5px solid #697486; background: var(--surface); }
+    .bar-labels { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 13px; text-align: center; font-size: 10px; color: var(--muted); margin-block-start: 8px; }
+    .campaign-caption { font-size: 10px; color: var(--muted); margin-block: 7px 10px; }
+    .slash { font-size: 18px; font-weight: 400; color: var(--quiet); margin-inline: 3px; }
+    .segments { display: grid; gap: 5px; block-size: 12px; margin-block: 13px 7px; }
+    .segments--products { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+    .segments--prices { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .segment { border-radius: 2px; background: #f1f3f6; border: 1px solid #dfe3e9; }
+    .segment.has-value { background: var(--accent); border-color: var(--accent); }
+    .segment.is-missing { background-color: #f6f7f9; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M-2 2L2-2M0 8L8 0M6 10L10 6' stroke='%23dfe3e9' stroke-width='1'/%3E%3C/svg%3E"); }
+    .coverage-copy { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11px; }
+    .quarters-heading { margin-block: 17px 7px; display: flex; justify-content: space-between; gap: 8px; font-size: 11px; }
+    .quarters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .quarter { min-inline-size: 0; text-align: center; }
+    .quarter-name { font-size: 10px; color: var(--muted); margin-block-end: 5px; }
+    .quarter-cell { min-block-size: 48px; border-radius: 5px; border: 1px solid var(--line); background: #f2f4f7; display: flex; align-items: center; justify-content: center; padding-block: 5px; padding-inline: 2px; }
+    .quarter-cell .m-nil { padding-inline: 0; background: transparent; color: var(--muted); font-size: 10px; }
+    .quarter.is-recorded .quarter-cell { border-color: #c9d7f7; background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 600; }
+    .quarter.is-recorded .quarter-name { color: var(--accent); font-weight: 600; }
+    .coverage-note { margin-block: 9px 12px; color: var(--muted); font-size: 10px; }
+    .priced-number { font-size: 30px; font-weight: 500; letter-spacing: -.8px; line-height: 1.2; }
+    .priced-number small { font-size: 15px; font-weight: 400; letter-spacing: 0; }
+    .price-note { font-size: 10px; color: var(--muted); margin-block: 5px 12px; }
+    .sector-list { margin-block-end: 9px; }
+    .sector-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-block: 7px; border-block-start: 1px solid var(--line); font-size: 11px; }
+    .sector-name { display: flex; align-items: center; gap: 6px; }
+    .sector-target { color: var(--accent); display: flex; align-items: center; }
+    .sector-target .icon { inline-size: 12px; block-size: 12px; }
+    .account-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-block-start: 8px; }
+    .account-line .m-nil { font-size: 11px; }
+    .owner-dots { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 5px; margin-block: 15px 8px; }
+    .owner-dots i { block-size: 9px; background: #eff1f4; border: 1px solid #d9dee5; border-radius: 2px; }
+    .owner-note { color: var(--muted); font-size: 10px; }
+    .knowledge { display: flex; align-items: center; gap: 15px; border-block-start: 1px solid var(--line); margin-block: 16px 14px; padding-block-start: 16px; }
+    .knowledge-ring { position: relative; inline-size: 74px; block-size: 74px; flex-shrink: 0; }
+    .knowledge-ring svg { inline-size: 100%; block-size: 100%; transform: rotate(-90deg); }
+    .knowledge-ring circle { fill: none; stroke-width: 5; }
+    .ring-track { stroke: var(--track); }
+    .ring-value { stroke: var(--accent); stroke-dasharray: 34 100; }
+    .ring-label { position: absolute; inset-block: 0; inset-inline: 0; display: grid; place-content: center; font-size: 18px; line-height: 1.3; text-align: center; }
+    .ring-label small { font-size: 9px; color: var(--muted); }
+    .knowledge h3 { font-size: 12px; font-weight: 500; }
+    .knowledge p { font-size: 11px; color: var(--muted); margin-block-start: 3px; }
+    .page-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 15px 4px; font-size: 10px; color: var(--muted); }
+    .footer-brand { font-size: 12px; font-weight: 600; color: var(--quiet); }
+    dialog { inline-size: min(660px, calc(100% - 32px)); max-block-size: calc(100dvh - 40px); padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); margin-block: auto; margin-inline: auto; box-shadow: 0 18px 65px #151e3026; overscroll-behavior: contain; }
+    dialog::backdrop { background: #161e305c; }
+    .dialog-head { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-block: 15px; padding-inline: 22px; border-block-end: 1px solid var(--line); }
+    .dialog-head h2 { font-size: 18px; font-weight: 600; }
+    .close-button { display: grid; place-items: center; inline-size: 36px; block-size: 36px; flex-shrink: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+    .dialog-body { padding-block: 18px 23px; padding-inline: 22px; font-size: 13px; }
+    .dialog-body h3 { font-size: 14px; margin-block: 18px 8px; font-weight: 600; }
+    .dialog-body p + p { margin-block-start: 9px; }
+    .dialog-note { padding-block: 10px; padding-inline: 12px; background: var(--canvas); border-radius: 6px; color: var(--muted); font-size: 12px; margin-block: 12px; }
+    .data-table { inline-size: 100%; border-collapse: collapse; font-size: 12px; margin-block: 12px; }
+    .data-table th, .data-table td { text-align: start; padding-block: 9px; padding-inline: 8px; border-block-end: 1px solid var(--line); vertical-align: top; }
+    .data-table th { font-weight: 500; color: var(--muted); background: var(--canvas); }
+    .data-table th:first-child, .data-table td:first-child { padding-inline-start: 0; }
+    .data-table td:last-child { text-align: end; }
+    .raw-values { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 15px; }
+    .raw-value { background: var(--canvas); border: 1px solid var(--line); border-radius: 5px; padding-block: 5px; padding-inline: 12px; }
+    /* Infrequent, pointer-opened evidence only. Navigation and all keyboard actions are instant. */
+    dialog.pointer-enter { animation: dialog-enter var(--enter) var(--curve) both; }
+    dialog.pointer-exit { animation: dialog-exit var(--exit) var(--curve) both; }
+    .rare-action.is-pressed { transform: scale(.97); transition: transform var(--press) var(--curve); }
+    @keyframes dialog-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dialog-exit { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(4px); } }
+    @media (hover: hover) and (pointer: fine) {
+      .text-button:hover, .close-button:hover { background: #f0f2f6; }
+      .source-button:hover, .inline-link:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+      .nav a:hover { color: var(--accent); }
+    }
+    @media (max-width: 1100px) and (min-width: 761px) {
+      .topbar-inner, main { padding-inline: 20px; }
+      .topbar-inner { gap: 26px; }
+      .nav { gap: 19px; }
+      .dashboard-grid { gap: 12px; }
+      .card { padding-inline: 14px; }
+      .hero-col { padding-inline: 20px; }
+      .verdict h2 { font-size: 18px; }
+      .stage-row { grid-template-columns: 87px minmax(0, 1fr) 17px; gap: 6px; }
+      .bar-columns, .campaign-plot .bar-columns, .bar-labels { gap: 8px; }
+      .quarter-cell .m-nil { font-size: 9px; }
+      .card-title { font-size: 13px; gap: 6px; }
+      .empty-stages { gap: 7px; }
+      .empty-rung-copy { max-inline-size: 96px; }
+      .coverage-copy { font-size: 10px; }
+    }
+    @media (max-width: 760px) {
+      .topbar-inner { padding-inline: 18px; min-block-size: 60px; flex-wrap: wrap; gap: 0; }
+      .brand { padding-block: 15px; }
+      .brand-name { font-size: 25px; }
+      .brand-mark { inline-size: 25px; block-size: 25px; }
+      .brand-by { font-size: 9px; }
+      .brand-by b { font-size: 13px; }
+      .workspace { font-size: 11px; }
+      .workspace-mark { inline-size: 27px; block-size: 27px; }
+      .nav { order: 3; inline-size: 100%; justify-content: space-between; gap: 13px; font-size: 12px; border-block-start: 1px solid var(--line); }
+      .nav a { padding-block: 10px; gap: 5px; min-block-size: 44px; }
+      .nav .icon { inline-size: 15px; block-size: 15px; }
+      main { padding-inline: 16px; padding-block-start: 20px; }
+      .page-heading { margin-block-end: 15px; }
+      .heading-copy { display: block; }
+      h1 { font-size: 24px; }
+      .heading-copy p { font-size: 11px; margin-block-start: 2px; }
+      .text-button { min-block-size: 44px; padding-inline: 9px; font-size: 11px; }
+      .hero { grid-template-columns: minmax(0, 1fr); }
+      .hero-col { padding-block: 17px; padding-inline: 20px; }
+      .hero-col + .hero-col { border-inline-start: 0; border-block-start: 1px solid var(--line); }
+      .revenue { font-size: 54px; margin-block: 7px 4px; }
+      .hero-target { display: grid; grid-template-columns: 1fr auto; column-gap: 8px; }
+      .hero-target .eyebrow { grid-column: 1 / -1; }
+      .target-value { grid-column: 2; grid-row: 2 / 4; align-self: center; font-size: 25px; margin: 0; }
+      .target-value .currency { font-size: 14px; }
+      .target-context { grid-column: 1; grid-row: 2; margin-block-start: 5px; font-size: 12px; }
+      .target-scope { grid-column: 1; grid-row: 3; font-size: 10px; margin-block-start: 4px; }
+      .verdict h2 { font-size: 20px; }
+      .verdict .inline-link { min-block-size: 32px; margin-block-start: 5px; }
+      .grid-label { align-items: baseline; margin-block: 20px 10px; }
+      .grid-label p { font-size: 10px; }
+      .dashboard-grid { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+      .card { padding-block: 17px 9px; padding-inline: 19px; }
+      .card-head { margin-block-end: 12px; }
+      .card-title { font-size: 15px; }
+      .card-foot { min-block-size: 44px; padding-block-start: 4px; }
+      .source-button { min-block-size: 44px; padding-inline: 3px; }
+      .stage-row { grid-template-columns: 108px minmax(0, 1fr) 17px; }
+      .stage-label { font-size: 12px; }
+      .stage-chart { margin-block: 18px 3px; }
+      .stage-track { block-size: 15px; }
+      .empty-stages { padding-block-end: 17px; }
+      .bar-columns { block-size: 142px; }
+      .plot-caption { margin-block-end: 14px; }
+      .campaign-caption { margin-block-end: 14px; }
+      .quarters-heading { margin-block-start: 21px; }
+      .quarter-cell { min-block-size: 53px; }
+      .knowledge { margin-block-end: 16px; }
+      .page-footer { align-items: flex-start; padding-block: 17px max(10px, env(safe-area-inset-bottom)); }
+      .page-footer p { max-inline-size: 290px; }
+      .close-button { inline-size: 44px; block-size: 44px; }
+      .dialog-head, .dialog-body { padding-inline: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .rare-action.is-pressed { transform: none; }
+    }
+    @media print {
+      .topbar, .text-button, .source-button, .inline-link, dialog { display: none !important; }
+      main { padding: 0; }
+      .card, .hero { break-inside: avoid; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="sr-only" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></symbol>
+    <symbol id="i-stages" viewBox="0 0 24 24"><path d="M20 5H7m13 7H4m16 7H10"/><circle cx="4" cy="5" r="1"/><circle cx="7" cy="19" r="1"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l-3 2"/></symbol>
+    <symbol id="i-campaign" viewBox="0 0 24 24"><path d="m4 9 13-5v16L4 15Zm0 0v6H2V9m6 8 1 4h4l-2-5m9-7 2-1m-2 8 2 1"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 8H5a2 2 0 0 1 0-4h13v4M4 8v12h16V8m0 5h-5v3h5"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2m1-15a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 4v2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+    <symbol id="i-data" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8m-8 4h8m-8 4h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-3-9-2v15c3-1 6 0 9 2 3-2 6-3 9-2V4c-3-1-6 0-9 2Zm0 0v15"/></symbol>
+  </svg>
+  <a href="#main" class="skip">تجاوز إلى المحتوى</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#main" aria-label="مسار، الرئيسية">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 25V8h7v17m1-9h7V7h7v18" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M5 25h22" stroke="currentColor" stroke-width="3"/></svg>
+        <span class="brand-name">مسار</span><span class="brand-by">من<b lang="en">Lean</b></span>
+      </a>
+      <nav class="nav" aria-label="أقسام الصفحة">
+        <a class="is-current" href="#main" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>الرئيسية</a>
+        <a href="#opportunities">الفرص</a>
+        <a href="#targets">المستهدفات</a>
+        <a href="#readiness">جاهزية التنفيذ</a>
+      </nav>
+      <div class="workspace"><span>مساحة المبيعات</span><span class="workspace-mark" aria-hidden="true">م</span></div>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="page-heading">
+      <div class="heading-copy"><h1>الرئيسية</h1><p class="muted small">صورة المبيعات، كما هي.</p></div>
+      <button class="text-button rare-action" data-evidence="overview"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>كيف نقرأ الأرقام؟</button>
+    </div>
+
+    <section class="hero" aria-label="الإيراد والمستهدف والحكم على تحقيقه">
+      <div class="hero-col">
+        <h2 class="eyebrow">الإيراد المحقق <span aria-hidden="true">·</span> منذ البداية</h2>
+        <p class="revenue"><span class="m-n">0 <span class="currency">ر.س</span></span></p>
+        <p class="subline">لم تُغلق أي صفقة رابحة حتى الآن.</p>
+      </div>
+      <div class="hero-col hero-target">
+        <h2 class="eyebrow">المستهدف الوحيد المسجّل</h2>
+        <p class="target-value"><span class="m-n">34,000 <span class="currency">ر.س</span></span></p>
+        <p class="target-context">الإجازات المرضية</p>
+        <p class="target-scope"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>الربع الثالث <span class="m-n">2026</span> فقط</p>
+      </div>
+      <div class="hero-col verdict">
+        <div class="verdict-label"><span class="status-dot" aria-hidden="true"></span>هل سنحقق الرقم؟</div>
+        <h2>لا يمكن الجزم بعد.</h2>
+        <p><span class="m-n">5</span> بنود بلا تسعير، و<span class="m-n">7</span> منتجات بلا مستهدف. لا تكفي البيانات لتقييم التغطية.</p>
+        <a class="inline-link" href="#pricing">ابدأ بما ينقص الصورة <span class="arrow" aria-hidden="true">←</span></a>
+      </div>
+    </section>
+
+    <div class="grid-label"><h2>ما وراء الرقم</h2><p>من السجلات المتاحة <span aria-hidden="true">·</span> بلا توقعات</p></div>
+    <div class="dashboard-grid">
+      <section class="card" id="opportunities" aria-labelledby="stages-title">
+        <div class="card-head"><h2 class="card-title" id="stages-title"><svg class="icon" aria-hidden="true"><use href="#i-stages"/></svg>توزيع مراحل البيع</h2><span class="tag"><span class="m-n">8</span> مراحل</span></div>
+        <div class="metric-row"><span class="metric m-n">6</span><span class="metric-label">بنود مفتوحة</span></div>
+        <p class="metric-context">أغلب البنود في تواصل أولي.</p>
+        <figure class="stage-chart" aria-label="توزيع البنود على المراحل، كل شريط على المقياس نفسه">
+          <div class="stage-row"><span class="stage-label">تواصل أولي</span><span class="stage-track" aria-hidden="true"><span class="stage-fill" style="--value: 100%"></span></span><span class="stage-count m-n">4</span></div>
+          <div class="stage-row"><span class="stage-label">اكتشاف الحاجة</span><span class="stage-track" aria-hidden="true"><span class="stage-fill" style="--value: 25%"></span></span><span class="stage-count m-n">1</span></div>
+          <div class="stage-row"><span class="stage-label">عرض السعر</span><span class="stage-track" aria-hidden="true"><span class="stage-fill" style="--value: 25%"></span></span><span class="stage-count m-n">1</span></div>
+          <div class="empty-stages">
+            <div class="empty-rung-copy"><span class="m-n">5</span> مراحل أخرى<br><span class="m-nil m-nil--none">لا بنود مفتوحة</span></div>
+            <div class="empty-rungs" aria-label="خمس مراحل إضافية، صفر في كل مرحلة">
+              <span class="empty-rung"><span class="m-n">0</span></span><span class="empty-rung"><span class="m-n">0</span></span><span class="empty-rung"><span class="m-n">0</span></span><span class="empty-rung"><span class="m-n">0</span></span><span class="empty-rung"><span class="m-n">0</span></span>
+            </div>
+          </div>
+        </figure>
+        <div class="card-foot"><span>الفراغ في المراحل جزء من الصورة.</span><button class="source-button rare-action" data-evidence="stages" aria-label="عرض بيانات مراحل البيع">البيانات<svg class="icon" aria-hidden="true"><use href="#i-data"/></svg></button></div>
+      </section>
+
+      <section class="card" aria-labelledby="age-title">
+        <div class="card-head"><h2 class="card-title" id="age-title"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>زمن بلا حركة</h2><span class="tag">تغيير المرحلة</span></div>
+        <div class="metric-row"><span class="metric m-n">24</span><span class="metric-label">يومًا، أطول توقف</span></div>
+        <p class="metric-context">بندان لم تتغير مرحلتهما طوال هذه المدة.</p>
+        <figure aria-labelledby="age-title age-caption">
+          <div class="plot age-plot" role="img" aria-label="ستة بنود مستقلة، مرتبة من اليمين: 3، 9، 16، 21، 24، 24 يومًا دون تغيير المرحلة">
+            <span class="axis-label at-max" aria-hidden="true"><span class="m-n">24</span></span><span class="axis-label at-mid" aria-hidden="true"><span class="m-n">12</span></span><span class="axis-label at-min" aria-hidden="true"><span class="m-n">0</span></span>
+            <div class="plot-guides" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="bar-columns" aria-hidden="true">
+              <div class="bar-column" style="--height: 12.5%"><span class="bar-shape"></span><span class="bar-number m-n">3</span></div>
+              <div class="bar-column" style="--height: 37.5%"><span class="bar-shape"></span><span class="bar-number m-n">9</span></div>
+              <div class="bar-column" style="--height: 66.6666667%"><span class="bar-shape"></span><span class="bar-number m-n">16</span></div>
+              <div class="bar-column" style="--height: 87.5%"><span class="bar-shape"></span><span class="bar-number m-n">21</span></div>
+              <div class="bar-column is-maximum" style="--height: 100%"><span class="bar-shape"></span><span class="bar-number m-n">24</span></div>
+              <div class="bar-column is-maximum" style="--height: 100%"><span class="bar-shape"></span><span class="bar-number m-n">24</span></div>
+            </div>
+          </div>
+          <figcaption class="plot-caption" id="age-caption"><span>كل عمود بند مستقل؛ مرتبة حسب المدة.</span><span class="legend"><i class="legend-swatch" aria-hidden="true"></i>الأطول</span></figcaption>
+        </figure>
+        <div class="card-foot"><span>أيام منذ آخر تغيير، وليست تواريخ.</span><button class="source-button rare-action" data-evidence="age" aria-label="عرض بيانات مدة توقف البنود">البيانات<svg class="icon" aria-hidden="true"><use href="#i-data"/></svg></button></div>
+      </section>
+
+      <section class="card" aria-labelledby="campaign-title">
+        <div class="card-head"><h2 class="card-title" id="campaign-title"><svg class="icon" aria-hidden="true"><use href="#i-campaign"/></svg>مسار الحملة <span class="m-n">38</span></h2><span class="tag">مجموعة واحدة</span></div>
+        <div class="metric-row"><span class="metric m-n">0</span><span class="metric-label">فرص نتجت عن الحملة</span></div>
+        <p class="metric-context">بدأت بـ<span class="m-n">21</span> رسالة؛ وصلت إلى مهتمَّين.</p>
+        <figure aria-labelledby="campaign-title campaign-caption">
+          <div class="plot campaign-plot" role="img" aria-label="تتابع الحملة من اليمين إلى اليسار: 21 مرسلة، 19 وصلت، 12 شوهدت، 4 ردود، مهتمان، صفر فرص">
+            <div class="plot-guides" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="bar-columns" aria-hidden="true">
+              <div class="bar-column" style="--height: 100%"><span class="bar-shape"></span><span class="bar-number m-n">21</span></div>
+              <div class="bar-column" style="--height: 90.4761905%"><span class="bar-shape"></span><span class="bar-number m-n">19</span></div>
+              <div class="bar-column" style="--height: 57.1428571%"><span class="bar-shape"></span><span class="bar-number m-n">12</span></div>
+              <div class="bar-column" style="--height: 19.047619%"><span class="bar-shape"></span><span class="bar-number m-n">4</span></div>
+              <div class="bar-column" style="--height: 9.5238095%"><span class="bar-shape"></span><span class="bar-number m-n">2</span></div>
+              <div class="bar-column is-zero" style="--height: 0%"><span class="bar-shape"></span><span class="bar-number m-n">0</span></div>
+            </div>
+          </div>
+          <div class="bar-labels" aria-hidden="true"><span>أُرسلت</span><span>وصلت</span><span>شوهدت</span><span>ردّوا</span><span>اهتمّوا</span><span>فرص</span></div>
+          <figcaption class="campaign-caption" id="campaign-caption">تتابع المجموعة نفسها <span aria-hidden="true">←</span> من الإرسال إلى الفرصة</figcaption>
+        </figure>
+        <div class="card-foot"><span class="m-nil m-nil--none">لا فرص من الحملة</span><button class="source-button rare-action" data-evidence="campaign" aria-label="عرض بيانات الحملة">البيانات<svg class="icon" aria-hidden="true"><use href="#i-data"/></svg></button></div>
+      </section>
+
+      <section class="card" id="targets" aria-labelledby="targets-title">
+        <div class="card-head"><h2 class="card-title" id="targets-title"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>تغطية المستهدفات</h2><span class="tag">اكتمال التسجيل</span></div>
+        <div class="metric-row"><span class="metric m-n">1<span class="slash">/</span>8</span><span class="metric-label">منتج له مستهدف</span></div>
+        <figure aria-label="منتج واحد من ثمانية له مستهدف، والمنتجات السبعة الأخرى بلا مستهدف">
+          <div class="segments segments--products" aria-hidden="true"><i class="segment has-value"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i></div>
+          <figcaption class="coverage-copy"><span>الإجازات المرضية فقط</span><span class="m-nil m-nil--owed"><span class="m-n">7</span> منتجات بلا مستهدف</span></figcaption>
+        </figure>
+        <div class="quarters-heading"><span>سجل الأرباع <span class="m-n">2026</span></span><span class="muted">ربع واحد من أربعة</span></div>
+        <figure aria-label="أرباع عام 2026 من اليمين إلى اليسار؛ الربع الثالث فقط يحمل مستهدفًا">
+          <div class="quarters">
+            <div class="quarter"><p class="quarter-name">الأول</p><div class="quarter-cell"><span class="m-nil m-nil--owed">بلا مستهدف</span></div></div>
+            <div class="quarter"><p class="quarter-name">الثاني</p><div class="quarter-cell"><span class="m-nil m-nil--owed">بلا مستهدف</span></div></div>
+            <div class="quarter is-recorded"><p class="quarter-name">الثالث</p><div class="quarter-cell"><span class="m-n">34,000 ر.س</span></div></div>
+            <div class="quarter"><p class="quarter-name">الرابع</p><div class="quarter-cell"><span class="m-nil m-nil--owed">بلا مستهدف</span></div></div>
+          </div>
+          <figcaption class="coverage-note">التسجيل عبر الأرباع <span aria-hidden="true">←</span> المستهدف الغائب ليس صفرًا.</figcaption>
+        </figure>
+        <div class="card-foot"><span>اكتمال المستهدفات، لا نسبة تحقيقها.</span><button class="source-button rare-action" data-evidence="targets" aria-label="عرض بيانات المستهدفات">البيانات<svg class="icon" aria-hidden="true"><use href="#i-data"/></svg></button></div>
+      </section>
+
+      <section class="card" id="pricing" aria-labelledby="pricing-title">
+        <div class="card-head"><h2 class="card-title" id="pricing-title"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg>قيمة الفرص وقطاعاتها</h2><span class="tag">بنود مفتوحة</span></div>
+        <div class="metric-row"><span class="priced-number m-n">4,200 <small>ر.س</small></span><span class="metric-label">مسجّلة</span></div>
+        <p class="metric-context">قيمة بند واحد مُسعّر، وليست إيرادًا.</p>
+        <figure aria-label="من ستة بنود مفتوحة، بند واحد مسعر وخمسة لم تسعر">
+          <div class="segments segments--prices" aria-hidden="true"><i class="segment has-value"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i><i class="segment is-missing"></i></div>
+          <figcaption class="coverage-copy"><span class="muted">بند واحد من <span class="m-n">6</span></span><span class="m-nil m-nil--owed"><span class="m-n">5</span> بنود لم تُسعَّر</span></figcaption>
+        </figure>
+        <p class="price-note">إجمالي قيمة الفرص غير معروف حتى يكتمل التسعير.</p>
+        <dl class="sector-list">
+          <div class="sector-row"><dt class="sector-name">قطاع المستشفيات<span class="sector-target" role="img" aria-label="القطاع الوحيد ذو مستهدف مسجل"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></span></dt><dd><span class="m-n">4</span> بنود</dd></div>
+          <div class="sector-row"><dt>قطاع الصيدليات</dt><dd>بندان</dd></div>
+          <div class="sector-row"><dt>قطاع الأعمال</dt><dd><span class="m-nil m-nil--none">لا بنود مفتوحة</span></dd></div>
+        </dl>
+        <div class="card-foot"><span class="legend"><svg class="icon" style="inline-size:12px;block-size:12px;color:var(--accent)" aria-hidden="true"><use href="#i-target"/></svg>القطاع ذو المستهدف المسجّل</span><button class="source-button rare-action" data-evidence="pricing" aria-label="عرض بيانات التسعير والقطاعات">البيانات<svg class="icon" aria-hidden="true"><use href="#i-data"/></svg></button></div>
+      </section>
+
+      <section class="card" id="readiness" aria-labelledby="readiness-title">
+        <div class="card-head"><h2 class="card-title" id="readiness-title"><svg class="icon" aria-hidden="true"><use href="#i-people"/></svg>جاهزية التنفيذ</h2><span class="tag">الحسابات والمعرفة</span></div>
+        <div class="metric-row"><span class="metric m-n">16</span><span class="metric-label">حسابًا معتمدًا</span></div>
+        <div class="account-line"><span class="m-nil m-nil--unset">لم يُسنَد مسؤول لأي حساب</span></div>
+        <div class="owner-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="owner-note">كل خانة حساب؛ جميعها بانتظار إسناد مسؤول.</p>
+        <div class="knowledge">
+          <div class="knowledge-ring" role="img" aria-label="جاهزية المعرفة 34 من 100">
+            <svg viewBox="0 0 80 80" aria-hidden="true"><circle class="ring-track" cx="40" cy="40" r="34"/><circle class="ring-value" cx="40" cy="40" r="34" pathLength="100"/></svg>
+            <div class="ring-label" aria-hidden="true"><span class="m-n">34</span><small>من <span class="m-n">100</span></small></div>
+          </div>
+          <div><h3>جاهزية المعرفة</h3><p><span class="m-n">3</span> أقسام مكتملة من <span class="m-n">8</span>.</p><p>المحتوى لم يكتمل بعد.</p></div>
+        </div>
+        <div class="card-foot"><span>الاعتماد مكتمل؛ المسؤولون غير معيّنين.</span><button class="source-button rare-action" data-evidence="readiness" aria-label="عرض بيانات جاهزية التنفيذ">البيانات<svg class="icon" aria-hidden="true"><use href="#i-data"/></svg></button></div>
+      </section>
+    </div>
+    <footer class="page-footer"><p>المسجّل يظهر بقيمته. ما ينقص التسجيل يبقى ظاهرًا، وما يساوي صفرًا يبقى صفرًا.</p><span class="footer-brand">مسار</span></footer>
+  </main>
+
+  <dialog id="evidence" aria-labelledby="evidence-title" aria-describedby="evidence-description">
+    <div class="dialog-head"><h2 id="evidence-title">قراءة الأرقام</h2><button class="close-button rare-action" aria-label="إغلاق تفاصيل البيانات" id="close-evidence" autofocus><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    <div class="dialog-body" id="evidence-body"></div>
+  </dialog>
+
+  <template id="evidence-overview">
+    <p id="evidence-description">هذه قراءة للسجلات المتاحة. لا يوجد تاريخ إيرادات يسمح برسم اتجاه، ولا بيانات تكفي للتنبؤ بتحقيق المستهدف.</p>
+    <table class="data-table"><caption class="sr-only">الأرقام الرئيسية ونطاق كل رقم</caption><thead><tr><th scope="col">المؤشر</th><th scope="col">نطاقه</th><th scope="col">المسجّل</th></tr></thead><tbody>
+      <tr><th scope="row">الإيراد المحقق</th><td>منذ البداية</td><td><span class="m-n">0 ر.س</span></td></tr>
+      <tr><th scope="row">المستهدف</th><td>الإجازات المرضية؛ الربع الثالث <span class="m-n">2026</span> فقط</td><td><span class="m-n">34,000 ر.س</span></td></tr>
+      <tr><th scope="row">القيمة المسعّرة</th><td>بند مفتوح واحد من <span class="m-n">6</span></td><td><span class="m-n">4,200 ر.س</span></td></tr>
+    </tbody></table>
+    <p class="dialog-note">لا تتوافر صلة تحدد منتج البند المسعّر أو مدته أو مرحلته. لذلك لا نحسب نسبة تغطية للمستهدف، ولا نربط توزيعات البنود بعضها ببعض.</p>
+    <h3>للغياب معانٍ مختلفة</h3>
+    <p><span class="m-nil m-nil--owed">لم يُسعَّر / بلا مستهدف</span> رقم مطلوب لم يُسجّل؛ قيمته غير معروفة.</p>
+    <p><span class="m-nil m-nil--unset">لم يُسنَد مسؤول</span> إسناد لم يُحدّد؛ الحساب موجود ومعتمد.</p>
+    <p><span class="m-nil m-nil--none">لا بنود مفتوحة</span> غياب فعلي، ويجوز تمثيله بصفر.</p>
+    <h3>كيف تُقرأ الرسوم؟</h3>
+    <p>الأعمدة تعرض سجلات فعلية. تتابع الحملة والأرباع يبدأ من اليمين. مدد التوقف لبنود مستقلة، مرتبة تصاعديًا من اليمين؛ لا تمثل سلسلة زمنية.</p>
+    <p class="muted small">تفاصيل كل رسم متاحة من زر «البيانات» في بطاقته. عرض ثابت للسجلات الواردة، دون اتصال بنظام المبيعات.</p>
+  </template>
+  <template id="evidence-stages">
+    <p id="evidence-description"><span class="m-n">6</span> بنود مفتوحة موزعة على <span class="m-n">8</span> مراحل. الأشرطة على مقياس موحّد، وتبدأ من اليمين.</p>
+    <table class="data-table"><caption class="sr-only">عدد البنود المفتوحة حسب المرحلة</caption><thead><tr><th scope="col">المرحلة</th><th scope="col">عدد البنود</th></tr></thead><tbody><tr><th scope="row">تواصل أولي</th><td><span class="m-n">4</span></td></tr><tr><th scope="row">اكتشاف الحاجة</th><td><span class="m-n">1</span></td></tr><tr><th scope="row">عرض السعر</th><td><span class="m-n">1</span></td></tr><tr><th scope="row">كل مرحلة من المراحل الخمس الأخرى</th><td><span class="m-n">0</span></td></tr></tbody></table>
+    <p class="dialog-note">أسماء المراحل الخمس الأخرى وترتيبها غير واردين في البيانات. أظهرنا خمس خانات فارغة، دون اختلاق أسماء أو ترتيب داخل مسار البيع.</p>
+  </template>
+  <template id="evidence-age">
+    <p id="evidence-description">عدد الأيام دون تغيير المرحلة لكل بند. ست قيم فعلية لستة بنود مستقلة، مرتبة تصاعديًا من اليمين.</p>
+    <div class="raw-values"><span class="raw-value"><span class="m-n">3</span> أيام</span><span class="raw-value"><span class="m-n">9</span> أيام</span><span class="raw-value"><span class="m-n">16</span> يومًا</span><span class="raw-value"><span class="m-n">21</span> يومًا</span><span class="raw-value"><span class="m-n">24</span> يومًا</span><span class="raw-value"><span class="m-n">24</span> يومًا</span></div>
+    <p>الأزرق يحدد أطول مدة مسجّلة: <span class="m-n">24</span> يومًا، لبندين. لا يمثل حدًا تشغيليًا مفترضًا.</p>
+    <p class="dialog-note">لا تتوافر أسماء البنود أو تواريخ التغيير أو صلة كل مدة بمرحلة محددة. الأعمدة ليست تطورًا لبند واحد، ولا خطًا زمنيًا للإيراد.</p>
+  </template>
+  <template id="evidence-campaign">
+    <p id="evidence-description">الحملة <span class="m-n">38</span>: المجموعة نفسها عبر خطواتها، من اليمين إلى اليسار.</p>
+    <table class="data-table"><caption class="sr-only">سجل تتابع الحملة</caption><thead><tr><th scope="col">الخطوة</th><th scope="col">العدد</th></tr></thead><tbody><tr><th scope="row">أُرسلت</th><td><span class="m-n">21</span></td></tr><tr><th scope="row">وصلت</th><td><span class="m-n">19</span></td></tr><tr><th scope="row">شوهدت</th><td><span class="m-n">12</span></td></tr><tr><th scope="row">ردّوا</th><td><span class="m-n">4</span></td></tr><tr><th scope="row">اهتمّوا</th><td><span class="m-n">2</span></td></tr><tr><th scope="row">فرص نتجت عن الحملة</th><td><span class="m-n">0</span></td></tr></tbody></table>
+    <p class="dialog-note">الأعمدة تعرض الأعداد على مقياس موحّد. لم تُحسب معدلات تحويل، ولم تُنسَب البنود الستة المفتوحة إلى هذه الحملة.</p>
+  </template>
+  <template id="evidence-targets">
+    <p id="evidence-description">مستهدف واحد مسجّل: <span class="m-n">34,000 ر.س</span> للإجازات المرضية، في الربع الثالث من <span class="m-n">2026</span>.</p>
+    <table class="data-table"><caption class="sr-only">سجل المستهدفات الربعية</caption><thead><tr><th scope="col">الربع</th><th scope="col">المستهدف</th></tr></thead><tbody><tr><th scope="row">الأول</th><td><span class="m-nil m-nil--owed">بلا مستهدف</span></td></tr><tr><th scope="row">الثاني</th><td><span class="m-nil m-nil--owed">بلا مستهدف</span></td></tr><tr><th scope="row">الثالث</th><td><span class="m-n">34,000 ر.س</span></td></tr><tr><th scope="row">الرابع</th><td><span class="m-nil m-nil--owed">بلا مستهدف</span></td></tr></tbody></table>
+    <p>من أصل <span class="m-n">8</span> منتجات، منتج واحد له مستهدف و<span class="m-n">7</span> منتجات بلا مستهدف. أسماء المنتجات السبعة الأخرى غير واردة في هذه البيانات.</p>
+    <p class="dialog-note">الخانات تمثل اكتمال التسجيل، لا حجم الإيراد ولا نسبة الإنجاز. لا نوزع مستهدف الربع الثالث على شهور أو أرباع أخرى، ولا نسمّيه مستهدف الشركة السنوي.</p>
+  </template>
+  <template id="evidence-pricing">
+    <p id="evidence-description">من أصل <span class="m-n">6</span> بنود مفتوحة، بند واحد بقيمة <span class="m-n">4,200 ر.س</span>، و<span class="m-n">5</span> بنود <span class="m-nil m-nil--owed">لم يُسعَّر</span> كل منها.</p>
+    <table class="data-table"><caption class="sr-only">البنود المفتوحة وتسجيل المستهدف حسب القطاع</caption><thead><tr><th scope="col">القطاع</th><th scope="col">البنود المفتوحة</th><th scope="col">المستهدف</th></tr></thead><tbody><tr><th scope="row">قطاع المستشفيات</th><td><span class="m-n">4</span> بنود</td><td>مسجّل</td></tr><tr><th scope="row">قطاع الصيدليات</th><td>بندان</td><td><span class="m-nil m-nil--owed">بلا مستهدف</span></td></tr><tr><th scope="row">قطاع الأعمال</th><td><span class="m-nil m-nil--none">لا بنود مفتوحة</span></td><td><span class="m-nil m-nil--owed">بلا مستهدف</span></td></tr></tbody></table>
+    <p class="dialog-note">قيمة البنود غير المسعّرة مجهولة. لا نضيف أصفارًا بدلها، ولا نعامل قيمة البند المفتوح كإيراد محقق. لا توجد بيانات تربط البند المسعّر بمنتج أو قطاع محدد.</p>
+  </template>
+  <template id="evidence-readiness">
+    <p id="evidence-description"><span class="m-n">16</span> حسابًا، جميعها معتمدة، ولم يُسنَد مسؤول لأي منها.</p>
+    <table class="data-table"><caption class="sr-only">سجلات الجاهزية</caption><thead><tr><th scope="col">المؤشر</th><th scope="col">المسجّل</th></tr></thead><tbody><tr><th scope="row">الحسابات المعتمدة</th><td><span class="m-n">16</span> من <span class="m-n">16</span></td></tr><tr><th scope="row">الحسابات ذات المسؤول</th><td><span class="m-nil m-nil--unset">لم يُسنَد مسؤول لأي حساب</span></td></tr><tr><th scope="row">درجة جاهزية المعرفة</th><td><span class="m-n">34</span> من <span class="m-n">100</span></td></tr><tr><th scope="row">الأقسام المكتملة</th><td><span class="m-n">3</span> من <span class="m-n">8</span></td></tr></tbody></table>
+    <p class="dialog-note">درجة الجاهزية واردة بذاتها. لا نشتقها من عدد الأقسام المكتملة، ولا نفترض تساوي وزن الأقسام.</p>
+  </template>
+
+  <script>
+    (() => {
+      const dialog = document.querySelector('#evidence');
+      const body = document.querySelector('#evidence-body');
+      const title = document.querySelector('#evidence-title');
+      const closeButton = document.querySelector('#close-evidence');
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+      const titles = {
+        overview: 'كيف نقرأ الأرقام؟', stages: 'بيانات مراحل البيع', age: 'بيانات زمن التوقف',
+        campaign: 'بيانات الحملة', targets: 'بيانات المستهدفات', pricing: 'بيانات التسعير والقطاعات', readiness: 'بيانات جاهزية التنفيذ'
+      };
+      let trigger = null;
+      let closing = false;
+      let closeTimer = null;
+
+      function finishClose() {
+        clearTimeout(closeTimer);
+        dialog.close();
+        dialog.classList.remove('pointer-enter', 'pointer-exit');
+        closing = false;
+        trigger?.focus({ preventScroll: true });
+      }
+      function closeEvidence(pointer) {
+        if (!dialog.open || closing) return;
+        closing = true;
+        dialog.classList.remove('pointer-enter');
+        if (pointer && !reduced.matches) {
+          dialog.classList.add('pointer-exit');
+          closeTimer = setTimeout(finishClose, 120);
+        } else finishClose();
+      }
+      document.querySelectorAll('[data-evidence]').forEach(button => {
+        button.addEventListener('click', event => {
+          const key = button.dataset.evidence;
+          const template = document.querySelector('#evidence-' + key);
+          if (!template) return;
+          trigger = button;
+          body.replaceChildren(template.content.cloneNode(true));
+          title.textContent = titles[key];
+          dialog.classList.remove('pointer-exit', 'pointer-enter');
+          dialog.showModal();
+          dialog.scrollTop = 0;
+          if (event.detail > 0 && !reduced.matches) dialog.classList.add('pointer-enter');
+          closeButton.focus({ preventScroll: true });
+        });
+      });
+      closeButton.addEventListener('click', event => closeEvidence(event.detail > 0));
+      dialog.addEventListener('cancel', event => { event.preventDefault(); closeEvidence(false); });
+      dialog.addEventListener('click', event => {
+        if (event.target !== dialog || event.detail === 0) return;
+        const rect = dialog.getBoundingClientRect();
+        if (event.clientX < rect.x || event.clientX > rect.x + rect.width || event.clientY < rect.y || event.clientY > rect.y + rect.height) closeEvidence(true);
+      });
+      document.addEventListener('keydown', () => {
+        document.querySelectorAll('.is-pressed').forEach(el => el.classList.remove('is-pressed'));
+        dialog.classList.remove('pointer-enter');
+        if (closing) finishClose();
+      }, { capture: true });
+      document.querySelectorAll('.rare-action').forEach(button => {
+        button.addEventListener('pointerdown', event => {
+          if (event.isPrimary && event.button === 0 && !reduced.matches) button.classList.add('is-pressed');
+        });
+      });
+      const release = () => document.querySelectorAll('.is-pressed').forEach(el => el.classList.remove('is-pressed'));
+      document.addEventListener('pointerup', release);
+      document.addEventListener('pointercancel', release);
+      window.addEventListener('blur', release);
+      reduced.addEventListener('change', () => {
+        release();
+        dialog.classList.remove('pointer-enter');
+        if (closing) finishClose();
+      });
+    })();
+  </script>
+</body>
+</html>
