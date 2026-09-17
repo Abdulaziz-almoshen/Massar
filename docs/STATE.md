@@ -61,6 +61,55 @@ Three defects only the deployed page could reveal: `fmtN` grouped the year and p
 
 Competition record, both entries and the measuring harness: `massar-ds/review/`.
 
+### Later the same day — all 24 routes ported, and the defect that survived two screens
+
+Every route is on the new system and deployed. Verified in a real browser at **1440px and 400px**:
+no horizontal overflow, no `figure disagrees with records`, no console error, on all 24.
+
+The port ran as five agents against one fixed vocabulary (`docs/PORT-SPEC.md`). All five died
+mid-edit when the network dropped; the files they left were syntactically valid and passed the
+full gate, so the valid half was committed AS partial rather than called done, and three agents
+finished the rest. That mattered: the interrupted run had deleted ten `.ox-*` rules from the
+opportunities stylesheet while the JS still emitted them, so the **record drawer was rendering
+unstyled** — a half-finished port's characteristic failure, caught before it deployed.
+
+Defects found and fixed that were never design:
+
+- **A LOST deal rendered «نسبة الإنجاز في الدورة: 100٪»** behind a full accent bar while a WON
+  deal rendered 88٪. `journeyPct` was handed the full eight-rung ladder including the terminal
+  rungs. Fixed at the call site; the domain function is unit-tested and correct for what it is
+  given. A closed deal now gets no bar at all.
+- **`quarterlyByProduct` coalesced a missing target to zero** while `productPerformance` kept it
+  null, so the targets book said «7 منتجات مستهدفها صفر» and home said «7 من 8 منتجات بلا
+  مستهدف» — same seven products, two different claims, both screens honest about their own
+  endpoint. The divergence was in the data layer and is gone.
+- **`smoke.py`'s `#notes` landmark passed by luck.** «ملاحظة» comes from a four-way counted noun:
+  «ملاحظة واحدة» at one row, «ملاحظات» at three to ten. Production holds exactly one note. It
+  would have gone red at three. The toolbar names the surface now, which fixes the copy too —
+  the count had no label at all.
+- **`.m-input` carried `inline-size: 100%`**, right in a form cell and wrong in a filter bar,
+  where four controls each demanded the full width and the bar stacked. Fixed in the vocabulary,
+  which repaired three already-ported screens at the same time.
+
+`check-numerals` caught two of my own edits: a comment between a string and a ternary's colon
+(read as an orphaned literal), and an escaped quote inside a template literal that emits as a
+bare quote and ships a **blank page** — `tsc` and `node --check` both pass that one. It also
+blocked the merge over two new numeral wrappers it did not know, so the widening shipped with
+`scripts/check-numerals-wrappers.test.mjs`: six mutations asserting `mN`/`dsFig`/`fmtN` are
+accepted and `Math.roundmN(`, `a.mN(` and a raw `.length` are still refused. My first version of
+that test was itself wrong — it matched the `N` inside `roundmN`. Widening a guard is how guards
+rot.
+
+Two things left for the founder, neither taken unilaterally:
+
+1. **The stage colour ramp.** Six distinct hues across six open stages violates the new system's
+   one-accent rule, but it is a deliberate prior decision — contrast-tested, documented («a
+   stage's colour is part of its identity»), and locked by a unit test asserting every hue is
+   distinct. Colour helps scanning a kanban board and reads as decoration on a list.
+2. **Test data in production.** The product سجل التطعيمات الوطني has a package named `hello`; an
+   opportunity on DL000 carries `dfgdfgdfgf`; an account's sector reads `ne`; the single note is
+   English placeholder text. Deleting data needs approval.
+
 ## 2026-09-16 — the product record, and the reference design pass (engine deployed, smoke 21/21)
 
 Two founder corrections drove this, both fair. «product details page still has not been touched», then
