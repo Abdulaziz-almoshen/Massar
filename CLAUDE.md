@@ -170,9 +170,45 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
   `/design`, `frontend-design`, `better-ui`, `transitions-dev`/`transitions-polish` — loads
   `Skill("emil-design-eng")` alongside it, with the concrete task as args (bare, it only prints a
   greeting). Massar rules (RTL, `DESIGN.md` tokens, western numerals) win on conflict. Enforced
-  by `.claude/hooks/require-emil-design-eng.sh`. Project skills live in `.agents/skills/`
-  (symlinked into `.claude/skills/`, pinned in `skills-lock.json`): `emil-design-eng`,
-  `better-ui`, `transitions-dev`, `transitions-polish`, `create-github-action-workflow-specification`.
+  by `.claude/hooks/require-emil-design-eng.sh`.
+
+- **The design + motion skill set** (`emilkowalski/skills`, installed Sep 17 2026). Project skills
+  live in `.agents/skills/`, symlinked into `.claude/skills/`, pinned in `skills-lock.json`.
+  Fourteen are installed and **no two share a name** — the routing table below is what keeps them
+  from competing, because several cover adjacent ground.
+
+  | Need | Use | Not |
+  | --- | --- | --- |
+  | Build one animation from scratch | `animate` | `review-animations` (critique only) |
+  | Critique motion in a diff | `review-animations` | `improve-animations` (whole codebase) |
+  | Audit all motion, get a roadmap | `improve-animations` | `review-animations` |
+  | Find what *should* animate but doesn't | `find-animation-opportunities` | — |
+  | Name a motion effect | `animation-vocabulary` | — |
+  | Gesture, spring, drag, sheet, material | `apple-design` | `animate` for a plain transition |
+  | Several genuinely different UI versions to pick from | `prototype` | gstack `/design-shotgun` |
+  | Choose a library for a UI problem | `pick-ui-library` | guessing |
+  | Make the web app feel native on a phone | `mobile-native` | — |
+  | The invisible-details craft bar | `emil-design-eng` | — |
+
+  **Precedence, so nothing conflicts:**
+  1. Massar rules always win — RTL and logical properties, western numerals via `.m-n`,
+     Arabic counted nouns, `DESIGN.md` tokens, the `src/dashboard.ts` anchored-edit rule.
+  2. `emil-design-eng` sets the craft bar and loads on every design run (hook-enforced).
+  3. The task-specific skill above supplies the method.
+  4. gstack supplies the *workflow* (`/design-review`, `/plan-design-review`, `/ship`); the
+     emilkowalski skills supply the *craft*. They compose; they do not replace each other.
+     Where both offer variants, `prototype` renders them live behind a picker and
+     `/design-shotgun` runs the gstack review pipeline — use `prototype` to explore,
+     `/design-shotgun` to get them reviewed.
+
+  **Deliberately NOT installed** (they would be dead weight and routing noise — Massar is a
+  template-literal SPA with no React and no native app): `animate-expo` (React Native/Expo),
+  `write-swift` (Swift), `ask-sonner` (Sonner, a React toast library).
+
+  Also installed, from other sources: `better-ui` (jakubkrehel), `transitions-dev` and
+  `transitions-polish` (Jakubantalik), `create-github-action-workflow-specification` (github).
+  `transitions-*` overlaps `animate`/`review-animations`; prefer the emilkowalski skill for
+  method and keep `transitions-dev` as the transitions.dev reference lookup.
 
 ## 5. Working Rules
 - Work in small, verifiable steps; read `docs/STATE.md` before acting, write it after.
