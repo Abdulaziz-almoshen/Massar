@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مسار — مراحل البيع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="massar.css">
+</head>
+<body data-nav="settings" data-sub="settings">
+<div class="m-shell">
+  <div class="m-main">
+    <div class="m-bar">
+      <div class="m-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        بحث
+        <span class="m-kbd"><span>&#8984;</span><span>K</span></span>
+      </div>
+      <div class="m-head__a"><button class="m-btn m-btn--primary" data-open="dlgStage">مرحلة جديدة</button></div>
+    </div>
+    <main class="m-page">
+      <div class="m-head">
+        <div>
+          <div class="m-crumb">الإعدادات</div>
+          <h1 class="m-h1">مراحل البيع</h1>
+        </div>
+        <div class="m-row"></div>
+      </div>
+      <div data-subs></div>
+      <div style="margin-block-start:var(--m-4)">
+<section class="m-card m-card--pad0"><table class="m-table"><thead><tr><th>المرحلة</th><th>المفتاح</th><th>الوزن</th><th>مدة SLA</th><th>الحالة</th><th></th></tr></thead><tbody><tr><td class="m-td-n">تواصل أولي</td><td class="m-cap">contact</td><td class="m-td-v"><span class="m-n">10%</span></td><td class="m-td-v">3 أيام</td><td><span class="m-chip m-chip--ok">نشطة</span></td><td><button class="m-btn">تعديل</button></td></tr><tr><td class="m-td-n">اكتشاف الحاجة</td><td class="m-cap">discover</td><td class="m-td-v"><span class="m-n">25%</span></td><td class="m-td-v">5 أيام</td><td><span class="m-chip m-chip--ok">نشطة</span></td><td><button class="m-btn">تعديل</button></td></tr><tr><td class="m-td-n">عرض المنتج</td><td class="m-cap">present</td><td class="m-td-v"><span class="m-n">40%</span></td><td class="m-td-v">7 أيام</td><td><span class="m-chip m-chip--ok">نشطة</span></td><td><button class="m-btn">تعديل</button></td></tr><tr><td class="m-td-n">التقييم التقني</td><td class="m-cap">tech</td><td class="m-td-v"><span class="m-n">55%</span></td><td class="m-td-v">10 أيام</td><td><span class="m-chip m-chip--ok">نشطة</span></td><td><button class="m-btn">تعديل</button></td></tr><tr><td class="m-td-n">عرض السعر</td><td class="m-cap">quote</td><td class="m-td-v"><span class="m-n">60%</span></td><td class="m-td-v">7 أيام</td><td><span class="m-chip m-chip--ok">نشطة</span></td><td><button class="m-btn">تعديل</button></td></tr><tr><td class="m-td-n">التفاوض والاعتماد</td><td class="m-cap">negotiate</td><td class="m-td-v"><span class="m-n">80%</span></td><td class="m-td-v">14 يومًا</td><td><span class="m-chip m-chip--ok">نشطة</span></td><td><button class="m-btn">تعديل</button></td></tr></tbody></table><div class="m-tools"><span class="m-cap">المفتاح يملكه الكود؛ الاسم والوزن والمدة يملكها المدير</span></div></section>
+      </div>
+    </main>
+  </div>
+</div>
+<dialog class="m-dlg" id="dlgStage"><form method="dialog" class="m-dlg__p"><div class="m-dlg__h"><h2 class="m-dlg__t">إضافة مرحلة</h2><button class="m-x" data-close aria-label="إغلاق">&times;</button></div><div class="m-dlg__b"><div class="m-form"><div class="m-field"><label class="m-label m-req">الاسم</label><input class="m-input" type="text" placeholder="" value=""></div><div class="m-field"><label class="m-label m-req">الوزن %</label><input class="m-input" type="number" placeholder="0" value=""></div><div class="m-field"><label class="m-label">مدة SLA</label><input class="m-input" type="text" placeholder="7 أيام" value=""></div><div class="m-field"><label class="m-label">الحالة</label><select class="m-select"><option>نشطة</option><option>موقوفة</option></select></div></div></div><div class="m-dlg__f"><button class="m-btn" data-close>إلغاء</button><button class="m-btn m-btn--primary">إضافة المرحلة</button></div></form></dialog>
+<script src="shell.js"></script>
+
+</body>
+</html>

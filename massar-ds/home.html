@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مسار — الرئيسية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="massar.css">
+</head>
+<body data-nav="home" data-sub="home">
+<div class="m-shell">
+  <div class="m-main">
+    <div class="m-bar">
+      <div class="m-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        بحث
+        <span class="m-kbd"><span>&#8984;</span><span>K</span></span>
+      </div>
+      <div class="m-head__a"><button class="m-btn">تصدير</button><button class="m-btn m-btn--primary" data-open="dlgOpp">فرصة جديدة</button></div>
+    </div>
+    <main class="m-page">
+      <div class="m-head">
+        <div>
+          <div class="m-crumb">الرئيسية</div>
+          <h1 class="m-h1">الأداء التجاري</h1>
+        </div>
+        <div class="m-row"><div class="m-dates"><div class="m-seg" role="group" aria-label="المدى الزمني"><button data-p="7" aria-pressed="false">أسبوع</button><button data-p="14" aria-pressed="false">أسبوعان</button><button data-p="30" aria-pressed="false">شهر</button><button data-p="q" aria-pressed="true">الربع</button><button data-p="year" aria-pressed="false">السنة</button></div><label class="m-range"><input type="date" id="d1" value="2026-07-01" aria-label="من"><span>&#8212;</span><input type="date" id="d2" value="2026-09-16" aria-label="إلى"></label></div></div>
+      </div>
+      <div data-subs></div>
+      <div style="margin-block-start:var(--m-4)">
+<p class="m-meta m-home__dateline">السنة المالية <span class="m-n">2026</span> · حتى <span class="m-n">16</span> سبتمبر</p><section class="m-card m-card--revenue" aria-labelledby="revTitle"><div class="m-revenue__main"><h2 class="m-label" id="revTitle">الإيراد المحقق</h2><p class="m-revenue__value"><span class="m-n">0</span><span>ر.س</span></p><p class="m-body" id="revPeriod">لا صفقات رابحة حتى 16 سبتمبر</p><p class="m-status m-status--warn">لا توجد إيرادات محققة حتى الآن</p><div class="m-actions"><a class="m-btn m-btn--primary" href="#priced-line">مراجعة العرض المسعّر</a></div></div><div class="m-revenue__context"><dl class="m-facts"><div><dt>المستهدف المسجّل</dt><dd class="m-facts__value" id="tgtV"><span class="m-n">34,000</span> ر.س</dd><dd id="tgtWhy">الإجازات المرضية · الربع الثالث فقط</dd></div><div><dt>قيمة البنود المفتوحة المسعّرة</dt><dd class="m-facts__value"><span class="m-n">4,200</span> ر.س</dd><dd>بند واحد مسعّر من <span class="m-n">6</span>؛ <span class="m-n">5</span> بنود بلا تسعير</dd></div></dl><p class="m-revenue__qualification"><span class="m-n">7</span> منتجات بلا مستهدف. لا يمكن تقييم تحقيق مستهدف الشركة.</p><a class="m-link" href="perf.html">استكمال المستهدفات &#8592;</a></div></section><div class="m-home__work"><section class="m-card m-card--ledger" aria-labelledby="pipeTitle"><header class="m-section-head"><div class="m-section-head__t"><h2 class="m-h2" id="pipeTitle">فرص البيع المفتوحة</h2><p class="m-meta"><span class="m-n">6</span> بنود بلا حركة منذ <span class="m-n">29–35</span> يومًا · آخر حركة في 18 أغسطس</p></div><div class="m-seg" role="group" aria-label="طريقة العرض"><button data-v="list" aria-pressed="true">قائمة</button><button data-v="chart" aria-pressed="false">مدة الركود</button></div></header><div class="m-view"><div class="m-view__p" id="vList"><div class="m-tablewrap"><table class="m-table m-ledger"><thead><tr><th>العميل</th><th>المنتج</th><th>المرحلة</th><th>القيمة</th><th>بلا حركة</th><th>آخر حركة</th></tr></thead><tbody><tr id="priced-line" tabindex="-1"><td class="m-td-n">DL000</td><td>الإجازات المرضية</td><td><span class="m-chip">عرض السعر</span></td><td class="m-td-v"><span class="m-n">4,200</span></td><td class="m-td-v"><span class="m-n">29</span></td><td class="m-cap">18 أغسطس</td></tr><tr class="m-ledger__unpriced"><td class="m-td-n">ابرهيم</td><td>تكامل الأنظمة (HIS/ERP)</td><td><span class="m-chip">تواصل أولي</span></td><td class="m-td-v"><span class="m-td-nil">لم يُسعَّر</span></td><td class="m-td-v"><span class="m-n">35</span></td><td class="m-cap">12 أغسطس</td></tr><tr class="m-ledger__unpriced"><td class="m-td-n">ابرهيم</td><td>سجل التطعيمات الوطني</td><td><span class="m-chip">تواصل أولي</span></td><td class="m-td-v"><span class="m-td-nil">لم يُسعَّر</span></td><td class="m-td-v"><span class="m-n">35</span></td><td class="m-cap">12 أغسطس</td></tr><tr class="m-ledger__unpriced"><td class="m-td-n">العمدة</td><td>خدمات التطعيمات</td><td><span class="m-chip">تواصل أولي</span></td><td class="m-td-v"><span class="m-td-nil">لم يُسعَّر</span></td><td class="m-td-v"><span class="m-n">35</span></td><td class="m-cap">12 أغسطس</td></tr><tr class="m-ledger__unpriced"><td class="m-td-n">العمدة</td><td>تكامل الأنظمة (HIS/ERP)</td><td><span class="m-chip">تواصل أولي</span></td><td class="m-td-v"><span class="m-td-nil">لم يُسعَّر</span></td><td class="m-td-v"><span class="m-n">35</span></td><td class="m-cap">12 أغسطس</td></tr><tr class="m-ledger__unpriced"><td class="m-td-n">العمدة</td><td>الإجازات المرضية</td><td><span class="m-chip">اكتشاف الحاجة</span></td><td class="m-td-v"><span class="m-td-nil">لم يُسعَّر</span></td><td class="m-td-v"><span class="m-n">35</span></td><td class="m-cap">12 أغسطس</td></tr></tbody></table></div></div><div class="m-view__p" id="vChart" hidden><div class="m-aging"><div class="m-aging__r"><span class="m-aging__k">DL000 · الإجازات المرضية</span><span class="m-aging__b"><i style="--m-pct:82%" class="is-priced"></i></span><span class="m-aging__v"><span class="m-n">29</span> يومًا</span></div><div class="m-aging__r"><span class="m-aging__k">ابرهيم · تكامل الأنظمة (HIS/ERP)</span><span class="m-aging__b"><i style="--m-pct:100%"></i></span><span class="m-aging__v"><span class="m-n">35</span> يومًا</span></div><div class="m-aging__r"><span class="m-aging__k">ابرهيم · سجل التطعيمات الوطني</span><span class="m-aging__b"><i style="--m-pct:100%"></i></span><span class="m-aging__v"><span class="m-n">35</span> يومًا</span></div><div class="m-aging__r"><span class="m-aging__k">العمدة · خدمات التطعيمات</span><span class="m-aging__b"><i style="--m-pct:100%"></i></span><span class="m-aging__v"><span class="m-n">35</span> يومًا</span></div><div class="m-aging__r"><span class="m-aging__k">العمدة · تكامل الأنظمة (HIS/ERP)</span><span class="m-aging__b"><i style="--m-pct:100%"></i></span><span class="m-aging__v"><span class="m-n">35</span> يومًا</span></div><div class="m-aging__r"><span class="m-aging__k">العمدة · الإجازات المرضية</span><span class="m-aging__b"><i style="--m-pct:100%"></i></span><span class="m-aging__v"><span class="m-n">35</span> يومًا</span></div></div></div></div></section><aside class="m-home__decisions" aria-labelledby="decTitle"><h2 class="m-h2" id="decTitle">ما يعطّل البيع</h2><div class="m-decision"><h3 class="m-decision__title"><span class="m-n">5</span> بنود بلا تسعير من <span class="m-n">6</span></h3><p class="m-meta">قيمة خط البيع تُقرأ من بند واحد فقط. الباقي لا يدخل أي مجموع.</p><a class="m-link" href="opps.html">تسعير البنود &#8592;</a></div><div class="m-decision"><h3 class="m-decision__title"><span class="m-n">7</span> منتجات بلا مستهدف من <span class="m-n">8</span></h3><p class="m-meta">المستهدف الوحيد المسجّل على الإجازات المرضية، الربع الثالث فقط.</p><a class="m-link" href="perf.html">تسجيل المستهدفات &#8592;</a></div><div class="m-decision"><h3 class="m-decision__title"><span class="m-n">16</span> عملاء بلا مسؤول</h3><p class="m-meta">لا أحد مكلّف بالمتابعة، فلا حركة تُنتظر على أي بند.</p><a class="m-link" href="accounts.html">إسناد المسؤولين &#8592;</a></div></aside></div><details class="m-evidence" id="indicators"><summary><span class="m-h2">تفاصيل المؤشرات</span><span class="m-meta">جاهزية المساعد · نتائج الحملة · بيانات المنتجات · العملاء</span></summary><div class="m-evidence__row"><div><h3 class="m-label">جاهزية معرفة المنتج</h3><p class="m-meta"><span class="m-n">3</span> من <span class="m-n">8</span> أقسام مكتملة. المساعد لا يجيب عن سعر غير منشور.</p></div><div><div class="m-meter" style="--m-pct:34%"><i></i></div><span class="m-cap"><span class="m-n">34</span> من <span class="m-n">100</span></span></div></div><div class="m-evidence__row"><div><h3 class="m-label">الحملة 38</h3><p class="m-meta"><span class="m-n">21</span> رسالة أُرسلت · <span class="m-n">12</span> شوهدت · <span class="m-n">4</span> ردّوا · <span class="m-n">2</span> مهتم.</p></div><div><span class="m-cap">انتهت في <span class="m-n">11</span> أغسطس</span></div></div><div class="m-evidence__row"><div><h3 class="m-label">بيانات المنتجات</h3><p class="m-meta"><span class="m-n">1</span> منتجات بلا سعر منشور · <span class="m-n">4</span> بقطاع مُستنتَج · <span class="m-n">1</span> لا يبيعه المساعد.</p></div><div><a class="m-link" href="products.html">المنتجات &#8592;</a></div></div><div class="m-evidence__row"><div><h3 class="m-label">العملاء</h3><p class="m-meta"><span class="m-n">16</span> عميلًا معتمدًا · لا عميل مرفوض · لا عميل بانتظار الاعتماد.</p></div><div><a class="m-link" href="accounts.html">العملاء &#8592;</a></div></div></details>
+      </div>
+    </main>
+  </div>
+</div>
+<dialog class="m-dlg" id="dlgOpp"><form method="dialog" class="m-dlg__p"><div class="m-dlg__h"><h2 class="m-dlg__t">إضافة فرصة</h2><button class="m-x" data-close aria-label="إغلاق">&times;</button></div><div class="m-dlg__b"><div class="m-form"><div class="m-field"><label class="m-label m-req">العميل</label><select class="m-select"><option>DL000</option><option>ابرهيم</option><option>العمدة</option><option>أبو حمزه</option><option>أبو نور</option><option>صيدلية الدواء</option><option>صيدلية الدواء (مثال)</option><option>صيدلية الدواء (مثال)</option></select></div><div class="m-field"><label class="m-label m-req">المنتج</label><select class="m-select"><option>الإجازات المرضية</option><option>التقارير الطبية</option><option>الشهادات الصحية</option><option>تكامل الأنظمة (HIS/ERP)</option><option>خدمات التطعيمات</option><option>سجل التطعيمات الوطني</option><option>صحة أعمال Plus</option><option>فحص الموظفين</option></select></div><div class="m-field"><label class="m-label m-req">المرحلة</label><select class="m-select"><option>تواصل أولي</option><option>اكتشاف الحاجة</option><option>عرض المنتج</option><option>التقييم التقني</option><option>عرض السعر</option><option>التفاوض والاعتماد</option></select></div><div class="m-field"><label class="m-label m-req">المصدر</label><select class="m-select"><option>حملة واتساب</option><option>مكالمة</option><option>زيارة</option><option>إحالة</option><option>طلب وارد</option></select></div><div class="m-field"><label class="m-label">الكمية</label><input class="m-input" type="number" placeholder="1" value=""></div><div class="m-field"><label class="m-label">السعر للوحدة (ر.س)</label><input class="m-input" type="number" placeholder="لم يُسعَّر" value=""></div><div class="m-field"><label class="m-label">عدد السنوات</label><input class="m-input" type="number" placeholder="1" value=""></div><div class="m-field"><label class="m-label">الخصم %</label><input class="m-input" type="number" placeholder="0" value=""></div><div class="m-field"><label class="m-label">الموظف المسؤول</label><select class="m-select"><option>بلا مسؤول</option></select></div><div class="m-field"><label class="m-label">تاريخ الإغلاق المتوقع</label><input class="m-input" type="date" placeholder="" value=""></div><div class="m-field"><label class="m-label">الشريك</label><select class="m-select"><option>لا شريك</option></select></div><div class="m-field full"><label class="m-label">ملاحظة</label><textarea class="m-input" rows="3" placeholder=""></textarea></div></div></div><div class="m-dlg__f"><button class="m-btn" data-close>إلغاء</button><button class="m-btn m-btn--primary">إضافة الفرصة</button></div></form></dialog>
+<script src="shell.js"></script>
+<script>
+(function () {
+  var P = {"7": {"s": "آخر سبعة أيام", "t": null, "w": "لا مستهدف مسجّل لهذه الفترة"}, "14": {"s": "آخر أسبوعين", "t": null, "w": "لا مستهدف مسجّل لهذه الفترة"}, "30": {"s": "آخر ثلاثين يومًا", "t": null, "w": "لا مستهدف مسجّل لهذه الفترة"}, "q": {"s": "الربع الثالث", "t": "34,000", "w": "الإجازات المرضية · الربع الثالث فقط"}, "year": {"s": "السنة المالية 2026", "t": null, "w": "لا مستهدف سنوي مسجّل"}};
+  var segs = document.querySelectorAll(".m-dates .m-seg button");
+  var tgtV = document.getElementById("tgtV");
+  var tgtWhy = document.getElementById("tgtWhy");
+  var revP = document.getElementById("revPeriod");
+  function pick(k) {
+    var p = P[k]; if (!p) return;
+    if (p.t) { tgtV.innerHTML = '<span class="m-n">' + p.t + '</span> ر.س'; }
+    else { tgtV.innerHTML = '<span class="m-td-nil">لا مستهدف</span>'; }
+    tgtWhy.textContent = p.w;
+    revP.textContent = "لا صفقات رابحة خلال " + p.s;
+    segs.forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-p") === k ? "true" : "false");
+    });
+  }
+  segs.forEach(function (b) {
+    b.addEventListener("click", function () { pick(b.getAttribute("data-p")); });
+  });
+
+  /* The two readings of the six lines. Crossfade with a blur bridge so the
+     eye reads one surface changing rather than two stacked ones swapping. */
+  var views = document.querySelectorAll(".m-card--ledger .m-view__p");
+  var vbtn = document.querySelectorAll(".m-card--ledger .m-seg button");
+  vbtn.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var v = b.getAttribute("data-v");
+      vbtn.forEach(function (o) {
+        o.setAttribute("aria-pressed", o.getAttribute("data-v") === v ? "true" : "false");
+      });
+      views.forEach(function (p) {
+        var on = p.id === (v === "list" ? "vList" : "vChart");
+        if (on) { p.hidden = false; requestAnimationFrame(function () { p.removeAttribute("data-away"); }); }
+        else { p.setAttribute("data-away", ""); setTimeout(function () { p.hidden = true; }, 120); }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

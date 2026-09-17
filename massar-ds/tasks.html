@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مسار — المهام</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="massar.css">
+</head>
+<body data-nav="accounts" data-sub="tasks">
+<div class="m-shell">
+  <div class="m-main">
+    <div class="m-bar">
+      <div class="m-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        بحث
+        <span class="m-kbd"><span>&#8984;</span><span>K</span></span>
+      </div>
+      <div class="m-head__a"><button class="m-btn m-btn--primary" data-open="dlgTask">مهمة جديدة</button></div>
+    </div>
+    <main class="m-page">
+      <div class="m-head">
+        <div>
+          <div class="m-crumb">العملاء</div>
+          <h1 class="m-h1">المهام</h1>
+        </div>
+        <div class="m-row"><div class="m-seg" role="group" aria-label="تصفية"><button aria-pressed="true">الكل</button><button aria-pressed="false">اليوم</button><button aria-pressed="false">متأخرة</button><button aria-pressed="false">منجزة</button></div></div>
+      </div>
+      <div data-subs></div>
+      <div style="margin-block-start:var(--m-4)">
+<section class="m-card m-card--pad0"><table class="m-table"><thead><tr><th>المهمة</th><th>العميل</th><th>الفرصة</th><th>الأولوية</th><th>الاستحقاق</th><th></th></tr></thead><tbody><tr><td colspan="6" style="padding:0"><div class="m-empty"><div class="m-empty__t">لا مهمة مسجّلة</div><div class="m-empty__a"><button class="m-btn m-btn--primary" data-open="dlgTask">مهمة جديدة</button></div></div></td></tr></tbody></table></section>
+      </div>
+    </main>
+  </div>
+</div>
+<dialog class="m-dlg" id="dlgTask"><form method="dialog" class="m-dlg__p"><div class="m-dlg__h"><h2 class="m-dlg__t">مهمة جديدة</h2><button class="m-x" data-close aria-label="إغلاق">&times;</button></div><div class="m-dlg__b"><div class="m-form"><div class="m-field full"><label class="m-label m-req">العنوان</label><input class="m-input" type="text" placeholder="" value=""></div><div class="m-field"><label class="m-label">العميل</label><select class="m-select"><option>بلا عميل</option><option>DL000</option><option>ابرهيم</option><option>العمدة</option><option>أبو حمزه</option><option>أبو نور</option><option>صيدلية الدواء</option><option>صيدلية الدواء (مثال)</option><option>صيدلية الدواء (مثال)</option></select></div><div class="m-field"><label class="m-label">الفرصة</label><select class="m-select"><option>بلا فرصة</option></select></div><div class="m-field"><label class="m-label">الأولوية</label><select class="m-select"><option>عادية</option><option>مرتفعة</option><option>عاجلة</option></select></div><div class="m-field"><label class="m-label">الاستحقاق</label><input class="m-input" type="date" placeholder="" value=""></div></div></div><div class="m-dlg__f"><button class="m-btn" data-close>إلغاء</button><button class="m-btn m-btn--primary">إضافة المهمة</button></div></form></dialog>
+<script src="shell.js"></script>
+
+</body>
+</html>

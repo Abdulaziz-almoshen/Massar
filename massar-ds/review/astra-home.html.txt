@@ -1,0 +1,84 @@
+<main class="m-page m-home">
+  <header class="m-home__head">
+    <h1 class="m-h1">الأداء التجاري</h1>
+    <p class="m-meta">
+      السنة المالية <bdi class="m-n">2026</bdi>
+      · حتى <bdi class="m-n">16</bdi> سبتمبر
+    </p>
+  </header>
+
+  <section class="m-card m-card--revenue"
+           aria-labelledby="revenue-title">
+    <div class="m-revenue__main">
+      <h2 class="m-label" id="revenue-title">الإيراد المحقق</h2>
+      <p class="m-revenue__value">
+        <bdi class="m-n">0</bdi><span>ر.س</span>
+      </p>
+      <p class="m-body">لا صفقات رابحة حتى 16 سبتمبر</p>
+      <p class="m-status m-status--warn">
+        لا توجد إيرادات محققة حتى الآن
+      </p>
+      <div class="m-actions">
+        <a class="m-btn m-btn--primary" href="#priced-line">
+          مراجعة العرض المسعّر
+        </a>
+      </div>
+    </div>
+
+    <div class="m-revenue__context">
+      <dl class="m-facts">
+        <div>
+          <dt>المستهدف المسجّل</dt>
+          <dd class="m-facts__value">
+            <bdi class="m-n">34,000</bdi> ر.س
+          </dd>
+          <dd>الإجازات المرضية · الربع الثالث فقط</dd>
+        </div>
+        <div>
+          <dt>قيمة البنود المفتوحة المسعّرة</dt>
+          <dd class="m-facts__value">
+            <bdi class="m-n">4,200</bdi> ر.س
+          </dd>
+          <dd>بند واحد مسعّر من ستة؛ خمسة بنود بلا تسعير</dd>
+        </div>
+      </dl>
+      <p class="m-revenue__qualification">
+        سبعة منتجات بلا مستهدف.
+        لا يمكن تقييم تحقيق مستهدف الشركة.
+      </p>
+      <a class="m-link" href="perf.html">استكمال المستهدفات</a>
+    </div>
+  </section>
+
+  <div class="m-home__work">
+    <section class="m-card m-card--ledger"
+             aria-labelledby="pipeline-title">
+      <header class="m-section-head">
+        <h2 class="m-h2" id="pipeline-title">فرص البيع المفتوحة</h2>
+        <p class="m-meta">
+          ستة بنود بلا حركة منذ <bdi class="m-n">29–35</bdi> يومًا
+          · آخر حركة في <bdi class="m-n">18</bdi> أغسطس
+        </p>
+      </header>
+      <!-- .m-tablewrap > table.m-table.m-ledger
+           Use the six rows above.
+           Give the priced row id="priced-line" and tabindex="-1". -->
+    </section>
+
+    <aside class="m-home__decisions" aria-labelledby="decisions-title">
+      <h2 class="m-h2" id="decisions-title">ما يعطّل البيع</h2>
+      <!-- Three .m-decision blocks:
+           h3.m-decision__title, p.m-meta, a.m-link -->
+    </aside>
+  </div>
+
+  <details class="m-evidence" id="indicators">
+    <summary>
+      <span class="m-h2">تفاصيل المؤشرات</span>
+      <span class="m-meta">
+        اكتمال بيانات العملاء · نتائج الحملة · معرفة المنتجات
+      </span>
+    </summary>
+    <!-- Four .m-evidence__row blocks with the exact facts above. -->
+  </details>
+</main>

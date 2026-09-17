@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مسار — مؤشرات الاستخدام</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="massar.css">
+</head>
+<body data-nav="accounts" data-sub="indicators">
+<div class="m-shell">
+  <div class="m-main">
+    <div class="m-bar">
+      <div class="m-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        بحث
+        <span class="m-kbd"><span>&#8984;</span><span>K</span></span>
+      </div>
+      <div class="m-head__a"><button class="m-btn m-btn--primary" data-open="dlgInd">مؤشر جديد</button></div>
+    </div>
+    <main class="m-page">
+      <div class="m-head">
+        <div>
+          <div class="m-crumb">العملاء</div>
+          <h1 class="m-h1">مؤشرات استخدام العملاء</h1>
+        </div>
+        <div class="m-row"><div class="m-seg" role="group" aria-label="تصفية"><button aria-pressed="true">الكل</button><button aria-pressed="false">استخدام</button><button aria-pressed="false">اشتراك</button><button aria-pressed="false">طلب دعم</button></div></div>
+      </div>
+      <div data-subs></div>
+      <div style="margin-block-start:var(--m-4)">
+<section class="m-card m-card--pad0"><table class="m-table"><thead><tr><th>المؤشر</th><th>الإشارة</th><th>المنتج</th><th>الأعضاء</th><th>آخر تحديث</th><th></th></tr></thead><tbody><tr><td colspan="6" style="padding:0"><div class="m-empty"><div class="m-empty__t">لا مؤشر مُعرَّف بعد</div><div class="m-empty__a"><button class="m-btn m-btn--primary" data-open="dlgInd">مؤشر جديد</button></div></div></td></tr></tbody></table></section>
+      </div>
+    </main>
+  </div>
+</div>
+<dialog class="m-dlg" id="dlgInd"><form method="dialog" class="m-dlg__p"><div class="m-dlg__h"><h2 class="m-dlg__t">إضافة مؤشر</h2><button class="m-x" data-close aria-label="إغلاق">&times;</button></div><div class="m-dlg__b"><div class="m-form"><div class="m-field full"><label class="m-label m-req">اسم المؤشر</label><input class="m-input" type="text" placeholder="" value=""></div><div class="m-field"><label class="m-label m-req">نوع الإشارة</label><select class="m-select"><option>استخدام</option><option>اشتراك</option><option>طلب دعم</option><option>تجديد</option></select></div><div class="m-field"><label class="m-label">المنتج</label><select class="m-select"><option>الإجازات المرضية</option><option>التقارير الطبية</option><option>الشهادات الصحية</option><option>تكامل الأنظمة (HIS/ERP)</option><option>خدمات التطعيمات</option><option>سجل التطعيمات الوطني</option><option>صحة أعمال Plus</option><option>فحص الموظفين</option></select></div><div class="m-field"><label class="m-label">مطابقة الأعضاء</label><select class="m-select"><option>الجوال ← الكود ← الاسم</option><option>الجوال فقط</option><option>الكود فقط</option></select></div><div class="m-field full"><label class="m-label">ملف البيانات</label><input class="m-input" type="file"></div></div></div><div class="m-dlg__f"><button class="m-btn" data-close>إلغاء</button><button class="m-btn m-btn--primary">إنشاء المؤشر</button></div></form></dialog>
+<script src="shell.js"></script>
+
+</body>
+</html>
