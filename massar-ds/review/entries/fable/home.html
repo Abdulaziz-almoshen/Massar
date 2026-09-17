@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مسار — الرئيسية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── مسار · the ledger system ─────────────────────────────────────────────
+   One stylesheet for every screen. A screen composes these classes; it never
+   defines a surface, a row, a figure or an empty of its own.
+   Logical properties only. No left, no right, anywhere.
+   ─────────────────────────────────────────────────────────────────────── */
+:root{
+  /* ground — four levels, warm neutral, measured contrast in SYSTEM.md §2 */
+  --paper:#FFFFFF; --page:#F4F3EF; --sunk:#ECEAE4; --line:#E3E1DA; --line-2:#BDB9AE;
+  /* ink — three levels. --mut is the floor: 5.56:1 on paper, 4.63:1 on sunk */
+  --ink:#1A1917; --ink-2:#45433E; --mut:#6B6860;
+  /* the one accent. It means "a person must act on money". Never decoration. */
+  --ac:#B7371A; --ac-dim:#FBEBE5; --ac-line:#EBB9A9;
+  /* type — seven roles named by job (SYSTEM.md §3) */
+  --t-micro:12px; --l-micro:16px;
+  --t-cell:13px;  --l-cell:18px;
+  --t-body:14px;  --l-body:20px;
+  --t-sub:16px;   --l-sub:22px;
+  --t-fig:20px;   --l-fig:24px;
+  --t-head:32px;  --l-head:36px;
+  --t-lead:clamp(56px,5.2vw,76px);
+  /* space — 4px base */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
+  /* fixed heights so rows never reflow when a cell is empty */
+  --row:40px; --ctl:32px; --chip:22px;
+  --r:4px;
+  /* motion — one curve (easeOutQuint, easings.net), duration carries meaning */
+  --ease:cubic-bezier(.22,1,.36,1);
+  --in:180ms; --out:120ms; --press:100ms;
+  --ring:0 0 0 1px var(--line);
+  --focus:0 0 0 2px var(--paper),0 0 0 4px var(--ink);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--page); color:var(--ink-2);
+  font-family:"IBM Plex Sans Arabic","Noto Sans Arabic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--t-body); line-height:var(--l-body);
+  font-variant-numeric:lining-nums tabular-nums;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+h1,h2,h3,p,dl,dd,dt,ul,figure{margin:0}
+ul{padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:0;box-shadow:var(--focus);border-radius:var(--r)}
+
+/* ── numerals: every digit in the product passes through .n ─────────── */
+.n{
+  direction:ltr; unicode-bidi:isolate; display:inline-block;
+  font-variant-numeric:lining-nums tabular-nums; font-feature-settings:"tnum" 1,"lnum" 1;
+  letter-spacing:-.01em;
+}
+
+/* ── frame ──────────────────────────────────────────────────────────── */
+.top{
+  display:flex; align-items:center; gap:var(--s5);
+  padding-block:0; padding-inline:var(--s5);
+  block-size:48px; background:var(--paper); border-block-end:1px solid var(--line);
+  position:sticky; inset-block-start:0; z-index:5;
+}
+.mark{font-weight:700;font-size:var(--t-sub);color:var(--ink);text-decoration:none;letter-spacing:0}
+.doors{display:flex;gap:var(--s4);align-self:stretch;overflow-x:auto;scrollbar-width:none;min-inline-size:0}
+.doors::-webkit-scrollbar{display:none}
+.doors a{
+  display:flex;align-items:center;white-space:nowrap;text-decoration:none;color:var(--mut);
+  padding-inline:var(--s1); border-block-end:2px solid transparent; margin-block-end:-1px;
+  transition:color var(--press) var(--ease);
+}
+.doors a[aria-current="page"]{color:var(--ink);font-weight:600;border-block-end-color:var(--ink)}
+.asof{margin-inline-start:auto;color:var(--mut);font-size:var(--t-cell);white-space:nowrap}
+.page{max-inline-size:1280px;margin-inline:auto;padding-inline:var(--s5);padding-block:var(--s6) var(--s7)}
+@media (max-width:720px){
+  .top{padding-inline:var(--s4);gap:var(--s4)}
+  .asof{display:none}
+  .page{padding-inline:var(--s4);padding-block:var(--s5) var(--s6)}
+}
+
+/* ── the sheet: one surface ─────────────────────────────────────────── */
+.sheet{background:var(--paper);box-shadow:var(--ring);border-radius:var(--r)}
+.sheet + .sheet{margin-block-start:var(--s5)}
+.sheet__h{
+  display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;
+  padding-inline:var(--s4);padding-block:var(--s3);border-block-end:1px solid var(--line);
+}
+.sheet__t{font-size:var(--t-sub);line-height:var(--l-sub);font-weight:600;color:var(--ink)}
+.sheet__m{color:var(--mut);font-size:var(--t-cell);line-height:var(--l-cell)}
+.sheet__m--end{margin-inline-start:auto}
+
+/* ── type roles ─────────────────────────────────────────────────────── */
+.micro{font-size:var(--t-micro);line-height:var(--l-micro);color:var(--mut)}
+.cell{font-size:var(--t-cell);line-height:var(--l-cell)}
+.sub{font-size:var(--t-sub);line-height:var(--l-sub);color:var(--ink)}
+.fig{font-size:var(--t-fig);line-height:var(--l-fig);font-weight:600;color:var(--ink);letter-spacing:-.01em}
+.head{font-size:var(--t-head);line-height:var(--l-head);font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.lead{font-size:var(--t-lead);line-height:1;font-weight:600;color:var(--ink);letter-spacing:-.03em}
+.quiet{color:var(--mut);font-weight:500}
+
+/* ── the statement: label · figure · basis, ruled like a ledger ──────── */
+.stmt{display:grid;grid-template-columns:1fr;gap:0}
+.stmt__row{
+  display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--s4);align-items:baseline;
+  padding-inline:var(--s4);padding-block:var(--s4);border-block-end:1px solid var(--line);
+}
+.stmt__row:last-child{border-block-end:0}
+.stmt__row--lead{padding-block:var(--s5) var(--s4);align-items:end}
+.stmt__k{color:var(--mut);font-size:var(--t-cell);line-height:var(--l-cell);font-weight:500;padding-block-start:2px}
+.stmt__v{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s2) var(--s4);min-inline-size:0}
+.stmt__basis{color:var(--ink-2);font-size:var(--t-cell);line-height:var(--l-cell);flex:1 1 280px}
+.stmt__basis b{font-weight:600;color:var(--ink)}
+.cur{font-size:.5em;font-weight:500;color:var(--mut);letter-spacing:0;margin-inline-start:.15em}
+.head .cur{font-size:.55em}
+@media (max-width:720px){
+  .stmt__row{grid-template-columns:1fr;gap:var(--s1);padding-inline:var(--s4)}
+  .stmt__basis{flex-basis:100%}
+}
+
+/* a figure that can show its basis */
+.figbtn{position:relative;display:inline-block;text-align:start}
+.figbtn > button{
+  display:inline-block;border-radius:var(--r);
+  transition:transform var(--press) var(--ease);
+  text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--line-2);
+  text-underline-offset:.16em;text-decoration-thickness:1px;
+}
+.figbtn > button:active{transform:scale(.97)}
+.basis{
+  position:absolute;inset-block-start:calc(100% + var(--s2));inset-inline-start:0;z-index:4;
+  min-inline-size:260px;max-inline-size:min(420px,calc(100vw - 2*var(--s4)));
+  background:var(--paper);box-shadow:var(--ring),0 8px 24px rgb(26 25 23 / 8%);border-radius:var(--r);
+  padding-inline:var(--s3);padding-block:var(--s2);
+  font-size:var(--t-cell);line-height:var(--l-cell);color:var(--ink-2);font-weight:400;letter-spacing:0;
+  transform-origin:50% 0;
+  transition:opacity var(--in) var(--ease),transform var(--in) var(--ease);
+}
+.basis[data-away]{opacity:0;transform:translateY(-4px) scale(.98);transition-duration:var(--out)}
+.basis dl{display:grid;grid-template-columns:auto 1fr;gap:2px var(--s3)}
+.basis dt{color:var(--mut);white-space:nowrap}
+.basis dd{color:var(--ink)}
+.basis code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--mut);direction:ltr;unicode-bidi:isolate}
+
+/* ── tracks: a measure drawn, never a rate printed ───────────────────── */
+.track{position:relative;block-size:4px;background:var(--sunk);border-radius:2px;overflow:visible}
+.track__fill{position:absolute;inset-block:0;inset-inline-start:0;inline-size:var(--pct,0%);background:var(--ink);border-radius:2px}
+.track__tick{position:absolute;inset-block:-3px;inset-inline-start:var(--at);inline-size:2px;background:var(--ac);border-radius:1px}
+.track__now{position:absolute;inset-block:-4px;inset-inline-start:var(--at);inline-size:2px;background:var(--ink);border-radius:1px}
+.axis{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s2);margin-block-start:var(--s2)}
+.axis > *{font-size:var(--t-micro);line-height:var(--l-micro);color:var(--mut)}
+.axis .now{color:var(--ink);font-weight:600;position:absolute;inset-inline-start:var(--at);transform:translateX(50%);white-space:nowrap}
+[dir="ltr"] .axis .now{transform:translateX(-50%)}
+.strip{padding-inline:var(--s4);padding-block:var(--s3) var(--s4);border-block-end:1px solid var(--line);position:relative}
+.strip__k{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);margin-block-end:var(--s2)}
+.strip__k .micro b{color:var(--ink);font-weight:600}
+@media (max-width:720px){
+  /* the marker label cannot float over a 360px axis without hitting an end label: it takes the middle slot */
+  .axis .now{position:static;transform:none}
+}
+
+/* ── the six empties. Each is one word-form and one drawing. ─────────── */
+.nil{white-space:nowrap;font-size:var(--t-cell);line-height:var(--l-cell)}
+/* 1 · a line exists, its price does not: accent, dotted — money someone owes */
+.nil--price{color:var(--ac);font-weight:600;text-decoration:underline dotted var(--ac);text-underline-offset:.18em;text-decoration-thickness:1px}
+/* 2 · a thing exists, its class was never chosen: ink-2, dotted in line-2 */
+.nil--sector{color:var(--ink-2);text-decoration:underline dotted var(--line-2);text-underline-offset:.18em;text-decoration-thickness:1px}
+/* 3 · a record that should exist was never written: an unfilled field */
+.nil--rec{color:var(--ink-2);background:var(--sunk);box-shadow:inset 0 0 0 1px var(--line);border-radius:var(--r);padding-inline:6px;padding-block:1px}
+/* 4 · a true zero, nothing owed: the quietest ink, nothing drawn */
+.nil--none{color:var(--mut)}
+/* 5 · the schema's null — not zero: a hollow ring, nothing inside */
+.nil--null{color:var(--ink-2);box-shadow:0 0 0 1px var(--line-2);border-radius:999px;padding-inline:8px;padding-block:1px}
+/* 6 · published nothing: dashed — the publisher owes a statement */
+.nil--unpub{color:var(--ink-2);text-decoration:underline dashed var(--line-2);text-underline-offset:.18em;text-decoration-thickness:1px}
+
+/* ── marks: a fact about a value, printed beside it ──────────────────── */
+.mark--inf{color:var(--mut);font-size:var(--t-micro);border:1px dashed var(--line-2);border-radius:var(--r);padding-inline:4px;line-height:14px;vertical-align:middle}
+.stop{color:var(--ac);font-weight:600}
+
+/* ── the blockers ledger: figure · label · basis · door ──────────────── */
+.ledg{display:grid;grid-template-columns:1fr}
+.ledg__r{
+  display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:var(--s4);align-items:baseline;
+  padding-inline:var(--s4);padding-block:var(--s3);border-block-end:1px solid var(--line);min-block-size:var(--row);
+}
+.ledg__r:last-child{border-block-end:0}
+.ledg__f{white-space:nowrap}
+.ledg__f .fig{font-size:var(--t-fig)}
+.ledg__f small{color:var(--mut);font-size:var(--t-cell);font-weight:500;margin-inline-start:2px}
+.ledg__l{color:var(--ink);font-weight:500}
+.ledg__b{color:var(--mut);font-size:var(--t-cell);line-height:var(--l-cell);margin-block-start:2px}
+.door{
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;text-decoration:none;
+  color:var(--ink);font-size:var(--t-cell);font-weight:500;min-block-size:var(--ctl);
+  padding-inline:var(--s3);box-shadow:var(--ring);border-radius:var(--r);background:var(--paper);
+  transition:transform var(--press) var(--ease),background-color var(--press) var(--ease);
+}
+.door::after{content:"←";color:var(--mut)}
+.door:active{transform:scale(.97)}
+@media (max-width:720px){
+  .ledg__r{grid-template-columns:72px minmax(0,1fr);grid-template-rows:auto auto}
+  .ledg__r .door{grid-column:2}
+}
+
+/* eight cells of a readiness score: the same 3/8 the text prints, drawn */
+.cells{display:inline-grid;grid-auto-flow:column;gap:2px;vertical-align:middle;margin-inline-start:var(--s2)}
+.cells i{inline-size:10px;block-size:10px;background:var(--sunk);border-radius:1px}
+.cells i.on{background:var(--ink)}
+
+/* ── counts drawn as bars (the campaign) ─────────────────────────────── */
+.bars{display:grid;grid-template-columns:auto 1fr auto;gap:var(--s2) var(--s3);align-items:center;padding-inline:var(--s4);padding-block:var(--s3)}
+.bars__k{color:var(--ink-2);font-size:var(--t-cell);white-space:nowrap}
+.bars__b{position:relative;block-size:12px;background:var(--sunk);border-radius:2px}
+.bars__b i{position:absolute;inset-block:0;inset-inline-start:0;inline-size:var(--pct,0%);background:var(--ink-2);border-radius:2px}
+.bars__v{text-align:end;color:var(--ink);font-weight:600;font-size:var(--t-cell);min-inline-size:2ch}
+
+/* ── controls ───────────────────────────────────────────────────────── */
+.seg{display:inline-flex;box-shadow:var(--ring);border-radius:var(--r);background:var(--paper);overflow:hidden}
+.seg button{
+  min-block-size:var(--ctl);padding-inline:var(--s3);font-size:var(--t-cell);font-weight:500;color:var(--mut);
+  white-space:nowrap;transition:transform var(--press) var(--ease),background-color var(--press) var(--ease),color var(--press) var(--ease);
+}
+.seg button + button{border-inline-start:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--sunk);color:var(--ink)}
+.seg button:active{transform:scale(.97)}
+.seg button .n{color:var(--mut);margin-inline-start:6px;font-weight:500}
+.seg button[aria-pressed="true"] .n{color:var(--ink-2)}
+.btn{
+  display:inline-flex;align-items:center;min-block-size:var(--ctl);padding-inline:var(--s3);
+  box-shadow:var(--ring);border-radius:var(--r);background:var(--paper);color:var(--ink);font-size:var(--t-cell);font-weight:500;
+  transition:transform var(--press) var(--ease),background-color var(--press) var(--ease);
+}
+.btn--ink{background:var(--ink);color:var(--paper);box-shadow:none}
+.btn:active{transform:scale(.97)}
+.toolbar{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+.toolbar__end{margin-inline-start:auto;display:flex;gap:var(--s3)}
+
+/* ── the page head ──────────────────────────────────────────────────── */
+.ph{display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--s3) var(--s5);margin-block-end:var(--s4)}
+.ph h1{font-size:var(--t-head);line-height:var(--l-head);font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.ph__sum{color:var(--ink-2);font-size:var(--t-body);line-height:var(--l-body)}
+.ph__sum b{color:var(--ink);font-weight:600}
+.dotsep > * + *::before{content:"·";color:var(--line-2);margin-inline:6px}
+
+/* ── the table: the surface the system lives on ─────────────────────── */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl{inline-size:100%;border-collapse:separate;border-spacing:0;font-size:var(--t-cell);line-height:var(--l-cell)}
+.tbl th,.tbl td{text-align:start;vertical-align:middle;padding-inline:var(--s3);padding-block:0;block-size:var(--row);border-block-end:1px solid var(--line);white-space:nowrap}
+.tbl th{font-size:var(--t-micro);line-height:var(--l-micro);color:var(--mut);font-weight:500;background:var(--paper);block-size:36px}
+.tbl th button{display:inline-flex;align-items:center;gap:4px;font-size:inherit;font-weight:inherit;color:inherit;border-radius:var(--r)}
+.tbl th button::after{content:"";inline-size:0;block-size:0;border-inline:3px solid transparent;border-block-start:4px solid var(--line-2)}
+.tbl th[aria-sort="ascending"] button::after{border-block-start:0;border-block-end:4px solid var(--ink)}
+.tbl th[aria-sort="descending"] button::after{border-block-start-color:var(--ink)}
+.tbl th[aria-sort] button{color:var(--ink)}
+.tbl td.num,.tbl th.num{text-align:end}
+.tbl tbody tr{transition:background-color var(--press) var(--ease),opacity var(--out) var(--ease)}
+.tbl tbody tr[hidden]{display:none}
+.tbl tbody tr[data-away]{opacity:0}
+.tbl tfoot td{block-size:var(--row);border-block-end:0;color:var(--ink-2);background:var(--page)}
+.tbl tfoot td b{color:var(--ink);font-weight:600}
+.tbl .who{color:var(--ink);font-weight:600}
+.tbl .who small{display:block;color:var(--mut);font-weight:400;font-size:var(--t-micro);line-height:var(--l-micro);margin-block-start:-2px}
+.tbl td.who{block-size:var(--row)}
+.tbl .val{color:var(--ink);font-weight:600}
+.tbl .idx{color:var(--mut);inline-size:2.5ch;padding-inline-end:0}
+.tbl .date{color:var(--mut)}
+.tbl a.row-open{text-decoration:none;color:var(--ink);font-weight:500;box-shadow:var(--ring);border-radius:var(--r);padding-inline:var(--s2);min-block-size:24px;display:inline-flex;align-items:center;transition:transform var(--press) var(--ease)}
+.tbl a.row-open:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){
+  .tbl tbody tr:hover{background:var(--page)}
+  .door:hover,.btn:hover,.tbl a.row-open:hover{background:var(--page)}
+  .doors a:hover{color:var(--ink)}
+  .seg button:hover{color:var(--ink)}
+}
+/* stage: name + six cells, the one the line stands in filled */
+.stage{display:inline-flex;align-items:center;gap:var(--s2)}
+.stage__t{display:inline-grid;grid-auto-flow:column;gap:2px}
+.stage__t i{inline-size:8px;block-size:8px;background:var(--sunk);border-radius:1px}
+.stage__t i.on{background:var(--ink)}
+/* days without a stage change: the number, and the same number drawn to the range max */
+.days{display:inline-grid;grid-template-columns:5ch 56px;gap:var(--s2);align-items:center}
+.days .track{block-size:6px}
+.days .track__fill{background:var(--ink-2)}
+@media (max-width:720px){
+  .tbl thead{display:none}
+  .tbl,.tbl tbody,.tbl tr,.tbl td,.tbl tfoot{display:block}
+  .tbl tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2) var(--s3);padding-inline:var(--s4);padding-block:var(--s3);border-block-end:1px solid var(--line)}
+  .tbl td{block-size:auto;padding:0;border:0;white-space:normal}
+  .tbl td.idx{display:none}
+  .tbl td.who,.tbl td.prod{grid-column:1 / -1}
+  .tbl td[data-th]::before{content:attr(data-th);display:block;font-size:var(--t-micro);line-height:var(--l-micro);color:var(--mut)}
+  .tbl td.num{text-align:start}
+  .tbl td.act{grid-column:1 / -1}
+  .tbl tfoot td{padding-inline:var(--s4);padding-block:var(--s3);display:block;block-size:auto}
+  .tbl tfoot td[hidden]{display:none}
+}
+
+/* ── the board: eight stage columns ─────────────────────────────────── */
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:0;overflow-x:auto;scroll-snap-type:x proximity}
+.col{border-inline-end:1px solid var(--line);min-block-size:280px;scroll-snap-align:start}
+.col:last-child{border-inline-end:0}
+.col__h{display:flex;align-items:baseline;gap:var(--s2);padding-inline:var(--s3);padding-block:var(--s2);border-block-end:1px solid var(--line);font-size:var(--t-cell);font-weight:600;color:var(--ink);white-space:nowrap}
+.col__h .n{color:var(--mut);font-weight:500}
+.col__b{padding:var(--s2);display:grid;gap:var(--s2);align-content:start}
+.col__nil{color:var(--mut);font-size:var(--t-micro);padding-inline:var(--s1);padding-block:var(--s2)}
+.card{box-shadow:var(--ring);border-radius:var(--r);padding-inline:var(--s3);padding-block:var(--s2);font-size:var(--t-cell);line-height:var(--l-cell);background:var(--paper);transition:transform var(--press) var(--ease)}
+.card:active{transform:scale(.97)}
+.card__a{color:var(--ink);font-weight:600}
+.card__p{color:var(--ink-2)}
+.card__f{display:flex;justify-content:space-between;gap:var(--s2);margin-block-start:var(--s1);color:var(--mut)}
+
+/* ── views: two readings of one set of records, crossfaded ───────────── */
+.view{position:relative}
+.pane{transition:opacity var(--in) var(--ease),transform var(--in) var(--ease)}
+.pane[data-away]{opacity:0;transform:translateY(4px);transition-duration:var(--out)}
+.pane[hidden]{display:none}
+
+/* ── the self-audit: a printed figure that disagrees with its records ── */
+[data-d].is-off{outline:2px dotted var(--ac);outline-offset:2px}
+
+/* ── motion honoured ────────────────────────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:var(--out)!important;animation-duration:1ms!important}
+  .pane[data-away],.basis[data-away]{transform:none}
+  .btn:active,.seg button:active,.door:active,.card:active,.figbtn > button:active,.tbl a.row-open:active{transform:none}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="mark" href="home.html">مسار</a>
+  <nav class="doors" aria-label="الأقسام">
+    <a href="home.html" aria-current="page">الرئيسية</a>
+    <a href="ledger.html">فرص البيع</a>
+    <a href="#accounts">العملاء</a>
+    <a href="#products">المنتجات</a>
+    <a href="#campaigns">الحملات</a>
+    <a href="#reports">التقارير</a>
+    <a href="#settings">الإعدادات</a>
+  </nav>
+  <span class="asof">حتى <span class="n">17</span> سبتمبر <span class="n">2026</span></span>
+</header>
+
+<main class="page">
+
+  <!-- ═══ THE STATEMENT — the answer to «هل سنحقق الرقم؟», ruled like a ledger:
+       label · figure · basis. No figure is printed without the records behind it. ═══ -->
+  <section class="sheet" aria-labelledby="stmt-t">
+    <h1 id="stmt-t" class="sheet__h"><span class="sheet__t">الربع الثالث <span class="n">2026</span></span><span class="sheet__m">الإجازات المرضية · المنتج الوحيد الذي له مستهدف</span><span class="sheet__m sheet__m--end">حتى <span class="n">17</span> سبتمبر</span></h1>
+
+    <div class="strip">
+      <div class="strip__k">
+        <span class="micro"><b>يتبقى <span class="n" data-d="daysLeft">13</span> يومًا</b> من الربع</span>
+        <span class="micro">الزمن يجري من اليمين إلى اليسار</span>
+      </div>
+      <div class="track" aria-hidden="true">
+        <div class="track__fill" style="--pct:85.9%"></div>
+        <div class="track__now" style="--at:85.9%"></div>
+      </div>
+      <div class="axis" style="position:relative">
+        <span><span class="n">1</span> يوليو</span>
+        <span class="now" style="--at:85.9%">اليوم · <span class="n">17</span> سبتمبر</span>
+        <span><span class="n">30</span> سبتمبر</span>
+      </div>
+    </div>
+
+    <div class="stmt">
+      <div class="stmt__row stmt__row--lead">
+        <div class="stmt__k">المستهدف المسجّل</div>
+        <div class="stmt__v">
+          <span class="figbtn">
+            <button class="lead" type="button" aria-expanded="false" aria-controls="b-target"><span class="n" data-d="target">34,000<span class="cur">ر.س</span></span></button>
+            <div class="basis" id="b-target" hidden data-away role="region" aria-label="أساس الرقم">
+              <dl>
+                <dt>الحقل</dt><dd><code>annualTarget</code></dd>
+                <dt>المنتج</dt><dd>الإجازات المرضية</dd>
+                <dt>الفترة</dt><dd>الربع الثالث <span class="n">2026</span> فقط</dd>
+                <dt>القيمة</dt><dd><span class="n">34,000 ر.س</span></dd>
+                <dt>التغطية</dt><dd>منتج واحد من <span class="n">8</span>. السبعة الأخرى: <span class="nil nil--null">بلا مستهدف</span> — فراغ في السجل، لا صفر</dd>
+              </dl>
+            </div>
+          </span>
+          <p class="stmt__basis">مستهدف <b>منتج واحد</b> لربع واحد. <b><span class="n" data-d="noTarget">7</span> منتجات</b> من <span class="n" data-d="nProducts">8</span> <span class="nil nil--null">بلا مستهدف</span>، فلا رقم للشركة يُقرأ منه.</p>
+        </div>
+      </div>
+
+      <div class="stmt__row">
+        <div class="stmt__k">المحصَّل</div>
+        <div class="stmt__v">
+          <span class="figbtn">
+            <button class="head quiet" type="button" aria-expanded="false" aria-controls="b-won"><span class="n" data-d="won">0<span class="cur">ر.س</span></span></button>
+            <div class="basis" id="b-won" hidden data-away role="region" aria-label="أساس الرقم">
+              <dl>
+                <dt>الأساس</dt><dd>مجموع الصفقات الرابحة</dd>
+                <dt>الصفقات الرابحة</dt><dd><span class="n">0</span> — لم تُغلق صفقة قط</dd>
+                <dt>المجموع</dt><dd><span class="n">0 ر.س</span></dd>
+              </dl>
+            </div>
+          </span>
+          <p class="stmt__basis">لا صفقة رابحة مسجّلة، لهذا الربع ولا قبله.</p>
+        </div>
+      </div>
+
+      <div class="stmt__row">
+        <div class="stmt__k">المسعَّر في خط البيع</div>
+        <div class="stmt__v">
+          <span class="figbtn">
+            <button class="head" type="button" aria-expanded="false" aria-controls="b-priced"><span class="n" data-d="priced">4,200<span class="cur">ر.س</span></span></button>
+            <div class="basis" id="b-priced" hidden data-away role="region" aria-label="أساس الرقم">
+              <dl>
+                <dt>الأساس</dt><dd>مجموع قيم البنود المفتوحة التي لها قيمة</dd>
+                <dt>البنود المفتوحة</dt><dd><span class="n">6</span></dd>
+                <dt>لها قيمة</dt><dd>بند واحد: DL000 · الإجازات المرضية · عرض السعر · <span class="n">4,200 ر.س</span></dd>
+                <dt>بلا قيمة</dt><dd><span class="n">5</span> بنود <span class="nil nil--price">لم تُسعَّر</span> — لا تدخل المجموع</dd>
+              </dl>
+            </div>
+          </span>
+          <p class="stmt__basis"><b>بند واحد</b> من <span class="n" data-d="nLines">6</span>، على المنتج المستهدف نفسه، في مرحلة <b>عرض السعر</b>، غير مُحصَّل. <span class="n" data-d="nUnpriced">5</span> بنود <span class="nil nil--price">لم تُسعَّر</span> فلا تدخل أي مجموع.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="strip" style="border-block-end:0">
+      <div class="strip__k">
+        <span class="micro">المستهدف <b><span class="n">34,000</span></b> · المحصَّل <b><span class="n">0</span></b> · المسعَّر غير المحصَّل <b><span class="n">4,200</span></b></span>
+        <span class="micro">نطاق واحد: الإجازات المرضية · الربع الثالث</span>
+      </div>
+      <div class="track" aria-hidden="true">
+        <div class="track__fill" style="--pct:0%"></div>
+        <div class="track__tick" style="--at:12.35%"></div>
+      </div>
+      <div class="axis">
+        <span><span class="n">0</span></span>
+        <span><span class="n">34,000</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHAT BLOCKS THE NUMBER — a ledger of counts, each with its door ═══ -->
+  <section class="sheet" aria-labelledby="blk-t">
+    <h2 class="sheet__h"><span class="sheet__t" id="blk-t">ما يعطّل الرقم</span><span class="sheet__m">كل سطر عدد من السجل، وبابه</span></h2>
+    <div class="ledg">
+      <div class="ledg__r">
+        <div class="ledg__f"><span class="fig n" data-d="nUnpriced">5</span><small>من <span class="n">6</span></small></div>
+        <div><div class="ledg__l">بنود مفتوحة <span class="nil nil--price">لم تُسعَّر</span></div><div class="ledg__b">قيمة خط البيع تُقرأ من بند واحد؛ الخمسة الأخرى لا تدخل أي مجموع.</div></div>
+        <a class="door" href="ledger.html">فرص البيع</a>
+      </div>
+      <div class="ledg__r">
+        <div class="ledg__f"><span class="fig n" data-d="noTarget">7</span><small>من <span class="n">8</span></small></div>
+        <div><div class="ledg__l">منتجات <span class="nil nil--null">بلا مستهدف</span></div><div class="ledg__b">المستهدف الوحيد على الإجازات المرضية، للربع الثالث فقط. لا يمكن قراءة رقم الشركة.</div></div>
+        <a class="door" href="#reports">المستهدفات</a>
+      </div>
+      <div class="ledg__r">
+        <div class="ledg__f"><span class="fig n" data-d="nAccounts">16</span><small>من <span class="n">16</span></small></div>
+        <div><div class="ledg__l">عميلًا ملكية حسابه <span class="nil nil--rec">لم تُسجَّل</span></div><div class="ledg__b">كل الحسابات معتمدة، ولا أحد مكلّف بمتابعة أيٍّ منها.</div></div>
+        <a class="door" href="#accounts">العملاء</a>
+      </div>
+      <div class="ledg__r">
+        <div class="ledg__f"><span class="fig n" data-d="kb">34</span><small>من <span class="n">100</span></small></div>
+        <div><div class="ledg__l">جاهزية معرفة المنتج <span class="cells" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span></div><div class="ledg__b"><span class="n" data-d="kbDone">3</span> أقسام مكتملة من <span class="n">8</span>.</div></div>
+        <a class="door" href="#products">معرفة المنتج</a>
+      </div>
+      <div class="ledg__r">
+        <div class="ledg__f"><span class="fig n" data-d="notSold">1</span><small>من <span class="n">8</span></small></div>
+        <div><div class="ledg__l">منتج <span class="stop">لا يبيعه المساعد</span></div><div class="ledg__b">وفي المنتجات أيضًا: منتج واحد <span class="nil nil--unpub">لا سعر منشور</span> له · <span class="n" data-d="inferred">4</span> منتجات قطاعها <span class="mark--inf">مُستنتَج</span>.</div></div>
+        <a class="door" href="#products">المنتجات</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ THE ONE CAMPAIGN — six counts of one cohort, drawn. No rate is printed. ═══ -->
+  <section class="sheet" aria-labelledby="cmp-t">
+    <h2 class="sheet__h"><span class="sheet__t" id="cmp-t">الحملة <span class="n">38</span></span><span class="sheet__m">الحملة الوحيدة · <span class="n">21</span> مستلمًا</span><span class="sheet__m sheet__m--end"><span class="n">0</span> فرص منها — <span class="nil nil--rec">لم تُسجَّل</span> فرصة</span></h2>
+    <div class="bars" role="table" aria-label="نتائج الحملة 38">
+      <span class="bars__k">أُرسلت</span><span class="bars__b" aria-hidden="true"><i style="--pct:100%"></i></span><span class="bars__v n" data-d="sent">21</span>
+      <span class="bars__k">وصلت</span><span class="bars__b" aria-hidden="true"><i style="--pct:90.5%"></i></span><span class="bars__v n" data-d="delivered">19</span>
+      <span class="bars__k">شوهدت</span><span class="bars__b" aria-hidden="true"><i style="--pct:57.1%"></i></span><span class="bars__v n" data-d="seen">12</span>
+      <span class="bars__k">ردّوا</span><span class="bars__b" aria-hidden="true"><i style="--pct:19%"></i></span><span class="bars__v n" data-d="replied">4</span>
+      <span class="bars__k">مهتمّان</span><span class="bars__b" aria-hidden="true"><i style="--pct:9.5%"></i></span><span class="bars__v n" data-d="interested">2</span>
+      <span class="bars__k">فرص</span><span class="bars__b" aria-hidden="true"><i style="--pct:0%"></i></span><span class="bars__v n" data-d="opps">0</span>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ── THE RECORDS. Everything printed above derives from this object. ──────
+   The script below re-derives every [data-d] figure and marks any printed
+   figure that disagrees with its records. A green page is a page whose
+   summaries cannot contradict their tables. */
+(function () {
+  var R = {
+    asOf: "2026-09-17",
+    quarter: { start: "2026-07-01", end: "2026-09-30" },
+    target: { product: "الإجازات المرضية", period: "Q3-2026", annualTarget: 34000 },
+    products: { count: 8, withTarget: 1, noPublishedPrice: 1, inferredSector: 4, assistantWontSell: 1 },
+    wonRevenue: 0,
+    lines: [
+      { account: "ابرهيم", product: "تكامل الأنظمة (HIS/ERP)", stage: "تواصل أولي",   value: null },
+      { account: "ابرهيم", product: "سجل التطعيمات الوطني",     stage: "تواصل أولي",   value: null },
+      { account: "العمدة", product: "خدمات التطعيمات",          stage: "تواصل أولي",   value: null },
+      { account: "العمدة", product: "تكامل الأنظمة (HIS/ERP)", stage: "تواصل أولي",   value: null },
+      { account: "العمدة", product: "الإجازات المرضية",         stage: "اكتشاف الحاجة", value: null },
+      { account: "DL000",  product: "الإجازات المرضية",         stage: "عرض السعر",    value: 4200 }
+    ],
+    accounts: { count: 16, approved: 16, withOwner: 0 },
+    campaign: { id: 38, sent: 21, delivered: 19, seen: 12, replied: 4, interested: 2, opportunities: 0 },
+    knowledge: { score: 34, sectionsComplete: 3, sections: 8 }
+  };
+  var DAY = 864e5;
+  var D = {
+    daysLeft:  Math.round((Date.parse(R.quarter.end) - Date.parse(R.asOf)) / DAY),
+    target:    R.target.annualTarget,
+    won:       R.wonRevenue,
+    priced:    R.lines.reduce(function (s, l) { return s + (l.value || 0); }, 0),
+    nLines:    R.lines.length,
+    nUnpriced: R.lines.filter(function (l) { return l.value === null; }).length,
+    nProducts: R.products.count,
+    noTarget:  R.products.count - R.products.withTarget,
+    nAccounts: R.accounts.count - R.accounts.withOwner,
+    kb:        R.knowledge.score,
+    kbDone:    R.knowledge.sectionsComplete,
+    notSold:   R.products.assistantWontSell,
+    inferred:  R.products.inferredSector,
+    sent: R.campaign.sent, delivered: R.campaign.delivered, seen: R.campaign.seen,
+    replied: R.campaign.replied, interested: R.campaign.interested, opps: R.campaign.opportunities
+  };
+  document.querySelectorAll("[data-d]").forEach(function (el) {
+    var printed = (el.textContent.match(/[\d,]+/) || [""])[0].replace(/,/g, "");
+    var want = String(D[el.getAttribute("data-d")]);
+    if (printed !== want) { el.classList.add("is-off"); console.error("figure disagrees with records:", el.getAttribute("data-d"), printed, "≠", want); }
+  });
+
+  /* ── a figure shows its basis on click. 180ms in from 4px above, 120ms out. ── */
+  var open = null;
+  function hide(p) { p.setAttribute("data-away", ""); p.previousElementSibling.setAttribute("aria-expanded", "false");
+    setTimeout(function () { if (p.hasAttribute("data-away")) p.hidden = true; }, 120); }
+  document.querySelectorAll(".figbtn > button").forEach(function (b) {
+    b.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var p = b.nextElementSibling;
+      if (open && open !== p) hide(open);
+      if (p.hidden) { p.hidden = false; b.setAttribute("aria-expanded", "true");
+        requestAnimationFrame(function () { p.removeAttribute("data-away"); }); open = p; }
+      else { hide(p); open = null; }
+    });
+  });
+  document.addEventListener("click", function () { if (open) { hide(open); open = null; } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) { hide(open); open = null; } });
+})();
+</script>
+</body>
+</html>
