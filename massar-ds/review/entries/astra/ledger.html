@@ -259,6 +259,10 @@ h1,h2{font-weight:600}
  .m-ledger-title h1{font-size:25px}
  .m-ledger-total{padding-inline-start:24px}
 }
+@media(min-width:601px) and (max-width:1300px){
+ .m-ledger .m-account{position:sticky;inset-inline-start:0;z-index:1;border-inline-end:1px solid var(--rule)}
+ .m-ledger th[data-key=account]{position:sticky;inset-inline-start:0;z-index:2;border-inline-end:1px solid var(--rule)}
+}
 @media(max-width:600px){
  .m-brandbar{min-block-size:62px;padding-block:8px}
  .m-brand{font-size:27px;gap:12px}
@@ -283,7 +287,7 @@ h1,h2{font-weight:600}
  .m-search{inline-size:100%}
  .m-search input,.m-search button{min-block-size:44px}
  .m-controls{gap:6px;padding-block-end:10px}
- .m-control-group{inline-size:100%;justify-content:space-between;gap:6px}
+ .m-control-group{flex:1;gap:6px}
  .m-field{gap:6px}
  .m-field select{min-block-size:44px;max-inline-size:240px}
  input,select{font-size:16px}
@@ -473,7 +477,8 @@ function render(){
   const active=button.dataset.sort===state.sort;
   button.closest('th').setAttribute('aria-sort',active?(state.direction==='asc'?'ascending':'descending'):'none');
   button.querySelector('.m-sort-arrow').textContent=active?(state.direction==='asc'?'↑':'↓'):'↕';
-  const next=active&&state.direction==='asc'?'تنازليًا':'تصاعديًا';
+  const descendingNext=active?state.direction==='asc':['days','last'].includes(button.dataset.sort);
+  const next=descendingNext?'تنازليًا':'تصاعديًا';
   button.setAttribute('aria-label',`ترتيب ${labels[button.dataset.sort]} ${next}`);
   button.tabIndex=mobile?-1:0;
  });
@@ -513,7 +518,7 @@ matchMedia('(max-width:600px)').addEventListener('change',()=>{
 byId('export-rows').addEventListener('click',()=>{
  const rows=[['#','الحساب','المنتج','المرحلة','القيمة','بلا حركة','المصدر','آخر حركة','ملكية الحساب','القطاع'],...visibleRows.map(row=>[
   row.id,row.account,row.product,row.stage,row.value===null?'لم يُسعَّر':`${formatNumber.format(row.value)} ر.س`,
-  `${row.days} ${row.days<=10?'أيام':'يومًا'}`,row.source,`${row.lastDay} ${row.lastMonth}`,row.owner??'لم يُسجَّل',row.sector??'لم يُصنَّف'
+  row.days===1?'يوم واحد':row.days===2?'يومان':`${row.days} ${row.days<=10?'أيام':'يومًا'}`,row.source,`${row.lastDay} ${row.lastMonth}`,row.owner??'لم يُسجَّل',row.sector??'لم يُصنَّف'
  ])];
  const csv='\uFEFF'+rows.map(row=>row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(',')).join('\r\n');
  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
@@ -537,6 +542,13 @@ document.querySelectorAll('.m-dialog').forEach(dialog=>{
  dialog.querySelector('[data-close]').addEventListener('click',()=>closeDialog(dialog));
  dialog.addEventListener('cancel',event=>{event.preventDefault();closeDialog(dialog);});
  dialog.addEventListener('click',event=>{if(event.target===dialog)closeDialog(dialog);});
+ dialog.addEventListener('keydown',event=>{
+  if(event.key!=='Tab')return;
+  const controls=[...dialog.querySelectorAll('button:not(:disabled),a[href],input,select,[tabindex="0"]')];
+  const first=controls[0],last=controls[controls.length-1];
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+ });
 });
 document.querySelector('[data-open="states"]').addEventListener('click',event=>openDialog(byId('states'),event.currentTarget));
 byId('ledger-body').addEventListener('click',event=>{
