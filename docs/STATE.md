@@ -61,6 +61,21 @@ Three defects only the deployed page could reveal: `fmtN` grouped the year and p
 
 Competition record, both entries and the measuring harness: `massar-ds/review/`.
 
+### Evening — the approved home: three columns of graphs (engine dc2161f, deployed, smoke 21/21)
+
+The founder rejected the flat home twice and asked for «better UI and layout with graphs». GPT-Astra
+built `massar-ds/review/entries/astra-home2/`; he opened it and said go. Shipped as `hm-*` classes
+(never the entry's `.card`/`.tag`: those collide inside `.ds6`). A two-figure hero (revenue, the one
+recorded target) over six cards: stages on the live ladder, days in stage per line, the newest
+campaign's cohort, target-recording coverage (hatched, never zero), priced value with sectors,
+ownership plus knowledge readiness. The verdict pane («لا يمكن الجزم بعد») was removed on his
+instruction. The pipeline/exec/campaign bands are unregistered from `vHome`: each became a card.
+
+Real data found what the mockup's fixed numbers hid: the campaign card took the OLDEST campaign
+(server order is newest-first), `cfLoad`/`acLoad` were never called on `#home`, and three counted
+nouns were wrong («16 حسابًا 16», «بـ1 رسالة», «0 مهتمًا»). `data-d` verifier: 0 disagreements.
+`vExecBand()` has no caller now; delete it when its screen is next touched.
+
 ### Later the same day — all 24 routes ported, and the defect that survived two screens
 
 Every route is on the new system and deployed. Verified in a real browser at **1440px and 400px**:
