@@ -208,7 +208,7 @@ body {
   white-space:nowrap;
   pointer-events:none;
   opacity:0;
-  z-index:20;
+  z-index:var(--z-sticky, 100);
   transition:opacity var(--m-out) var(--m-ease),
                                   transform var(--m-out) var(--m-ease);
 }
@@ -238,7 +238,7 @@ body {
   flex-wrap:wrap;
   position: static;
   inset-block-start:0;
-  z-index:10;
+  z-index:var(--z-sticky, 100);
   padding-inline: var(--m-6);
   padding-block: var(--m-3);
 }
@@ -251,7 +251,7 @@ body {
   padding-block: var(--m-6) var(--m-7);
 }
 @media (max-width:900px) {
-  .m-side{position:fixed;inset-inline-end:0;z-index:40;transform:translateX(100%);
+  .m-side{position:fixed;inset-inline-end:0;z-index:var(--z-overlay, 300);transform:translateX(100%);
           transition:transform var(--m-in) var(--m-ease)}
   .m-side[data-open]{transform:none}
   .m-bar,.m-page{padding-inline:var(--m-4)}
@@ -389,7 +389,7 @@ textarea.m-input {resize:vertical;line-height:1.7;block-size:auto;padding:9px 11
 @media (hover:hover) and (pointer:fine) {
   .m-table tbody tr:hover{background:var(--m-page)} }
 .m-table tbody tr[aria-selected="true"] {background:var(--m-sunk)}
-.m-table--sticky thead th {position:sticky;inset-block-start:0;z-index:2;
+.m-table--sticky thead th {position:sticky;inset-block-start:0;z-index:var(--z-sticky, 100);
             background:var(--m-paper)}
 .m-th-sort {display:flex;align-items:center;gap:4px;inline-size:100%;block-size:100%;
            font:inherit;color:inherit;background:none;border:0;cursor:pointer;
@@ -851,7 +851,7 @@ textarea.m-input {resize:vertical;line-height:1.7}
 .m-tl__i {display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:var(--m-3);
          padding:var(--m-3) 0;position:relative}
 .m-tl__d {inline-size:9px;block-size:9px;border-radius:50%;background:var(--m-ac);
-         margin-block-start:6px;margin-inline-start:6px;position:relative;z-index:1}
+         margin-block-start:6px;margin-inline-start:6px;position:relative;z-index:var(--z-base, 0)}
 .m-tl__d.ok {background:var(--m-ok)}
 .m-tl__d.warn {background:var(--m-warn)}
 .m-tl__d.idle {background:var(--m-line-2)}
@@ -1048,6 +1048,11 @@ body[data-nav="home"] .m-bar { display: none; }
 .m-home__decisions {
   min-inline-size: 0;
   padding-block-start: var(--m-2);
+  /* The host page styles some bare tags -- its navigation rail is a bare aside element. A
+     ported screen must not inherit a colour from whatever tag it happens to use, so this
+     states its own ground and ink rather than trusting the cascade to leave it alone. */
+  background: transparent;
+  color: var(--m-ink-2);
 }
 .m-decision {
   display: grid;

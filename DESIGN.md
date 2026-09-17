@@ -1,9 +1,10 @@
 # DESIGN.md — Massar design system
 
-**The system is `massar-ds/ms.css`. This file explains it and states its rules.**
+**The system is `massar-ds/massar.css`. This file explains it and states its rules.**
 The reference implementation is `massar-ds/home.html`.
 
-> **Status: PROPOSED, awaiting the founder's approval.** The previous system was retired on
+> **Status: IN PORT.** `#home` ships in this system (scoped `.ds6`); the other 25 screens
+> still ship the system in A.1 below. The previous system was retired on
 > Sep 16 2026 and archived at `docs/designs/archive/DESIGN-v4-tonomo-retired-20260916.md`
 > (with its `approved.json`). Nothing in `massar-engine/src/` has been migrated yet.
 
@@ -239,3 +240,140 @@ direction:
 `ms.css` is the source of truth; this file explains it. When they disagree, `ms.css` wins and this
 file is wrong. Update both in the same change. A new variant is a decision worth one line of
 rationale in the CSS comment where it lives — that is where the next person will look.
+
+---
+
+## A. The token ledger — both systems, because both are shipping
+
+`scripts/check-design.mjs` (gate step 22) reads the `--token: #HEX` pairs **below** and asserts
+they match what `massar-engine/src/` actually ships. It exists because the token authority and
+the code drifted twice without anything noticing, and a guard that finds no data and passes is
+the empty-table failure this project has shipped four times.
+
+So this section is not documentation of a retired system. **A.1 is live.** Twenty-five of the
+twenty-six screens still render in it, and it governs them until each one is ported. Delete a row
+here only when the last screen using it is gone.
+
+### A.1 In production now — the values the un-ported screens ship
+
+- `--accent: #2563EB`
+- `--accent-bar: #EAF1FE`
+- `--accent-bar-hover: #DCE8FC`
+- `--accent-deep: #1A47BE`
+- `--accent-mark: #4A7BE8`
+- `--accent-press: #1E5FCC`
+- `--accent-tint: #EAF1FE`
+- `--accent-wash: #F2F6FE`
+- `--blue: #2563EB`
+- `--blue-deep: #1E5FCC`
+- `--blue-light: #5B8DEF`
+- `--blue-tint: #EAF1FE`
+- `--blue-wash: #DCE8FC`
+- `--canvas: #F6F7F9`
+- `--ink: #14161A`
+- `--ink-2: #33373E`
+- `--line: #D8DCE3`
+- `--line-soft: #ECEEF2`
+- `--muted: #656B76`
+- `--muted-2: #545A66`
+- `--paper: #FFFFFF`
+- `--s-attend: #2563EB`
+- `--s-attend-soft: #EAF1FE`
+- `--s-attend-text: #1A47BE`
+- `--s-attn: #D99A00`
+- `--s-attn-deep: #B37F00`
+- `--s-attn-mark: #B37F00`
+- `--s-attn-soft: #FFF5D6`
+- `--s-attn-text: #7A5600`
+- `--s-fail: #D9534F`
+- `--s-fail-soft: #FBE7E6`
+- `--s-fail-text: #8E2A27`
+- `--s-issued: #1E9E63`
+- `--s-issued-soft: #E4F5EC`
+- `--s-issued-text: #12633F`
+- `--s-off: #A2A9B4`
+- `--s-off-mark: #767D89`
+- `--s-off-soft: #EEF0F3`
+- `--s-off-text: #464C56`
+- `--s-review: #1E5FCC`
+- `--s-review-soft: #E7EEFB`
+- `--s-review-text: #173FA8`
+- `--s-sched: #5B8DEF`
+- `--s-sched-mark: #4A7BE8`
+- `--s-sched-soft: #E9F0FE`
+- `--s-sched-text: #1A47BE`
+- `--skeleton: #E5E8EE`
+- `--skeleton-hi: #EFF1F5`
+- `--surface: #EFF1F5`
+- `--surface-2: #E5E8EE`
+
+### A.2 The new system — `massar-ds/massar.css`, scoped to `.ds6`
+
+Ported screens only. Every value was measured from the reference implementations, never recalled.
+These are namespaced `--m-*` so the two systems cannot collide while the port is in progress; the
+prefix and the `.ds6` scope both come out when the last screen moves over.
+
+- `--m-ac: #245BD6`
+- `--m-ac-deep: #1947AF`
+- `--m-ac-dim: #EEF3FF`
+- `--m-ac-line: #BCCDF7`
+- `--m-bad: #B42318`
+- `--m-bad-dim: #FEF0ED`
+- `--m-bad-line: #F1C5BE`
+- `--m-dot: #D9DFDA`
+- `--m-faint: #646D69`
+- `--m-idle: #646D69`
+- `--m-idle-dim: #EEF1EE`
+- `--m-idle-line: #CDD4CE`
+- `--m-ink: #17201F`
+- `--m-ink-2: #46504D`
+- `--m-line: #E3E7E3`
+- `--m-line-2: #CDD4CE`
+- `--m-mut: #646D69`
+- `--m-ok: #17603D`
+- `--m-ok-dim: #EDF6F0`
+- `--m-ok-line: #BEDBC8`
+- `--m-page: #F6F7F5`
+- `--m-paper: #FFFFFF`
+- `--m-sunk: #EEF1EE`
+- `--m-warn: #8A4B08`
+- `--m-warn-dim: #FFF4E5`
+- `--m-warn-line: #E8CFAB`
+
+### A.3 Shipping but never documented until now
+
+Gate step 22 found these in `:root` and in no version of this file. They are the hole the check's
+own comment describes: a drift check that compares only keys present on BOTH sides cannot see a
+token the doc never mentions. They are the dark rail and the executive deck — real, live, and
+unexamined. Recorded here so they are governed; several are candidates for deletion as screens
+move to A.2.
+
+- `--rail-1: #2F5F94`
+- `--rail-2: #1F4470`
+- `--rail-ink: #CDD6E6`
+- `--rail-grp: #D9E2F0`
+- `--rail-on-ink: #FFFFFF`
+- `--fig: #13294B`
+- `--deck-1: #11213D`
+- `--deck-2: #1B3A63`
+- `--deck-ink: #DCE7FA`
+- `--deck-mut: #8DA5C8`
+- `--deck-lnk: #CFE0FF`
+- `--deck-pc: #8FB6FF`
+- `--deck-ok: #2E9E6B`
+- `--deck-warn: #D6A01F`
+- `--deck-info: #7FB3F5`
+- `--deck-bad: #E0645F`
+
+---
+
+## B. The type ladder
+
+Gate step 22 reads this line rather than carrying its own copy, so the ladder cannot drift from
+the authority that defines it. The first eight are the ladder the un-ported screens use; the last
+four are the new system's, measured from the reference implementations.
+
+`--type-ladder: 12, 14, 16, 18, 22, 28, 40, 44, 13, 15, 20, 72`
+
+Five levels is the whole new scale: 72 the one figure a page leads with, 28 a page title, 20 a
+section, 15 body, 13 meta. A sixth size is a decision to make one of these five mean less.
