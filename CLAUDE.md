@@ -21,7 +21,19 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **the product record, and the reference design pass (Sep 16, 2026)** — `#product/<name>`
+Last major milestone: **the design competition, and twelve figures the records never held (Sep 17, 2026)** —
+two frontier models competed on one brief for the design system. It ended 93-92 and the tie broke on evidence:
+Fable's unprefixed class names (`.card`, `.btn`, `.n`) collide with **187 existing definitions**, so Astra's
+`m-*` naming is the base — but Fable's **verification mechanism** is the thing worth keeping, and it is now
+`src/ds-verify.ts`: every printed figure carries `data-d`, a derivation off the same array the screen renders
+re-runs on every paint, and a disagreement is outlined with its key in the console. Proven by attack, not by
+reading. That mechanism exists because the day's audit swept fourteen modules for one defect class — a printed
+figure the records do not contain — and found **twelve live**, including an attainment percentage whose
+numerator and denominator covered different populations (it could pass 100٪ with targets unmet), a **LOST deal
+rendering «نسبة الإنجاز 100٪» while a WON one rendered 88٪**, and «متأخرة عن المهلة: 0» on a ladder where most
+stages have no SLA at all. `#home` and the shell are ported and deployed; `docs/PORT-SPEC.md` fixes one
+vocabulary for the rest. Competition record: `massar-ds/review/`.
+Previous: **the product record, and the reference design pass (Sep 16, 2026)** — `#product/<name>`
 was a form with three bare selects where a title belongs; it is now a record header plus a sticky tab rail with a
 gliding indicator, and **«معرفة المنتج» is a tab INSIDE the record**, led by the readiness score. Then four
 component/motion sites (beautifului.dev, 21st.dev, transitions.dev, interior.dev) were read with

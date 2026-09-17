@@ -1,3 +1,66 @@
+## 2026-09-17 — the design competition, and twelve figures the records never held
+
+The founder rejected the home design eight times, then asked for two frontier models to compete on it.
+Both got one brief: the real dataset (won revenue **0**, one target of **34,000** on one product for one
+quarter, seven of eight products with no target at all), the five findings that blocked the previous
+design, seven hard constraints, eight already-rejected directions, and published judging weights.
+
+**It ended 93-92, and the tie broke on evidence rather than taste.** Fable's class names are
+unprefixed — `.card`, `.btn`, `.n`, `.fig`, `.lead`, `.col` — and they collide with **187 existing
+definitions** in `src/` (`.btn` alone has 98), so they cannot coexist with the old system through a
+staged port. Astra's `m-*` naming is already deployed and collides with nothing. Astra also wrote the
+better table, once the competition was made fair: round one pointed Fable at the repository and left
+Astra in an empty directory with only the brief, so Astra correctly refused to invent per-line
+identities and its ledger collapsed into shared cells. Given the same six rows it rewrote the ledger,
+and the second version wins that surface.
+
+**What Fable contributed is a mechanism, and it is the thing worth keeping.** Every printed figure
+carries `data-d="key"`; a derivation registered off the SAME array the screen renders re-runs on
+every paint, and a figure that disagrees is outlined with its key in the console. Verified by attack,
+not by reading: corrupting `noTarget` from 7 to 9 in the markup produced
+`figure disagrees with records: noTarget 9 !== 7` on load. `src/ds-verify.ts`, wired into `render()`.
+
+That matters because of what the day's audit found. Two agents swept fourteen modules for one defect
+class — a printed figure the records do not contain — and returned **twelve**, all live:
+
+- `db.salesPerformance` emits `COALESCE(tgt.amount, 0)`, so a product with no target arrived with
+  target 0 and its full achieved. Five screens plus the `/admin/kpis` payload summed both over every
+  row, putting untargeted revenue in the numerator and nothing in the denominator. **Attainment could
+  pass 100٪ with real targets unmet, and «المتبقّي للمستهدف» read 0 at the same moment.**
+- `reports-crm` read `annualTarget` as an annual target. It is the sum of only the quarters that HAVE
+  a target, while `achieved` is the whole year: a product targeted in Q1 for 100,000 that won 400,000
+  printed **«400٪»**.
+- `journeyPct` ran over the full eight-rung ladder including won and lost, so **a LOST deal rendered
+  «نسبة الإنجاز في الدورة: 100٪» with a full accent bar while a WON deal rendered 88٪.**
+- «متأخرة عن المهلة» printed a flat **0**, read as "nothing is late", on a ladder where `sla_days` is
+  nullable and only two keys were ever backfilled.
+- The funnel's «100٪ لا تسرّب مقاس» was the one branch in a file printing a percentage with no
+  denominator — in a file whose own header promises every percentage arrives with what it measured on.
+- «مرجّحة باحتمال مرحلتها» claimed a probability model; `weightPct` is a fixed ladder constant, and
+  `opps-crm.ts:27` already refuses to print a probability column.
+
+Discipline caught none of these. A reviewer caught all of them, months late, every time. That is why
+the verification is a mechanism now.
+
+Also shipped: `#home` rebuilt on the new system reading `/admin/products/performance`, whose
+`annualTarget: number | null` already carried the missing-vs-zero distinction that nothing on the page
+had ever used; the shell (rail and top bar) moved over, unscoped, because there is one rail and it
+cannot sit inside a screen's `.ds6` wrapper; the six absences got three TREATMENTS rather than three
+wordings (a number someone owes, a classification nobody made, a legitimate nothing); and
+`docs/PORT-SPEC.md` fixes one vocabulary for the remaining screens.
+
+Gate step 22 had gone blind — `DESIGN.md` was rewritten during the redesign and parsed 0 tokens. It
+now documents both live systems, and **16 tokens** (`--rail-*`, `--deck-*`, `--fig`) turned out to be
+shipping in `:root` with no documentation in any version of that file. The type ladder now comes FROM
+`DESIGN.md` rather than a second copy in the checker: a checker carrying its own copy of the rule is a
+second authority, and this check exists because two authorities drifted.
+
+Three defects only the deployed page could reveal: `fmtN` grouped the year and printed «2,026»;
+«6 بندًا» broke counted-noun grammar; and the decisions column rendered dark-on-dark because
+`dashboard.ts:240` styles the bare `aside` tag as the navigation rail.
+
+Competition record, both entries and the measuring harness: `massar-ds/review/`.
+
 ## 2026-09-16 — the product record, and the reference design pass (engine deployed, smoke 21/21)
 
 Two founder corrections drove this, both fair. «product details page still has not been touched», then
