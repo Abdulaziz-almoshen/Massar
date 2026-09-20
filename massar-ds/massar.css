@@ -2055,3 +2055,7 @@ dialog.m-dlg[data-closing]::backdrop {
   .hx-flow__c { block-size: 176px; }
   .hx-flow__pair, .hx-flow__y { block-size: 154px; }
 }
+/* The legend carries the count as well as the share: «17٪» of six lines is one line, and the
+   reader should not have to divide to learn that. */
+.hx-donut__l em { font-style: normal; font-size: var(--m-t-micro); color: var(--m-mut);
+  white-space: nowrap; }
