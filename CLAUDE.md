@@ -21,7 +21,11 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **the design competition, and twelve figures the records never held (Sep 17, 2026)** —
+Last major milestone: **«إعدادات المنظمة» (Oct 1, 2026)** — Settings → Organization Configuration: segments
+(the old market `sectors` table, now typed), company sectors with managers, departments under them, employees
+with admin-managed roles, and a derived Sector → Department → Members hierarchy at `#org`. Products stay in
+«المنتجات», whose department picker is now grouped by sector. Open: «القطاع» still means the market on the
+product/report screens. Previous: **the design competition, and twelve figures the records never held (Sep 17, 2026)** —
 two frontier models competed on one brief for the design system. It ended 93-92 and the tie broke on evidence:
 Fable's unprefixed class names (`.card`, `.btn`, `.n`) collide with **187 existing definitions**, so Astra's
 `m-*` naming is the base — but Fable's **verification mechanism** is the thing worth keeping, and it is now

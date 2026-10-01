@@ -1,3 +1,40 @@
+## 2026-10-01 — «إعدادات المنظمة»: segments, sectors, departments, employees, roles (engine 9b45e06, deployed, smoke 21/21)
+
+The founder asked for Settings → Organization Configuration covering organisational structure only. Products are
+NOT managed there; the section provides the data a product is assigned to.
+
+**Two words, two things, and the existing data decided which was which.** The old `sectors` table always held
+exactly three rows: «قطاع المستشفيات», «قطاع الصيدليات», «قطاع الأعمال». Those are the three segment types the
+founder listed. So **a segment («الشريحة») is that table**, now typed (`kind` hospitals/pharmacies/business) and
+editable, and every product keeps its link. **A sector («القطاع») is now the company's own top unit**:
+`org_sectors`, classified business/sales/support, with a manager. Departments are the existing `divisions`, now
+with `sector_id`. Employees are `team_members`. Roles are `org_roles`: four system roles code depends on
+(sales, support, manager, product_manager) are renamable but never paused or deleted, and the admin adds more.
+
+- One screen at `#org` with six tabs: الهيكل · الشرائح · القطاعات · الإدارات · الموظفون · الأدوار. It replaces the
+  read-only «الهيكل التنظيمي» and the old «الأقسام» / «الفريق» tabs, which were two more editors over the same rows.
+  `#divisions` and `#team` redirect to the matching tab.
+- The hierarchy (Sector → manager → Department → manager → Members) is derived by `config-domain.buildOrgTree`
+  from the same lists the tables print. A department under no sector and a person in no department are drawn in
+  their own sections rather than dropped. From the tree, «+ إدارة» and «+ موظف» open the editor pre-filled with
+  the parent.
+- «نقل» moves an employee with an editor that holds only the department field, so a move cannot touch anything else.
+- Product record: «الإدارة المسؤولة» is grouped by sector and prints the department and sector managers it makes
+  responsible. The product screen never edits the organisation.
+- Migration 019. The `team_members.role` CHECK moved into code (validated against `org_roles`), as the ladder's did.
+  **`seedSectors` now inserts only into an empty table**: by name on every boot, it would have re-added a segment
+  the moment an admin renamed it.
+- Read-only roles (`settings.view`) see the screen without write controls; every write is gated on `org.manage`.
+
+Verified: 13 new unit tests, `npm run check` (all gates), `test:db` 60/60, the API exercised end to end on a local
+Postgres (every refusal path: system role, role in use, sector with departments, segment with products, unknown
+sector, paused role), and a browser walkthrough of all six tabs plus the product picker save. Production:
+health ok, migration applied, the three segments typed correctly with their product counts.
+
+**Open — label collision, not fixed (scope).** The product record, reports and home still call the market
+«القطاع» (about 40 sites), while «القطاع» in «إعدادات المنظمة» is the company unit. The segments tab says so in
+its subtitle. Renaming the market to «الشريحة» everywhere is a separate pass awaiting a yes.
+
 ## 2026-09-17 — the design competition, and twelve figures the records never held
 
 The founder rejected the home design eight times, then asked for two frontier models to compete on it.
