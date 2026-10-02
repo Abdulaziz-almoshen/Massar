@@ -76,6 +76,35 @@ def inp(ph=u"", val=u"", t="text"):
     return u'<input class="m-input" type="%s" placeholder="%s" value="%s">' % (t, ph, val)
 def sel(*opts):
     return u'<select class="m-select">%s</select>' % u"".join(u"<option>%s</option>" % o for o in opts)
+CHK = u'<svg class="m-cb__k" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>'
+CHEV = u'<svg class="m-cb__c" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>'
+def cbx(label, opts, value=u"", search=False, open_=False, query=u"", empty=None, ph=u"اختر…", disabled=False):
+    """THE dropdown: the same markup combobox-crm.ts mCombo() renders, after coss ui Select /
+       Combobox. opts: (value, label, sub, group). open_ draws the popup; query is what was typed."""
+    shown = u""
+    for o in opts:
+        if o[0] == value: shown = o[1]
+    rows, last = u"", None
+    q = query.strip()
+    for o in opts:
+        v, l = o[0], o[1]; sub = o[2] if len(o) > 2 else u""; g = o[3] if len(o) > 3 else u""
+        if q and q not in l + sub: continue
+        if g and g != last:
+            rows += u'<li class="m-cb__g" role="presentation">%s</li>' % g; last = g
+        on = v == value
+        rows += (u'<li class="m-cb__o%s%s%s" role="option" aria-selected="%s"><span class="m-cb__ol">%s%s</span>%s</li>'
+                 % (u" is-on" if on else u"", u" m-cb__o--none" if v == u"" else u"",
+                    u" is-hi" if (q and not rows.count(u"is-hi")) else u"", u"true" if on else u"false", l,
+                    (u' <span class="m-cb__s">%s</span>' % sub) if sub else u"", CHK))
+    e = u"" if rows else u'<div class="m-cb__e">%s</div>' % (u"لا نتائج لـ \"%s\"" % q if q else (empty or u"لا خيارات مسجّلة بعد"))
+    return (u'<div class="m-cbx m-cbx--wide%s%s"><button type="button" class="m-cb__t" aria-haspopup="listbox" aria-expanded="%s"%s>'
+            u'<span class="m-cb__v%s">%s</span>%s</button>%s'
+            u'<div class="m-cb__p"%s><ul class="m-cb__l" role="listbox">%s</ul>%s</div></div>'
+            % (u" m-cbx--search" if search else u"", u" is-searching" if (search and open_) else u"",
+               u"true" if open_ else u"false", u" disabled" if disabled else u"",
+               u"" if shown else u" is-ph", shown or ph, CHEV,
+               (u'<input class="m-cb__f" type="text" value="%s" placeholder="%s" aria-label="ابحث">' % (q, shown or u"ابحث…")) if (search and open_) else u"",
+               u"" if open_ else u" hidden", rows, e))
 def ta(ph=u"", rows=6):
     return u'<textarea class="m-input" rows="%d" placeholder="%s"></textarea>' % (rows, ph)
 def dlg(i, title, body, save=u"حفظ"):
@@ -592,17 +621,80 @@ page(u"perf.html", u"المستهدفات والأداء", u"products", u"perf",
                         u"الإنجاز", u"التوزيع الربعي", u"الحالة"], sec_rows)),
      D_TGT)
 
-# ---- org: الهيكل التنظيمي
-org_rows = u"".join(
-  u'<tr><td class="m-td-n">%s</td><td>%s</td><td class="m-td-v">%s</td><td>%s</td></tr>' % (
-    s, d, n(c), o)
-  for s, d, c, o in [(u"قطاع المستشفيات", u"بلا إدارة", u"3", nil(u"بلا مالك")),
-                     (u"قطاع الصيدليات", u"بلا إدارة", u"3", nil(u"بلا مالك"))])
-page(u"org.html", u"الهيكل التنظيمي", u"products", u"org", u"المنتجات", u"الهيكل التنظيمي",
-     prim(u"قطاع جديد"), u"",
-     KPI4([(u"القطاعات", u"2", u"مُعرَّفة", u""), (u"الإدارات", u"0", u"غير مُعرَّفة", u" nil"),
-           (u"الموظفون", u"0", u"في الدليل", u" nil"), (u"المنتجات", u"6", u"موزّعة", u"")])
-     + card(u"", table([u"القطاع", u"الإدارة", u"المنتجات", u"المالك"], org_rows)))
+# ---- org: إعدادات المنظمة (settings door, 2026-10-01). Mirrors org-crm.ts: six tabs, the
+#      Sector -> Department -> Members tree, and the editors' fields drawn with THE dropdown.
+ORG_TABS = u'<div class="m-tabs" role="tablist">' + u"".join(
+  u'<button class="m-tab" role="tab" aria-selected="%s">%s%s</button>' % (
+    u"true" if i == 0 else u"false", t, (u" <b>%s</b>" % c) if c else u"")
+  for i, (t, c) in enumerate([(u"الهيكل", u""), (u"الشرائح", u"3"), (u"القطاعات", u"2"), (u"الإدارات", u"2"),
+                              (u"الموظفون", u"5"), (u"الأدوار", u"4")])) + u'</div>'
+def org_dept(name, mgr, members):
+    li = u"".join(u'<li><span>%s</span><span class="oc-role">%s</span></li>' % (a, r) for a, r in members)
+    return (u'<div class="oc-dept"><div class="oc-dept__h"><span class="oc-lvl">الإدارة</span><span class="oc-name">%s</span>'
+            u'<span class="oc-mgr"><i>مدير الإدارة</i>%s</span><span class="oc-sp"></span>'
+            u'<button class="m-btn">+ موظف</button></div>%s</div>'
+            % (name, mgr, (u'<ul class="oc-mem">%s</ul>' % li) if li else u""))
+def org_sector(name, kind, mgr, depts):
+    return (u'<details class="m-card m-card--pad0 oc-sec" open><summary><span class="oc-lvl">القطاع</span>'
+            u'<span class="oc-name">%s</span>%s<span class="oc-mgr"><i>مدير القطاع</i>%s</span><span class="oc-sp"></span></summary>'
+            u'<div class="oc-body">%s<div><button class="m-btn">+ إدارة تحت «%s»</button></div></div></details>'
+            % (name, chip(kind, u"ac"), mgr, u"".join(depts), name))
+PEOPLE = [(u"", u"بلا مدير"), (u"1", u"خالد العتيبي", u"مدير منتج", u"إدارة حلول المستشفيات"),
+          (u"2", u"نورة القحطاني", u"إدارة", u"إدارة المبيعات المباشرة"), (u"3", u"ريم الشهري", u"مبيعات", u"إدارة المبيعات المباشرة"),
+          (u"4", u"عبدالعزيز المحسن", u"إدارة", u"بلا إدارة"), (u"5", u"فهد الدوسري", u"دعم فني", u"بلا إدارة")]
+ORG_EDITOR = (u'<section class="m-card"><div class="m-card__h"><h2 class="m-card__t">إضافة إدارة</h2></div>'
+  u'<div class="m-form" style="padding-block-end:300px">'
+  + field(u"اسم الإدارة", inp(u"مثال: إدارة حلول المستشفيات"))
+  + field(u"القطاع", cbx(u"القطاع", [(u"", u"بلا قطاع"), (u"1", u"قطاع الأعمال", u"أعمال"), (u"2", u"قطاع المبيعات", u"مبيعات")], u"1"))
+  + field(u"مدير الإدارة", cbx(u"مدير الإدارة", PEOPLE, u"", search=True, open_=True, query=u"ن"))
+  + field(u"الحالة", cbx(u"الحالة", [(u"1", u"مفعّلة"), (u"0", u"موقوفة")], u"1"))
+  + u'</div></section>')
+page(u"org.html", u"إعدادات المنظمة", u"settings", u"org", u"الإعدادات", u"إعدادات المنظمة",
+     u"", u"",
+     u'<p class="m-meta">المنتجات تُنشأ وتُعدَّل من «المنتجات»، وتُسند هناك إلى إدارتها المسؤولة.</p>' + ORG_TABS
+     + u'<div class="oc-tree" style="margin-block:var(--m-4)">'
+     + org_sector(u"قطاع الأعمال", u"أعمال", u"عبدالعزيز المحسن",
+                  [org_dept(u"إدارة حلول المستشفيات", u"خالد العتيبي", [])])
+     + org_sector(u"قطاع المبيعات", u"مبيعات", u"نورة القحطاني",
+                  [org_dept(u"إدارة المبيعات المباشرة", u"نورة القحطاني", [(u"ريم الشهري", u"مبيعات"), (u"سارة", u"مدير حساب")])])
+     + u'</div>' + ORG_EDITOR)
+
+# ---- components: the controls every screen draws with, each with the reference it was measured on.
+def demo(title, ref, body, tall=False):
+    return (u'<section class="m-card"><div class="m-card__h"><div><h2 class="m-card__t">%s</h2>'
+            u'<p class="m-meta">%s</p></div></div><div class="m-form"%s>%s</div></section>'
+            % (title, ref, u' data-demo="open"' if tall else u"", body))
+# A catalogue shows every open state at once, so its popups sit IN the flow instead of over the
+# next field. In the product they are absolute, as massar.css draws them.
+DEMO_CSS = (u'<style>[data-demo="open"] .m-cbx{flex-wrap:wrap}[data-demo="open"] .m-cb__p{position:static;flex:1 0 100%;margin-block-start:4px}'
+            u'[data-demo="open"]{align-items:start}.ds-sf{display:block;max-inline-size:520px}</style>')
+SEG_OPTS = [(u"hospitals", u"مستشفيات"), (u"pharmacies", u"صيدليات"), (u"business", u"قطاع الأعمال")]
+DEPTS = [(u"", u"بلا إدارة"), (u"1", u"إدارة حلول المستشفيات", u"مديرها خالد العتيبي", u"قطاع الأعمال"),
+         (u"2", u"إدارة المبيعات المباشرة", u"مديرها نورة القحطاني", u"قطاع المبيعات"),
+         (u"3", u"إدارة الدعم الفني", u"", u"بلا قطاع")]
+page(u"components.html", u"المكوّنات", u"settings", u"components", u"نظام التصميم", u"المكوّنات",
+     u"", u"",
+     u'<p class="m-meta">كل شاشة ترسم حقولها وقوائمها المنسدلة وبحثها من هذه المكوّنات فقط — لا قائمة منسدلة أصلية من المتصفح. '
+     u'المرجع: coss ui (coss.com/ui)، مقيس بـ getComputedStyle في 2 أكتوبر 2026.</p>'
+     + u'<div class="m-grid" style="display:grid;gap:var(--m-4)">'
+     + demo(u"الحقل", u"coss ui — Input: أبيض، حلقة 1px، زاوية 10px، حشوة 11px، ظل 0 1px 2px",
+            field(u"اسم الإدارة", inp(u"مثال: إدارة حلول المستشفيات"), req=True)
+            + field(u"البريد", inp(u"name@company.com", t="email"))
+            + field(u"مع خطأ", u'<input class="m-input" aria-invalid="true" value="aziz@">' + u'<span class="m-err">صيغة البريد غير صحيحة.</span>'))
+     + demo(u"القائمة المنسدلة — Select", u"coss ui — Select: قائمة قصيرة مغلقة (7 خيارات أو أقل). الحقل نفسه، سهم في النهاية، علامة ✓ على المختار",
+            field(u"مغلقة", cbx(u"النوع", SEG_OPTS, u"hospitals"))
+            + field(u"بلا قيمة", cbx(u"النوع", SEG_OPTS, u"", ph=u"اختر النوع"))
+            + field(u"معطّلة", cbx(u"النوع", SEG_OPTS, u"business", disabled=True))
+            + field(u"مفتوحة", cbx(u"النوع", SEG_OPTS, u"pharmacies", open_=True)), tall=True)
+     + demo(u"القائمة القابلة للبحث — Combobox", u"coss ui — Combobox: تكتب في الحقل نفسه فتتصفّى القائمة. مجموعات بعنوان وفاصل، وسطر ثانٍ خافت",
+            field(u"مفتوحة، مجمّعة بالقطاع", cbx(u"الإدارة", DEPTS, u"1", search=True, open_=True))
+            + field(u"أثناء الكتابة", cbx(u"مدير الإدارة", PEOPLE, u"", search=True, open_=True, query=u"ري"))
+            + field(u"لا نتائج", cbx(u"مدير الإدارة", PEOPLE, u"", search=True, open_=True, query=u"زياد"))
+            + field(u"قائمة فارغة", cbx(u"مدير الإدارة", [], u"", search=True, open_=True, empty=u"لا موظفين مسجّلين بعد — أضفهم من «الموظفون»", ph=u"بلا مدير")), tall=True)
+     + demo(u"البحث", u"شريط البحث في الجداول: أيقونة في البداية، زر مسح يظهر مع النص",
+            u'<div class="ds-sf"><div class="m-sf m-sf--wide"><svg class="m-sf__i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+            u'<input class="m-input m-sf__in" type="search" placeholder="ابحث باسم الموظف أو بريده أو إدارته" aria-label="بحث"></div></div>')
+     + u'</div>', u"", DEMO_CSS)
 
 # ------------------------------------------------------------- KMON  (door)
 FUNNEL = lambda steps: u'<div class="m-funnel">' + u"".join(
@@ -742,16 +834,6 @@ page(u"settings.html", u"مراحل البيع", u"settings", u"settings", u"ا�
      card(u"", table([u"المرحلة", u"المفتاح", u"الوزن", u"مدة SLA", u"الحالة", u""], srows)
           + u'<div class="m-tools"><span class="m-cap">المفتاح يملكه الكود؛ الاسم والوزن والمدة يملكها المدير</span></div>'),
      D_STAGE)
-
-page(u"divisions.html", u"الأقسام", u"settings", u"divisions", u"الإعدادات", u"الأقسام",
-     prim(u"قسم جديد"), u"",
-     card(u"", u'<div class="m-empty"><div class="m-empty__t">لا قسم مُعرَّف</div>'
-               u'<div class="m-empty__a"><button class="m-btn m-btn--primary">قسم جديد</button></div></div>'))
-
-page(u"team.html", u"الفريق", u"settings", u"team", u"الإعدادات", u"الفريق",
-     prim(u"عضو جديد"), u"",
-     card(u"", u'<div class="m-empty"><div class="m-empty__t">لا عضو في الدليل</div>'
-               u'<div class="m-empty__a"><button class="m-btn m-btn--primary">عضو جديد</button></div></div>'))
 
 ROLES = [(u"مدير النظام", u"كل الصلاحيات"), (u"مدير مبيعات", u"قراءة وكتابة على البيع"),
          (u"مندوب", u"فرصه وعملاؤه فقط"), (u"شريك", u"بياناته فقط"), (u"قارئ فقط", u"قراءة بلا كتابة")]

@@ -1,3 +1,29 @@
+## 2026-10-02 — one dropdown, measured on the founder's references, and it lives in the design system
+
+The founder approved «إعدادات المنظمة» and then set the rule: the dropdown and every field must come from
+the reference set and exist in the design system, «keep this as a system design». What was wrong:
+the DS combobox was modeled on ui.halaska.com, which is NOT on his list, and drew a grey pill beside a
+white .m-input; the org and product screens still used the browser's native select.
+
+- **Measured coss ui (coss.com/ui, on the list) with getComputedStyle**: Select, Combobox, Input Group,
+  group label, separator, empty state. Values in `massar-ds/massar.css` beside the component.
+- **One component, two modes** (`mCombo`): Select for ≤ 7 rows; Combobox — you type IN the field — for
+  longer lists, free fields, and always for people. Options carry value / label / second line / group.
+- **The popup lives in a body-level layer while open.** Measured in the app: inside an editor row it was
+  clipped by the table wrapper, and on the product record it landed ~350px off (a transformed ancestor
+  re-anchors `position: fixed`) and under the sticky tab rail (a stacking context no z-index leaves).
+  It now flips above the field when there is no room below. Two regressions this created were found
+  by test, not by reading: the date picker closed when its month was picked (the click target is
+  detached by the repaint), and the popup would have opened under the opportunity drawer (z 310).
+- Search is the same field with an icon (coss Input Group), not a floating pill.
+- `massar-ds/components.html` is the catalogue (field, select, combobox, search, every state, with the
+  reference each was measured on). `massar-ds/org.html` is the new screen; `divisions.html` and
+  `team.html` are gone because their routes are.
+- `check:selects`: 48 native selects remain on unconverted screens; the count may only go down.
+
+**Open, awaiting a yes:** convert the remaining 48 native selects (accounts, opps, indicators, campaigns,
+partners, users, targets, customers…) to the DS dropdown — a sweep across 12 screens.
+
 ## 2026-10-01 — «إعدادات المنظمة»: segments, sectors, departments, employees, roles (engine 9b45e06, deployed, smoke 21/21)
 
 The founder asked for Settings → Organization Configuration covering organisational structure only. Products are

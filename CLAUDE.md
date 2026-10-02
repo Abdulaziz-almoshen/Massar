@@ -188,6 +188,15 @@ into every prompt), and the Arabic counted-noun retrofit beyond `opps-crm.ts`.
   greeting). Massar rules (RTL, `DESIGN.md` tokens, western numerals) win on conflict. Enforced
   by `.claude/hooks/require-emil-design-eng.sh`.
 
+- **Every control comes from the design system, and the design system comes from the references**
+  (founder, Oct 2 2026: «the drop down, the component, must come from the references I gave you…
+  keep this as a system design»). Fields, dropdowns and search are drawn ONLY from `massar-ds/`
+  (`massar.css` is the single source; `scripts/port-ds.py` generates the engine CSS; `components.html`
+  is the catalogue). The dropdown is `mCombo` — Select for short lists, Combobox (type in the field)
+  for long ones — measured on coss ui with `getComputedStyle`. Never a native `<select>`:
+  `check:selects` ratchets the remaining count down and fails on a new one. A new component is added
+  to `massar-ds` (css + catalogue) first, measured from a reference on the founder's list, then used.
+
 - **The design + motion skill set** (`emilkowalski/skills`, installed Sep 17 2026). Project skills
   live in `.agents/skills/`, symlinked into `.claude/skills/`, pinned in `skills-lock.json`.
   Fourteen are installed and **no two share a name** — the routing table below is what keeps them

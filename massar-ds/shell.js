@@ -21,9 +21,9 @@
   var SUBS = {
     opps:     [["opps","الفرص"],["board","لوحة المتابعة"],["triage","فرز الردود"],["pipeline","سجل الأحداث"]],
     accounts: [["accounts","العملاء"],["customers","المحادثات"],["indicators","مؤشرات الاستخدام"],["tasks","المهام"],["notes","الملاحظات"]],
-    products: [["products","المنتجات"],["knowledge","معرفة المنتج"],["perf","المستهدفات والأداء"],["org","الهيكل التنظيمي"]],
+    products: [["products","المنتجات"],["knowledge","معرفة المنتج"],["perf","المستهدفات والأداء"]],
     kmon:     [["kmon","متابعة الحملات"],["aimkt","إنشاء حملة"],["targets","جهات الاستهداف"],["partners","شركاء المبيعات"]],
-    settings: [["settings","مراحل البيع"],["divisions","الأقسام"],["team","الفريق"],["users","المستخدمون والصلاحيات"],["audit","سجل التدقيق"]]
+    settings: [["settings","مراحل البيع"],["org","إعدادات المنظمة"],["users","المستخدمون والصلاحيات"],["audit","سجل التدقيق"],["components","المكوّنات"]]
   };
 
   var door = document.body.getAttribute("data-nav") || "home";
