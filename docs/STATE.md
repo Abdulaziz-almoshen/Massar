@@ -1,3 +1,37 @@
+## 2026-10-02 (later) — opportunities: no move without an outcome; outcomes configurable; the product record's «المؤشرات»
+
+**Opportunities (founder's six requirements).**
+1. **Client from the list.** The create form picks the account from «العملاء» (DS Combobox, searchable,
+   city and phone on the second line). POST /admin/opps refuses anything but an existing, non-rejected
+   account (`account_id`) and reads the name and phone from it. «جهات الاستهداف»'s bulk «فرصة» sends the id too.
+2. **Bigger cards.** 300px columns, 16px padding, value at 20px, plus the time on stage (always, not
+   only when late) and the next step.
+3. **The whole column is the drop zone.** Columns aligned to the top and ended at their last card, so the
+   empty space under them was not a target. They stretch now (min 560px / 70vh), every column outlines
+   while dragging, the one under the pointer fills and says «أفلت هنا…», and the highlight no longer
+   flickers as the pointer crosses cards. Verified with dispatched DragEvents on the element actually
+   under the column's empty bottom.
+4. **«المرحلة التالية».** Inside the opportunity: a primary button naming the next rung, and the DS Select
+   for any other rung (marked «رجوع» / «يطلب سبب الخسارة»).
+5. **Outcomes in Settings.** Table `stage_outcomes` (migration 020), seeded insert-if-absent from the 34
+   archive outcomes. «مراحل البيع» → «النتائج» per rung: add, edit, pause; status = kind (تقدّم / يحتاج
+   إجراء / خسارة), reason, next action, department. A seeded or already-recorded outcome is paused, never
+   deleted. The live list replaces STAGE_OUTCOMES / LOSS_REASONS in place on server and page.
+6. **No move without an outcome.** «نقل دون تسجيل نتيجة» is gone. Every path (stepper, next-stage, dropdown,
+   drop, close buttons, bulk) goes through `opRequestMove`, and PATCH /admin/opps enforces
+   `sales-domain.checkMoveOutcome`: forward needs a «تقدّم» outcome of the rung being left, back needs
+   «يحتاج إجراء», to lost needs the loss reason, reopening a closed deal needs none. A rung with no outcome
+   of the needed kind refuses the move and points to Settings.
+   Found by running, not reading: the outcome sheet only rendered inside the drawer, so a board drop
+   set the question and showed nothing; and an escaped quote collapsed in a template literal and blanked
+   the whole page (check:crmparse catches it; it had not been run yet).
+
+**Product record.** The strip of every other product above the record is gone («← كل المنتجات» stays).
+«نظرة عامة» repeated the five figures above the tabs and the side panel's open deals; it is now
+«المؤشرات», the one home of the indicators: target, achieved, attainment, win rate with its denominator,
+average won deal, deals past their stage's commitment, quarter by quarter, the stage funnel, loss reasons
+for this product, and the owner split. The figure row above the tabs was removed so nothing is said twice.
+
 ## 2026-10-02 — one dropdown, measured on the founder's references, and it lives in the design system
 
 The founder approved «إعدادات المنظمة» and then set the rule: the dropdown and every field must come from

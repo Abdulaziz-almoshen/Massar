@@ -21,7 +21,10 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **«إعدادات المنظمة» (Oct 1, 2026)** — Settings → Organization Configuration: segments
+Last major milestone: **opportunities that cannot move without an outcome (Oct 2, 2026)** — outcomes are
+the admin's (Settings → مراحل البيع → النتائج, table `stage_outcomes`), every move asks for one whose kind fits
+the direction (enforced on PATCH), the client is picked from «العملاء», the whole board column is the drop
+zone, and the product record's tab is «المؤشرات». Previous: **«إعدادات المنظمة» (Oct 1, 2026)** — Settings → Organization Configuration: segments
 (the old market `sectors` table, now typed), company sectors with managers, departments under them, employees
 with admin-managed roles, and a derived Sector → Department → Members hierarchy at `#org`. Products stay in
 «المنتجات», whose department picker is now grouped by sector. Open: «القطاع» still means the market on the
