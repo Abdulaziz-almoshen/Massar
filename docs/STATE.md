@@ -31,6 +31,11 @@ Postgres (every refusal path: system role, role in use, sector with departments,
 sector, paused role), and a browser walkthrough of all six tabs plus the product picker save. Production:
 health ok, migration applied, the three segments typed correctly with their product counts.
 
+**Oct 2 fix.** The founder clicked «أضف قطاعًا» on the empty tree and nothing happened: that button and «+ إدارة تحت …»
+named kinds the editors do not know (`sector`/`department` vs `osector`/`division`). The walkthrough had clicked
+every tab and table button but never the tree's own buttons. Fixed, every tree button clicked in a browser on an
+empty org, and an unknown kind now logs an error instead of doing nothing.
+
 **Open — label collision, not fixed (scope).** The product record, reports and home still call the market
 «القطاع» (about 40 sites), while «القطاع» in «إعدادات المنظمة» is the company unit. The segments tab says so in
 its subtitle. Renaming the market to «الشريحة» everywhere is a separate pass awaiting a yes.
