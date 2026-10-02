@@ -1,3 +1,13 @@
+## 2026-10-02 (evening) — every dropdown is the design system's; production review of all requests
+
+The last 47 native selects (13 screens) are upgraded at render by combobox-crm: the native element stays
+hidden as the value source, a pick writes it and dispatches change, so each screen's handler is unchanged.
+Proven on the founder's own screenshot (account form «حجم المنشأة»). Smoke now fails a route with a visible
+native dropdown; 21/21 green on production. Production review of every request in this session: all live
+and verified on the deployed pages and API (see the session's final report). Still open, awaiting the
+founder: product manager as a linked employee (req. 7 of the org spec), whether reopening a closed deal
+must record a reason, and renaming the market «القطاع» to «الشريحة» on the product/report screens.
+
 ## 2026-10-02 (later) — opportunities: no move without an outcome; outcomes configurable; the product record's «المؤشرات»
 
 **Opportunities (founder's six requirements).**
