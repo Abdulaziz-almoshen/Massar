@@ -1,3 +1,14 @@
+## 2026-10-06 (later) — the range picker says which end you are setting (DS, every range in the product)
+
+Founder: «enhance the field range selection, it is confusing». The cause: one «من — إلى» field whose second
+click silently meant the other end. Now two labelled halves (البداية → النهاية, or the caller's own words —
+«بداية العقد / نهاية العقد»), each its own button; the open calendar says «اختر تاريخ …» for the end it is on;
+the range is one band with caps and follows the pointer while the end is chosen; the footer states the length
+(«المدة: سنة واحدة»). Contract fields add shortcuts سنة واحدة · سنتان · 3 سنوات (end = the day before the
+anniversary). Rules in `date-field-domain.ts` (pickRangeEnd, termEndISO, monthsLabel, rangeLengthLabel),
+unit-tested. Verified locally on the close sheet, the drawer (a shortcut saves), home and the board; deployed,
+smoke 21/21.
+
 ## 2026-10-06 — «مدة العقد»: no opportunity closes won without a contract start (engine 6967613)
 
 Founder: «add contract start date … no opportunity can be closed without this date … use date range from
