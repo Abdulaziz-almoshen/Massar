@@ -1,3 +1,28 @@
+## 2026-10-06 — «مدة العقد»: no opportunity closes won without a contract start (engine 6967613)
+
+Founder: «add contract start date … no opportunity can be closed without this date … use date range from
+to component». Also shipped Oct 3–5 without an entry: company-size options are employee bands only (the
+revenue bands were removed from «نوع العميل»).
+
+- **Rule** `checkContractPeriod` (opp-work-domain, unit-tested): start required when closing WON, end
+  optional (open-ended licence), end ≥ start, ISO dates. Migration 021 adds `opportunities.contract_start`
+  / `contract_end` with an ISO CHECK.
+- **Server** decides on the locked row: a PATCH that lands on WON without a start, or clears the start of a
+  won line, throws `ContractStartRequired` → 400 `contract_start_required`. The rep engagement path refuses
+  too and sends the rep to «فرص البيع».
+- **UI** every won path runs through `opRequestMove`, so one sheet covers the button, next-stage, the board
+  drop, the dropdown and bulk: the range picker sits above the outcomes and the close is one request
+  (stage + outcome + period). Reopening a lost deal straight to WON gets a contract-only sheet. The drawer
+  carries «مدة العقد» editable at any time; the board card prints the period, the account card «يبدأ العقد».
+- **Design system** (massar.css): a calendar inside a modal opens in flow (an absolute one was clipped by the
+  modal's overflow), and `.m-n--date`: `.m-n` is forced LTR, which reordered «15 أكتوبر 2026» into
+  «2026 أكتوبر 15» in every date field in the product. All date-field output now uses it.
+- **Verified locally** in the browser: refused with no date (sheet error, stage unchanged), picked 15→31 Oct
+  by clicking day cells, closed won, the period on the drawer, board and cards; API refuses missing start,
+  end-before-start, malformed date, and clearing a won line's start.
+- Existing won lines have no start; the drawer flags «أُغلقت ربحًا قبل اشتراط التاريخ — حدّد بداية العقد».
+  They are not refused retroactively; only a write that would leave a won line without a start is.
+
 ## 2026-10-02 (evening) — every dropdown is the design system's; production review of all requests
 
 The last 47 native selects (13 screens) are upgraded at render by combobox-crm: the native element stays

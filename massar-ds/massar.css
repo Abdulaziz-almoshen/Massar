@@ -105,6 +105,9 @@ body {
   unicode-bidi: isolate;
   display: inline-block;
 }
+/* A date carries an Arabic month name between its figures («15 أكتوبر 2026»): forced LTR, the run
+   reorders to «2026 أكتوبر 15». Keep the numerals' features, lay the date out right-to-left. */
+.m-n--date { direction: rtl; }
 .m-shell {
   display:flex;
   min-block-size: 100dvh;
@@ -1748,7 +1751,9 @@ dialog.m-dlg[data-closing]::backdrop {
 .m-cb__o[hidden], .m-cb__g[hidden] { display: none; }
 .m-cb__o.is-hi, .m-cb__o.is-on { background: rgba(0, 0, 0, .04); }
 .m-cb__o.is-on { font-weight: 600; }
-.m-cb__ol { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* An option says all of itself in the open list — «متوسطة — 50–249 موظفًا · أكثر من 40 وحتى 200 مليون» was
+   cut at «…» exactly where the definition starts. The closed field keeps one line (.m-cb__v). */
+.m-cb__ol { min-inline-size: 0; white-space: normal; overflow-wrap: anywhere; }
 /* A second line of context on a row — a department's sector, a person's role. */
 .m-cb__s { color: var(--m-mut); font-weight: 400; font-size: 12px; }
 .m-cb__o--free { color: var(--m-ac-deep); }
@@ -1760,6 +1765,10 @@ dialog.m-dlg[data-closing]::backdrop {
 .m-cb__g:not(:first-child) { border-block-start: 1px solid rgba(0, 0, 0, .08); margin-block-start: 4px; padding-block-start: 10px; }
 .m-cb__g.is-first { border-block-start: 0; margin-block-start: 0; padding-block-start: 6px; }
 .m-cb__e { padding: 8px; font-size: 14px; color: var(--m-mut); text-align: center; }
+/* A select upgraded by the combobox stays in the page as its value source, never seen. */
+select[data-cb-src] { display: none !important; }
+/* A filter that is ON says so on the field itself, as the native filter selects did. */
+.m-cbx.is-on .m-cb__t { background: var(--m-ac-dim); box-shadow: 0 0 0 1px var(--m-ac-line); color: var(--m-ac-deep); }
 .m-cb__e[hidden] { display: none; }
 @media (pointer: coarse) { .m-cb__o { min-block-size: 44px; } .m-cb__f, .m-cb__t { font-size: 16px; } }
 @media (prefers-reduced-motion: reduce) { .m-cb__t { transition: none; } }
@@ -1858,6 +1867,11 @@ dialog.m-dlg[data-closing]::backdrop {
   box-shadow: 0 0 0 1px var(--m-line), var(--m-lift);
 }
 .m-dp__p[hidden] { display: none; }
+/* Inside a modal that scrolls, an absolute calendar is clipped by the modal's own overflow; there it
+   opens IN FLOW, so the modal grows and scrolls to it instead of cutting it off. */
+[aria-modal="true"] .m-dp { flex-wrap: wrap; }
+[aria-modal="true"] .m-dp__p { position: relative; inset: auto; flex: 1 0 100%; inline-size: auto; margin-block-start: 4px;
+  box-shadow: 0 0 0 1px var(--m-line); }
 .m-dp__h { display: flex; align-items: center; gap: var(--m-1); margin-block-end: var(--m-2); }
 .m-dp__sel { display: flex; gap: var(--m-1); flex: 1 1 auto; min-inline-size: 0; }
 /* Inside the header the two comboboxes are compact: the popover is 296px wide and they share it. */

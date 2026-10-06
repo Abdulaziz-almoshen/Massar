@@ -21,7 +21,10 @@ Goals, in priority order:
 
 ## 2. Current State — pointer
 Live state: **`docs/STATE.md`** (read after this file).
-Last major milestone: **opportunities that cannot move without an outcome (Oct 2, 2026)** — outcomes are
+Last major milestone: **«مدة العقد» (Oct 6, 2026)** — no opportunity closes WON without a contract start, decided on the
+locked row; the period is asked in the same sheet as the outcome, in the DS range picker. The DS gained
+`.m-n--date` (forced-LTR `.m-n` was reordering every Arabic date) and in-flow calendars inside modals.
+Previous: **opportunities that cannot move without an outcome (Oct 2, 2026)** — outcomes are
 the admin's (Settings → مراحل البيع → النتائج, table `stage_outcomes`), every move asks for one whose kind fits
 the direction (enforced on PATCH), the client is picked from «العملاء», the whole board column is the drop
 zone, and the product record's tab is «المؤشرات». Previous: **«إعدادات المنظمة» (Oct 1, 2026)** — Settings → Organization Configuration: segments
