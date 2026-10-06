@@ -1,3 +1,13 @@
+## 2026-10-06 (evening) — production data wiped by the founder's instruction; two admins
+
+Founder: «clean the db and delete all data except system data», then narrowed it: keep ONLY stages, outcomes and
+segments. Every other table was truncated (RESTART IDENTITY) after a full JSON backup of every deleted row
+(kept on the operator's machine, outside both repos — it holds customer PII). Kept: pipeline_stages 8,
+pipelines 1, stage_outcomes 33, sectors (segments) 3, schema_migrations. Machine restarted to drop cached
+credentials. Re-created by the code on boot, not data: the 4 system roles (seedOrgRoles), the 6 catalogue
+products and 6 departments (constants). New users: Abdulaziz Almalik and Reem Altamimi, both admin; codes
+handed to the founder in session, both verified 200 on /admin/opps.
+
 ## 2026-10-06 (later) — the range picker says which end you are setting (DS, every range in the product)
 
 Founder: «enhance the field range selection, it is confusing». The cause: one «من — إلى» field whose second
